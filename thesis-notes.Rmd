@@ -89,3 +89,9 @@ We may rewrite this as a system of linear equations as:
 
 $$ \vb{s} Q = \vb{s} $$
 $\thm \textbf{Existence and Uniqueness.}$ If a Markov chain $\seqX$ is irreducible, there exists a unique stationary distribution, say $\bf \pi$ $\in \M_{\R}[1 \times M]$.
+
+# Reversibility
+
+$\dfn \textbf{Reversibility.}$ A Markov chain $\seqX$ is reversible if its transition matrix $Q$ satisfies the reversibility condition for some valid probability distribution $s = (s_1,\dots,s_M)$:
+
+$$ \forall i,j \in S_M: s_i q_{ij} = s_j q_{ji} $$
