@@ -46,22 +46,26 @@ rand_M <- function(M,row_fxn){
 
 # Eigenvectors
 
-```{r setup_eigen}
-M <- 8 # number of states
-P <- rand_M(M,r1) # initialize P 
-eigen_vecs <- data.frame(eigen(P)[2])
+```{r complex_plot}
+complex_df <- function(eigenvectors){
+  cols <- 3 # set 3 to hold (re,im) pair and whose row it belongs to
+  complex <- matrix(rep(NA,cols*M*M), ncol = cols)
+  colnames(complex) <- c("Re","Im","v")
+  for(i in 1:M){
+    for(j in 1:M){
+      curr <- eigenvectors[i,j]
+      complex[M*(i-1) + j, ] <- c(Re(curr),Im(curr),i) 
+    }
+  }
+  complex
+}
 ```
 
-```{r complex_plot}
-cols <- 3 # set 3 to hold (re,im) pair and whose row it belongs to
-complex <- matrix(rep(NA,cols*M*M), ncol = cols)
-colnames(complex) <- c("Re","Im","v")
-for(i in 1:M){
-  for(j in 1:M){
-    curr <- eigen_vecs[i,j]
-    complex[M*(i-1) + j, ] <- c(Re(curr),Im(curr),i) 
-  }
-}
+```{r setup_eigen}
+M <- 30 # number of states
+P <- rand_M(M,r0) # initialize P 
+eigen_vecs <- data.frame(eigen(P)[2])
+complex <- complex_df(eigen_vecs)
 ```
 
 ```{r eigen_plot, echo = FALSE}
@@ -69,7 +73,24 @@ r <- 1
 ep <- 0.5
 ggplot(complex) + 
   geom_point(aes(x = Re, y = Im, color = v)) + 
-  labs(x = "Re", y = "Im", title = "Distribution of Eigenvectors in the Complex Plane") +
+  labs(x = "Re", y = "Im", title = "Distribution of Eigenvectors in the Complex Plane (r0)") +
+  xlim(-(r+ep),r+ep) + ylim(-r,r) +
+  ggforce::geom_circle(aes(x0=0,y0=0,r=r), color = "steelblue")
+```
+
+```{r setup_eigen2}
+M <- 30 # number of states
+P <- rand_M(M,r1) # initialize P 
+eigen_vecs <- data.frame(eigen(P)[2])
+complex <- complex_df(eigen_vecs)
+```
+
+```{r eigen_plot2, echo = FALSE}
+r <- 1
+ep <- 0.5
+ggplot(complex) + 
+  geom_point(aes(x = Re, y = Im, color = v)) + 
+  labs(x = "Re", y = "Im", title = "Distribution of Eigenvectors in the Complex Plane (r1)") +
   xlim(-(r+ep),r+ep) + ylim(-r,r) +
   ggforce::geom_circle(aes(x0=0,y0=0,r=r), color = "steelblue")
 ```
