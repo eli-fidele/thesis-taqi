@@ -1,5 +1,6 @@
 ---
-title: "Markov Chain Simulation"
+title: "Markov Chain Simulations"
+author: "Ali Taqi"
 output: pdf_document
 ---
 
@@ -41,26 +42,23 @@ rand_M <- function(M,row_fxn){
 }
 ```
 
-```{r}
-M <- 8
-P <- rand_M(M,r1)
-```
-
 \newpage
 
 # Eigenvectors
 
-```{r eigen}
-eig_P <- eigen(P)
-eig_vectors <- eig_P[2]
-evec <- data.frame(eig_vectors)
+```{r setup_eigen}
+M <- 8 # number of states
+P <- rand_M(M,r1) # initialize P 
+eigen_vecs <- data.frame(eigen(P)[2])
+```
 
+```{r complex_plot}
 cols <- 3 # set 3 to hold (re,im) pair and whose row it belongs to
 complex <- matrix(rep(NA,cols*M*M), ncol = cols)
 colnames(complex) <- c("Re","Im","v")
 for(i in 1:M){
   for(j in 1:M){
-    curr <- evec[i,j]
+    curr <- eigen_vecs[i,j]
     complex[M*(i-1) + j, ] <- c(Re(curr),Im(curr),i) 
   }
 }
@@ -80,10 +78,16 @@ ggplot(complex) +
 
 # Convergence
 
-```{r longrun}
+```{r setup_convg}
 set.seed(23)
-it <- 50 # set number of iterations of transition matrix
+M <- 12 
+P <- rand_M(M,r1)
+eigen_vecs <- data.frame(eigen(P)[2])
+st <- eigen_vecs[1,1] # choose reference vector to find distance from
+it <- 30 # number of iterations of transition matrix
+```
 
+```{r longrun}
 evolve <- function(pi){
   # simulate and record evolution of pi
   vals <- matrix(rep(NA, (M+1) * it), ncol = (M+1))
@@ -103,10 +107,6 @@ evolve <- function(pi){
 ```
 
 ```{r euclidean_plot}
-
-pi0 <- r1(M) # create some initial distribution
-st <- evec[1,1] # choose reference vector to find distance from
-
 distance <- function(pi,ref_dist){
   #plot difference from a reference/stationary distribution
   diff <- rbind(evolve(pi),ref_dist)
@@ -117,7 +117,6 @@ distance <- function(pi,ref_dist){
   }
   data.frame(dist_vec)
 }
-
 plot_d <- function(init,ref){
   dist_vec <- distance(init,ref)
   dist_plot <- ggplot(dist_vec, mapping = aes(x = 1:it, y = dist_vec)) + 
@@ -126,6 +125,8 @@ plot_d <- function(init,ref){
   dist_plot
 }
 ```
+
+## Simulating convergence using initial distributions of row function 1
 
 ```{r, fig.height = 10}
 p1 <- plot_d(r1(M),st)
@@ -134,13 +135,10 @@ p3 <- plot_d(r1(M),st)
 p4 <- plot_d(r1(M),st)
 p5 <- plot_d(r1(M),st)
 p6 <- plot_d(r1(M),st)
-
 (p1+p2)/(p3+p4)/(p5+p6)
-#p1/p2/p3/p4/p5/p6
-#(p1+p2+p3)/(p4+p5+p6)
-#(p1+p2)/(p3+p4)/(p5+p6)
 ```
-```{r, fig.height = 10}
+
+```{r, include = FALSE}
 col_str <- "red"
 plot_d <- function(init,ref){
   dist_vec <- distance(init,ref)
@@ -149,7 +147,11 @@ plot_d <- function(init,ref){
     labs(x = "n", y = "Euclidean Distance")
   dist_plot
 }
+```
 
+## Simulating convergence using initial distributions of row function 0
+
+```{r, fig.height = 10}
 p1 <- plot_d(r0(M),st)
 p2 <- plot_d(r0(M),st)
 p3 <- plot_d(r0(M),st)
@@ -158,5 +160,4 @@ p5 <- plot_d(r0(M),st)
 p6 <- plot_d(r0(M),st)
 
 (p1+p2)/(p3+p4)/(p5+p6)
-
 ```
