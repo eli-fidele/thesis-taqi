@@ -127,14 +127,20 @@ plot_d <- function(init,ref){
 }
 ```
 
-```{r}
-plot_d(r1(M),st)
-plot_d(r1(M),st)
-plot_d(r1(M),st)
-plot_d(r1(M),st)
-plot_d(r1(M),st)
+```{r, fig.height = 10}
+p1 <- plot_d(r1(M),st)
+p2 <- plot_d(r1(M),st)
+p3 <- plot_d(r1(M),st)
+p4 <- plot_d(r1(M),st)
+p5 <- plot_d(r1(M),st)
+p6 <- plot_d(r1(M),st)
+
+(p1+p2)/(p3+p4)/(p5+p6)
+#p1/p2/p3/p4/p5/p6
+#(p1+p2+p3)/(p4+p5+p6)
+#(p1+p2)/(p3+p4)/(p5+p6)
 ```
-```{r}
+```{r, fig.height = 10}
 col_str <- "red"
 plot_d <- function(init,ref){
   dist_vec <- distance(init,ref)
@@ -143,10 +149,14 @@ plot_d <- function(init,ref){
     labs(x = "n", y = "Euclidean Distance")
   dist_plot
 }
-plot_d(r0(M),st)
-plot_d(r0(M),st)
-plot_d(r0(M),st)
-plot_d(r0(M),st)
-plot_d(r0(M),st)
+
+p1 <- plot_d(r0(M),st)
+p2 <- plot_d(r0(M),st)
+p3 <- plot_d(r0(M),st)
+p4 <- plot_d(r0(M),st)
+p5 <- plot_d(r0(M),st)
+p6 <- plot_d(r0(M),st)
+
+(p1+p2)/(p3+p4)/(p5+p6)
 
 ```
