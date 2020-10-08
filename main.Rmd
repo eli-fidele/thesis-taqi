@@ -64,7 +64,7 @@ for(i in 1:M){
 }
 ```
 
-```{r eigen_plot}
+```{r eigen_plot, echo = FALSE}
 r <- 1
 ep <- 0.5
 ggplot(complex) + 
