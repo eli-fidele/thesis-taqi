@@ -1,0 +1,146 @@
+---
+title: "Sparsity Analysis"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(ggfortify)
+library(matrixcalc)
+col_str <- "blue"
+```
+
+# Generating Random Matrices
+
+```{r row_fxns}
+# generates rows of size P which are valid probability distributions
+r_sparse <- function(M,p){
+  prob <- runif(M,0,1)
+  num_zeros <- rbinom(1,M,p)
+  choices <- sample(1:M, num_zeros)
+  prob[choices] <- 0
+  prob/sum(prob) # return normalized random row vector
+}
+```
+
+```{r random_matrix}
+# initialize random P
+rand_M <- function(M,p,row_fxn){
+  P <- matrix(rep(NA, M * M), ncol = M)  # create transition matrix
+  for(i in 1:M){P[i,] = row_fxn(M,p)}
+  P
+}
+```
+
+\newpage
+
+# Eigenvectors
+
+```{r complex_plot}
+complex_df <- function(eigenvectors){
+  cols <- 3 # set 3 to hold (re,im) pair and whose row it belongs to
+  complex <- matrix(rep(NA,cols*M*M), ncol = cols)
+  colnames(complex) <- c("Re","Im","v")
+  for(i in 1:M){
+    for(j in 1:M){
+      curr <- eigenvectors[i,j]
+      complex[M*(i-1) + j, ] <- c(Re(curr),Im(curr),i) 
+    }
+  }
+  complex
+}
+```
+
+```{r eigen_plot}
+eigen_plot <- function(P,sparsity){
+  eigen_vecs <- data.frame(eigen(P)[2])
+  complex <- complex_df(eigen_vecs)
+  r <- 1
+  ep <- 0.5
+  plot <- ggplot(complex) + 
+    geom_point(aes(x = Re, y = Im, color = v)) + 
+    labs(x = "Re", y = "Im", title = paste("Eigenvector Distribution, Sparsity: ",sparsity)) +
+    xlim(-(r+ep),r+ep) + ylim(-r,r) +
+    ggforce::geom_circle(aes(x0=0,y0=0,r=r), color = "steelblue")
+  plot
+}
+
+```
+
+```{r sparsity, echo = FALSE}
+M <- 30 # number of states
+p_vec <- c(0,0.25,0.5,0.75)
+p <- 0.8
+P <- rand_M(M,p,r_sparse) # initialize P
+#eigen_plot(P,p)
+```
+
+```{r sparsities, echo=FALSE}
+p <- p_vec[1]
+Q <- rand_M(M,p,r_sparse)
+p11 <- eigen_plot(Q,p)
+
+p <- p_vec[1]
+Q <- rand_M(M,p,r_sparse)
+p12 <- eigen_plot(Q,p)
+
+p <- p_vec[1]
+Q <- rand_M(M,p,r_sparse)
+p13 <- eigen_plot(Q,p)
+
+p <- p_vec[2]
+Q <- rand_M(M,p,r_sparse)
+p21 <- eigen_plot(Q,p)
+
+p <- p_vec[2]
+Q <- rand_M(M,p,r_sparse)
+p22 <-eigen_plot(Q,p)
+
+p <- p_vec[2]
+Q <- rand_M(M,p,r_sparse)
+p23 <- eigen_plot(Q,p)
+
+p <- p_vec[3]
+Q <- rand_M(M,p,r_sparse)
+p31 <- eigen_plot(Q,p)
+
+p <- p_vec[3]
+Q <- rand_M(M,p,r_sparse)
+p32 <-eigen_plot(Q,p)
+
+p <- p_vec[3]
+Q <- rand_M(M,p,r_sparse)
+p33 <- eigen_plot(Q,p)
+
+p <- p_vec[4]
+Q <- rand_M(M,p,r_sparse)
+p41 <- eigen_plot(Q,p)
+
+p <- p_vec[4]
+Q <- rand_M(M,p,r_sparse)
+p42 <- eigen_plot(Q,p)
+
+p <- p_vec[4]
+Q <- rand_M(M,p,r_sparse)
+p43 <- eigen_plot(Q,p)
+```
+
+```{r plots, echo = FALSE, fig.height = 15, fig.width=10}
+(p11 / p21)
+(p31 / p41)
+```
+
+```{r plots1, echo = FALSE, fig.height = 15, fig.width=10}
+(p12 / p22)
+(p32 / p42)
+```
+
+```{r plots2, echo = FALSE, fig.height = 15, fig.width=10}
+(p13 / p23)
+(p33 / p43)
+```
