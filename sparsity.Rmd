@@ -12,6 +12,7 @@ library(knitr)
 library(patchwork)
 library(ggfortify)
 library(matrixcalc)
+library(zeallot)
 col_str <- "blue"
 ```
 
@@ -33,6 +34,7 @@ r_sparse <- function(M,p){
 rand_M <- function(M,p,row_fxn){
   P <- matrix(rep(NA, M * M), ncol = M)  # create transition matrix
   for(i in 1:M){P[i,] = row_fxn(M,p)}
+  #print(P)
   P
 }
 ```
@@ -42,105 +44,74 @@ rand_M <- function(M,p,row_fxn){
 # Eigenvectors
 
 ```{r complex_plot}
-complex_df <- function(eigenvectors){
-  cols <- 3 # set 3 to hold (re,im) pair and whose row it belongs to
-  complex <- matrix(rep(NA,cols*M*M), ncol = cols)
-  colnames(complex) <- c("Re","Im","v")
+eigen_frame <- function(P){
+  #print(P)
+  M <- length(P[1,])
+  eigenvectors <- data.frame(eigen(P)[2])
+  complex <- matrix(rep(NA,3*M*M), ncol = 3) # set 3 to hold (re,im) pair and whose row it belongs to
+  colnames(complex) <- c("Re","Im","row_i")
   for(i in 1:M){
     for(j in 1:M){
       curr <- eigenvectors[i,j]
-      complex[M*(i-1) + j, ] <- c(Re(curr),Im(curr),i) 
+      complex[ M*(i-1) + j, ] <- c(round(Re(curr),5),round(Im(curr),5),i) 
     }
   }
-  complex
+  data.frame(complex)
 }
 ```
 
-```{r eigen_plot}
-eigen_plot <- function(P,sparsity){
-  eigen_vecs <- data.frame(eigen(P)[2])
-  complex <- complex_df(eigen_vecs)
+```{r eigen_plot, echo = FALSE}
+eigen_plot <- function(P){
   r <- 1
   ep <- 0.5
-  plot <- ggplot(complex) + 
-    geom_point(aes(x = Re, y = Im, color = v)) + 
-    labs(x = "Re", y = "Im", title = paste("Eigenvector Distribution, Sparsity: ",sparsity)) +
+  eigen_frame_P <- eigen_frame(P)
+  ggplot(eigen_frame_P) + 
+    geom_point(aes(x = Re, y = Im, color = factor(row_i))) + 
+    labs(x = "Re", y = "Im", title = "Distribution of Eigenvectors in C") +
     xlim(-(r+ep),r+ep) + ylim(-r,r) +
-    ggforce::geom_circle(aes(x0=0,y0=0,r=r), color = "steelblue")
-  plot
+    ggforce::geom_circle(aes(x0=0,y0=0,r=r), color = "steelblue") +
+    scale_color_discrete(name = "Row_i") +
+    scale_x_continuous(name = "Re(r_i)") +
+    scale_y_continuous(name = "Im(r_i)") +
+    coord_fixed(ratio = 1)
 }
-
 ```
 
 ```{r sparsity, echo = FALSE}
-M <- 30 # number of states
-p_vec <- c(0,0.25,0.5,0.75)
-p <- 0.8
+M <- 6 # number of states
+p <- 0.5
 P <- rand_M(M,p,r_sparse) # initialize P
-#eigen_plot(P,p)
+eigen_df <- eigen_frame(P)
+#eigen_plot(P)
 ```
 
-```{r sparsities, echo=FALSE}
-p <- p_vec[1]
-Q <- rand_M(M,p,r_sparse)
-p11 <- eigen_plot(Q,p)
+```{r plots}
+M_vec <- c(3,5,10)
+p_vec <- c(0.1,0.5,0.6)
+c(M1,M2,M3) %<-% M_vec
+c(p1,p2,p3) %<-% p_vec
+P_vec1 <- matrix(c(rand_M(M1,p1,r_sparse),
+                  rand_M(M1,p1,r_sparse),
+                  rand_M(M1,p1,r_sparse)),
+                nrow = M_vec[1])
+P_vec2 <- matrix(c(rand_M(M2,p2,r_sparse),
+                  rand_M(M2,p2,r_sparse),
+                  rand_M(M2,p2,r_sparse)),
+                nrow = M_vec[2])
+P_vec3 <- matrix(c(rand_M(M3,p3,r_sparse),
+                  rand_M(M3,p3,r_sparse),
+                  rand_M(M3,p3,r_sparse)),
+                nrow = M_vec[3])
 
-p <- p_vec[1]
-Q <- rand_M(M,p,r_sparse)
-p12 <- eigen_plot(Q,p)
+eigen_plot(P_vec1[,1:M1 + 0*M1])
+eigen_plot(P_vec1[,1:M1 + 1*M1])
+eigen_plot(P_vec1[,1:M1 + 2*M1])
 
-p <- p_vec[1]
-Q <- rand_M(M,p,r_sparse)
-p13 <- eigen_plot(Q,p)
+eigen_plot(P_vec2[,1:M2 + 0*M2])
+eigen_plot(P_vec2[,1:M2 + 1*M2])
+eigen_plot(P_vec2[,1:M2 + 2*M2])
 
-p <- p_vec[2]
-Q <- rand_M(M,p,r_sparse)
-p21 <- eigen_plot(Q,p)
-
-p <- p_vec[2]
-Q <- rand_M(M,p,r_sparse)
-p22 <-eigen_plot(Q,p)
-
-p <- p_vec[2]
-Q <- rand_M(M,p,r_sparse)
-p23 <- eigen_plot(Q,p)
-
-p <- p_vec[3]
-Q <- rand_M(M,p,r_sparse)
-p31 <- eigen_plot(Q,p)
-
-p <- p_vec[3]
-Q <- rand_M(M,p,r_sparse)
-p32 <-eigen_plot(Q,p)
-
-p <- p_vec[3]
-Q <- rand_M(M,p,r_sparse)
-p33 <- eigen_plot(Q,p)
-
-p <- p_vec[4]
-Q <- rand_M(M,p,r_sparse)
-p41 <- eigen_plot(Q,p)
-
-p <- p_vec[4]
-Q <- rand_M(M,p,r_sparse)
-p42 <- eigen_plot(Q,p)
-
-p <- p_vec[4]
-Q <- rand_M(M,p,r_sparse)
-p43 <- eigen_plot(Q,p)
-```
-
-```{r plots, echo = FALSE, fig.height = 15, fig.width=10}
-(p11 / p21)
-(p31 / p41)
-```
-
-```{r plots1, echo = FALSE, fig.height = 15, fig.width=10}
-(p12 / p22)
-(p32 / p42)
-```
-
-```{r plots2, echo = FALSE, fig.height = 15, fig.width=10}
-(p13 / p23)
-(p33 / p43)
+eigen_plot(P_vec3[,1:M3 + 0*M3])
+eigen_plot(P_vec3[,1:M3 + 1*M3])
+eigen_plot(P_vec3[,1:M3 + 2*M3])
 ```
