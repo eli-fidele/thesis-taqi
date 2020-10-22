@@ -11,6 +11,7 @@ header-includes:
   - \newcommand{\lma}{\textbf{(Lemma)} \,}
   - \newcommand{\Prb}{\text{P}}
   - \newcommand{\R}{\mathbb{R}}
+  - \newcommand{\N}{\mathbb{N}}
   - \newcommand{\M}{\mathcal{M}}
   - \newcommand{\st}{\, | \,}
   - \newcommand{\seqX}{X_0,X_1,\dots,X_n}
@@ -78,20 +79,19 @@ $$\exists i,j \in S_M: \nexists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
 
 $\lma \textbf{Irreducibility} \Rightarrow \textbf{Universal Reccurency.}$ We know that a chain must have atleast one reccurent state. Otherwise, the chain would have nowhere to go and leave all states forever. WLOG, let this reccurent state be state 1. Then, take another state $i$. Supposing that the chain is irreducible implies there is a finite number of steps, say $n$, such that there is a positive probability for the chain to go from state $1 \to i$, equal to $q_{1i}^{(n)}$. Since the state $1$ is reccurent, it will visit that state infinitely often. Since the transition probability for $1 \to i$ is non-zero, it will also visit state $i$ infinitely often. By induction, the chain visits all states infinitely often, or in other words, all states are reccurent. Hence, irreducibility $\Rightarrow$ all states are reccurent.
 
-$\dfn \textbf{Periodicity.}$ -
+$\dfn \textbf{Periodicity.}$ For a Markov chain with transition matrix $P$, the period of state $i$, denoted $d(i)$, is the greatest common divisor of the set of possible return times to $i$. That is,
+$$d(i)=\text{gcd}\{n \in \N^+ : P^{n}_{ii} >0\}$$
+If $d(i) = 1$, state $i$ is said to be ``aperiodic``. If the set of return times is empty, set $d(i) = +\infty$.
 
 # Stationary Distributions
 
 $\dfn \textbf{Stationary Distribution.}$ A row vector $\bf{s}$ $\in \mathcal{M}_{\R}[1,M]$, where $\bf{s}$ $= (s_1,\dots,s_M)$ is called a $\textit{stationary distribution}$ for a Markov chain with transition matrix $Q$ if:
-
 $$ \forall j \in S_M :\sum_{i \in S_M} s_i q_{ij} = s_j $$
 We may rewrite this as a system of linear equations as:
-
 $$ \vb{s} Q = \vb{s} $$
 $\thm \textbf{Existence and Uniqueness.}$ If a Markov chain $\seqX$ is irreducible, there exists a unique stationary distribution, say $\bf \pi$ $\in \M_{\R}[1 \times M]$.
 
 # Reversibility
 
 $\dfn \textbf{Reversibility.}$ A Markov chain $\seqX$ is reversible if its transition matrix $Q$ satisfies the reversibility condition for some valid probability distribution $s = (s_1,\dots,s_M)$:
-
 $$ \forall i,j \in S_M: s_i q_{ij} = s_j q_{ji} $$
