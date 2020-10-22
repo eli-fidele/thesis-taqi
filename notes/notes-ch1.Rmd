@@ -81,7 +81,7 @@ $\lma \textbf{Irreducibility} \Rightarrow \textbf{Universal Reccurency.}$ We kno
 
 $\dfn \textbf{Periodicity.}$ For a Markov chain with transition matrix $P$, the period of state $i$, denoted $d(i)$, is the greatest common divisor of the set of possible return times to $i$. That is,
 $$d(i)=\text{gcd}\{n \in \N^+ : P^{n}_{ii} >0\}$$
-If $d(i) = 1$, state $i$ is said to be ``aperiodic``. If the set of return times is empty, set $d(i) = +\infty$.
+If $d(i) = 1$, state $i$ is said to be $\textbf{aperiodic}$. If the set of return times is empty, set $d(i) = +\infty$.
 
 # Stationary Distributions
 
