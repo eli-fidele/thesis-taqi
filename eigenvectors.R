@@ -1,4 +1,6 @@
 
+# This script includes functions that help extract and plot eigenvalues of transition matrices.
+
 #=================================================================================#
 #                               EIGENVECTOR FUNCTIONS
 #=================================================================================#
@@ -19,20 +21,24 @@ eigen_frame <- function(P){
 }
 
 # Plots the eigenvalues of a given matrix P
-eigen_plot <- function(P, loud){
+eigen_plot <- function(P, loud=F, mat_type=""){
+  M <- length(P[1,])
   # Create eigenvalue dataframe using eigen_frame(P) function defined above
   eigen_frame_P <- eigen_frame(P)
   # Print eigenvalues and corrosponding matrix
-  if(loud == T){ # Check if it possible to set loud == F as a default
+  if(loud == T){ 
     print(eigen_frame_P)            
-    print(P)
+    if(M < 10){print(P)}
   }
+  # Plot parameters
+  r <- 1
+  r_ep <- r + 0.5
   # Plot
   ggplot(eigen_frame_P) + 
     geom_point(aes(x = Re, y = Im, color = factor(row_i))) + 
-    labs(x = "Re", y = "Im", title = "Distribution of Eigenvectors in C") +
-    xlim(-(r+ep),r+ep) + ylim(-r,r) +
-    ggforce::geom_circle(aes(x0 = 0, y0 = 0, r = r), color = "blue") +
+    labs(x = "Re", y = "Im", title = paste("Eigenvectors: ",mat_type," Matrix",sep = "")) +
+    xlim(-r_ep,r_ep) + ylim(-r,r) +
+    ggforce::geom_circle(aes(x0 = 0, y0 = 0, r = r), color = "steelblue") +
     scale_color_discrete(name = "Row_i") +
     scale_x_continuous(name = "Re(r_i)") +
     scale_y_continuous(name = "Im(r_i)") +
