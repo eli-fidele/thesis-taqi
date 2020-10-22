@@ -13,7 +13,7 @@ rand_M_trid <- function(M){
 #                           NORMAL SYMMETRIC MATRICES
 #=================================================================================#
 
-rand_M_symm <- function(M, mu, sd){
+rand_M_symm_norm <- function(M, mu, sd){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
   # fill rows
   for(i in 1:M){

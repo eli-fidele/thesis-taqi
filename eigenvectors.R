@@ -27,8 +27,8 @@ eigen_plot <- function(P, loud=F, mat_type=""){
   eigen_frame_P <- eigen_frame(P)
   # Print eigenvalues and corrosponding matrix
   if(loud == T){ 
-    print(eigen_frame_P)            
-    if(M < 10){print(P)}
+    if(M <= 10){print(eigen_frame_P)}            
+    if(M <= 6){print(P)}
   }
   # Plot parameters
   r <- 1
