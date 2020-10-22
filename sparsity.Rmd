@@ -64,6 +64,7 @@ eigen_frame <- function(P){
 eigen_plot <- function(P){
   r <- 1
   ep <- 0.5
+  print(P)
   eigen_frame_P <- eigen_frame(P)
   ggplot(eigen_frame_P) + 
     geom_point(aes(x = Re, y = Im, color = factor(row_i))) + 
@@ -85,7 +86,7 @@ eigen_df <- eigen_frame(P)
 #eigen_plot(P)
 ```
 
-```{r plots}
+```{r parameters}
 M_vec <- c(3,5,10)
 p_vec <- c(0.1,0.5,0.6)
 c(M1,M2,M3) %<-% M_vec
@@ -102,7 +103,9 @@ P_vec3 <- matrix(c(rand_M(M3,p3,r_sparse),
                   rand_M(M3,p3,r_sparse),
                   rand_M(M3,p3,r_sparse)),
                 nrow = M_vec[3])
+```
 
+```{r plots, echo = FALSE}
 eigen_plot(P_vec1[,1:M1 + 0*M1])
 eigen_plot(P_vec1[,1:M1 + 1*M1])
 eigen_plot(P_vec1[,1:M1 + 2*M1])
