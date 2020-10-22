@@ -1,0 +1,9 @@
+---
+title: "Random Matrix Analysis"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r}
+source(file = "matrices.R")
+```
