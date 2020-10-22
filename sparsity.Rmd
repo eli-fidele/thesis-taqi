@@ -4,6 +4,7 @@ author: "Ali Taqi"
 output: pdf_document
 ---
 
+# p-Sparse Stochastic Matrices (Erdos-Renyi)
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
                       message = FALSE, warning = FALSE)
@@ -19,7 +20,7 @@ source(file = "eigenvectors.R")
 source(file = "eigenmetrics.R")
 ```
 
-```{r parameters}
+```{r parameters_and_matrices}
 M_vec <- c(10,25,50)
 p_vec <- c(0.1,0.5,0.8)
 c(M1,M2,M3) %<-% M_vec
@@ -43,63 +44,81 @@ P_vec3 <- matrix(c(rand_M_erdos(M3,p1),
 
 ```{r cache = T, echo = FALSE}
 set.seed(23)
-eigen_plot(P_vec1[,1:M1 + 0*M1], loud = T, mat_type = paste(p_vec[1],"-Sparse",sep=""))
+P <- matrix(P_vec1[,1:M1 + 0*M1], ncol = M1)
+eigen_plot(P, loud = T, mat_type = paste(p_vec[1],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage
 
 ```{r cache = T, echo = FALSE}
 set.seed(23)
-eigen_plot(P_vec1[,1:M1 + 1*M1], loud = T,  mat_type = paste(p_vec[2],"-Sparse",sep=""))
+P <- matrix(P_vec1[,1:M1 + 1*M1], ncol = M1)
+eigen_plot(P, loud = T,  mat_type = paste(p_vec[2],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage
 
 ```{r cache = T, echo = FALSE}
 set.seed(23)
-eigen_plot(P_vec1[,1:M1 + 2*M1], loud = T,  mat_type = paste(p_vec[3],"-Sparse",sep=""))
+P <- matrix(P_vec1[,1:M1 + 2*M1], ncol = M1)
+eigen_plot(P, loud = T,  mat_type = paste(p_vec[3],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage
 
 ```{r cache = T, echo = FALSE}
 set.seed(23)
-eigen_plot(P_vec2[,1:M2 + 0*M2], mat_type = paste(p_vec[1],"-Sparse",sep=""))
+P <- matrix(P_vec2[,1:M2 + 0*M2], ncol = M2)
+eigen_plot(P, mat_type = paste(p_vec[1],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage
 
 ```{r cache = T, echo = FALSE}
 set.seed(23)
-eigen_plot(P_vec2[,1:M2 + 1*M2], mat_type = paste(p_vec[2],"-Sparse",sep=""))
+P <- matrix(P_vec2[,1:M2 + 1*M2], ncol = M2)
+eigen_plot(P, mat_type = paste(p_vec[2],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage
 
 ```{r cache = T, echo = FALSE}
 set.seed(23)
-eigen_plot(P_vec2[,1:M2 + 2*M2], mat_type = paste(p_vec[3],"-Sparse",sep=""))
+P <- matrix(P_vec2[,1:M2 + 2*M2], ncol = M2)
+eigen_plot(P, mat_type = paste(p_vec[3],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage
 
 ```{r cache = T, echo = FALSE}
 set.seed(23)
-eigen_plot(P_vec3[,1:M3 + 0*M3], mat_type = paste(p_vec[1],"-Sparse",sep=""))
+P <- matrix(P_vec3[,1:M3 + 0*M3], ncol = M3)
+eigen_plot(P, mat_type = paste(p_vec[1],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage
 
 ```{r cache = T, echo = FALSE}
 set.seed(23)
+P <- matrix(P_vec3[,1:M3 + 1*M3], ncol = M3)
 eigen_plot(P_vec3[,1:M3 + 1*M3], mat_type = paste(p_vec[2],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage
 
 ```{r cache = T, echo = FALSE}
 set.seed(27)
-eigen_plot(P_vec3[,1:M3 + 2*M3], mat_type = paste(p_vec[3],"-Sparse",sep=""))
+P <- matrix(P_vec3[,1:M3 + 2*M3], ncol = M3)
+eigen_plot(P, mat_type = paste(p_vec[3],"-Sparse",sep=""))
+eigen_summary(eigen_frame(P))
 ```
 
 \newpage

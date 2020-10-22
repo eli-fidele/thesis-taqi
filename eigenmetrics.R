@@ -23,3 +23,9 @@ prop_real_rows <- function(eigen_frame){
     summarize(prop_reals = round(sum(Im_0)/M, 4)) %>%
     mutate(is_real = case_when(prop_reals == 1 ~ T, prop_reals < 1 ~ F))
 }
+
+norms <- function(eigen_frame){
+  #returns maximum norm by component, maximum norm by row,
+  #average norm of component, row
+  1
+}
