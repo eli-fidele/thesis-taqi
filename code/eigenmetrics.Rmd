@@ -23,7 +23,7 @@ source(file = "R/eigenmetrics.R")
 ```{r}
 bool_plot <- T
 bool_loud <- F
-M <- 30
+M <- 20
 ```
 
 # Eigenmetrics of Various Random Matrices
@@ -31,16 +31,12 @@ M <- 30
 ## Stochastic Matrix
 
 ```{r, cache=T}
-set.seed(1)
 P <- rand_M_stoch(M, row_fn = r_zeros)
 if(bool_plot){eigen_plot(P, loud = bool_loud, "Stochastic")}
 ```
 
 ```{r}
 eigen_summary(eigen_frame(P))
-```
-```{r}
-rmt_summary(P)
 ```
 
 \newpage
@@ -55,9 +51,6 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Symmetric Stochastic")}
 
 ```{r}
 eigen_summary(eigen_frame(P))
-```
-
-```{r}
 rmt_summary(P)
 ```
 
@@ -72,8 +65,6 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Normal Symmetric")}
 
 ```{r}
 eigen_summary(eigen_frame(P))
-```
-```{r}
 rmt_summary(P)
 ```
 
@@ -88,9 +79,6 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Tridiagonal")}
 
 ```{r}
 eigen_summary(eigen_frame(P))
-```
-
-```{r}
 rmt_summary(P)
 ```
 
