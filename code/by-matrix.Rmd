@@ -1,0 +1,63 @@
+---
+title: "Random Matrix Analysis"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(ggfortify)
+library(matrixcalc)
+library(zeallot)
+# Load files
+# Load files
+source(file = "R/matrices.R")
+source(file = "R/eigenvectors.R")
+source(file = "R/eigenmetrics.R")
+source(file = "R/by_matrix.R")
+```
+
+```{r, echo = F}
+bool_plot <- T
+bool_loud <- F
+M <- 10
+```
+
+## Symmetric Stochastic Matrices
+
+```{r, cache=T}
+set.seed(23)
+symm_stoch(M)
+symm_stoch(M)
+symm_stoch(M)
+symm_stoch(M)
+```
+
+\newpage
+
+## Normal Symmetric Matrices
+
+```{r, cache=T}
+symm_norm(M)
+symm_norm(M)
+symm_norm(M)
+symm_norm(M)
+symm_norm(M)
+```
+
+\newpage
+
+## Tridiagonal Matrices
+
+```{r, cache=T}
+tridiag(M)
+tridiag(M)
+tridiag(M)
+tridiag(M)
+tridiag(M)
+```
+
