@@ -1,6 +1,14 @@
 THESIS LOG
 
 Thu, 10/22
-This meeting we discussed ...
-My goals are for next time ...
+This meeting we continued discussing more metrics on analyzing eigenvectors of RM. 
+We are still unsure how R's eigen() function computes eigenvectors and we concluded that it is important, if not helpful, to know how R picks eigenvectors. 
+We also discussed localization and delocalization, and remarked on their analogousness to ridge and lasso regression / l1 and l2 norms respectively! 
+Nate also suggested a book called Matrix Analysis for which I have some reading to do.
+Lastly, we also talked about left and right eigenvectors and asked the question, how do we interpret a left-eigenvalue of 1 (when 1 is the stationary distribution)?
 
+
+My goals are for next time ...
+1) Try to identify R's eigen() algorithm
+2) Look into left and right eigenvector relationships (possible side-by-side plots?)
+3) Look into what it means to have a left-eigenvalue of 1 (when 1 is the stationary distribution) and potentially read Ch.8 of Matrix Analysis.
