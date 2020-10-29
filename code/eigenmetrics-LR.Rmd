@@ -63,7 +63,7 @@ R_eigenplot(P)
 ```{r, cache=T}
 set.seed(23)
 P <- rand_M_symm_norm(M, mu = 0, sd = 1)
-if(bool_plot){eigen_plot(P, loud = bool_loud, "Normal Symmetric")}
+if(bool_plot){eigen_plot(P, loud = bool_loud, "Normal Symmetric (Mu = 0)")}
 eigen_summary(eigen_frame(P))
 ```
 
@@ -72,6 +72,20 @@ L_eigenplot(P)
 R_eigenplot(P)
 ```
 
+\newpage
+
+## Normal Symmetric Matrix
+```{r, cache=T}
+set.seed(23)
+P <- rand_M_symm_norm(M, mu = 1, sd = 2)
+if(bool_plot){eigen_plot(P, loud = bool_loud, "Normal Symmetric (Mu = 1)")}
+eigen_summary(eigen_frame(P))
+```
+
+```{r, echo = F, fig.height = 6, fig.height = 4}
+L_eigenplot(P)
+R_eigenplot(P)
+```
 \newpage
 
 ## Tridiagonal Matrix
