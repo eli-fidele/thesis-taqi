@@ -1,0 +1,21 @@
+Property III (Relative gaps). The eigenvalues of LDLt in  are divided into subsets
+called children according to Step 3 of Algorithm MR3. The purpose of this partition
+is to have relative gaps larger than `tol` between the children. 
+
+7. Conclusions
+In this paper, we have presented Algorithm MR3 that computes k eigenvectors of
+a symmetric tridiagonal in O(kn) time. The salient feature of the proposed algorithm
+is that multiple representations LDLt are used, and each eigenvector is computed
+to high accuracy with respect to the appropriate representation. No Gram–Schmidt
+orthogonalization is needed.
+
+Proving that the computed eigenvectors are numerically orthogonal and have
+small residual norms has been a major concern of this paper. Due to the multiple
+representations involved the proof is somewhat complicated. The proofs require that
+each representation be a relatively robust representation (RRR) for the eigenpairs
+that are to be computed using that representation. For the purpose of this paper, we
+have assumed that each representation is an RRR. There has been considerable work
+in showing the conditions under which RRRs exist, such as in [6,13], however this
+is beyond the scope of this paper. In practice, finding appropriate RRRs is easy and
+checkable; indeed Algorithm MR3 has been realized as the software routine xSTEGR
+that is included in LAPACK [1].
