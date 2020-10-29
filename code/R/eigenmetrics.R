@@ -8,15 +8,19 @@
 #                               EIGENVECTOR METRICS
 #=================================================================================#
 
+L_eigenplot <- function(P){eigen_plot(t(P), mat_type = "Transpose")}
+
+R_eigenplot <- function(P){eigen_plot(P, mat_type = "Original")}
+
 rmt_summary <- function(P){
   evs <- eigen(P)[1]$values
   RMThreshold::rm.spacing.distribution(evs)
   RMThreshold::rm.ev.density(evs)
 }
 
-eigen_summary <- function(eigen_frame){
+eigen_summary <- function(eigen_frame, loud = F){
   prop <- prop_real_rows(eigen_frame)
-  print(prop)
+  if(loud){print(prop)}
   real_prop <- round(sum(prop$is_real)/length(prop$is_real),10)
   paste("Proportion of real-valued rows: ",real_prop,sep="")
 }

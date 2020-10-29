@@ -51,12 +51,12 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Symmetric Stochastic")}
 
 ```{r}
 eigen_summary(eigen_frame(P))
+rmt_summary(P)
 ```
 
 \newpage
 
 ## Normal Symmetric Matrix
-
 ```{r, cache=T}
 set.seed(23)
 P <- rand_M_symm_norm(M, mu = 0, sd = 1)
@@ -65,6 +65,7 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Normal Symmetric")}
 
 ```{r}
 eigen_summary(eigen_frame(P))
+rmt_summary(P)
 ```
 
 \newpage
@@ -78,6 +79,7 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Tridiagonal")}
 
 ```{r}
 eigen_summary(eigen_frame(P))
+rmt_summary(P)
 ```
 
 

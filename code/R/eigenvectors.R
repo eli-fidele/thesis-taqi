@@ -42,5 +42,6 @@ eigen_plot <- function(P, loud=F, mat_type=""){
     scale_color_discrete(name = "Row_i") +
     scale_x_continuous(name = "Re(r_i)") +
     scale_y_continuous(name = "Im(r_i)") +
-    coord_fixed(ratio = 1)
+    coord_fixed(ratio = 1) +
+    theme(legend.position = "none")
 }
