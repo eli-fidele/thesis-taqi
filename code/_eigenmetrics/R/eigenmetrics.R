@@ -22,12 +22,6 @@ rmt_summary <- function(P){
   RMThreshold::rm.ev.density(evs)
 }
 
-eigenvectors_real <- function(eigen_frame){
-  prop <- prop_real_rows(eigen_frame)
-  real_prop <- round(sum(prop$is_real)/length(prop$is_real),10)
-  ifelse(real_prop == 1, T, F)
-}
-
 eigen_summary <- function(eigen_frame, loud = F){
   prop <- prop_real_rows(eigen_frame)
   if(loud){print(prop)}
