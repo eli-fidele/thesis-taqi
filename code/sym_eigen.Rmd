@@ -67,13 +67,13 @@ make_symm <- function(dist){
 }
 ```
 
-(5) Now, if we let $f ~ \text{Unif}(0,1)$ and let $\epsilon \to \infty$, we can well approximate $S \sim \mathcal{SM}_\R[M \times M]$.
+(5) Now, if we let $f \sim \text{Unif}(0,1)$ and let $\epsilon \to \infty$, we can well approximate $S \in \mathcal{SM}_\R[M \times M]$.
 
 \newpage
 
 # Simulation
 
-```{r}
+```{r, cache=T}
 # add matrix so that we plot(ep,M) on xy plane and color value of diff to show 2d relation of convergence of our method
 f <- 0.5
 
@@ -106,7 +106,7 @@ ggplot() +
 ```
 
 
-```{r}
+```{r, cache=T}
 # add matrix so that we plot(ep,M) on xy plane and color value of diff to show 2d relation of convergence of our method
 f <- 0.1
 
@@ -134,7 +134,7 @@ ggplot() +
   labs(color = "EV Real", title = "f = 0.1")
 ```
 
-```{r}
+```{r, cache=T}
 # add matrix so that we plot(ep,M) on xy plane and color value of diff to show 2d relation of convergence of our method
 f <- 0.9
 
