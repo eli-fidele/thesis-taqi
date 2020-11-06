@@ -29,7 +29,7 @@ In this document, we hope to show that given any arbitrary element of the set of
 To simulate a generic element $S$, we use the following method:
 
 (1) First, pick some $f \in [0,1]$, letting it denote the fraction of positive entries of $S$. That is;
-$$\text{Want: }\, f \approx \frac{|{s_{ij} > 0}|}{M^2} $$
+$$\text{Want: }\, f \approx \frac{| \{ s_{ij} \} > 0}|}{M^2} $$
 We hope to show that our condition is invariant to the value of $f$, since there is the possibility that the sign proportions of our matrix $S$ influences the $\det (S)$. 
 
 (2) To simulate a symmetric matrix $S$ with a fraction of positive entries $f$, we will sample from the distribution:
@@ -39,9 +39,9 @@ $$s_{ij} \sim \text{Unif}(f-1,f)$$
 $$s_{ij} \sim \text{Unif}(\epsilon(f-1),\,\epsilon f)$$
 
 ```{r}
-unif_fpos <- function(M,f,ep){
+unif_fpos <- function(M,f=T,ep){
   # unless specifically initialized, a random fraction will be chosen
-  if(F){
+  if(f){
     f <- runif(1,0,1)
     paste("f: ",f,sep="")
   }
