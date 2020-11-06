@@ -1,8 +1,14 @@
 #=================================================================================#
+#                               MATRIX FUNCTIONS
+#=================================================================================#
+
+
+
+#=================================================================================#
 #                         SYMMETRIC TRIDIAGONAL MATRICES
 #=================================================================================#
 
-rand_M_trid <- function(M){
+RM_trid <- function(M){
   diagonal <- rnorm(n = M, 0, 2)
   P <- diag(diagonal)
   P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rnorm(n = M, 0, 1)
@@ -13,7 +19,7 @@ rand_M_trid <- function(M){
 #                           NORMAL SYMMETRIC MATRICES
 #=================================================================================#
 
-rand_M_symm_norm <- function(M, mu, sd){
+RM_symm_norm <- function(M, mu, sd){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
   # fill rows
   for(i in 1:M){
@@ -30,7 +36,7 @@ r_normal <- function(M, mu, sd){
 #                          SYMMETRIC STOCHASTIC MATRICES
 #=================================================================================#
 
-rand_M_symm_stoch <- function(M,row_fn){
+RM_symm_stoch <- function(M,row_fn){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
   # fill rows
   for(i in 1:M){
@@ -44,7 +50,7 @@ rand_M_symm_stoch <- function(M,row_fn){
 #=================================================================================#
 
 # initialize random P
-rand_M_erdos <- function(M, p_sparse){
+RM_erdos <- function(M, p_sparse){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
   for(i in 1:M){
     P[i,] = r_sparse(M,p_sparse) # p_sparse is a probability between [0,1) 
@@ -65,10 +71,10 @@ r_sparse <- function(M,p){
 #                             STOCHASTIC MATRICES
 #=================================================================================#
 
-# Possibly: instead of making seperate rand_M functions, feed list(args) to function, with default = empty set
+# Possibly: instead of making seperate RM functions, feed list(args) to function, with default = empty set
 
 # Generate random stochastic matrix of size M, with choice of row function {r_stochastic, r_zeros}
-rand_M_stoch <- function(M, row_fn){
+RM_stoch <- function(M, row_fn){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
   # fill rows
   for(i in 1:M){

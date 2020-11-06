@@ -29,7 +29,7 @@ In this document, we hope to show that given any arbitrary element of the set of
 To simulate a generic element $S$, we use the following method:
 
 (1) First, pick some $f \in [0,1]$, letting it denote the fraction of positive entries of $S$. That is;
-$$\text{Want: }\, f \approx \frac{| \{ s_{ij} \} > 0}|}{M^2} $$
+$$\text{Want: }\, f \approx \frac{ | \{s_{ij}  > 0\}|}{M^2}$$
 We hope to show that our condition is invariant to the value of $f$, since there is the possibility that the sign proportions of our matrix $S$ influences the $\det (S)$. 
 
 (2) To simulate a symmetric matrix $S$ with a fraction of positive entries $f$, we will sample from the distribution:
@@ -38,7 +38,7 @@ $$s_{ij} \sim \text{Unif}(f-1,f)$$
 (3) To not constrict the sizes of $|s_{ij}|$, we will add an $\epsilon$ term and scale our endpoints to preserve the fraction $f$.
 $$s_{ij} \sim \text{Unif}(\epsilon(f-1),\,\epsilon f)$$
 
-```{r}
+```{r, include = F}
 unif_fpos <- function(M,f=T,ep){
   # unless specifically initialized, a random fraction will be chosen
   if(f){
@@ -56,7 +56,7 @@ unif_fpos <- function(M,f=T,ep){
 
 (4) Having our uniform distribution, we will generate $M^2$ entries and insert them in the matrix $S$. Then, we delete the lower triangular matrix, then duplicate the entries from the upper triangle to the lower triangle. 
 
-```{r}
+```{r, include = F}
 make_symm <- function(dist){
   N <- sqrt(length(dist$x))
   P <- matrix(data = dist$x, nrow = N, ncol = N)
@@ -71,94 +71,59 @@ make_symm <- function(dist){
 
 \newpage
 
+```{r, echo = F}
+# reload files
+source(file = "R/sym_eigen.R")
+source(file = "R/eigenmetrics.R")
+source(file = "R/eigenvectors.R")
+```
+
+```{r}
+RM_symm(5,0.5,10)
+```
+
 # Simulation
 
-```{r, cache=T}
-# add matrix so that we plot(ep,M) on xy plane and color value of diff to show 2d relation of convergence of our method
-f <- 0.5
+```{r}
+simulate_by_f <- function(f,M_max,ep_max,draws){
+  M_vec <- sample(1:M_max, draws, replace = T)
+  ep_vec <- sample(1:ep_max, draws, replace = F)
+  table <- data.frame(M = M_vec, ep = rep(ep_vec,length(M_vec)))
 
-M_vec <- sample(2:200, 100,replace = F)
-ep_vec <- sample(2:200, 100,replace = F)
-table <- data.frame(M = M_vec, ep = rep(ep_vec,length(M_vec)))
+  bool_vec <- rep(NA, length(table$M))
 
-check_real_eigenvectors <- function(M,ep,f){
-  S <- RM_symm(M,f,ep)
-  S_real <- eigenvectors_real(eigen_frame(S)) # use function for eigenvectors.R
-  S_real
+  for(i in 1:length(table$M)){
+    S_curr <- RM_symm(table$M[i],f,table$ep[i])
+    bool_vec[i] <- check_real_eigenvectors(eigen_frame(S_curr))
+  }
+  cbind(table,bool_vec)
 }
 
-eigenvecs_real <- rep(NA, length(table$M))
-
-for(i in 1:length(table$M)){
-  eigenvecs_real[i] <- check_real_eigenvectors(table[i,][1],table[i,][2],f)
+plot_f_table <- function(table, f){
+  ggplot() + 
+    geom_point(data = table, aes(x=M, y=ep, color = factor(bool_vec))) +
+    labs(color = "EV Real", title = paste("f = ",f,sep=""))
 }
-table <- cbind(table,eigenvecs_real)
 ```
 
-```{r}
+```{r, cache = T}
+table <- simulate_by_f(f = 0.1, M_max = 15, ep_max = 250, draws = 250)
 head(table)
+plot_f_table(table, f = 0.1)
 ```
-
-```{r}
-ggplot() + 
-  geom_point(data = table, aes(x=M,y=ep, color = factor(eigenvecs_real))) +
-  labs(color = "EV Real", title = "f = 0.5")
-```
-
-
-```{r, cache=T}
-# add matrix so that we plot(ep,M) on xy plane and color value of diff to show 2d relation of convergence of our method
-f <- 0.1
-
-M_vec <- sample(2:200, 100,replace = F)
-ep_vec <- sample(2:200, 100,replace = F)
-table <- data.frame(M = M_vec, ep = rep(ep_vec,length(M_vec)))
-
-check_real_eigenvectors <- function(M,ep,f){
-  S <- RM_symm(M,f,ep)
-  S_real <- eigenvectors_real(eigen_frame(S)) # use function for eigenvectors.R
-  S_real
 }
 
-eigenvecs_real <- rep(NA, length(table$M))
-
-for(i in 1:length(table$M)){
-  eigenvecs_real[i] <- check_real_eigenvectors(table[i,][1],table[i,][2],f)
-}
-table <- cbind(table,eigenvecs_real)
+```{r, cache = T}
+table <- simulate_by_f(f = 0.5, M_max = 15, ep_max = 250, draws = 250)
+head(table)
+plot_f_table(table, f = 0.5)
 ```
 
-```{r}
-ggplot() + 
-  geom_point(data = table, aes(x=M,y=ep, color = factor(eigenvecs_real))) +
-  labs(color = "EV Real", title = "f = 0.1")
+```{r, cache = T}
+table <- simulate_by_f(f = 0.9, M_max = 15, ep_max = 250, draws = 250)
+head(table)
+plot_f_table(table, f = 0.9)
+```
 ```
 
-```{r, cache=T}
-# add matrix so that we plot(ep,M) on xy plane and color value of diff to show 2d relation of convergence of our method
-f <- 0.9
-
-M_vec <- sample(2:200, 100,replace = F)
-ep_vec <- sample(2:200, 100,replace = F)
-table <- data.frame(M = M_vec, ep = rep(ep_vec,length(M_vec)))
-
-check_real_eigenvectors <- function(M,ep,f){
-  S <- RM_symm(M,f,ep)
-  S_real <- eigenvectors_real(eigen_frame(S)) # use function for eigenvectors.R
-  S_real
-}
-
-eigenvecs_real <- rep(NA, length(table$M))
-
-for(i in 1:length(table$M)){
-  eigenvecs_real[i] <- check_real_eigenvectors(table[i,][1],table[i,][2],f)
-}
-table <- cbind(table,eigenvecs_real)
-```
-
-```{r}
-ggplot() + 
-  geom_point(data = table, aes(x=M,y=ep, color = factor(eigenvecs_real))) +
-  labs(color = "EV Real", title = "f = 0.9")
-```
 

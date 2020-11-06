@@ -16,17 +16,10 @@ R_eigenplot <- function(P){
   eigen_plot(P, mat_type = "Original")
   }
 
-rmt_summary <- function(P){
-  evs <- eigen(P)[1]$values
-  RMThreshold::rm.spacing.distribution(evs)
-  RMThreshold::rm.ev.density(evs)
-}
-
-eigen_summary <- function(eigen_frame, loud = F){
+check_real_eigenvectors <- function(eigen_frame){
   prop <- prop_real_rows(eigen_frame)
-  if(loud){print(prop)}
   real_prop <- round(sum(prop$is_real)/length(prop$is_real),10)
-  paste("Proportion of real-valued rows: ",real_prop,sep="")
+  ifelse(real_prop == 1, T, F)
 }
 
 prop_real_rows <- function(eigen_frame){
@@ -42,4 +35,21 @@ norms <- function(eigen_frame){
   #returns maximum norm by component, maximum norm by row,
   #average norm of component, row
   1
+}
+
+#=================================================================================#
+#                         AGGREGATE/SUMMARY EIGENMETRICS
+#=================================================================================#
+
+rmt_summary <- function(P){
+  evs <- eigen(P)[1]$values
+  RMThreshold::rm.spacing.distribution(evs)
+  RMThreshold::rm.ev.density(evs)
+}
+
+eigen_summary <- function(eigen_frame, loud = F){
+  prop <- prop_real_rows(eigen_frame)
+  if(loud){print(prop)}
+  real_prop <- round(sum(prop$is_real)/length(prop$is_real),10)
+  paste("Proportion of real-valued rows: ",real_prop,sep="")
 }
