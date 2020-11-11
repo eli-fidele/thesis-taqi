@@ -22,6 +22,11 @@ check_real_eigenvectors <- function(eigen_frame){
   ifelse(real_prop == 1, T, F)
 }
 
+avgprop_real_components <- function(eigen_frame){
+  prop <- prop_real_rows(eigen_frame)
+  round(mean(prop$prop_reals),10)
+}
+
 prop_real_rows <- function(eigen_frame){
   M <- sqrt(length(eigen_frame$Re)) #obtain number of rows
   eigen_frame %>%
