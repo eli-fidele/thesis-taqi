@@ -1,0 +1,70 @@
+---
+title: "Computational Eigenvector Simulation"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(ggfortify)
+library(matrixcalc)
+library(zeallot)
+# Load files
+source(file = "R/matrices.R")
+source(file = "R/simulate.R")
+```
+
+```{r, echo = F}
+# global parameters
+bool_plot <- T
+bool_loud <- F
+```
+
+```{r, echo = F}
+# Set seed
+set.seed(23)
+# Set parameters
+M <- 3
+mu <- 0
+sd <- 1
+# Generate matrix
+P <- RM_stoch(M, symm = T, sparsity = F)
+```
+
+## Step 1: Get the batch 
+
+```{r}
+# Set batch parameters
+B <- 4
+# Create batch
+batch <- make_batch(M = M, B = B)
+```
+
+## Step 2: Evolve the batch
+
+```{r}
+# Set evolution parameters
+steps <- 20
+# Evolve batch
+evolved_batch <- evolve_batch(batch, steps)
+```
+
+### Step 3: Analyze the batch
+
+```{r}
+# Add indexing to the batch
+evolved_batch <- indexed_batch(evolved_batch, steps)
+```
+
+```{r}
+# Plot the evolution arrays of the batch elements
+batch_data <- evolved_batch
+ggplot(batch_data, mapping = aes(x = x1, y = x2, color = x3, shape = as.factor(index_column))) + geom_point()
+```
+
+
+

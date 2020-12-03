@@ -1,0 +1,89 @@
+---
+title: "Eigenvectors of Symmetric Matrices"
+author: "Ali Taqi"
+date: "11/4/2020"
+output: pdf_document
+header-includes:
+  - \newcommand{\R}{\mathbb{R}}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(ggfortify)
+library(matrixcalc)
+library(zeallot)
+# Load files
+source(file = "R/sym_eigen.R")
+source(file = "R/eigenmetrics.R")
+source(file = "R/eigenvectors.R")
+```
+
+```{r}
+S <- RM_symm(8,0.5,10)
+prop <- prop_real_rows(eigen_frame = eigen_frame(S))
+prop
+avgprop_real_components(eigen_frame(S))
+```
+
+
+# Simulation
+
+```{r}
+simulate_by_f <- function(M_max,f,ep,draws){
+  M_vec <- sample(1:M_max, draws, replace = F)
+  table <- data.frame(M = M_vec)
+
+  prop_vec <- rep(NA, length(table$M))
+
+  for(i in 1:length(table$M)){
+    S_curr <- RM_symm(table$M[i],f,ep)
+    prop <- avgprop_real_components(eigen_frame(S_curr))
+    #print(prop)
+    prop_vec[i] <- prop
+  }
+  cbind(table,prop_vec)
+}
+
+plot_f_table <- function(table, f){
+  ggplot() + 
+    geom_point(data = table, aes(x=M, y=prop_vec, color = prop_vec)) +
+    labs(color = "EV Real", title = paste("f = ",f,sep="")) +
+    scale_color_gradient(high="blue", low="red")
+}
+```
+
+```{r}
+M <- 200
+ep <- 100
+d <- ep
+```
+
+```{r, cache = T}
+f <- 0.5
+table <- simulate_by_f(f = f, M_max = M, ep = ep, draws = d)
+head(table)
+```
+
+```{r}
+model <- glm(formula = prop_vec ~ I(1/M), data = table)
+summary(model)
+
+pred <- function(M){
+  b0 <- model$coefficients[1]
+  b1 <- model$coefficients[2]
+  b0 + b1/M
+}
+
+ggplot() + 
+  geom_point(data = table, aes(x=M, y=prop_vec, color = prop_vec)) +
+  labs(color = "EV Real", title = paste("f = ",f,sep="")) +
+  scale_color_gradient(high="blue", low="red") +
+  stat_function(mapping = aes(x = M), fun = pred)
+```
+
+
+

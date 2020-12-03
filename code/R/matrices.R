@@ -1,87 +1,69 @@
-#=================================================================================#
-#                               MATRIX FUNCTIONS
-#=================================================================================#
-
-
 
 #=================================================================================#
-#                         SYMMETRIC TRIDIAGONAL MATRICES
+#                             RANDOM MATRIX FUNCTIONS
 #=================================================================================#
 
-RM_trid <- function(M){
+RM_normal <- function(M, normal_args = c(0,1), symm = F){
+  mu <- normal_args[1]
+  sd <- normal_args[2]
+  P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
+  # fill rows
+  for(i in 1:M){
+    P[i,] <- rnorm(n = M, mean = mu, sd = sd)
+  }
+  if(symm == T){P <- P %*% t(P)}
+  # Return the matrix
+  P
+}
+
+# Generate random stochastic matrix of size M, with choice of row function {r_stochastic, r_zeros}
+RM_stoch <- function(M, symm = F, sparsity = F){
+  P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
+  if(sparsity){row_fn <- r_zeros} else {row_fn <- r_stochastic}
+  # fill rows
+  for(i in 1:M){
+    P[i,] = row_fn(M)
+  }
+  if(symm == T){P <- P %*% t(P)}
+  # Return the matrix
+  P
+}
+
+#=================================================================================#
+#                         SPECIAL RANDOM MATRIX FUNCTIONS
+#=================================================================================#
+
+# Generate a tridiagonal matrix with normal entries
+RM_trid <- function(M, symm = F){
   diagonal <- rnorm(n = M, 0, 2)
   P <- diag(diagonal)
   P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rnorm(n = M, 0, 1)
+  # Return the matrix
   P
 }
 
-#=================================================================================#
-#                           NORMAL SYMMETRIC MATRICES
-#=================================================================================#
-
-RM_symm_norm <- function(M, mu, sd){
+# (Erdos-Renyi Graph)
+# p_sparse is a probability between [0,1) so edges are connected ~ Bern(p) 
+RM_erdos <- function(M, p_sparse, stoch = F){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
-  # fill rows
   for(i in 1:M){
-    P[i,] = r_normal(M, mu, sd)
+    # generate current row
+    curr_row <- runif(M,0,1)
+    # sample number of zeros ~ Bin(n,o)
+    num_zeros <- rbinom(1,M,p)
+    choices <- sample(1:M, num_zeros) # Isomorphic to Erdos-Renyi graphs!
+    curr_row[choices] <- 0
+    if (stoch == T){curr_row <- curr_row/sum(curr_row)} # Normalize if to be stochastic
+    # append the row
+    P[i,] <- curr_row             
   }
-  P %*% t(P) 
-}
-
-r_normal <- function(M, mu, sd){
-  rnorm(n = M, mean = mu, sd = sd)
-}
-
-#=================================================================================#
-#                          SYMMETRIC STOCHASTIC MATRICES
-#=================================================================================#
-
-RM_symm_stoch <- function(M,row_fn){
-  P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
-  # fill rows
-  for(i in 1:M){
-    P[i,] = row_fn(M)
-  }
-  P %*% t(P) 
-}
-
-#=================================================================================#
-#               p-SPARSE STOCHASTIC MATRICES (ERDOS-RENYI GRAPHS)
-#=================================================================================#
-
-# initialize random P
-RM_erdos <- function(M, p_sparse){
-  P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
-  for(i in 1:M){
-    P[i,] = r_sparse(M,p_sparse) # p_sparse is a probability between [0,1) 
-  }                              # so edges are connected ~ Bern(p) 
+  # Return the matrix
   P
 }
 
-# generates rows of size P which are valid probability distributions
-r_sparse <- function(M,p){
-  prob <- runif(M,0,1)
-  num_zeros <- rbinom(1,M,p) # Isomorphic to Erdos-Renyi graphs!
-  choices <- sample(1:M, num_zeros)
-  prob[choices] <- 0
-  prob/sum(prob) # return normalized random row vector
-}
-
 #=================================================================================#
-#                             STOCHASTIC MATRICES
+#                            STOCHASTIC ROW FUNCTIONS
 #=================================================================================#
-
-# Possibly: instead of making seperate RM functions, feed list(args) to function, with default = empty set
-
-# Generate random stochastic matrix of size M, with choice of row function {r_stochastic, r_zeros}
-RM_stoch <- function(M, row_fn){
-  P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
-  # fill rows
-  for(i in 1:M){
-    P[i,] = row_fn(M)
-    }
-  P
-}
 
 # generates stochastic rows of size M
 r_stochastic <- function(M){

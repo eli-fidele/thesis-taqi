@@ -1,0 +1,171 @@
+---
+title: "Matrix Refactor"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+# Load files
+source(file = "R/matrices_new.R")
+```
+
+```{r}
+# Global parameters
+M <- 3
+```
+
+## Normal Matrices
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+mu <- 1
+sd <- 2
+# Generate matrixx
+P <- RM_normal(M, normal_args = c(mu, sd), symm = F)
+P
+```
+
+### Symmetric Normal Matrices
+
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+mu <- 1
+sd <- 2
+# Generate matrixx
+P <- RM_normal(M, normal_args = c(mu, sd), symm = T)
+P
+```
+
+\newpage
+
+## Stochastic Matrices
+
+### Sparse
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+mu <- 1
+sd <- 2
+# Generate matrixx
+P <- RM_stoch(M, symm = F, sparsity = T)
+P
+```
+
+### Non-sparse
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+mu <- 1
+sd <- 2
+# Generate matrixx
+P <- RM_stoch(M, symm = F, sparsity = F)
+P
+```
+
+\newpage
+
+### Symmetric Stochastic Matrices
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+mu <- 1
+sd <- 2
+# Generate matrixx
+P <- RM_stoch(M, symm = T, sparsity = T)
+P
+```
+
+### Non-sparse
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+mu <- 1
+sd <- 2
+# Generate matrixx
+P <- RM_stoch(M, symm = T, sparsity = F)
+P
+```
+
+\newpage
+
+## Tridiagonal Matrices
+
+```{r}
+# Set seed
+set.seed(23)
+# Generate matrix
+P <- RM_trid(M)
+P
+```
+
+## p-Sparse Matrices
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+p <- 0.2
+# Generate matrix
+P <- RM_erdos(M, p, stoch = F)
+```
+
+### Stochastic p-Sparse Matrices
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+p <- 0.2
+# Generate matrix
+P <- RM_erdos(M, p, stoch = T)
+```
+
+\newpage
+
+Suppose we have a $M \times M$ square matrix $\bf P$ (for some $M \in \mathbb{N}$) on a field $F$. We notate $\mathbf{P} \in \mathcal{M}_F[M^2]$.
+
+Take $\mathbf{P} \in \mathcal{M}_F[M^2]$.
+
+## Structural Properties of Matrices
+
+If $\bf P$ is symmetric, then its upper triangle is equal to the lower triangle.
+
+If $\bf P$ is tridiagonal, then it is a band matrix of width 1.
+
+\bigskip
+
+## Entry-wise Properties of Matrices
+
+If $\bf P$ is row-stochastic, then $\forall i : \sum_j p_{ij} = 1$.
+
+`RM_stoch <- function(M, symm = F, sparsity = F){...}`
+
+\medskip
+
+If $\bf P$ is $\mathcal{N}(\mu,\sigma^2)$, then its entries satisfy $p_{ij} \sim \mathcal{N}(\mu,\sigma^2)$.
+
+`RM_normal <- function(M, normal_args = c(0,1), symm = F){...}`
+
+\medskip
+
+If $\bf P$ is $p-\text{sparse}$, then $\forall i, j \in S_M : p_{ij}/c \sim \text{Bern}(p)$ for some $c \in \mathbb{R}$.
+
+`RM_erdos <- function(M, p_sparse){...}` 

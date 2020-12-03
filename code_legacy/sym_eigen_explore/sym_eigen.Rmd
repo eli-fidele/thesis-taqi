@@ -1,0 +1,129 @@
+---
+title: "Eigenvectors of Symmetric Matrices"
+author: "Ali Taqi"
+date: "11/4/2020"
+output: pdf_document
+header-includes:
+  - \newcommand{\R}{\mathbb{R}}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(ggfortify)
+library(matrixcalc)
+library(zeallot)
+# Load files
+source(file = "R/sym_eigen.R")
+source(file = "R/eigenmetrics.R")
+source(file = "R/eigenvectors.R")
+```
+
+# Computational Evidence: Real Symmetric Matrices have Real Eigenvectors
+
+In this document, we hope to show that given any arbitrary element of the set of $M \times M$ symmetric matrices, denote it $S \in \mathcal{SM}_\R[M \times M]$ has a set of real eigenvectors $[\lambda_i] \in \R^M$.
+
+To simulate a generic element $S$, we use the following method:
+
+(1) First, pick some $f \in [0,1]$, letting it denote the fraction of positive entries of $S$. That is;
+$$\text{Want: }\, f \approx \frac{ | \{s_{ij}  > 0\}|}{M^2}$$
+We hope to show that our condition is invariant to the value of $f$, since there is the possibility that the sign proportions of our matrix $S$ influences the $\det (S)$. 
+
+(2) To simulate a symmetric matrix $S$ with a fraction of positive entries $f$, we will sample from the distribution:
+$$s_{ij} \sim \text{Unif}(f-1,f)$$
+
+(3) To not constrict the sizes of $|s_{ij}|$, we will add an $\epsilon$ term and scale our endpoints to preserve the fraction $f$.
+$$s_{ij} \sim \text{Unif}(\epsilon(f-1),\,\epsilon f)$$
+
+```{r, include = F}
+unif_fpos <- function(M,f=T,ep){
+  # unless specifically initialized, a random fraction will be chosen
+  if(f){
+    f <- runif(1,0,1)
+    paste("f: ",f,sep="")
+  }
+  b <- f
+  a <- (f-1)
+  dist <- data.frame(x = runif(M**2, ep*a, ep*b))
+  dist <- dist %>% mutate(x_neg = ifelse(x < 0,yes = 1, no = 0))
+  dist
+}
+```
+
+
+(4) Having our uniform distribution, we will generate $M^2$ entries and insert them in the matrix $S$. Then, we delete the lower triangular matrix, then duplicate the entries from the upper triangle to the lower triangle. 
+
+```{r, include = F}
+make_symm <- function(dist){
+  N <- sqrt(length(dist$x))
+  P <- matrix(data = dist$x, nrow = N, ncol = N)
+  LT <- lower.tri(P)
+  UT <- upper.tri(P)
+  P[LT] <- P[UT]
+  P
+}
+```
+
+(5) Now, if we let $f \sim \text{Unif}(0,1)$ and let $\epsilon \to \infty$, we can well approximate $S \in \mathcal{SM}_\R[M \times M]$.
+
+\newpage
+
+```{r, echo = F}
+# reload files
+source(file = "R/sym_eigen.R")
+source(file = "R/eigenmetrics.R")
+source(file = "R/eigenvectors.R")
+```
+
+```{r}
+RM_symm(5,0.5,10)
+```
+
+# Simulation
+
+```{r}
+simulate_by_f <- function(f,M_max,ep_max,draws){
+  M_vec <- sample(1:M_max, draws, replace = T)
+  ep_vec <- sample(1:ep_max, draws, replace = F)
+  table <- data.frame(M = M_vec, ep = rep(ep_vec,length(M_vec)))
+
+  bool_vec <- rep(NA, length(table$M))
+
+  for(i in 1:length(table$M)){
+    S_curr <- RM_symm(table$M[i],f,table$ep[i])
+    bool_vec[i] <- check_real_eigenvectors(eigen_frame(S_curr))
+  }
+  cbind(table,bool_vec)
+}
+
+plot_f_table <- function(table, f){
+  ggplot() + 
+    geom_point(data = table, aes(x=M, y=ep, color = factor(bool_vec))) +
+    labs(color = "EV Real", title = paste("f = ",f,sep=""))
+}
+```
+
+```{r, cache = T}
+table <- simulate_by_f(f = 0.1, M_max = 15, ep_max = 250, draws = 250)
+head(table)
+plot_f_table(table, f = 0.1)
+```
+}
+
+```{r, cache = T}
+table <- simulate_by_f(f = 0.5, M_max = 15, ep_max = 250, draws = 250)
+head(table)
+plot_f_table(table, f = 0.5)
+```
+
+```{r, cache = T}
+table <- simulate_by_f(f = 0.9, M_max = 15, ep_max = 250, draws = 250)
+head(table)
+plot_f_table(table, f = 0.9)
+```
+```
+
+

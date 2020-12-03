@@ -1,0 +1,54 @@
+---
+title: "Computational Eigenvector Simulation"
+author: "Ali Taqi"
+output: pdf_document
+header-includes: 
+  - \newcommand{\defn}{\textbf{Definition. }}
+  - \newcommand{\N}{\mathbb{N}}
+  - \newcommand{\R}{\mathbb{R}}
+  - \newcommand{\B}{\mathcal{B}}
+  - \newcommand{\ep}{\varepsilon}
+---
+
+# Computational Eigenvector Simulation
+
+## Notation
+
+Let $\mathcal{M}_F[M \times N]$ be the set of $M \times N$ matrice over the field $F$.
+
+- Suppose $Q$ is some $M \times M$ square matrix on a field $F$. Denote this $Q \in \mathcal{M}_F[M^2]$.
+
+- Suppose $v$ is a row vector on a field $F$ of size $M$. Denote this by saying $v \in \mathcal{V}_F^{(R)}[M]$. 
+
+Note that $\mathcal{V}_F^{(R)}[M]$ is equivalent to $\mathcal{M}_F[1 \times M]$.
+
+- Suppose $v$ is a column vector on a field $F$ of size $M$. Denote this by saying $v \in \mathcal{V}_F^{(C)}[M]$. 
+
+Note that $\mathcal{V}_F^{(C)}[M]$ is equivalent to $\mathcal{M}_F[M \times 1]$.
+
+## Definitions
+
+$\defn \bf (\epsilon-\textbf{equivalence})$ Let $F$ be a field, and  $\varepsilon \in \R^+$. Suppose we have vectors $v, v' \in \mathcal{V}_F[M]$. Then, $v \sim_\epsilon v'$ if $||v - v'|| < \epsilon$ where $|| \cdot ||$ is the norm on $F$.
+
+$\defn \bf(Q-\textbf{evolution sequence})$ Let $\pi \in \mathcal{V}[M]$ be a vector of size $M$. Then, the $Q$-evolution sequence of $\pi$ is given by:
+$$\text{Seq}(Q,\pi) = \{\pi'_n\}_{n \in \N} \text{ where } \pi'_n = \pi Q^n$$
+$\defn \bf (\epsilon-\textbf{convergence})$ Let $\varepsilon \in \R^+$ Suppose we have a sequence $\text{Seq}(Q,\pi)$. Then, $\text{Seq}(Q,\pi)$ $\varepsilon$-converges at $N$ if:
+$$\exists N \in \N : \forall n \geq N \mid  \pi'_N \sim_\epsilon \pi'_n$$
+
+$\defn \bf (\sigma-\textbf{perturbance})$ Let $\pi \in \mathcal{V}[M]$ be a vector of size $M$. Then, a $\sigma-\text{perturbance}$ of $\pi$ with perturbance vector $\ep$ is given by the vector $\pi' = \pi + \ep$ where:
+$$\ep = (\ep_i)_{i = 1}^M \text{ where } \epsilon_i \sim \mathcal{N}(0,\sigma^2)$$
+
+$\defn \bf (\textbf{localized } \sigma-\textbf{perturbance})$ Let $\pi \in \mathcal{V}[M]$ be a vector of size $M$. Then, if we have a dimension $d \in \{1,\dots,M\}$, a $\text{localized} \sigma-\text{perturbance}$ of $\pi$ in $d$ with perturbance vector $\ep$ is given by the vector $\pi' = \pi + \ep$ where:
+$$\ep = (\ep_j)_{j = 1}^M \text{ where } \ep_d \sim \mathcal{N}(0,\sigma^2) \text{ and } \forall{j \neq d}: \ep_j = 0$$
+## MC Simulation
+
+(Monte-Carlo $\lambda\,$ Batch) Let $\lambda \in R^+$. Take a batch $\cal B$ of $B$ row vectors $\pi \sim \text{Unif}(-\lambda,\lambda)$ and denote it $\mathcal{B} = \{\pi_i\}_{i=1}^B$. Then, we have a $\lambda-\text{batch}$ denoted $\mathcal{B}_\lambda$. 
+
+To simulate the eigenvectors, we will take the $Q-\text{evolution sequences}$ on each of our $\pi_i \in \mathcal{B}$. So, our simlated batch of evolution sequences is given by: 
+$$\text{EvolBatch}(Q,\mathcal{B}) = \{\{\pi'_n\}_{n \in \N}\}_{i = 1}^N$$
+
+Question: Which $\lambda$ is sufficient to obtain eigenvectors that yield all the eigenvalues $\lambda_i$ of $Q$?
+
+
+
+
