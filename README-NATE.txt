@@ -1,3 +1,22 @@
+========================================================
+Thursday, Dec 3
+
+Hello Nate!
+
+I’ve refactored my thesis directory (again), but here are some things you should consider looking at!
+
+1) General 
+R/matrices.R - I've reconfigured my random matrix code so now it is more user friendly. 
+
+2) Eigenvector Simulation
+
+simulate-ev/methodology.pdf - For my eigenvector simulation process, I've documented some of my methodology that I've already implemented/ will implement. This notation is probably useful for more proper documentation.
+
+R/simulate.R - I've written some methods to help me achieve my goals. So far, I've created code to create a Monte Carlo Batch, and the code to evolve the batch and "push" them towards potential eigenvectors. 
+
+simulate-ev/evolve_eigen.Rmd/.pdf - This is the main document in which I simulate my eigenvectors. 
+
+========================================================
 Thursday, Oct 22
 
 Hello Nate!

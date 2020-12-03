@@ -22,7 +22,7 @@ RM_stoch <- function(M, symm = F, sparsity = F){
   if(sparsity){row_fn <- r_zeros} else {row_fn <- r_stochastic}
   # fill rows
   for(i in 1:M){
-    P[i,] = row_fn(M)
+    P[i,] <- row_fn(M)
   }
   if(symm == T){P <- P %*% t(P)}
   # Return the matrix
