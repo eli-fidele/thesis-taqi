@@ -10,8 +10,6 @@ header-includes:
   - \newcommand{\ep}{\varepsilon}
 ---
 
-# Computational Eigenvector Simulation
-
 ## Notation
 
 Let $\mathcal{M}_F[M \times N]$ be the set of $M \times N$ matrice over the field $F$.
@@ -40,14 +38,16 @@ $$\ep = (\ep_i)_{i = 1}^M \text{ where } \epsilon_i \sim \mathcal{N}(0,\sigma^2)
 
 $\defn \bf (\textbf{localized } \sigma-\textbf{perturbance})$ Let $\pi \in \mathcal{V}[M]$ be a vector of size $M$. Then, if we have a dimension $d \in \{1,\dots,M\}$, a $\text{localized} \sigma-\text{perturbance}$ of $\pi$ in $d$ with perturbance vector $\ep$ is given by the vector $\pi' = \pi + \ep$ where:
 $$\ep = (\ep_j)_{j = 1}^M \text{ where } \ep_d \sim \mathcal{N}(0,\sigma^2) \text{ and } \forall{j \neq d}: \ep_j = 0$$
-## MC Simulation
 
-(Monte-Carlo $\lambda\,$ Batch) Let $\lambda \in R^+$. Take a batch $\cal B$ of $B$ row vectors $\pi \sim \text{Unif}(-\lambda,\lambda)$ and denote it $\mathcal{B} = \{\pi_i\}_{i=1}^B$. Then, we have a $\lambda-\text{batch}$ denoted $\mathcal{B}_\lambda$. 
+## Monte Carlo Batches
 
-To simulate the eigenvectors, we will take the $Q-\text{evolution sequences}$ on each of our $\pi_i \in \mathcal{B}$. So, our simlated batch of evolution sequences is given by: 
-$$\text{EvolBatch}(Q,\mathcal{B}) = \{\{\pi'_n\}_{n \in \N}\}_{i = 1}^N$$
+$\defn (\textbf{Monte Carlo } \bf{\alpha}\textbf{-Batch})$  Let $\alpha \in \R^+$. Take a batch $\cal B$ of $B$ row vectors $\pi \sim \text{Unif}(-\alpha,\alpha)$ and denote it as: 
+$$\mathcal{B} = \{\pi_i\}_{i=1}^B \text{ where } \pi_i \sim \text{Unif}(-\alpha,\alpha)$$
 
-Question: Which $\lambda$ is sufficient to obtain eigenvectors that yield all the eigenvalues $\lambda_i$ of $Q$?
+$\defn (\textbf{Evolved } \bf{\alpha}\textbf{-Batch})$ To simulate the eigenvectors, we will take the $Q-\text{evolution sequences}$ on each of our $\pi_i \in \mathcal{B}$. So, our simlated batch of evolution sequences is given by: 
+$$\text{EvolBatch}(Q,\mathcal{B}) = \{\{\pi'_{i,n}\}_{n \in \N}\}_{i = 1}^B$$
+
+Question: Which $\alpha$ is sufficient to obtain eigenvectors that yield all the eigenvalues $\lambda_i$ of $Q$?
 
 
 

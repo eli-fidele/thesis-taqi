@@ -3,6 +3,10 @@
 #                               PLOTTING FUNCTIONS
 #=================================================================================#
 
+extract_evol_array <- function(evolved_batch, index){
+  evolved_batch %>% filter(index_column == index)
+}
+
 #=================================================================================#
 #                       EVOLUTION ARRAY ANALYSIS FUNCTIONS
 #=================================================================================#
@@ -67,6 +71,15 @@ distance <- function(pi,ref_dist){
 #=================================================================================#
 #                               PLOTTING FUNCTIONS
 #=================================================================================#
+
+#plots the evolution arrays of a 2d evolved batch
+batch_3d_plot <- function(batch_data,mat_str=""){
+  plot_empty <- ggplot() 
+  plot_12 <- batch_2d_customplot(batch_data, 1, 2,mat_str)
+  plot_23 <- batch_2d_customplot(batch_data, 2, 3,mat_str)
+  plot_13 <- batch_2d_customplot(batch_data, 1, 3,mat_str)
+  grid.arrange(plot_empty,plot_12,plot_23,plot_13, ncol = 2)
+}
 
 #plots the evolution arrays of a 2d evolved batch
 batch_2d_customplot <- function(batch_data, n1, n2, mat_str = ""){
