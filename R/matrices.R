@@ -13,7 +13,7 @@ RM_normal <- function(M, normal_args = c(0,1), symm = F){
   }
   if(symm == T){
     P[lower.tri(P)] <- P[upper.tri(P)]
-  }
+    }
   # Return the matrix
   P
 }
@@ -35,7 +35,7 @@ RM_stoch <- function(M, symm = F, sparsity = F){
       diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
     }
     diag(P) <- diag
-  }
+    }
   # Return the matrix
   P
 }
@@ -96,24 +96,6 @@ r_zeros <- function(M){
 #                         RANDOM MATRIX DIAGNOSTICS 
 #=================================================================================#
 
-# For a given normal matrix, visualize its entries as a histogram
-visualize_normal_entries <- function(P, normal_args){
-  # Vectorize the matrix into a row vector of its entries
-  elements_P <- data.frame(x = vectorize_matrix(P))
-  # Extract parameters
-  mu <- normal_args[1]
-  sd <- normal_args[2]
-  # Get theoretical distribution function
-  normal_density <- function(x){dnorm(x, mean = mu, sd = sd)}
-  # Plot the histogram of its entries
-  entries_hist <- ggplot(data = elements_P, mapping = aes(x)) + 
-    geom_histogram(bins = 20, aes(y = stat(density))) +
-    stat_function(fun = normal_density)
-  # Return plot
-  entries_hist
-}
-
-# Obtain the nondiagonal entries of a row given its row index
 nondiagonal_entries <- function(row, row_index){
   indices <- data.frame(idx = 1:length(row))
   indices <- indices %>% filter(idx != row_index)

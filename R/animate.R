@@ -1,4 +1,8 @@
 
+
+
+
+
 #=================================================================================#
 #                               PLOTTING FUNCTIONS
 #=================================================================================#
@@ -44,17 +48,23 @@ evolve_batch <- function(batch, steps, burn_in = 1, with_steps = F){
 #=================================================================================#
 
 evolve <- function(v, P, steps, burn_in = 1, with_steps = F){
-  it <- steps
   M <- ncol(P)
   # simulate and record evolution of pi
-  vals <- matrix(rep(NA, M * it), ncol = M)
+  vals <- matrix(rep(NA, M * steps), ncol = M)
   vals <- standardize_colnames(vals)
+  if(with_steps){vals <- cbind(vals, rep(0, steps+1))}
   # evolve pi 
-  for(i in 1:it){
-    vals[i, ] <- as.numeric(v) %*% matrix.power(P,burn_in*i)
+  for(i in 1:steps){
+    vals[i, ] <- cbind(as.numeric(v) %*% matrix.power(P,burn_in*i), i)
+    #curr <- vals[i,]
+    #print(curr)
+    #print(class(curr))
   }
   #store the values in a dataframe
-  vals <- rbind(v,vals)
+  if(with_steps){
+    vals <- rbind(c(as.numeric(v),0),vals)
+  } else{
+      vals <- rbind(as.numeric(v),vals)}
   vals
 }
 

@@ -1,0 +1,95 @@
+---
+title: "Computational Eigenvector Simulation"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(numDeriv)
+# Load files
+source(file = "R/matrices.R")
+source(file = "R/eigenvectors.R")
+source(file = "R/simulate.R")
+source(file = "R/animate.R")
+```
+
+```{r, echo = F}
+# global parameters
+bool_plot <- T
+bool_loud <- F
+bool_animate <- F
+```
+
+# Example 1: A Symmetric Stochastic Matrix
+
+```{r, echo = T, cache = T}
+
+################################
+### Step 0: Setup the matrix ###
+################################
+
+# Set seed
+set.seed(23)
+# Set parameters
+M <- 10
+# Generate matrix
+P <- RM_stoch(M, symm = F, sparsity = T)
+if(bool_loud){P}
+
+################################
+#### Step 1: Get the batch ####
+################################
+
+# Set batch parameters
+B <- 100
+# Create batch
+batch <- make_batch(M = M, B = B)
+if(bool_loud){head(batch)}
+
+##################################
+#### Step 2: Evolve the batch ####
+##################################
+
+# Set evolution parameters
+steps <- 10
+# Evolve and index batch
+evolved_batch <- evolve_batch(batch, steps, with_steps = T)
+# Index the batch 
+evolved_batch <- indexed_batch(evolved_batch, steps)
+if(bool_loud){head(evolved_batch)}
+
+# use numerical derivatives compenentwise to study convergence
+#extr <- extract_evol_array
+#b1 <- extr(evolved_batch, 1)
+
+# Extract M (remove time and index columns)
+#M <- ncol(curr_array) - 2
+# Until generalization for any M, we do this manully for 1 and 2
+
+# append ratios
+curr_array <- evolved_batch
+r_x1 <- rep(1, nrow(curr_array))
+r_x2 <- rep(1, nrow(curr_array))
+for(i in 2:nrow(curr_array)){
+  # Find ratios between one step to the other for each variable
+  r_x1[i] <- curr_array$x1[i] / curr_array$x1[i - 1]
+  r_x2[i] <- curr_array$x2[i] / curr_array$x2[i - 1]
+}
+curr_array <- cbind(curr_array, r_x1, r_x2)
+append_ratios <- function(curr_array){
+  1
+}
+# Remove first row (degenerate values)
+curr_array <- curr_array[2:nrow(curr_array),]
+```
+
+```{r}
+ggplot(data = curr_array, mapping = aes(x = r_x1, y = r_x2, color = V11)) + geom_point()
+```
+

@@ -11,39 +11,62 @@ library(tidyverse)
 library(knitr)
 library(patchwork)
 # Load files
-source(file = "R/matrices_new.R")
+source(file = "R/matrices.R")
 ```
+
+## Symmetric Normal Matrices
 
 ```{r}
-# Global parameters
-M <- 3
+RM_normal <- function(M, normal_args = c(0,1), symm = F){
+  # Extract parameters
+  mu <- normal_args[1]
+  sd <- normal_args[2]
+  # Create [M x M] transition matrix
+  P <- matrix(rep(NA, M * M), ncol = M)  
+  # Generate rows
+  for(i in 1:M){
+    P[i,] <- rnorm(n = M, mean = mu, sd = sd)
+  }
+  # Make symmetric if prompted
+  if(symm == T){
+    P[lower.tri(P)] <- P[upper.tri(P)]
+    }  
+  # Return the matrix
+  P
+}
 ```
 
-## Normal Matrices
 
 ```{r}
 # Set seed
 set.seed(23)
 # Set parameters
+M <- 4
+mu <- 0
+sd <- 1
+normal_args <- c(mu, sd)
+# Generate matrix
+P <- RM_normal(M, normal_args, symm = T)
+P
+paste("Matrix is symmetric: ",isSymmetric(P),sep="")
+```
+
+```{r}
+visualize_normal_entries(P, normal_args)
+```
+
+### Non-symmetric Normal Matrices
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+M <- 3
 mu <- 1
 sd <- 2
 # Generate matrixx
 P <- RM_normal(M, normal_args = c(mu, sd), symm = F)
-P
-```
-
-### Symmetric Normal Matrices
-
-
-```{r}
-# Set seed
-set.seed(23)
-# Set parameters
-mu <- 1
-sd <- 2
-# Generate matrixx
-P <- RM_normal(M, normal_args = c(mu, sd), symm = T)
-P
+paste("Matrix is symmetric: ",isSymmetric(P),sep="")
 ```
 
 \newpage
@@ -56,11 +79,14 @@ P
 # Set seed
 set.seed(23)
 # Set parameters
+M <- 3
 mu <- 1
 sd <- 2
 # Generate matrixx
 P <- RM_stoch(M, symm = F, sparsity = T)
 P
+paste("Matrix is symmetric: ",isSymmetric(P),sep="")
+paste("Matrix is row-stochastic: ",is_row_stochastic(P),sep="")
 ```
 
 ### Non-sparse
@@ -69,11 +95,14 @@ P
 # Set seed
 set.seed(23)
 # Set parameters
+M <- 3
 mu <- 1
 sd <- 2
-# Generate matrixx
+# Generate matrix
 P <- RM_stoch(M, symm = F, sparsity = F)
 P
+paste("Matrix is symmetric: ",isSymmetric(P),sep="")
+paste("Matrix is row-stochastic: ",is_row_stochastic(P),sep="")
 ```
 
 \newpage
@@ -84,11 +113,12 @@ P
 # Set seed
 set.seed(23)
 # Set parameters
-mu <- 1
-sd <- 2
-# Generate matrixx
+M <- 3
+# Generate matrix
 P <- RM_stoch(M, symm = T, sparsity = T)
 P
+paste("Matrix is symmetric: ",isSymmetric(P),sep="")
+paste("Matrix is row-stochastic: ",is_row_stochastic(P),sep="")
 ```
 
 ### Non-sparse
@@ -97,11 +127,14 @@ P
 # Set seed
 set.seed(23)
 # Set parameters
+M <- 3
 mu <- 1
 sd <- 2
-# Generate matrixx
+# Generate matrix
 P <- RM_stoch(M, symm = T, sparsity = F)
 P
+paste("Matrix is symmetric: ",isSymmetric(P),sep="")
+paste("Matrix is row-stochastic: ",is_row_stochastic(P),sep="")
 ```
 
 \newpage
@@ -111,9 +144,12 @@ P
 ```{r}
 # Set seed
 set.seed(23)
+# Set parameters
+M <- 3
 # Generate matrix
 P <- RM_trid(M)
 P
+paste("Matrix is symmetric: ",isSymmetric(P),sep="")
 ```
 
 ## p-Sparse Matrices
@@ -122,9 +158,12 @@ P
 # Set seed
 set.seed(23)
 # Set parameters
+M <- 3
+# Set parameters
 p <- 0.2
 # Generate matrix
 P <- RM_erdos(M, p, stoch = F)
+paste("Matrix is row-stochastic: ",is_row_stochastic(P),sep="")
 ```
 
 ### Stochastic p-Sparse Matrices
@@ -133,9 +172,11 @@ P <- RM_erdos(M, p, stoch = F)
 # Set seed
 set.seed(23)
 # Set parameters
+M <- 3
 p <- 0.2
 # Generate matrix
 P <- RM_erdos(M, p, stoch = T)
+paste("Matrix is row-stochastic: ",is_row_stochastic(P),sep="")
 ```
 
 \newpage
