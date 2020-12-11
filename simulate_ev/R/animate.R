@@ -29,6 +29,30 @@ times_array <- function(evolved_batch, time_range){
   evolved_batch %>% filter(time %in% time_range)
 }
 
+append_ratios_3d <- function(curr_array){
+  r_x1 <- rep(1, nrow(curr_array))
+  r_x2 <- rep(1, nrow(curr_array))
+  r_x3 <- rep(1, nrow(curr_array))
+  for(i in 2:nrow(curr_array)){
+    # Find ratios between one step to the other for each variable
+    r_x1[i] <- curr_array$x1[i] / curr_array$x1[i - 1]
+    r_x2[i] <- curr_array$x2[i] / curr_array$x2[i - 1]
+    r_x3[i] <- curr_array$x3[i] / curr_array$x3[i - 1]
+  }
+  cbind(curr_array, r_x1, r_x2, r_x3)
+}
+
+append_ratios_2d <- function(curr_array){
+  r_x1 <- rep(1, nrow(curr_array))
+  r_x2 <- rep(1, nrow(curr_array))
+  for(i in 2:nrow(curr_array)){
+    # Find ratios between one step to the other for each variable
+    r_x1[i] <- curr_array$x1[i] / curr_array$x1[i - 1]
+    r_x2[i] <- curr_array$x2[i] / curr_array$x2[i - 1]
+  }
+  cbind(curr_array, r_x1, r_x2)
+}
+  
 # create wrangling functions that do the following
 # removes initial element of the evolution array
 # burns in every nth element (or keep in evol?)

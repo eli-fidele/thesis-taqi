@@ -81,7 +81,7 @@ batch_data1 <- evolved_batch
 batch_scatterplot1 <- batch_2d_plot(batch_data1)
 
 # Add transition time
-batch_animation1 <- batch_scatterplot1 + transition_time(time = V3)
+batch_animation1 <- batch_scatterplot1 + transition_time(time = time)
 
 # Set me to true!
 bool_animate <- F
@@ -123,7 +123,7 @@ if(bool_loud){head(batch)}
 ##################################
 
 # Set evolution parameters
-steps <- 5
+steps <- 10
 # Evolve batch
 evolved_batch <- evolve_batch(batch, steps, with_steps = T)
 # Index the batch
@@ -131,34 +131,60 @@ evolved_batch <- indexed_batch(evolved_batch, steps)
 
 ```
 
+```{r}
+
+####################################
+#### Step 3: Analyze the batch! ####
+####################################
+
+# Get the final evolved batch elements after all steps
+fully_evolved <- time_array(evolved_batch, at_time = steps)
+fully_evolved
+```
+
+```{r}
+scalar_12 <- lm(formula = x1 ~ x2, data = fully_evolved)
+summary(scalar_12)
+scalar_13 <- lm(formula = x1 ~ x3, data = fully_evolved)
+summary(scalar_13)
+scalar_23 <- lm(formula = x2 ~ x3, data = fully_evolved)
+summary(scalar_23)
+```
+
 ```{r, cache = T}
 
 ####################################
-#### Step 3: Animate the batch! ####
+#### Step 4: Animate the batch! ####
 ####################################
 
 # Plot the evolution arrays of the batch elements
 batch_data2 <- evolved_batch
 # Pairwise scatter plots
-plot_12 <- batch_2d_customplot(batch_data, 1, 2)
-batch_animation2_1 <- plot_12 + transition_time(time = V4)
+plot_12 <- batch_2d_customplot(batch_data2, 1, 2)
+batch_animation2_1 <- plot_12 + transition_time(time = time)
 
-plot_23 <- batch_2d_customplot(batch_data, 2, 3)
-batch_animation2_2 <- plot_23 + transition_time(time = V4)
+plot_23 <- batch_2d_customplot(batch_data2, 2, 3)
+batch_animation2_2 <- plot_23 + transition_time(time = time)
 
-plot_13 <- batch_2d_customplot(batch_data, 1, 3)
-batch_animation2_3 <- plot_13 + transition_time(time = V4)
+plot_13 <- batch_2d_customplot(batch_data2, 1, 3)
+batch_animation2_3 <- plot_13 + transition_time(time = time)
+```
 
+```{r}
 # Set me to true!
-bool_animate1 <- F
+bool_animate1 <- T
 if(bool_animate1){batch_animation2_1}
+```
 
+```{r}
 # Set me to true!
 bool_animate2 <- F
 if(bool_animate2){batch_animation2_2}
+```
 
+```{r}
 # Set me to true!
-bool_animate3 <- F
+bool_animate3 <- T
 if(bool_animate3){batch_animation2_3}
 ```
 

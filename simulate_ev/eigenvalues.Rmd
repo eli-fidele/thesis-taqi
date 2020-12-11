@@ -70,21 +70,11 @@ if(bool_loud){head(evolved_batch)}
 #M <- ncol(curr_array) - 2
 # Until generalization for any M, we do this manully for 1 and 2
 
-# append ratios
-curr_array <- evolved_batch
-r_x1 <- rep(1, nrow(curr_array))
-r_x2 <- rep(1, nrow(curr_array))
-for(i in 2:nrow(curr_array)){
-  # Find ratios between one step to the other for each variable
-  r_x1[i] <- curr_array$x1[i] / curr_array$x1[i - 1]
-  r_x2[i] <- curr_array$x2[i] / curr_array$x2[i - 1]
-}
-curr_array <- cbind(curr_array, r_x1, r_x2)
-append_ratios <- function(curr_array){
-  1
-}
+#evolve batch ratios
+evolved_batch <- append_ratios_2d(evolved_batch)
 # Remove first row (degenerate values)
-curr_array <- curr_array[2:nrow(curr_array),]
+curr_array <- evolved_batch[2:nrow(evolved_batch),]
+curr_array <- time_array(curr_array, at_time = steps)
 ```
 
 ```{r}
