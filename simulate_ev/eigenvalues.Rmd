@@ -11,6 +11,7 @@ library(tidyverse)
 library(knitr)
 library(patchwork)
 library(gridExtra)
+library(matrixcalc)
 library(numDeriv)
 # Load files
 source(file = "R/matrices.R")
@@ -35,11 +36,11 @@ bool_animate <- F
 ################################
 
 # Set seed
-set.seed(23)
+set.seed(25)
 # Set parameters
-M <- 10
+M <- 2
 # Generate matrix
-P <- RM_stoch(M, symm = F, sparsity = T)
+P <- RM_stoch(M, symm = T, sparsity = F)
 if(bool_loud){P}
 
 ################################
@@ -57,16 +58,13 @@ if(bool_loud){head(batch)}
 ##################################
 
 # Set evolution parameters
-steps <- 10
+steps <- 50
 # Evolve and index batch
 evolved_batch <- evolve_batch(batch, steps, with_steps = T)
-# Index the batch 
-evolved_batch <- indexed_batch(evolved_batch, steps)
 if(bool_loud){head(evolved_batch)}
 
 # use numerical derivatives compenentwise to study convergence
-#extr <- extract_evol_array
-#b1 <- extr(evolved_batch, 1)
+#b1 <- element_array(evolved_batch, 1)
 
 # Extract M (remove time and index columns)
 #M <- ncol(curr_array) - 2
@@ -90,6 +88,11 @@ curr_array <- curr_array[2:nrow(curr_array),]
 ```
 
 ```{r}
-ggplot(data = curr_array, mapping = aes(x = r_x1, y = r_x2, color = V11)) + geom_point()
+curr_array <- time_array(curr_array, at_time = steps)
+```
+
+
+```{r}
+ggplot(data = curr_array, mapping = aes(x = r_x1, y = r_x2, color = time)) + geom_point()
 ```
 

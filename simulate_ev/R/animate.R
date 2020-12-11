@@ -3,13 +3,31 @@
 #                               PLOTTING FUNCTIONS
 #=================================================================================#
 
-extract_evol_array <- function(evolved_batch, index){
-  evolved_batch %>% filter(index_column == index)
-}
+
 
 #=================================================================================#
 #                       EVOLUTION ARRAY ANALYSIS FUNCTIONS
 #=================================================================================#
+
+# Extract the array for a particular element
+element_array <- function(evolved_batch, index){
+  evolved_batch %>% filter(element_index == index)
+}
+
+# Extract the array for a range of elements
+elements_array <- function(evolved_batch, indices){
+  evolved_batch %>% filter(element_index %in% indices)
+}
+
+# Extract the array for a particular time
+time_array <- function(evolved_batch, at_time){
+  evolved_batch %>% filter(time == at_time)
+}
+
+# Extract the array for a range of time
+times_array <- function(evolved_batch, time_range){
+  evolved_batch %>% filter(time %in% time_range)
+}
 
 # create wrangling functions that do the following
 # removes initial element of the evolution array
@@ -36,7 +54,8 @@ evolve_batch <- function(batch, steps, burn_in = 1, with_steps = F){
     evol_stack <- rbind(evol_stack, evol) # append rest of batch element arrays by stacking
   }
   rownames(evol_stack) <- 1:nrow(evol_stack) # standardize row names
-  data.frame(evol_stack)
+  # Return the batch with added indices
+  indexed_batch(data.frame(evol_stack), steps)
 }
 
 #=================================================================================#
@@ -45,22 +64,24 @@ evolve_batch <- function(batch, steps, burn_in = 1, with_steps = F){
 
 evolve <- function(v, P, steps, burn_in = 1, with_steps = F){
   M <- ncol(P)
-  # simulate and record evolution of pi
+  # Simulate the evolution matrix of a given batch element
   vals <- matrix(rep(NA, M * steps), ncol = M)
   vals <- standardize_colnames(vals)
   if(with_steps){vals <- cbind(vals, rep(0, steps+1))}
-  # evolve pi 
+  # Evolve the batch element
   for(i in 1:steps){
-    vals[i, ] <- cbind(as.numeric(v) %*% matrix.power(P,burn_in*i), i)
-    #curr <- vals[i,]
-    #print(curr)
-    #print(class(curr))
+    # Evolved vector (v * P^steps)
+    evolved_row <- as.numeric(v) %*% matrix.power(P,burn_in*i)
+    # Add time index to evolved row
+    vals[i, ] <- cbind(evolved_row, i)
   }
   #store the values in a dataframe
   if(with_steps){
     vals <- rbind(c(as.numeric(v),0),vals)
   } else{
       vals <- rbind(as.numeric(v),vals)}
+  # Rename steps column to 'time'
+  colnames(vals)[ncol(vals)] <- "time"
   vals
 }
 
@@ -90,7 +111,7 @@ batch_3d_plot <- function(batch_data,mat_str=""){
 
 #plots the evolution arrays of a 2d evolved batch
 batch_2d_customplot <- function(batch_data, n1, n2, mat_str = ""){
-  ggplot(batch_data, mapping = aes(color = as.factor(index_column))) + 
+  ggplot(batch_data, mapping = aes(color = as.factor(element_index))) + 
     geom_point(mapping = aes_string(x = paste("x",n1,sep=""), y = paste("x",n2,sep=""))) +
     theme(legend.position = "none") +
     labs(title = paste("Evolution of Monte Carlo Batch",mat_str))
@@ -98,13 +119,11 @@ batch_2d_customplot <- function(batch_data, n1, n2, mat_str = ""){
 
 #plots the evolution arrays of a 2d evolved batch
 batch_2d_plot <- function(batch_data, mat_str = ""){
-  ggplot(batch_data, mapping = aes(x = x1, y = x2, color = as.factor(index_column))) + 
+  ggplot(batch_data, mapping = aes(x = x1, y = x2, color = as.factor(element_index))) + 
     geom_point() +
     theme(legend.position = "none") +
     labs(title = paste("Evolution of 2D Monte Carlo Batch",mat_str))
 }
-
-
 
 #=================================================================================#
 #                               HELPER FUNCTIONS
@@ -125,10 +144,10 @@ standardize_colnames <- function(array){
 # This method adds an index to clarify which rows belong to which batch element's evolution array it belongs
 indexed_batch <- function(evolved_batch, steps){
   # create index column
-  index_column <- rep(NA, nrow(evolved_batch))
+  element_index <- rep(NA, nrow(evolved_batch))
   # append indexing by running loops
-  for(i in 1:nrow(evolved_batch)){index_column[i] <- 1 + floor((i-1)/(steps+1))}
+  for(i in 1:nrow(evolved_batch)){element_index[i] <- 1 + floor((i-1)/(steps+1))}
   # only append index column if it is not there already
-  if(!("index_column" %in% colnames(evolved_batch))){evolved_batch <- cbind(evolved_batch,index_column)}
+  if(!("element_index" %in% colnames(evolved_batch))){evolved_batch <- cbind(evolved_batch,element_index)}
   evolved_batch
 }
