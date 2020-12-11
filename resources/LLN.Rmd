@@ -1,0 +1,113 @@
+---
+title: "Law of Large Numbers"
+author: "Wells"
+date: "2/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(gganimate)
+library(tweenr)
+library(dplyr)
+library(transformr)
+```
+ 
+
+```{r}
+N = 1000
+pHeads =0.5
+ 
+flipSequence<-sample( c(0,1), N, prob = c(1 - pHeads, pHeads), replace = TRUE)
+ 
+r = cumsum(flipSequence)
+n= 1:N
+runProp = r/n
+
+flip_data <- data.frame(run=n,prop=runProp)
+```
+
+```{r}
+## Just Plot
+ggplot(flip_data, aes(x = run, y = prop))+
+  geom_path(  ) +
+  geom_hline(yintercept = 0.5) +
+  coord_cartesian(ylim = c(.25, .75))+
+  labs(x = "Number of Flips",
+       y = "Proportion of Heads",
+       title = "Flips")
+```
+
+```{r cache=TRUE}
+## Animated Plot
+p<- ggplot(flip_data, aes(x = run, y = prop))+
+  geom_path(  ) +
+  geom_hline(yintercept = 0.5) +
+  coord_cartesian(ylim = c(.25, .75))+
+  transition_reveal(along = run) +
+  labs(x = "Number of Flips",
+       y = "Proportion of Heads",
+       title = "Flips so far: {frame_along}") +
+  ease_aes('linear')
+```
+
+```{r cache = TRUE, eval = F}
+#Short animation
+animate(p_short,
+        nframes = 200,
+        detail = 1,
+        fps = 10
+          )
+```
+
+
+```{r}
+N = 1500
+pHeads =0.5
+ 
+flipSequence<-sample( c(0,1), N, prob = c(1 - pHeads, pHeads), replace = TRUE)
+ 
+r = cumsum(flipSequence)
+n= 1:N
+runProp = r/n
+
+flip_data <- data.frame(run=n,prop=runProp)
+```
+
+```{r}
+## Just Plot
+ggplot(flip_data, aes(x = run, y = prop))+
+  geom_path(  ) +
+  geom_hline(yintercept = 0.5) +
+  coord_cartesian(ylim = c(.25, .75))+
+  labs(x = "Number of Flips",
+       y = "Proportion of Heads",
+       title = "Flips")
+```
+
+
+```{r}
+## Animated Plot
+p<- ggplot(flip_data, aes(x = run, y = prop))+
+  geom_path(  ) +
+  geom_hline(yintercept = 0.5) +
+  coord_cartesian(ylim = c(.25, .75))+
+  transition_reveal(along = run) +
+  labs(x = "Number of Flips",
+       y = "Proportion of Heads",
+       title = "Flips so far: {frame_along}") +
+  ease_aes('linear')
+```
+
+
+
+```{r}
+#Long animation
+ani<-animate(p,
+        nframes = 1500,
+        detail = 1,
+        fps = 1
+          )
+anim_save(animation = ani, "long_lln.gif")
+```
