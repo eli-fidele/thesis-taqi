@@ -1,6 +1,12 @@
 ========================================================
 			THESIS LOG
 ========================================================
+Thu, 12/11
+Today, we talked about continuing the work on simulating eigenvectors. Some things we talked about include normalizing the eigenvalues w.r.t. the size of the matrix. We need to normalize such data because otherwise the data will be degenerate (for example, for LLN, we normalize sum results by dividing by the number of observations). Interestingly, in Brownian motion, a LLN simulation could be considered Brownian motion if we normalize by sqrt(n)! 
+
+Anyway, we also talked about the isomorphism between Markov Chains and random graphs; more precisely, we considered taking PCA on the vectors and it might be the case that eigenvalues on the individual states and degrees of the nodes on the graph are quite related. We may also consider the Erdos-Renyi graphs.
+
+=======================================================
 Thu, 12/3
 I've came around to simulating the eigenvectors for any given matrix P.
 One problem I've came up with is the potential loss of input distribution parameters when the symm = T argument is there. This is due to the methodology of which we obtain P' = (P*T(P)). Perhaps we could transform our parameters to address this problem.
