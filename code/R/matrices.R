@@ -13,7 +13,7 @@ RM_normal <- function(M, normal_args = c(0,1), symm = F){
   }
   if(symm == T){
     P[lower.tri(P)] <- P[upper.tri(P)]
-  }
+    }
   # Return the matrix
   P
 }
@@ -35,7 +35,7 @@ RM_stoch <- function(M, symm = F, sparsity = F){
       diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
     }
     diag(P) <- diag
-  }
+    }
   # Return the matrix
   P
 }
@@ -142,3 +142,5 @@ is_row_stochastic <- function(P){
   }
   !(F %in% row_is_stoch)
 }
+
+
