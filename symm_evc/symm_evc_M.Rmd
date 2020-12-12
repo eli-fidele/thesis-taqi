@@ -17,9 +17,9 @@ library(ggfortify)
 library(matrixcalc)
 library(zeallot)
 # Load files
-source(file = "R/sym_eigen.R")
-source(file = "R/eigenmetrics.R")
-source(file = "R/eigenvectors.R")
+source(file = "sym_eigen.R")
+source(file = "../R/eigenmetrics.R")
+source(file = "../R/eigenvectors.R")
 ```
 
 ```{r}

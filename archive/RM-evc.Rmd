@@ -1,5 +1,5 @@
 ---
-title: "Random Matrix Analysis"
+title: "Eigenvectors of Random Matrices"
 author: "Ali Taqi"
 output: pdf_document
 ---
