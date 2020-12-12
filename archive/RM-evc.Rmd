@@ -17,9 +17,7 @@ library(zeallot)
 source(file = "../R/matrices.R")
 source(file = "../R/eigenvectors.R")
 source(file = "../R/eigenmetrics.R")
-```
-
-```{r, echo = F}
+# Global parameters
 bool_plot <- T
 bool_loud <- F
 M <- 10

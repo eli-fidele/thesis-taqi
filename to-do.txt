@@ -1,0 +1,9 @@
+-Visualization
+
+- Use latex2exp to generate better labelled eigenplots (r_i) 
+
+-Code
+
+- Fix symmetric parameters for RM_stoch, RM_normal, RM_trid
+- Fix stochastic parameters for Rm_Erdos
+- Write general function for any M \in N yielding the r_xk for all k in evolution_batches

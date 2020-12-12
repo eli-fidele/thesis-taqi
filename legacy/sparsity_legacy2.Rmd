@@ -6,99 +6,121 @@ output: pdf_document
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
-                      message = FALSE, warning = FALSE)
+                      message = FALSE, warning = FALSE, fig.height = 2.6)
 library(tidyverse)
 library(knitr)
 library(patchwork)
 library(ggfortify)
 library(matrixcalc)
 library(zeallot)
-col_str <- "blue"
+library(latex2exp)
 # Load files
 source(file = "../R/matrices.R")
 source(file = "../R/eigenvectors.R")
 source(file = "../R/eigenmetrics.R")
+# Global parameters
+col_str <- "blue"
 ```
 
-```{r sparsity, echo = FALSE}
-M <- 6 # number of states
+# Demonstration
+
+```{r sparsity, echo = T}
+# Set parameters
+M <- 6
 p <- 0.5
-P <- rand_M(M,p,r_sparse) # initialize P
+# Generate matrix (Erdos-Renyi)
+P <- RM_erdos(M, p) 
+# Get eigenvalues
 eigen_df <- eigen_frame(P)
-#eigen_plot(P)
+eigen_plot(P,mat_type = "Erdos-Renyi")
 ```
+
+\newpage
+
+# Various Parameter Values
 
 ```{r parameters}
 M_vec <- c(3,5,10)
 p_vec <- c(0.1,0.5,0.6)
 c(M1,M2,M3) %<-% M_vec
 c(p1,p2,p3) %<-% p_vec
-P_vec1 <- matrix(c(rand_M(M1,p1,r_sparse),
-                  rand_M(M1,p1,r_sparse),
-                  rand_M(M1,p1,r_sparse)),
+P_vec1 <- matrix(c(RM_erdos(M1,p1),
+                  RM_erdos(M1,p1),
+                  RM_erdos(M1,p1)),
                 nrow = M_vec[1])
-P_vec2 <- matrix(c(rand_M(M2,p2,r_sparse),
-                  rand_M(M2,p2,r_sparse),
-                  rand_M(M2,p2,r_sparse)),
+P_vec2 <- matrix(c(RM_erdos(M2,p2),
+                  RM_erdos(M2,p2),
+                  RM_erdos(M2,p2)),
                 nrow = M_vec[2])
-P_vec3 <- matrix(c(rand_M(M3,p3,r_sparse),
-                  rand_M(M3,p3,r_sparse),
-                  rand_M(M3,p3,r_sparse)),
+P_vec3 <- matrix(c(RM_erdos(M3,p3),
+                  RM_erdos(M3,p3),
+                  RM_erdos(M3,p3)),
                 nrow = M_vec[3])
 ```
 
 \newpage 
 
+## (M = 3, P = 0.1)
+
 ```{r, echo = FALSE}
-eigen_plot(P_vec1[,1:M1 + 0*M1])
+eigen_plot(P_vec1[,1:M1 + 0*M1], "Erdos-Renyi")
+```
+
+
+## (M = 3, P = 0.5)
+
+```{r, echo = FALSE}
+eigen_plot(P_vec1[,1:M1 + 1*M1], "Erdos-Renyi")
+```
+
+
+## (M = 3, P = 0.9)
+
+```{r, echo = FALSE}
+eigen_plot(P_vec1[,1:M1 + 2*M1], "Erdos-Renyi")
 ```
 
 \newpage
 
+## (M = 5, P = 0.1)
+
 ```{r, echo = FALSE}
-eigen_plot(P_vec1[,1:M1 + 1*M1])
+eigen_plot(P_vec2[,1:M2 + 0*M2], "Erdos-Renyi")
+```
+
+## (M = 5, P = 0.5)
+
+```{r, echo = FALSE}
+eigen_plot(P_vec2[,1:M2 + 1*M2], "Erdos-Renyi")
+```
+
+
+# M = 5, P = 0.9
+
+```{r, echo = FALSE}
+eigen_plot(P_vec2[,1:M2 + 2*M2], "Erdos-Renyi")
 ```
 
 \newpage
 
-```{r, echo = FALSE}
-eigen_plot(P_vec1[,1:M1 + 2*M1])
-```
-
-\newpage
+## (M = 10, P = 0.1)
 
 ```{r, echo = FALSE}
-eigen_plot(P_vec2[,1:M2 + 0*M2])
+eigen_plot(P_vec3[,1:M3 + 0*M3], "Erdos-Renyi")
 ```
 
-\newpage
+
+## (M = 10, P = 0.5)
 
 ```{r, echo = FALSE}
-eigen_plot(P_vec2[,1:M2 + 1*M2])
+eigen_plot(P_vec3[,1:M3 + 1*M3], "Erdos-Renyi")
 ```
 
-\newpage
 
-```{r, echo = FALSE}
-eigen_plot(P_vec2[,1:M2 + 2*M2])
-```
-
-\newpage
-
-```{r, echo = FALSE}
-eigen_plot(P_vec3[,1:M3 + 0*M3])
-```
-
-\newpage
-
-```{r, echo = FALSE}
-eigen_plot(P_vec3[,1:M3 + 1*M3])
-```
-
-\newpage
+## (M = 10, P = 0.9)
 
 ```{r plots, echo = FALSE}
-eigen_plot(P_vec3[,1:M3 + 2*M3])
+eigen_plot(P_vec3[,1:M3 + 2*M3], "Erdos-Renyi")
 ```
 
 \newpage
