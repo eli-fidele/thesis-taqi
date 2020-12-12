@@ -15,7 +15,7 @@ library(ggfortify)
 library(matrixcalc)
 library(zeallot)
 # Load files
-source(file = "R/sym_eigen.R")
+source(file = "symm_evc.R")
 ```
 
 ```{r}
@@ -63,7 +63,7 @@ ggplot() + geom_point(data = data.frame(x = M_vec, y = iter_vec), aes(x=x,y=y))
 # add matrix so that we plot(ep,M) on xy plane and color value of diff to show 2d relation of convergence of our method
 M_vec <- 2:100
 ep_vec <- 1:100
-diff_props <- function(M, f, ep){
+diff_props <- function(M, f = 1, ep = 1){
   S <- RM_symm(M,f,ep)
   f - pos_entries(S)
 }

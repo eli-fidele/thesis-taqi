@@ -1,5 +1,5 @@
 ---
-title: "Computational Eigenvector Simulation"
+title: "Computational Simulation of the Eigenvalues of a Stochastic Matrix"
 author: "Ali Taqi"
 output: pdf_document
 ---
@@ -23,11 +23,11 @@ source(file = "../R/animate.R")
 ```{r, echo = F}
 # global parameters
 bool_plot <- T
-bool_loud <- F
+bool_loud <- T
 bool_animate <- F
 ```
 
-# Example 1: A Symmetric Stochastic Matrix
+# Eigenvalues of a Symmetric Stochastic Matrix
 
 ```{r, echo = T, cache = T}
 
@@ -89,12 +89,7 @@ head(fully_evolved)
 
 # Extract M (remove time and index columns)
 #M <- ncol(curr_array) - 2
-# Until generalization for any M, we do this manully for 1 and 2
 
-```
-
-
-```{r}
 #ggplot(data = evolved_batch, mapping = aes(x = r_x1, y = r_x2, color = time)) + geom_point()
 ```
 

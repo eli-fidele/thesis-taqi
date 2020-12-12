@@ -17,16 +17,9 @@ library(ggfortify)
 library(matrixcalc)
 library(zeallot)
 # Load files
-source(file = "R/sym_eigen.R")
-source(file = "R/eigenmetrics.R")
-source(file = "R/eigenvectors.R")
-```
-
-```{r, echo = F}
-# reload files
-source(file = "R/sym_eigen.R")
-source(file = "R/eigenmetrics.R")
-source(file = "R/eigenvectors.R")
+source(file = "symm_evc.R")
+source(file = "../R/eigenmetrics.R")
+source(file = "../R/eigenvectors.R")
 ```
 
 ```{r}
@@ -36,6 +29,7 @@ prop
 avgprop_real_components(eigen_frame(S))
 ```
 
+\newpage
 
 # Simulation
 
@@ -79,16 +73,16 @@ plot_f_table(table, f = f)
 
 ```{r, cache = T}
 f <- 0.1
-table <- simulate_by_f(f = f, M_max = M, ep_max = ep, draws = d)
-head(table)
-plot_f_table(table, f = f)
+#table <- simulate_by_f(f = f, M_max = M, ep_max = ep, draws = d)
+#head(table)
+#plot_f_table(table, f = f)
 ```
 
 ```{r, cache = T}
 f <- 0.9
-table <- simulate_by_f(f = f, M_max = M, ep_max = ep, draws = d)
-head(table)
-plot_f_table(table, f = f)
+#table <- simulate_by_f(f = f, M_max = M, ep_max = ep, draws = d)
+#head(table)
+#plot_f_table(table, f = f)
 ```
 
 
