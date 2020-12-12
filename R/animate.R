@@ -78,7 +78,7 @@ make_batch <- function(M, B, lambda = 1){
 }
 
 # Evolve each element of the batch vector a given number of steps 
-evolve_batch <- function(batch, steps, burn_in = 1, with_steps = F){
+evolve_batch <- function(batch, steps, burn_in = 1, with_steps = T){
   evol_stack <- evolve(batch[1,], P, steps, burn_in, with_steps) #append first batch element evolution array
   for(i in 2:B){ 
     evol <- evolve(batch[i,], P, steps, burn_in, with_steps) # obtain evol array of current row of the batch 
@@ -93,7 +93,7 @@ evolve_batch <- function(batch, steps, burn_in = 1, with_steps = F){
 #                               ELEMENTARY FUNCTIONS
 #=================================================================================#
 
-evolve <- function(v, P, steps, burn_in = 1, with_steps = F){
+evolve <- function(v, P, steps, burn_in = 1, with_steps = T){
   M <- ncol(P)
   # Simulate the evolution matrix of a given batch element
   vals <- matrix(rep(NA, M * steps), ncol = M)

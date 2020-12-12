@@ -14,10 +14,10 @@ library(gridExtra)
 library(matrixcalc)
 library(numDeriv)
 # Load files
-source(file = "R/matrices.R")
-source(file = "R/eigenvectors.R")
-source(file = "R/simulate.R")
-source(file = "R/animate.R")
+source(file = "../R/matrices.R")
+source(file = "../R/eigenvectors.R")
+source(file = "../R/simulate.R")
+source(file = "../R/animate.R")
 ```
 
 ```{r, echo = F}
@@ -70,8 +70,17 @@ curr_array <- evolved_batch[2:nrow(evolved_batch),]
 curr_array <- time_array(curr_array, at_time = steps)
 ```
 
-```{r}
-curr_array <- time_array(curr_array, at_time = steps)
+\newpage
+
+```{r, echo = T}
+
+###################################
+#### Step 3: Analyze the batch ####
+###################################
+
+# Analyze batch elements at the last step (full evolution)
+fully_evolved <- time_array(curr_array, at_time = steps)
+head(fully_evolved)
 ```
 
 ```{r}

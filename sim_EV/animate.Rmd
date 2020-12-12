@@ -16,11 +16,11 @@ library(matrixcalc)
 library(zeallot)
 library(gganimate)
 # Load files
-source(file = "R/matrices.R")
-source(file = "R/eigenvectors.R")
-source(file = "R/simulate.R")
+source(file = "../R/matrices.R")
+source(file = "../R/eigenvectors.R")
+source(file = "../R/simulate.R")
 # Duplicate of simulate but with animation friendly version of functions
-source(file = "R/animate.R")
+source(file = "../R/animate.R")
 ```
 
 ```{r, echo = F}
