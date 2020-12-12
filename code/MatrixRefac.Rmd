@@ -41,12 +41,12 @@ RM_normal <- function(M, normal_args = c(0,1), symm = F){
 # Set seed
 set.seed(23)
 # Set parameters
-M <- 4
+M <- 15
 mu <- 0
 sd <- 1
 normal_args <- c(mu, sd)
 # Generate matrix
-P <- RM_normal(M, normal_args, symm = T)
+P <- RM_normal(M, normal_args, symm = F)
 P
 paste("Matrix is symmetric: ",isSymmetric(P),sep="")
 ```
@@ -147,6 +147,7 @@ set.seed(23)
 # Set parameters
 M <- 3
 # Generate matrix
+# Need not be symmetric : fix laater
 P <- RM_trid(M)
 P
 paste("Matrix is symmetric: ",isSymmetric(P),sep="")

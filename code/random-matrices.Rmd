@@ -29,7 +29,7 @@ M <- 10
 
 ```{r, cache=T}
 set.seed(23)
-P <- RM_stoch(M, row_fn = r_zeros)
+P <- RM_stoch(M, sparsity = T)
 if(bool_plot){eigen_plot(P, loud = bool_loud, "Stochastic")}
 ```
 
@@ -39,7 +39,7 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Stochastic")}
 
 ```{r, cache=T}
 set.seed(23)
-P <- RM_symm_stoch(M, row_fn = r_zeros)
+P <- RM_stoch(M, symm = T)
 if(bool_plot){eigen_plot(P, loud = bool_loud, "Symmetric Stochastic")}
 ```
 
@@ -49,7 +49,7 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Symmetric Stochastic")}
 
 ```{r, cache=T}
 set.seed(23)
-P <- RM_symm_norm(M, mu = 0, sd = 1)
+P <- RM_normal(M, normal_args = c(0,1), symm = T)
 if(bool_plot){eigen_plot(P, loud = bool_loud, "Normal Symmetric")}
 ```
 
@@ -60,7 +60,6 @@ if(bool_plot){eigen_plot(P, loud = bool_loud, "Normal Symmetric")}
 ```{r, cache=T}
 set.seed(23)
 P <- RM_trid(M)
-P
 if(bool_plot){eigen_plot(P, loud = bool_loud, "Tridiagonal")}
 ```
 

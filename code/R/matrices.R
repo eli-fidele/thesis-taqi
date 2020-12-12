@@ -142,5 +142,3 @@ is_row_stochastic <- function(P){
   }
   !(F %in% row_is_stoch)
 }
-
-

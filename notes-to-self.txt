@@ -1,1 +1,0 @@
-Need to write bash script that propagates /R/ folder to the list of code directories

@@ -33,11 +33,15 @@ append_ratios_3d <- function(curr_array){
   r_x1 <- rep(1, nrow(curr_array))
   r_x2 <- rep(1, nrow(curr_array))
   r_x3 <- rep(1, nrow(curr_array))
+  # extract vectors
+  x1s <- curr_array$x1
+  x2s <- curr_array$x2
+  x3s <- curr_array$x3
   for(i in 2:nrow(curr_array)){
     # Find ratios between one step to the other for each variable
-    r_x1[i] <- curr_array$x1[i] / curr_array$x1[i - 1]
-    r_x2[i] <- curr_array$x2[i] / curr_array$x2[i - 1]
-    r_x3[i] <- curr_array$x3[i] / curr_array$x3[i - 1]
+    r_x1[i] <- x1s[i] / x1s[i - 1]
+    r_x2[i] <- x2s[i] / x2s[i - 1]
+    r_x3[i] <- x3s[i] / x3s[i - 1]
   }
   cbind(curr_array, r_x1, r_x2, r_x3)
 }
@@ -45,10 +49,13 @@ append_ratios_3d <- function(curr_array){
 append_ratios_2d <- function(curr_array){
   r_x1 <- rep(1, nrow(curr_array))
   r_x2 <- rep(1, nrow(curr_array))
+  # extract vectors
+  x1s <- curr_array$x1
+  x2s <- curr_array$x2
   for(i in 2:nrow(curr_array)){
     # Find ratios between one step to the other for each variable
-    r_x1[i] <- curr_array$x1[i] / curr_array$x1[i - 1]
-    r_x2[i] <- curr_array$x2[i] / curr_array$x2[i - 1]
+    r_x1[i] <- x1s[i] / x1s[i - 1]
+    r_x2[i] <- x2s[i] / x2s[i - 1]
   }
   cbind(curr_array, r_x1, r_x2)
 }

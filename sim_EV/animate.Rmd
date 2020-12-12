@@ -43,7 +43,7 @@ set.seed(23)
 # Set parameters
 M <- 2
 # Generate matrix
-P <- RM_stoch(M, symm = T, sparsity = F)
+P <- RM_stoch(M, symm = F, sparsity = F)
 if(bool_loud){P}
 
 ################################
@@ -172,7 +172,7 @@ batch_animation2_3 <- plot_13 + transition_time(time = time)
 
 ```{r}
 # Set me to true!
-bool_animate1 <- T
+bool_animate1 <- F
 if(bool_animate1){batch_animation2_1}
 ```
 
@@ -184,7 +184,7 @@ if(bool_animate2){batch_animation2_2}
 
 ```{r}
 # Set me to true!
-bool_animate3 <- T
+bool_animate3 <- F
 if(bool_animate3){batch_animation2_3}
 ```
 

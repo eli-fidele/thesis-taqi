@@ -63,13 +63,6 @@ steps <- 50
 evolved_batch <- evolve_batch(batch, steps, with_steps = T)
 if(bool_loud){head(evolved_batch)}
 
-# use numerical derivatives compenentwise to study convergence
-#b1 <- element_array(evolved_batch, 1)
-
-# Extract M (remove time and index columns)
-#M <- ncol(curr_array) - 2
-# Until generalization for any M, we do this manully for 1 and 2
-
 #evolve batch ratios
 evolved_batch <- append_ratios_2d(evolved_batch)
 # Remove first row (degenerate values)
@@ -81,8 +74,18 @@ curr_array <- time_array(curr_array, at_time = steps)
 curr_array <- time_array(curr_array, at_time = steps)
 ```
 
+```{r}
+# use numerical derivatives compenentwise to study convergence
+#b1 <- element_array(evolved_batch, 1)
+
+# Extract M (remove time and index columns)
+#M <- ncol(curr_array) - 2
+# Until generalization for any M, we do this manully for 1 and 2
+
+```
+
 
 ```{r}
-ggplot(data = curr_array, mapping = aes(x = r_x1, y = r_x2, color = time)) + geom_point()
+#ggplot(data = evolved_batch, mapping = aes(x = r_x1, y = r_x2, color = time)) + geom_point()
 ```
 
