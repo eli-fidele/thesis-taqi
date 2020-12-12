@@ -7,3 +7,8 @@
 - Fix symmetric parameters for RM_stoch, RM_normal, RM_trid
 - Fix stochastic parameters for Rm_Erdos
 - Write general function for any M \in N yielding the r_xk for all k in evolution_batches
+
+* Evolution Batches
+- Analyze the velocity of convergence
+- Classify each batch element to the eigenvalues it eventually converges to (or the lack thereof)
+- Perform PCA on Stochastic Matrices (Singualar Value Decomposition) and try to leverage isomorphism to random walks on a graph
