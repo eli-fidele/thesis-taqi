@@ -4,16 +4,17 @@
 #=================================================================================#
 
 RM_normal <- function(M, normal_args = c(0,1), symm = F){
+  # Extract parameters
   mu <- normal_args[1]
   sd <- normal_args[2]
-  P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
-  # fill rows
+  # Create [M x M] transition matrix
+  P <- matrix(rep(NA, M * M), ncol = M)  
+  # Generate rows
   for(i in 1:M){
     P[i,] <- rnorm(n = M, mean = mu, sd = sd)
   }
-  if(symm == T){
-    P[lower.tri(P)] <- P[upper.tri(P)]
-    }
+  # Make symmetric if prompted
+  if(symm == T){P <- equalize_triangles(P)}
   # Return the matrix
   P
 }
@@ -26,8 +27,15 @@ RM_stoch <- function(M, symm = F, sparsity = F){
   for(i in 1:M){P[i,] <- row_fn(M)}
   # Make symmetric (if prompted)
   if(symm == T){
-    # Add transpose to make it symmetric
-    P[lower.tri(P)] <- P[upper.tri(P)]
+    # Equalize triangles
+    P <- equalize_triangles(P)
+    # Nullify diagonal
+    diag(P) <- rep(0, M)
+    # Normalize rows
+    for(i in 1:nrow(P)){
+      row <- P[i, ]
+      P[i,] <- row/sum(row)
+    }
     # Set diagonal such that rows sum to 1
     diag <- rep(0, ncol(P))
     for(i in 1:nrow(P)){
@@ -91,10 +99,38 @@ r_zeros <- function(M){
   prob/sum(prob) # normalize
 }
 
-
 #=================================================================================#
 #                         RANDOM MATRIX DIAGNOSTICS 
 #=================================================================================#
+
+# Obtain the nondiagonal entries of a row given its row index
+nondiagonal_entries <- function(row, row_index){
+  indices <- data.frame(idx = 1:length(row))
+  indices <- indices %>% filter(idx != row_index)
+  # return the row with the given indices
+  row[as.numeric(indices[,])]
+}
+
+# Vectorize matrix entries to study their distribution
+vectorize_matrix <- function(P){as.vector(P)}
+
+# returns proportion of positive entries of any matrix P
+pos_entries <- function(P){
+  pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))
+  pos_entries/(length(P))   
+}
+
+#================================================================#
+#              SYMMETRIC RANDOM MATRIX DIAGNOSTICS 
+#================================================================#
+
+# Check if a matrix is symmetric 
+is_symmetric <- function(P){isSymmetric(P)}
+
+normal_params <- function(entries){
+  print(paste("Mean: ",round(mean(entries),3),sep=""))
+  print(paste("Standard Deviation: ",round(sqrt(var(entries)),3),sep=""))
+}
 
 # For a given normal matrix, visualize its entries as a histogram
 visualize_normal_entries <- function(P, normal_args){
@@ -113,25 +149,26 @@ visualize_normal_entries <- function(P, normal_args){
   entries_hist
 }
 
-# Obtain the nondiagonal entries of a row given its row index
-nondiagonal_entries <- function(row, row_index){
-  indices <- data.frame(idx = 1:length(row))
-  indices <- indices %>% filter(idx != row_index)
-  # return the row with the given indices
-  row[as.numeric(indices[,])]
+# Manually make equal the upper triangle and lower triangle of the matrix 
+#(so that it is symmetric about the nondiagonal entries)
+equalize_triangles <- function(P){
+  # Run over entry of the matrix
+  for(i in 1:nrow(P)){
+    for(j in 1:ncol(P)){
+      # Restrict view to one of the triangles (i < j): Lower Triangle
+      if(i < j){
+        # Find relevant entry in the Upper Triangle
+        target_entry <- P[j,i]
+        P[i,j] <- target_entry
+      }
+    }
+  }
+  P
 }
 
-# returns proportion of positive entries of any matrix P
-pos_entries <- function(P){
-  pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))
-  pos_entries/(length(P))   
-}
-
-# Vectorize matrix entries to study their distribution
-vectorize_matrix <- function(P){as.vector(P)}
-
-# Check if a matrix is symmetric 
-is_symmetric <- function(P){isSymmetric(P)}
+#=========================================================================#
+#                 STOCHASTIC RANDOM MATRIX DIAGNOSTICS 
+#=========================================================================#
 
 # Check if a matrix is stochastic
 is_row_stochastic <- function(P){
@@ -143,4 +180,44 @@ is_row_stochastic <- function(P){
   !(F %in% row_is_stoch)
 }
 
+# Print out the sums of each of the rows (to check row-stochasticity)
+row_sums <- function(P){
+  for(i in 1:nrow(P)){
+    row_sum <- sum(P[i,])
+    print(paste("Row ",i,": ",(row_sum),sep=""))
+  }
+}
 
+# Print out the sums of each of the rows (to check row-stochasticity)
+col_sums <- function(P){
+  for(i in 1:ncol(P)){
+    col_sum <- sum(P[,i])
+    print(paste("Col ",i,": ",(col_sum),sep=""))
+  }
+}
+
+#=========================================================================#
+#                         HELPER FUNCTIONS 
+#=========================================================================#
+
+# If a diagonal entry at the i^th vector (row/column) has a negative value, renormalize the row and column of that vector index
+spread_negative_diagonal <- function(P, row_idx){
+  i <- row_idx
+  # Get troubled row
+  row_i <- P[i, ]
+  # Find positive entries
+  POS <- which(row_i > 0)
+  # Spread out the negative diagonal entry across each positive entry
+  diag_entry <- P[i,i]
+  portion <- diag_entry/length(POS)
+  # Renormalize the row by adding portions to positive entries
+  P[i, POS] <- P[i, POS] - portion
+  # Set diagonal to 0 
+  P[i,i] <- 0
+  renormalized <- P[i, ]/sum(P[i, ])
+  # Set column and row to renormalized, nonnegative stochastic row/column pair
+  P[i, ] <- renormalized
+  P[,i] <- t(renormalized)
+  # Return matrix
+  P
+}

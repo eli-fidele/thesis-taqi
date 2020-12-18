@@ -1,0 +1,115 @@
+---
+title: "Refactoring matrices.R"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+# Load files
+source(file = "../R/matrices.R")
+```
+
+```{r, include = F}
+bloud <- T
+bplot <- F
+```
+
+## Stochastic Matrices
+
+### Symmetric Stochastic Matrices
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+M <- 7
+# Generate matrix
+P <- RM_stoch(M, symm = T, sparsity = T)
+if(bloud){P}
+is_row_stochastic(P)
+row_sums(P)
+is_symmetric(P)
+```
+
+```{r}
+# Generate random stochastic matrix of size M, with choice of row function {r_stochastic, r_zeros}
+RM_stoch <- function(M, symm = F, sparsity = F, tune_D = F){
+  P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
+  if(sparsity){row_fn <- r_zeros} else {row_fn <- r_stochastic} # choose row function
+  # Generate rows
+  for(i in 1:M){P[i,] <- row_fn(M)}
+  # Make symmetric (if prompted)
+  if(symm == T){
+    # Add Transpose
+    P <- (P + t(P))/2
+    # Set diagonal such that rows sum to 1
+    diag <- rep(0, ncol(P))
+    for(i in 1:nrow(P)){
+      row <- P[i, ]
+      diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
+    }
+    diag(P) <- diag
+    # Retune the diagonals in case any were negative
+    if(tune_D){P <- propogate_diagonal(P)}
+  }
+  # Return the matrix
+  P
+}
+
+# If a diagonal entry at the i^th vector (row/column) has a negative value, renormalize the row and column of that vector index
+spread_negative_diagonal <- function(P, row_idx){
+  i <- row_idx
+  # Get troubled row
+  row_i <- P[i, ]
+  # Find positive entries
+  POS <- which(row_i > 0)
+  # Spread out the negative diagonal entry across each positive entry
+  diag_entry <- P[i,i]
+  portion <- diag_entry/length(POS)
+  # Renormalize the row by adding portions to positive entries
+  P[i, POS] <- P[i, POS] + portion
+  # Set diagonal to 0 
+  P[i,i] <- 0
+  renormalized <- P[i, ]/sum(P[i, ])
+  # Set column and row to renormalized, nonnegative stochastic row/column pair
+  P[i, ] <- renormalized
+  P[,i] <- t(renormalized)
+  # Return matrix
+  P
+}
+
+# Check for negative diagonal entries then repair if needed
+retune_diagonal <- function(P){
+  for(i in 1:nrow(P)){
+    if(P[i,i] < 0){
+      P <- spread_negative_diagonal(P, row_idx = i)
+    }
+  }
+  P
+}
+```
+
+```{r}
+DSS <- function(P, idx){
+  diff <- 1 - sum(P[idx, ])
+  diff
+}
+```
+
+```{r}
+DSS(P_, 5)
+```
+
+
+```{r}
+P
+P_ <- spread_negative_diagonal(P, 7)
+P_
+row_sums(P_)
+col_sums(P_)
+```

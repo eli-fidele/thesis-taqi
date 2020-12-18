@@ -1,0 +1,97 @@
+---
+title: "Refactoring matrices.R"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+# Load files
+source(file = "../R/matrices.R")
+```
+
+```{r, include = F}
+bloud <- T
+bplot <- F
+```
+
+## Stochastic Matrices
+
+### Symmetric Stochastic Matrices
+
+```{r}
+# Set seed
+set.seed(23)
+# Set parameters
+M <- 7
+# Generate matrix
+P <- RM_stoch(M, symm = T, sparsity = T)
+if(bloud){P}
+is_row_stochastic(P)
+row_sums(P)
+is_symmetric(P)
+```
+
+```{r}
+retune_rows <- function(P){
+  M <- ncol(P)
+  for(i in 1:M){
+    # Start at M-1 index
+    curr_idx <- M - i
+    rows_counted <- (curr_idx + 1):M
+    # Tune row w.r.t previously tuned rows
+    P <- tune_row(P, curr_idx)
+  }
+  # Set diagonal such that rows sum to 1
+  diag <- rep(0, ncol(P))
+  for(i in 1:nrow(P)){
+    row <- P[i, ]
+    diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
+  }
+  diag(P) <- diag
+  P
+}
+
+tune_row <- function(P, curr_idx, b = T){
+  cols_counted <- (1 + curr_idx):M
+  if(b){print(cols_counted)}
+  #sum(P[i,rows_counted])
+  for(i in 1:nrow(P)){
+    current_sum <- sum(P[i, cols_counted])
+    #print(current_sum)
+    allowed_sum <- 1 - current_sum
+    #print(allowed_sum)
+    rem_cols <- 1:curr_idx
+    P[i, rem_cols] <- P[i, rem_cols]*allowed_sum
+    #print(P[i, rem_cols])
+    P[rem_cols, i] <- t(P[i, rem_cols])
+  }
+  P
+}
+
+```
+
+```{r}
+# Generate random stochastic matrix of size M, with choice of row function {r_stochastic, r_zeros}
+RM_stoch <- function(M, symm = F, sparsity = F, tune_D = F){
+  P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
+  if(sparsity){row_fn <- r_zeros} else {row_fn <- r_stochastic} # choose row function
+  # Generate rows
+  for(i in 1:M){P[i,] <- row_fn(M)}
+  # Make symmetric (if prompted)
+  if(symm == T){
+    # Add Transpose
+    P <- equalize_triangles(P)
+    # Retune the rows
+    P <- retune_rows(P)
+  }
+  # Return the matrix
+  P
+}
+```
+
+
