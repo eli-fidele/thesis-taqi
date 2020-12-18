@@ -20,30 +20,18 @@ RM_normal <- function(M, normal_args = c(0,1), symm = F){
 }
 
 # Generate random stochastic matrix of size M, with choice of row function {r_stochastic, r_zeros}
-RM_stoch <- function(M, symm = F, sparsity = F){
+RM_stoch <- function(M, symm = F, sparsity = F, opt1 = T){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
   if(sparsity){row_fn <- r_zeros} else {row_fn <- r_stochastic} # choose row function
   # Generate rows
   for(i in 1:M){P[i,] <- row_fn(M)}
   # Make symmetric (if prompted)
   if(symm == T){
-    # Equalize triangles
-    P <- equalize_triangles(P)
-    # Nullify diagonal
-    diag(P) <- rep(0, M)
-    # Normalize rows
-    for(i in 1:nrow(P)){
-      row <- P[i, ]
-      P[i,] <- row/sum(row)
-    }
-    # Set diagonal such that rows sum to 1
-    diag <- rep(0, ncol(P))
-    for(i in 1:nrow(P)){
-      row <- P[i, ]
-      diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
-    }
-    diag(P) <- diag
-    }
+    # Add Transpose
+    if(opt1){P <- equalize_triangles(P)}
+    # Retune the rows
+    P <- retune_rows(P)
+  }
   # Return the matrix
   P
 }
@@ -102,11 +90,6 @@ r_zeros <- function(M){
 #=================================================================================#
 #                         RANDOM MATRIX DIAGNOSTICS 
 #=================================================================================#
-
-# Visualize the entries of a matrix as a histrogram
-visualize_entries <- function(P){
-  ggplot() + geom_histogram(data = data.frame(x = vectorize_matrix(P)), aes(x = x))
-  }
 
 # Obtain the nondiagonal entries of a row given its row index
 nondiagonal_entries <- function(row, row_index){
@@ -205,24 +188,36 @@ col_sums <- function(P){
 #                         HELPER FUNCTIONS 
 #=========================================================================#
 
-# If a diagonal entry at the i^th vector (row/column) has a negative value, renormalize the row and column of that vector index
-spread_negative_diagonal <- function(P, row_idx){
-  i <- row_idx
-  # Get troubled row
-  row_i <- P[i, ]
-  # Find positive entries
-  POS <- which(row_i > 0)
-  # Spread out the negative diagonal entry across each positive entry
-  diag_entry <- P[i,i]
-  portion <- diag_entry/length(POS)
-  # Renormalize the row by adding portions to positive entries
-  P[i, POS] <- P[i, POS] - portion
-  # Set diagonal to 0 
-  P[i,i] <- 0
-  renormalized <- P[i, ]/sum(P[i, ])
-  # Set column and row to renormalized, nonnegative stochastic row/column pair
-  P[i, ] <- renormalized
-  P[,i] <- t(renormalized)
-  # Return matrix
+retune_rows <- function(P){
+  M <- ncol(P)
+  for(i in 1:M){
+    # Start at M-1 index
+    curr_idx <- M - i
+    rows_counted <- (curr_idx + 1):M
+    # Tune row w.r.t previously tuned rows
+    P <- tune_row(P, curr_idx)
+  }
+  # Set diagonal such that rows sum to 1
+  diag <- rep(0, ncol(P))
+  for(i in 1:nrow(P)){
+    row <- P[i, ]
+    diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
+  }
+  diag(P) <- diag
+  P
+}
+
+tune_row <- function(P, curr_idx){
+  cols_counted <- (1 + curr_idx):M
+  #sum(P[i,rows_counted])
+  for(i in 1:nrow(P)){
+    #print(current_sum)
+    allowed_sum <- 1 - sum(P[i, cols_counted])
+    #print(allowed_sum)
+    rem_cols <- 1:curr_idx
+    P[i, rem_cols] <- P[i, rem_cols]*allowed_sum
+    #print(P[i, rem_cols])
+    P[rem_cols, i] <- t(P[i, rem_cols])
+  }
   P
 }

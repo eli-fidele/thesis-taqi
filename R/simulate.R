@@ -19,6 +19,25 @@ extract_evol_array <- function(evolved_batch, index){
 #                            BATCH GENERATION FUNCTIONS
 #=================================================================================#
 
+# Run a batch
+run_batch <- function(P, B = 50, lambda = 1, steps = 25){
+  M <- ncol(P)
+  batch <- make_batch(M, B)
+  evolve_batch(batch, steps, lambda)
+}
+
+# Evolve each element of the batch vector a given number of steps 
+evolve_batch <- function(batch, steps, burn_in = 1, with_steps = T){
+  evol_stack <- evolve(batch[1,], P, steps, burn_in, with_steps) #append first batch element evolution array
+  B <- nrow(batch)
+  for(i in 2:B){ 
+    evol <- evolve(batch[i,], P, steps, burn_in, with_steps) # obtain evol array of current row of the batch 
+    evol_stack <- rbind(evol_stack, evol) # append rest of batch element arrays by stacking
+  }
+  rownames(evol_stack) <- 1:nrow(evol_stack) # standardize row names
+  data.frame(evol_stack)
+}
+
 # Generate a Monte Carlo batch
 make_batch <- function(M, B, lambda = 1){
   batch <- matrix(rep(NA, B * M), nrow = B)  # create [B x M] batch matrix
@@ -26,17 +45,6 @@ make_batch <- function(M, B, lambda = 1){
   for(i in 1:B){batch[i,] <- runif(n = M, min = -lambda, max = lambda)}
   batch <- standardize_colnames(batch) # standardize the column names
   data.frame(batch) # return batch
-}
-
-# Evolve each element of the batch vector a given number of steps 
-evolve_batch <- function(batch, steps, burn_in = 1, with_steps = F){
-  evol_stack <- evolve(batch[1,], P, steps, burn_in, with_steps) #append first batch element evolution array
-  for(i in 2:B){ 
-    evol <- evolve(batch[i,], P, steps, burn_in, with_steps) # obtain evol array of current row of the batch 
-    evol_stack <- rbind(evol_stack, evol) # append rest of batch element arrays by stacking
-  }
-  rownames(evol_stack) <- 1:nrow(evol_stack) # standardize row names
-  data.frame(evol_stack)
 }
 
 #=================================================================================#
