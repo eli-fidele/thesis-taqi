@@ -13,16 +13,8 @@ library(patchwork)
 library(gridExtra)
 library(matrixcalc)
 library(numDeriv)
-# Load files
-source(file = "../R/matrices_n.R")
-source(file = "../R/eigenvectors.R")
-source(file = "../R/animate.R")
-source(file = "../R/simulate.R")
-```
-
-```{r, include = F}
-bloud <- F
-bplot <- F
+# Load header
+source("../R/header.R")
 ```
 
 ## Stochastic Matrices
@@ -35,13 +27,26 @@ bplot <- F
 # Set parameters
 M <- 7
 # Generate matrix
-P <- RM_stoch(M, symm = T, sparsity = F)
+P <- RM_normal(M, normal_args = c(0,1))
 if(bloud){P}
 ```
 
 ```{r}
-batchP <- run_batch(P, 1, steps = 30)
+# Set parameters
+B <- 100
+steps <- 5
+# Evolve batch
+evolved_batch <- run_batch(P, B, steps)
 ```
 
+```{r}
+eigen_frame(P)
+```
+
+
+```{r}
+# Find final elements
+last <- time_array(evolved_batch, at_time = 25)
+```
 
 
