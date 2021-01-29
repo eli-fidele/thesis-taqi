@@ -24,7 +24,7 @@ bool_loud <- T
 bool_animate <- F
 ```
 
-# Eigenvalues of a Symmetric Stochastic Matrix
+# Eigenvalues of a Symmetric Normal Matrix
 
 ```{r, echo = T, cache = T}
 # Set seed
@@ -32,27 +32,46 @@ set.seed(25)
 # Set parameters
 M <- 3
 # Generate matrix
-P <- RM_stoch(M, symm = T, sparsity = F)
+P <- RM_stoch(M, symm = T)
 P
 # Run a batch
-batch <- run_batch(P, B = 100, steps = 50, final = TRUE)
-head(batch)
+batch <- make_batch(M, B = 200, lambda = 10, complex = FALSE)
 ```
+
 ```{r}
-eigen_crosscheck(batch, P, 0)
+evolved_batch <- evolve_batch(batch, steps = 70, final_time = TRUE)
 ```
 
-
+```{r}
+eigen(P)$values
+```
 
 # Numerical Eigenvalue Analysis
 
+## Sorted Eigenvalues
+
 ```{r}
-eigenvalues <- eval_frame(P)
-eigenvalues
+eigenbatch <- eigen_crosscheck(evolved_batch, P, 0.2)
+d <- ncol(eigenbatch)
+head(eigenbatch[,(d-3):d])
+```
+
+## Initial Plot
+
+```{r}
+# Add eigen_index to initial batch
+eigen_index0 <- eigenbatch$eigen_index
+batch <- cbind(batch,eigen_index0)
+ggplot(batch, mapping = aes(x = x1, y = x2, color = as.factor(eigen_index0))) + geom_point()
 ```
 
 
-```{r}
+## Final Plot
 
+```{r}
+ggplot() + geom_point(data = eigenbatch, mapping = aes(x = x1, y = x3, color = as.factor(eigen_index)))
 ```
+
+
+
 

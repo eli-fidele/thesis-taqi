@@ -1,5 +1,5 @@
 ---
-title: "Computational Simulation of the Eigenvalues of a Stochastic Matrix"
+title: "Spectral Statistics of Normal Random Matrices"
 author: "Ali Taqi"
 output: pdf_document
 #  includes: 
@@ -30,21 +30,20 @@ bool_animate <- F
 ```{r}
 set.seed(23)
 P <- RM_normal(4, normal_args = c(0,1), symm = T)
-batch<- run_batch(P, B = 1000, steps = 20)
+evolved_batch<- run_batch(P, B = 250, steps = 20, final_time = FALSE)
 ```
 
 ```{r}
-eigen(P)$values
+eigenvalues <- eigen(P)$values
+eigenvalues
+log_eigenvalues <- log(eigenvalues)
 ```
 
-```{r}
-final <- time_array(batch, at_time = 20)
-final
-```
+# Ratio Visualization
 
 ```{r}
-M <- 4
-ratios <- batch[,5:10]
+ratios <- extract_ratios(evolved_batch)
+log_ratios <- log(abs(ratios))
 ```
 
 ```{r}
@@ -54,14 +53,66 @@ ratios <- batch[,5:10]
 #ggplot() + geom_point(data=ratios, aes(x=time, y= r_x4, color = element_index))
 ```
 
-```{r}
-ggplot() + geom_histogram(data=ratios, aes(x= r_x1, fill = time)) +xlim(c(-13,13))
-ggplot() + geom_histogram(data=ratios, aes(x= r_x2, fill = time)) +xlim(c(-13,13))
-ggplot() + geom_histogram(data=ratios, aes(x= r_x3, fill = time)) +xlim(c(-13,13))
-ggplot() + geom_histogram(data=ratios, aes(x= r_x4, fill = time)) +xlim(c(-13,13))
+## Linear Ratios
+
+```{r, fig.height = 10}
+plot1 <- ggplot() + geom_histogram(data=ratios, aes(x= r_x1, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = eigenvalues[1], color = "blue") + scale_fill_discrete(c("-"))
+plot2 <- ggplot() + geom_histogram(data=ratios, aes(x= r_x2, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
+plot3 <- ggplot() + geom_histogram(data=ratios, aes(x= r_x3, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
+plot4 <- ggplot() + geom_histogram(data=ratios, aes(x= r_x4, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
+grid.arrange(plot1,plot2,plot3,plot4,ncol=1)
 ```
 
+## Log Ratios
 
+```{r, fig.height = 12}
+plot1 <- ggplot() + geom_histogram(data=log_ratios, aes(x= r_x1, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = log_eigenvalues[1], color = "blue") + scale_fill_discrete(c("-"))
+plot2 <- ggplot() + geom_histogram(data=log_ratios, aes(x= r_x2, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = log_eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
+plot3 <- ggplot() + geom_histogram(data=log_ratios, aes(x= r_x3, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = log_eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
+plot4 <- ggplot() + geom_histogram(data=log_ratios, aes(x= r_x4, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = log_eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
+grid.arrange(plot1,plot2,plot3,plot4,ncol=1)
+```
+
+# Eigenvalues of a Symmetric Normal Matrix
+
+```{r, echo = T, cache = T}
+# Set seed
+set.seed(25)
+# Set parameters
+M <- 7
+# Generate matrix
+P <- RM_normal(M, symm = T)
+P
+# Run a batch
+batch <- make_batch(M, B = 200, lambda = 10, complex = FALSE)
+```
+
+```{r}
+evolved_batch <- evolve_batch(batch, steps = 70, final_time = TRUE)
+```
+
+```{r}
+eigen(P)$values
+```
+
+# Numerical Eigenvalue Analysis
+
+## Sorted Eigenvalues
+
+```{r}
+eigenbatch <- eigen_crosscheck(evolved_batch, P, 0.2)
+d <- ncol(eigenbatch)
+head(eigenbatch[,(d-3):d])
+```
+
+## Initial Plot
+
+```{r}
+# Add eigen_index to initial batch
+eigen_index0 <- eigenbatch$eigen_index
+batch <- cbind(batch,eigen_index0)
+ggplot(batch, mapping = aes(x = x1, y = x2, color = as.factor(eigen_index0))) + geom_point()
+```
 
 
 

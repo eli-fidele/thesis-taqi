@@ -4,16 +4,12 @@
 #=================================================================================#
 
 # Generate and evolve a batch of points for a given matrix P 
-run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE, final = TRUE){
+run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE, final_time = TRUE){
   M <- ncol(P)
   # Make the batch
-  batch <- make_batch(M, B)
-  # Evolve the batch
-  evolved_batch <- evolve_batch(batch, steps, lambda)
-  # Append the intermediate ratios if prompted
-  if(with_ratios){evolved_batch <- append_ratios(evolved_batch)}
-  if(final){evolved_batch <- time_array(evolved_batch, at_time = steps)} # If prompted, just return the array at the final time 
-  evolved_batch
+  batch <- make_batch(M, B, lambda)
+  # Evolve the batch and return it
+  evolve_batch(batch, steps, with_ratios = with_ratios, final_time = final_time)
 }
 
 # Experimental function; Burn in quickly to save time (for ratio analysis)
@@ -33,7 +29,7 @@ quickrun_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE
 #=================================================================================#
 
 # Evolve each element of the batch by a given number of steps and return the evolved stack of arrays
-evolve_batch <- function(batch, steps, burn_in = 1){
+evolve_batch <- function(batch, steps, burn_in = 1, with_ratios = TRUE, final_time = FALSE){
   evolved_stack <- evolve(batch[1,], P, steps, burn_in) # Initialize by append first batch element's evolution array
   B <- nrow(batch) # Get number of batch elements
   for(i in 2:B){ 
@@ -42,6 +38,8 @@ evolve_batch <- function(batch, steps, burn_in = 1){
   }
   rownames(evolved_stack) <- 1:nrow(evolved_stack) # Standardize row names
   evolved_stack <- indexed_batch(evolved_stack, steps) # Index the batch elements 
+  if(with_ratios){evolved_stack <- append_ratios(evolved_stack)} # Append ratios if prompted
+  if(final_time){evolved_stack <- time_array(evolved_stack, at_time = steps)} # If prompted, return the array at just the final time 
   data.frame(evolved_stack)
 }
 
@@ -130,7 +128,7 @@ indexed_batch <- function(evolved_batch, steps){
   for(i in 1:nrow(evolved_batch)){element_index[i] <- 1 + floor((i-1)/(steps+1))}
   # only append index column if it is not there already
   if(!("element_index" %in% colnames(evolved_batch))){evolved_batch <- cbind(evolved_batch,element_index)}
-  evolved_batch
+  data.frame(evolved_batch)
 }
 
 standardize_colnames <- function(array, prefix = ""){

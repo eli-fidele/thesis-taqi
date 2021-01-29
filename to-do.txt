@@ -7,8 +7,13 @@ In analyze.R, try to use which() instead of the dplyr filter for filtering evolu
 
 write code to generate spectrum of a random matrix ensemble
 
+in EVC_stoch,  add code to generate complex eigenbtach initial plots (batch pooitnts sorted on the complex plane by their eigen_index)
 
+make a row r_xi histogram plot function (using help from extract_ratios).
 
+figure out the deal with matrices_n.R?
+
+figure out how to add ggtitle to grid of histograms in EVC_normal.Rmd in SMEV
 
 -Visualization
 
