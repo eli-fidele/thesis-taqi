@@ -44,6 +44,13 @@ evec_frame <- function(P){
 
 
 #=================================================================================#
+#                               HELPER FUNCTIONS
+#=================================================================================#
+
+# Read in the eigenvalue in the Kth row from a eigenvalue array and return a numerical
+read_eigenvalue <- function(eigenvalues, K){complex(real = eigenvalues[K,1], imaginary = eigenvalues[K,2])}
+
+#=================================================================================#
 #                             EIGENFRAME PLOTTING
 #=================================================================================#
 

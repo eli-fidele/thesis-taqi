@@ -15,12 +15,9 @@ library(matrixcalc)
 library(numDeriv)
 # Load files
 source(file = "../R/matrices.R")
-source(file = "../R/eigenvectors.R")
+source(file = "../R/eigen.R")
 source(file = "../R/simulate.R")
 source(file = "../R/analyze.R")
-```
-
-```{r, echo = F}
 # global parameters
 bool_plot <- T
 bool_loud <- T
@@ -30,68 +27,32 @@ bool_animate <- F
 # Eigenvalues of a Symmetric Stochastic Matrix
 
 ```{r, echo = T, cache = T}
-
-################################
-### Step 0: Setup the matrix ###
-################################
-
 # Set seed
 set.seed(25)
 # Set parameters
-M <- 2
+M <- 3
 # Generate matrix
 P <- RM_stoch(M, symm = T, sparsity = F)
-if(bool_loud){P}
-
-################################
-#### Step 1: Get the batch ####
-################################
-
-# Set batch parameters
-B <- 100
-# Create batch
-batch <- make_batch(M = M, B = B)
-if(bool_loud){head(batch)}
-
-##################################
-#### Step 2: Evolve the batch ####
-##################################
-
-# Set evolution parameters
-steps <- 50
-# Evolve and index batch
-evolved_batch <- evolve_batch(batch, steps, with_steps = T)
-if(bool_loud){head(evolved_batch)}
-
-# add indices
-evolved_batch <- indexed_batch(evolved_batch, steps)
-#evolve batch ratios
-evolved_batch <- append_ratios(evolved_batch)
-# Remove first row (degenerate values)
-curr_array <- evolved_batch[2:nrow(evolved_batch),]
-curr_array <- time_array(curr_array, at_time = steps)
+P
+# Run a batch
+batch <- run_batch(P, B = 100, steps = 50, final = TRUE)
+head(batch)
+```
+```{r}
+eigen_crosscheck(batch, P, 0)
 ```
 
-\newpage
 
-```{r, echo = T}
 
-###################################
-#### Step 3: Analyze the batch ####
-###################################
-
-# Analyze batch elements at the last step (full evolution)
-fully_evolved <- time_array(curr_array, at_time = steps)
-head(fully_evolved)
-```
+# Numerical Eigenvalue Analysis
 
 ```{r}
-# use numerical derivatives compenentwise to study convergence
-#b1 <- element_array(evolved_batch, 1)
+eigenvalues <- eval_frame(P)
+eigenvalues
+```
 
-# Extract M (remove time and index columns)
-#M <- ncol(curr_array) - 2
 
-#ggplot(data = evolved_batch, mapping = aes(x = r_x1, y = r_x2, color = time)) + geom_point()
+```{r}
+
 ```
 

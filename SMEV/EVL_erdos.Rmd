@@ -15,7 +15,7 @@ library(matrixcalc)
 library(gganimate)
 # Load files
 source(file = "../R/matrices.R")
-source(file = "../R/eigenvectors.R")
+source(file = "../R/eigen.R")
 source(file = "../R/simulate.R")
 source(file = "../R/analyze.R")
 # global parameters

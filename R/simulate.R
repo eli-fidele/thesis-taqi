@@ -4,15 +4,28 @@
 #=================================================================================#
 
 # Generate and evolve a batch of points for a given matrix P 
-run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE){
+run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE, final = TRUE){
   M <- ncol(P)
   # Make the batch
   batch <- make_batch(M, B)
   # Evolve the batch
   evolved_batch <- evolve_batch(batch, steps, lambda)
-  # Add indexing if prompted
-  if(with_ratios){evolved_batch <- append_ratios(evolved_batch)} # Append the intermediate ratios
+  # Append the intermediate ratios if prompted
+  if(with_ratios){evolved_batch <- append_ratios(evolved_batch)}
+  if(final){evolved_batch <- time_array(evolved_batch, at_time = steps)} # If prompted, just return the array at the final time 
   evolved_batch
+}
+
+# Experimental function; Burn in quickly to save time (for ratio analysis)
+quickrun_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE){
+  M <- ncol(P)
+  # Make the batch
+  batch <- make_batch(M, B)
+  # Current experimental K
+  K <- 4
+  evolved_batch <- evolve_batch(batch, steps = K, burn_in = ceiling(steps/K))
+  # Returns final element only
+  time_array(evolved_batch, at_time = K)
 }
 
 #=================================================================================#

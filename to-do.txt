@@ -1,3 +1,15 @@
+
+TO DO FOR REAL:
+
+fix the quick batch function so that it gives Q^n / Q^(n-1). and not just some funky burn in ratio stuff
+
+In analyze.R, try to use which() instead of the dplyr filter for filtering evolution arrays, this may save ALOT of time.
+
+write code to generate spectrum of a random matrix ensemble
+
+
+
+
 -Visualization
 
 - Use latex2exp to generate better labelled eigenplots (r_i) 
