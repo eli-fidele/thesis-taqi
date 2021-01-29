@@ -2,6 +2,12 @@
 # This script includes functions that help extract and plot eigenvalues of matrices.
 
 #=================================================================================#
+#                              SPECTRUM FUNCTIONS
+#=================================================================================#
+
+
+
+#=================================================================================#
 #                             EIGENFRAME FUNCTIONS
 #=================================================================================#
 
@@ -24,7 +30,7 @@ eval_frame <- function(P, indexed = TRUE){
 # Returns a tidied dataframe of the eigenvectors of a random matrix
 evec_frame <- function(P){
   M <- length(P[1,])
-  eigenvectors <- data.frame(eigen(P)[2])
+  eigenvectors <- data.frame(eigen(P)$vectors)
   complex <- matrix(rep(NA,3*M*M), ncol = 3) # set 3 to hold (re,im) pair and whose row it belongs to
   colnames(complex) <- c("Re","Im","row_i")
   for(i in 1:M){

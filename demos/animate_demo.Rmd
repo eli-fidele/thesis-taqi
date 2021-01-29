@@ -17,9 +17,8 @@ library(zeallot)
 library(gganimate)
 # Load files
 source(file = "../R/matrices.R")
-source(file = "../R/eigenvectors.R")
+source(file = "../R/eigen.R")
 source(file = "../R/simulate.R")
-# Duplicate of simulate but with animation friendly version of functions
 source(file = "../R/analyze.R")
 ```
 
@@ -67,6 +66,7 @@ evolved_batch <- evolve_batch(batch, steps, with_steps = T)
 # Index the batch 
 evolved_batch <- indexed_batch(evolved_batch, steps)
 if(bool_loud){head(evolved_batch)}
+
 ####################################
 #### Step 3: Animate the batch! ####
 ####################################
@@ -79,16 +79,17 @@ batch_scatterplot1 <- batch_2d_plot(batch_data1)
 batch_animation1 <- batch_scatterplot1 + transition_time(time = time)
 
 # Set me to true!
-bool_animate <- T
+bool_animate <- F
 if(bool_animate){batch_animation1}
 ```
 
 ```{r}
-anim_save(animation = batch_animation1, "stochastic.gif")
+eigenvalues <- eval_frame(P)
 ```
 
 ```{r}
-batch_2d_customplot(batch_data = time_array(batch_data1, at_time = 0), 1,2)
+#anim_save(animation = batch_animation1, "stochastic.gif")
+#batch_2d_customplot(batch_data = time_array(batch_data1, at_time = 0), 1,2)
 ```
 
 
@@ -128,13 +129,7 @@ if(bool_loud){head(batch)}
 # Set evolution parameters
 steps <- 10
 # Evolve batch
-evolved_batch <- evolve_batch(batch, steps, with_steps = T)
-# Index the batch
-evolved_batch <- indexed_batch(evolved_batch, steps)
-
-```
-
-```{r}
+evolved_batch <- evolve_batch(batch, steps)
 
 ####################################
 #### Step 3: Analyze the batch! ####
