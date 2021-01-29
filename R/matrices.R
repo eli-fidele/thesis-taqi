@@ -65,6 +65,7 @@ RM_trid <- function(M, symm = F){
 # p_sparse is a probability between [0,1) so edges are connected ~ Bern(p) 
 RM_erdos <- function(M, p_sparse, stoch = F){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
+  p <- p_sparse # rename variable
   for(i in 1:M){
     # generate current row
     curr_row <- runif(M,0,1)
@@ -72,7 +73,12 @@ RM_erdos <- function(M, p_sparse, stoch = F){
     num_zeros <- rbinom(1,M,p)
     choices <- sample(1:M, num_zeros) # Isomorphic to Erdos-Renyi graphs!
     curr_row[choices] <- 0
-    if (stoch == T){curr_row <- curr_row/sum(curr_row)} # Normalize if to be stochastic
+    # Normalize if to be stochastic
+    if (stoch == T){
+      if(sum(curr_row) == 0){curr_row <- curr_row} else{
+      curr_row <- curr_row/sum(curr_row)
+      } 
+    }
     # append the row
     P[i,] <- curr_row             
   }

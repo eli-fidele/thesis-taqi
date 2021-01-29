@@ -20,7 +20,7 @@ source(file = "../R/matrices.R")
 source(file = "../R/eigenvectors.R")
 source(file = "../R/simulate.R")
 # Duplicate of simulate but with animation friendly version of functions
-source(file = "../R/animate.R")
+source(file = "../R/analyze.R")
 ```
 
 ```{r, echo = F}
@@ -41,9 +41,9 @@ bool_animate <- F
 # Set seed
 set.seed(23)
 # Set parameters
-M <- 2
+M <- 4
 # Generate matrix
-P <- RM_stoch(M, symm = F, sparsity = F)
+P <- RM_stoch(M, symm = T, sparsity = F)
 if(bool_loud){P}
 
 ################################
@@ -67,11 +67,6 @@ evolved_batch <- evolve_batch(batch, steps, with_steps = T)
 # Index the batch 
 evolved_batch <- indexed_batch(evolved_batch, steps)
 if(bool_loud){head(evolved_batch)}
-
-```
-
-```{r, cache = T}
-
 ####################################
 #### Step 3: Animate the batch! ####
 ####################################
@@ -84,10 +79,18 @@ batch_scatterplot1 <- batch_2d_plot(batch_data1)
 batch_animation1 <- batch_scatterplot1 + transition_time(time = time)
 
 # Set me to true!
-bool_animate <- F
+bool_animate <- T
 if(bool_animate){batch_animation1}
-
 ```
+
+```{r}
+anim_save(animation = batch_animation1, "stochastic.gif")
+```
+
+```{r}
+batch_2d_customplot(batch_data = time_array(batch_data1, at_time = 0), 1,2)
+```
+
 
 # Example 2: Normal Matrix
 
@@ -142,14 +145,6 @@ fully_evolved <- time_array(evolved_batch, at_time = steps)
 fully_evolved
 ```
 
-```{r}
-scalar_12 <- lm(formula = x1 ~ x2, data = fully_evolved)
-summary(scalar_12)
-scalar_13 <- lm(formula = x1 ~ x3, data = fully_evolved)
-summary(scalar_13)
-scalar_23 <- lm(formula = x2 ~ x3, data = fully_evolved)
-summary(scalar_23)
-```
 
 ```{r, cache = T}
 
@@ -172,7 +167,7 @@ batch_animation2_3 <- plot_13 + transition_time(time = time)
 
 ```{r}
 # Set me to true!
-bool_animate1 <- F
+bool_animate1 <- T
 if(bool_animate1){batch_animation2_1}
 ```
 

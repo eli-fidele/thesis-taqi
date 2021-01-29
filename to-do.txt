@@ -12,3 +12,14 @@
 - Analyze the velocity of convergence
 - Classify each batch element to the eigenvalues it eventually converges to (or the lack thereof)
 - Perform PCA on Stochastic Matrices (Singualar Value Decomposition) and try to leverage isomorphism to random walks on a graph
+
+
+
+
+Consider adding normalized option to matrices.R functions
+When we are considering studying eigenmetrics, we should normalize by sqrt(N) to account for increased dimension. (See LecNotes_RMT.pdf)
+
+In matrices_n.R, need to fix stochastic erdos renyi graphs.
+instead, do if row_sum = 0, uniformly choose one of the nodes to have probability 1 in order for true stochasticity. 
+
+Also, for the batch simulations, consider creating an option where the batch elements are valid probability distributions (for the stochastic matrices) and ALSO COMPLEX.!!!

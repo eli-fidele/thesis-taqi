@@ -1,0 +1,71 @@
+---
+title: "Computational Simulation of the Eigenvalues of a Stochastic Matrix"
+author: "Ali Taqi"
+output: pdf_document
+#  includes: 
+#    in_header: preamble.tex
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigenvectors.R")
+source(file = "../R/simulate.R")
+source(file = "../R/analyze.R")
+```
+
+```{r, echo = F}
+# global parameters
+bool_plot <- T
+bool_loud <- T
+bool_animate <- F
+```
+
+# Eigenvalues of a Normal Matrix
+
+```{r}
+set.seed(23)
+P <- RM_normal(4, normal_args = c(0,1), symm = T)
+batch<- run_batch(P, B = 1000, steps = 20)
+```
+
+```{r}
+eigen(P)$values
+```
+
+```{r}
+final <- time_array(batch, at_time = 20)
+final
+```
+
+```{r}
+M <- 4
+ratios <- batch[,5:10]
+```
+
+```{r}
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x1, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x2, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x3, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x4, color = element_index))
+```
+
+```{r}
+ggplot() + geom_histogram(data=ratios, aes(x= r_x1, fill = time)) +xlim(c(-13,13))
+ggplot() + geom_histogram(data=ratios, aes(x= r_x2, fill = time)) +xlim(c(-13,13))
+ggplot() + geom_histogram(data=ratios, aes(x= r_x3, fill = time)) +xlim(c(-13,13))
+ggplot() + geom_histogram(data=ratios, aes(x= r_x4, fill = time)) +xlim(c(-13,13))
+```
+
+
+
+
+
+

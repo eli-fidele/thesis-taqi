@@ -6,7 +6,7 @@
 
 # Find the ratios between the steps for a given element array
 element_ratios <- function(curr_element){
-  # Get number of elements and steps
+  # Get number of dimensions and steps
   M <- ncol(curr_element) - 2
   steps <- nrow(curr_element)
   # Initalize the stack

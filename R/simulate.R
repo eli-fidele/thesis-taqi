@@ -13,8 +13,9 @@ run_batch <- function(P, B = 50, lambda = 1, steps = 25, indexed = T, ratios = T
   # Add indexing if prompted
   if(indexed){
     evolved_batch <- indexed_batch(evolved_batch, steps)
-    # Since ratios are only possible with indexing, nest the ratios argument here
-    if(ratios){evolved_batch <- append_ratios(evolved_batch)}
+    # Since ratios are only possible with indexing, we nest the ratios argument here
+    if(ratios){
+      evolved_batch <- append_ratios(evolved_batch)}
     }
   evolved_batch
 }
@@ -24,8 +25,8 @@ evolve_batch <- function(batch, steps, burn_in = 1, with_steps = T){
   evol_stack <- evolve(batch[1,], P, steps, burn_in, with_steps) #append first batch element evolution array
   B <- nrow(batch)
   for(i in 2:B){ 
-    evol <- evolve(batch[i,], P, steps, burn_in, with_steps) # obtain evol array of current row of the batch 
-    evol_stack <- rbind(evol_stack, evol) # append rest of batch element arrays by stacking
+    evol <- evolve(batch[i,], P, steps, burn_in, with_steps) # Obtain evolution array of current element of the batch 
+    evol_stack <- rbind(evol_stack, evol) # Append the rest of batch element arrays by stacking
   }
   rownames(evol_stack) <- 1:nrow(evol_stack) # standardize row names
   data.frame(evol_stack)
@@ -110,7 +111,7 @@ batch_2d_customplot <- function(batch_data, n1, n2, mat_str = ""){
   ggplot(batch_data, mapping = aes(color = as.factor(element_index))) + 
     geom_point(mapping = aes_string(x = paste("x",n1,sep=""), y = paste("x",n2,sep=""))) +
     theme(legend.position = "none") +
-    labs(title = paste("Evolution of Monte Carlo Batch",mat_str))
+    labs(title = paste("Evolution of a Markov Chain",mat_str))
 }
 
 #plots the evolution arrays of a 2d evolved batch
@@ -118,5 +119,5 @@ batch_2d_plot <- function(batch_data, mat_str = ""){
   ggplot(batch_data, mapping = aes(x = x1, y = x2, color = as.factor(element_index))) + 
     geom_point() +
     theme(legend.position = "none") +
-    labs(title = paste("Evolution of 2D Monte Carlo Batch",mat_str))
+    labs(title = paste("Evolution of a Markov Chain",mat_str))
 }

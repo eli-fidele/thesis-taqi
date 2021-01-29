@@ -17,7 +17,7 @@ library(numDeriv)
 source(file = "../R/matrices.R")
 source(file = "../R/eigenvectors.R")
 source(file = "../R/simulate.R")
-source(file = "../R/animate.R")
+source(file = "../R/analyze.R")
 ```
 
 ```{r, echo = F}
@@ -63,8 +63,10 @@ steps <- 50
 evolved_batch <- evolve_batch(batch, steps, with_steps = T)
 if(bool_loud){head(evolved_batch)}
 
+# add indices
+evolved_batch <- indexed_batch(evolved_batch, steps)
 #evolve batch ratios
-evolved_batch <- append_ratios_2d(evolved_batch)
+evolved_batch <- append_ratios(evolved_batch)
 # Remove first row (degenerate values)
 curr_array <- evolved_batch[2:nrow(evolved_batch),]
 curr_array <- time_array(curr_array, at_time = steps)

@@ -60,7 +60,9 @@ RM_erdos <- function(M, p_sparse, stoch = F){
     num_zeros <- rbinom(1,M,p)
     choices <- sample(1:M, num_zeros) # Isomorphic to Erdos-Renyi graphs!
     curr_row[choices] <- 0
-    if (stoch == T){curr_row <- curr_row/sum(curr_row)} # Normalize if to be stochastic
+    if (stoch == T){
+      curr_row <- curr_row/sum(curr_row)
+      } # Normalize if to be stochastic
     # append the row
     P[i,] <- curr_row             
   }
