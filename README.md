@@ -1,6 +1,6 @@
-# Thesis topic
+# Spectral Statistics of Random Matrices
 
-Topic First Line
+Advisor: Nate Wells
 
 ## Abstract
 
