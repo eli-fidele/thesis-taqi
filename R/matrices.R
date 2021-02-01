@@ -7,7 +7,7 @@ RM_normal <- function(M, normal_args = c(0,1), symm = F){
   # Extract parameters
   mu <- normal_args[1]
   sd <- normal_args[2]
-  # Create [M x M] transition matrix
+  # Create [M x M] matrix
   P <- matrix(rep(NA, M * M), ncol = M)  
   # Generate rows
   for(i in 1:M){
@@ -131,8 +131,24 @@ pos_entries <- function(P){
   pos_entries/(length(P))   
 }
 
+#=========================================================================#
+#                  (SYMMETRIC MATRICES) HELPER FUNCTIONS
+#=========================================================================#
+
+# Manually make equal the upper triangle and lower triangle of the matrix
+equalize_triangles <- function(P){
+  # Run over entry of the matrix
+  for(i in 1:nrow(P)){
+    for(j in 1:ncol(P)){
+      # Restrict view to one of the triangles (i < j): Lower Triangle
+      if(i < j){P[i,j] <- P[j,i]} # Equalize lower and upper triangles
+    }
+  }
+  P # Return Symmetric Matrix
+}
+
 #================================================================#
-#              SYMMETRIC RANDOM MATRIX DIAGNOSTICS 
+#                NORMAL RANDOM MATRIX DIAGNOSTICS
 #================================================================#
 
 # Check if a matrix is symmetric 
@@ -158,23 +174,6 @@ visualize_normal_entries <- function(P, normal_args){
     stat_function(fun = normal_density)
   # Return plot
   entries_hist
-}
-
-# Manually make equal the upper triangle and lower triangle of the matrix 
-#(so that it is symmetric about the nondiagonal entries)
-equalize_triangles <- function(P){
-  # Run over entry of the matrix
-  for(i in 1:nrow(P)){
-    for(j in 1:ncol(P)){
-      # Restrict view to one of the triangles (i < j): Lower Triangle
-      if(i < j){
-        # Find relevant entry in the Upper Triangle
-        target_entry <- P[j,i]
-        P[i,j] <- target_entry
-      }
-    }
-  }
-  P
 }
 
 #=========================================================================#
@@ -210,6 +209,7 @@ col_sums <- function(P){
 #=========================================================================#
 #                         HELPER FUNCTIONS 
 #=========================================================================#
+
 
 # If a diagonal entry at the i^th vector (row/column) has a negative value, renormalize the row and column of that vector index
 spread_negative_diagonal <- function(P, row_idx){

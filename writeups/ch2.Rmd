@@ -33,4 +33,34 @@ $\dfn \textbf{Ergodic Matrix.}$
 \item .
 \end{itemize}
 
+# Notation
 
+Suppose we have a $M \times M$ square matrix $\bf P$ (for some $M \in \mathbb{N}$) on a field $F$. We notate $\mathbf{P} \in \mathcal{M}_F[M^2]$.
+
+Take $\mathbf{P} \in \mathcal{M}_F[M^2]$.
+
+## Structural Properties of Matrices
+
+If $\bf P$ is symmetric, then its upper triangle is equal to the lower triangle.
+
+If $\bf P$ is tridiagonal, then it is a band matrix of width 1.
+
+\bigskip
+
+## Entry-wise Properties of Matrices
+
+If $\bf P$ is row-stochastic, then $\forall i : \sum_j p_{ij} = 1$.
+
+`RM_stoch <- function(M, symm = F, sparsity = F){...}`
+
+\medskip
+
+If $\bf P$ is $\mathcal{N}(\mu,\sigma^2)$, then its entries satisfy $p_{ij} \sim \mathcal{N}(\mu,\sigma^2)$.
+
+`RM_normal <- function(M, normal_args = c(0,1), symm = F){...}`
+
+\medskip
+
+If $\bf P$ is $p-\text{sparse}$, then $\forall i, j \in S_M : p_{ij}/c \sim \text{Bern}(p)$ for some $c \in \mathbb{R}$.
+
+`RM_erdos <- function(M, p_sparse){...}` 
