@@ -1,0 +1,37 @@
+========================================================
+			THESIS LOG
+========================================================
+Thu, 12/11
+Today, we talked about continuing the work on simulating eigenvectors. Some things we talked about include normalizing the eigenvalues w.r.t. the size of the matrix. We need to normalize such data because otherwise the data will be degenerate (for example, for LLN, we normalize sum results by dividing by the number of observations). Interestingly, in Brownian motion, a LLN simulation could be considered Brownian motion if we normalize by sqrt(n)! 
+
+Anyway, we also talked about the isomorphism between Markov Chains and random graphs; more precisely, we considered taking PCA on the vectors and it might be the case that eigenvalues on the individual states and degrees of the nodes on the graph are quite related. We may also consider the Erdos-Renyi graphs.
+
+=======================================================
+Thu, 12/3
+I've came around to simulating the eigenvectors for any given matrix P.
+One problem I've came up with is the potential loss of input distribution parameters when the symm = T argument is there. This is due to the methodology of which we obtain P' = (P*T(P)). Perhaps we could transform our parameters to address this problem.
+========================================================
+Thu, 11/19
+========================================================
+Thu, 11/12
+========================================================
+Thu, 11/5
+This meeting we continued to talk about the analytical solutions for the symmetric matrix eigenvector problem. There seems to be empirical evidence from the MC simulation that there are real eigenvectors, but I will continue seeking the solution for the M = 2, 3 cases and see if we can generally solve this problem.
+
+========================================================
+Thu, 10/22
+This meeting we continued discussing more metrics on analyzing eigenvectors of RM. 
+We are still unsure how R's eigen() function computes eigenvectors and we concluded that it is important, if not helpful, to know how R picks eigenvectors. 
+We also discussed localization and delocalization, and remarked on their analogousness to ridge and lasso regression / l1 and l2 norms respectively! 
+Nate also suggested a book called Matrix Analysis for which I have some reading to do.
+Lastly, we also talked about left and right eigenvectors and asked the question, how do we interpret a left-eigenvalue of 1 (when 1 is the stationary distribution)?
+
+
+My goals are for next time ...
+1) Try to identify R's eigen() algorithm
+2) Look into left and right eigenvector relationships (possible side-by-side plots?)
+3) Look into what it means to have a left-eigenvalue of 1 (when 1 is the stationary distribution) and potentially read Ch.8 of Matrix Analysis.
+========================================================
+
+
+
