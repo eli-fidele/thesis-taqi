@@ -4,24 +4,12 @@
 #=================================================================================#
 
 # Generate and evolve a batch of points for a given matrix P 
-run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE, final_time = TRUE){
+run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE, final_time = FALSE){
   M <- ncol(P)
   # Make the batch
   batch <- make_batch(M, B, lambda)
   # Evolve the batch and return it
-  evolve_batch(batch, steps, with_ratios = with_ratios, final_time = final_time)
-}
-
-# Experimental function; Burn in quickly to save time (for ratio analysis)
-quickrun_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE){
-  M <- ncol(P)
-  # Make the batch
-  batch <- make_batch(M, B)
-  # Current experimental K
-  K <- 4
-  evolved_batch <- evolve_batch(batch, steps = K, burn_in = ceiling(steps/K))
-  # Returns final element only
-  time_array(evolved_batch, at_time = K)
+  evolve_batch(P, batch, steps, with_ratios = with_ratios, final_time = final_time)
 }
 
 #=================================================================================#
@@ -29,7 +17,7 @@ quickrun_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE
 #=================================================================================#
 
 # Evolve each element of the batch by a given number of steps and return the evolved stack of arrays
-evolve_batch <- function(batch, steps, burn_in = 1, with_ratios = TRUE, final_time = FALSE){
+evolve_batch <- function(P, batch, steps, burn_in = 1, with_ratios = TRUE, final_time = FALSE){
   evolved_stack <- evolve(batch[1,], P, steps, burn_in) # Initialize by append first batch element's evolution array
   B <- nrow(batch) # Get number of batch elements
   for(i in 2:B){ 

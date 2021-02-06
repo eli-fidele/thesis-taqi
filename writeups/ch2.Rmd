@@ -22,9 +22,7 @@ header-includes:
 
 $\dfn \textbf{Random Matrix.}$ Suppose we have an arbitrary matrix, $P \in \M_\R[M,N]$ for some $M,N \in \N^+$. Then, we call $P$ a random matrix is all of its entries $p_{ij}$ are random variables.
 
-$\dfn \textbf{Stochastic Matrix}$
-
-$\dfn \textbf{Ergodic Matrix.}$
+$\dfn \textbf{Ergodic Matrix.}$ A matrix is ergodic if it is aperiodic, and positive irreducible.
 
 ## Ergodicity
 

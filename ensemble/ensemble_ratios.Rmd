@@ -1,0 +1,46 @@
+---
+title: "Ensemble Spectrum Testing"
+author: "Ali Taqi"
+date: "2/5/2021"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/simulate.R")
+source(file = "../R/ratios.R")
+source(file = "../R/analyze.R")
+source(file = "../R/ensemble.R")
+# global parameters
+bool_plot <- T
+bool_loud <- T
+bool_animate <- F
+```
+
+```{r}
+set.seed(23)
+RM_args <- list(4)
+batch_args <- list(100)
+#block <- execute_batch(RM_normal,RM_args, batch_args, run_class0)
+```
+
+
+```{r}
+#ratios <- extract_ratios(block)
+#range <- c(-100,100)
+#m <- 0 
+#p1 <- ratio_hist(ratios, 1, m, range)
+#p2 <- ratio_hist(ratios, 2, m, range)
+#p3 <- ratio_hist(ratios, 3, m, range)
+#p4 <- ratio_hist(ratios, 4, m, range)
+#grid.arrange(p1,p2,p3,p4,ncol=2)
+```

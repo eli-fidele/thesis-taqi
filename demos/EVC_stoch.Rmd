@@ -35,11 +35,12 @@ M <- 3
 P <- RM_stoch(M, symm = T)
 P
 # Run a batch
-batch <- make_batch(M, B = 200, lambda = 10, complex = FALSE)
+batch <- make_batch(M = 3, B = 200, lambda = 10, complex = FALSE)
 ```
 
 ```{r}
 evolved_batch <- evolve_batch(batch, steps = 70, final_time = TRUE)
+head(evolved_batch)
 ```
 
 ```{r}
@@ -69,7 +70,7 @@ ggplot(batch, mapping = aes(x = x1, y = x2, color = as.factor(eigen_index0))) + 
 ## Final Plot
 
 ```{r}
-ggplot() + geom_point(data = eigenbatch, mapping = aes(x = x1, y = x3, color = as.factor(eigen_index)))
+ggplot() + geom_point(data = eigenbatch, mapping = aes(x = x1, y = x2, color = as.factor(eigen_index)))
 ```
 
 

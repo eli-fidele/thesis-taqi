@@ -5,14 +5,20 @@
 #                              SPECTRUM FUNCTIONS
 #=================================================================================#
 
-
-
-#=================================================================================#
-#                             EIGENFRAME FUNCTIONS
-#=================================================================================#
+# Returns a tidied dataframe of the eigenvalues of a random matrix
+ensemble_spectrum <- function(ensemble, indexed = TRUE){
+  K <- length(ensemble) # Get size of ensemble
+  spectra <- spectrum(ensemble[[1]]) # Initialize the spectra stack by evaluating the initial matrix
+  # Evaluate the rest of the spectra for the matrices in the ensemble
+  for(i in 2:K){
+    curr <- spectrum(ensemble[[i]])
+    spectra <- rbind(curr,spectra)
+  }
+  spectra # Return the spectra for this ensemble
+}
 
 # Returns a tidied dataframe of the eigenvalues of a random matrix
-eval_frame <- function(P, indexed = TRUE){
+spectrum <- function(P, indexed = TRUE){
   M <- nrow(P) # Obtain dimension
   eval_array <- data.frame(eigen(P)$values) # Get eigenvalues
   eigenvalues <- matrix(rep(NA,2*M), ncol = 2) # Create matrix to hold eigenvalues
@@ -26,6 +32,10 @@ eval_frame <- function(P, indexed = TRUE){
   if(indexed){eigenvalues <- cbind(eigenvalues, data.frame(Index = 1:nrow(eigenvalues)))}
   data.frame(eigenvalues)
 }
+
+#=================================================================================#
+#                             EIGENFRAME FUNCTIONS
+#=================================================================================#
 
 # Returns a tidied dataframe of the eigenvectors of a random matrix
 evec_frame <- function(P){
@@ -55,25 +65,22 @@ read_eigenvalue <- function(eigenvalues, K){complex(real = eigenvalues[K,1], ima
 #=================================================================================#
 
 # Plots the eigenvalues of a given matrix P
-eval_plot <- function(P, mat_type=""){
+spectrum_plot <- function(P, mat_type=""){
   # Check if we have a stack of matrices or singular matrix
   if(nrow(P) == ncol(P)){
-    array <- eval_frame(P)
+    array <- spectrum(P)
   } else{
     array <- P 
   }
   # Plot parameters
   r <- 1
-  r_ep <- r + 0.5
+  ep <- 0.5
   # Plot
   ggplot(array) + 
-    geom_point(aes(x = Re, y = Im)) + 
-    labs(x = "Re", y = "Im", title = paste("Eigenvectors: ",mat_type," Matrix",sep = "")) +
-    xlim(-r_ep,r_ep) + ylim(-r,r) +
+    geom_point(aes(x = Re, y = Im), color = "deepskyblue3") + 
+    labs(x = "Re", y = "Im", title = paste("Spectrum of an ",mat_type,"Ensemble",sep = "")) +
+    xlim(-(r+ep),(r+ep)) + ylim(-r,r) +
     ggforce::geom_circle(aes(x0 = 0, y0 = 0, r = r), color = "steelblue") +
-    scale_color_discrete(name = "Row_i") +
-    scale_x_continuous(name = "Re(r_i)") +
-    scale_y_continuous(name = "Im(r_i)") +
     coord_fixed(ratio = 1) +
     theme(legend.position = "none")
 }

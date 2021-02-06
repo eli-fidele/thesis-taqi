@@ -1,0 +1,73 @@
+---
+title: "Distribution of Entry Ratios in Sequences of Powers of Transition Matrices"
+author: "Ali Taqi"
+date: "2/4/2021"
+output: pdf_document
+header-includes:
+  - \newcommand{\B}{\mathcal{B}}
+  - \newcommand{\Rseq}{\mathcal{R}}
+  - \newcommand{\Seq}{\mathcal{S}}
+  - \newcommand{\F}{\mathbb{F}}
+  - \newcommand{\R}{\mathbb{R}}
+  - \newcommand{\N}{\mathbb{N}}
+  - \newcommand{\onetoM}{1,\dots,M}
+  - \renewcommand{\epsilon}{\varepsilon}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Notation
+
+### Random Batches
+
+Let $\F$ be a field, and fix some $M \in \N$. Let $\B_\lambda \subset \F^M$ be a uniformly random batch of points in $\F^M$ in the $M$-hypercube of length $\lambda$. That is, 
+$$\B_\lambda = \{\vec{x} \mid x_i \sim \text{Unif}(-\lambda, \lambda) \text{ for } i = \onetoM\}$$
+
+$\textbf{Note:}$ If $\F = \mathbb{C}$, then take $\vec{x} \in \B_\lambda$ to mean $\vec{x} = a + bi \text{ where } a,b \sim \text{Unif}(-\lambda,\lambda)$.
+
+### Finite Evolution Sequences
+
+Suppose we sample a random point from $\B_\lambda$ to emulate a random point $\vec{v} \in \F^M$. Additionally, let $Q \in \F^{M \times M}$ be a transition matrix over $\F$. Fixing a maximum power ('time') $T \in \N$, define the evolution sequence of $\vec{v}$ as follows:
+$$\Seq(v, Q, T) = (\alpha_n)_{n=1}^T \text{ where } \alpha_k = {v}Q^k$$
+
+If we do not impose a finiteness constraint on the sequence, we consider powers for $n \in \N$ or $t = \infty$
+
+### Consecutive Ratio Sequences
+
+Accordingly, define the consecutive ratio sequence (CST) of $\vec{v}$ as follows:
+
+$$\Rseq(v, Q, T) = (r_n)_{n=2}^T \text{ where } (r_n)_j = \frac{(\alpha_n)_j}{(\alpha_{n-1})_j} \text{ for } j = \onetoM$$
+
+```{r, echo = F}
+#$$r_n = (r_1,\dots,r_j, \dots,r_M) \in \F^M \text{ where } r_j = \frac{(\alpha_n)_j}{(\alpha_{n-1})_j} \text{ for } j = \onetoM$$
+```
+
+
+In other words, the consecutive ratio sequence of $v$ can be obtained by performing $\textbf{component-wise division}$ on consecutive elements of the evolution sequence of $v$.
+
+### Near Convergence
+
+Because these sequences may never truly converge to eigenvectors of the matrix, we formalize a notion of "near convergence". As a prelimenary, we first define $\varepsilon$-equivalence. Let $\F$ be a field, and fix $\varepsilon \in \R^+$. Suppose we have vectors $v, v' \in \F^M$. Then, $v \sim_\epsilon v'$ if $||v - v'|| < \epsilon$ where $|| \cdot ||$ is the norm on $\F$.
+
+
+Let $\varepsilon \in \R^+$, and suppose we have an evolution sequence $(a[\vec{v}])_n$. Then, $a_n$ $\varepsilon$-converges at $N$ if:
+$$\exists N \in \N : \forall n \geq N \mid  a_N \sim_\epsilon a_n$$
+
+\newpage
+
+## Questions
+
+\begin{enumerate}
+  \item How are the entries of the CRS distributed? Are they normal, and if so, what is its mean?
+  \item Are the entries of the CRS i.i.d as $t \to \infty$?
+  \item For an Erdos-Renyi matrix, is the mixing time $t$ dependent on the parameter $p$?
+  \item What impact does the running time parameter $T$ have on $\sigma$ (the variance of the distribution of the CRS entries)? 
+\end{enumerate}
+
+## Initial Findings
+
+It seems to be the case that the $\textbf{log-transformed}$ entries of the CRS are normally distributed about $\log{\lambda_1}$ where $\lambda_1 = \max(\sigma(Q))$, the largest eigenvalue of $Q$. That is,
+
+$$r_i \sim \mathcal{N}(\ln\lambda_1, \sigma) \text{ for } i = \onetoM$$

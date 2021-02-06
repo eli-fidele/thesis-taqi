@@ -35,7 +35,7 @@ bool_animate <- F
   p_sparsity <- rep(as.factor(p), M)
   # Main loop
   evl_stack <- cbind(evals, p_sparsity)
-  for(i in 1:it){
+  for(i in 2:it){
     P <- RM_erdos(4, p_sparse = p, stoch = T)
     evl_stack <- rbind(evl_stack, cbind(eval_frame(P), p_sparsity))
   }

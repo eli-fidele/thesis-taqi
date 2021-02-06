@@ -1,0 +1,33 @@
+---
+title: "Thesis Direction"
+author: "Ali Taqi"
+date: "2/4/2021"
+output: pdf_document
+---
+
+Currently, the thesis loosely focuses on "Spectral Statistics of Random Matrices". To narrow down our focus, this document will outline and organize the potential avenues of focus.
+
+## Stochastic Matrices
+
+Stochastic matrices are ergodic if they have a limiting distribution that is also the stationary distribution. This is achieved when the matrix represents a Markov chain that is aperiodic and irreducible. 
+
+- Does anything change when the matrix is symmetric?
+
+## Erdos-Renyi Graphs
+
+Walks on an ERG represent a parameterizable class of stochastic matrices. Specifically, we can parameterize its sparsity or connectedness with a parameter $p$. We wish to study the following:
+
+- How does $p$ impact the mixing time of the related Markov Chain?
+- How does $p$ impact the spectrum of the related matrix ensemble?
+
+## Normal Matrices
+
+For normal matrices, we study a hidden markov chain in the CRS. For this, we also ask:
+
+- How do the parameters of the ensemble affect mixing time?
+- What properties exist in the entries of the CRS? Are there any gurantees with normal matrices?
+- Does anything change when the matrix is symmetric?
+
+## Band Matrices
+
+- What about band matrices? (e.g. tridiagonal normal)

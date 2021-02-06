@@ -2,17 +2,16 @@
 author: "Ali Taqi"
 output: pdf_document
 header-includes:
-  - \usepackage{physics}
-  - \newcommand{\bi}{\begin{itemize}}
-  - \newcommand{\ei}{\end{itemize}}
-  - \newcommand{\dfn}{\textbf{(Definition)} \,}
-  - \newcommand{\thm}{\textbf{(Theorem)} \,}
-  - \newcommand{\lma}{\textbf{(Lemma)} \,}
-  - \newcommand{\Prb}{\text{P}}
+  - \usepackage{physics, amsmath, amsthm}
   - \newcommand{\R}{\mathbb{R}}
   - \newcommand{\N}{\mathbb{N}}
   - \newcommand{\M}{\mathcal{M}}
-  - \newcommand{\st}{\, | \,}
+  - \newcommand{\B}{\mathcal{B}}
+  - \newcommand{\F}{\mathbb{F}}
+  - \newcommand{\R}{\mathbb{R}}
+  - \newcommand{\N}{\mathbb{N}}
+  - \newcommand{\onetoM}{1,\dots,M}
+  - \renewcommand{\epsilon}{\varepsilon}
   - \newcommand{\seqX}{X_0,X_1,\dots,X_n}
 ---
 

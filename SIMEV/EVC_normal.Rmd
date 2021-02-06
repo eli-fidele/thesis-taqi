@@ -18,6 +18,7 @@ library(matrixcalc)
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
 source(file = "../R/simulate.R")
+source(file = "../R/ratios.R")
 source(file = "../R/analyze.R")
 # global parameters
 bool_plot <- T
@@ -29,22 +30,20 @@ bool_animate <- F
 
 ```{r}
 set.seed(23)
-P <- RM_normal(4, normal_args = c(0,1), symm = T)
-evolved_batch<- run_batch(P, B = 250, steps = 20, final_time = FALSE)
-```
-
-```{r}
+# Generate a matrix
+P <- RM_normal(4, normal_args = c(3,7), symm = T)
+# Evolve a batch
+evolved_batch<- run_batch(P, B = 250, steps = 10, final_time = FALSE)
+# Get eigenvalues
 eigenvalues <- eigen(P)$values
 eigenvalues
 log_eigenvalues <- log(eigenvalues)
-```
-
-# Ratio Visualization
-
-```{r}
+# Extract ratios
 ratios <- extract_ratios(evolved_batch)
 log_ratios <- log(abs(ratios))
 ```
+
+# Ratio Visualization
 
 ```{r}
 #ggplot() + geom_point(data=ratios, aes(x=time, y= r_x1, color = element_index))
@@ -55,22 +54,35 @@ log_ratios <- log(abs(ratios))
 
 ## Linear Ratios
 
+```{r}
+K <- 1
+m <- eigenvalues[K]
+L <- 1.5*abs(m)
+range = c(23,30)
+```
+
 ```{r, fig.height = 10}
-plot1 <- ggplot() + geom_histogram(data=ratios, aes(x= r_x1, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = eigenvalues[1], color = "blue") + scale_fill_discrete(c("-"))
-plot2 <- ggplot() + geom_histogram(data=ratios, aes(x= r_x2, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
-plot3 <- ggplot() + geom_histogram(data=ratios, aes(x= r_x3, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
-plot4 <- ggplot() + geom_histogram(data=ratios, aes(x= r_x4, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
-grid.arrange(plot1,plot2,plot3,plot4,ncol=1)
+p1 <- ratio_hist(ratios, 1, m, range)
+p2 <- ratio_hist(ratios, 2, m, range)
+p3 <- ratio_hist(ratios, 3, m, range)
+p4 <- ratio_hist(ratios, 4, m, range)
+grid.arrange(p1,p2,p3,p4,ncol=2)
 ```
 
 ## Log Ratios
 
+```{r}
+K <- 1
+m <- log_eigenvalues[K]
+range <- c(-3,7)
+```
+
 ```{r, fig.height = 12}
-plot1 <- ggplot() + geom_histogram(data=log_ratios, aes(x= r_x1, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = log_eigenvalues[1], color = "blue") + scale_fill_discrete(c("-"))
-plot2 <- ggplot() + geom_histogram(data=log_ratios, aes(x= r_x2, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = log_eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
-plot3 <- ggplot() + geom_histogram(data=log_ratios, aes(x= r_x3, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = log_eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
-plot4 <- ggplot() + geom_histogram(data=log_ratios, aes(x= r_x4, fill = "Ratios")) +xlim(c(-13,13)) + geom_vline(xintercept = log_eigenvalues[1], color = "blue")+ scale_fill_discrete(c("-"))
-grid.arrange(plot1,plot2,plot3,plot4,ncol=1)
+p1 <- ratio_hist(log_ratios, 1, m, range)
+p2 <- ratio_hist(log_ratios, 2, m, range)
+p3 <- ratio_hist(log_ratios, 3, m, range)
+p4 <- ratio_hist(log_ratios, 4, m, range)
+grid.arrange(p1,p2,p3,p4,ncol=2)
 ```
 
 # Eigenvalues of a Symmetric Normal Matrix
@@ -100,7 +112,7 @@ eigen(P)$values
 ## Sorted Eigenvalues
 
 ```{r}
-eigenbatch <- eigen_crosscheck(evolved_batch, P, 0.2)
+eigenbatch <- eigen_crosscheck(evolved_batch, P, 0.1)
 d <- ncol(eigenbatch)
 head(eigenbatch[,(d-3):d])
 ```
@@ -114,6 +126,9 @@ batch <- cbind(batch,eigen_index0)
 ggplot(batch, mapping = aes(x = x1, y = x2, color = as.factor(eigen_index0))) + geom_point()
 ```
 
+```{r}
+
+```
 
 
 
