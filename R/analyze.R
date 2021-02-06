@@ -1,32 +1,22 @@
 
 #=================================================================================#
-#                       EVOLUTION ARRAY FILTERING FUNCTIONS
+#                               MIXING TIME ANALYSIS
 #=================================================================================#
 
-# Takes in an evolved batch to return an analysis of the eigenvalue mixing times
-eigen_mixtime <- function(evolved_batch, P, epsilon = 0.1){
-  # Extract the ratio array of the evolved batch
-  ratios <- extract_ratios(evolved_batch)
-  # Get the eigenvalue array
-  eigenvalues <- eval_frame(P)
-  # Create associated eigenvalue index column (with 0 implying no match)
-  eigen_index <- rep(0, nrow(evolved_batch))
-  # Sift through the numerical "eigenvalues" and find potential matches
-  for(i in 1:nrow(ratios)){
-    # Go row by row, ignoring the element index column
-    curr <- ratios[i,2:ncol(ratios)] 
-    # Try to see if any of the eigenvalues fit
-    for(K in 1:nrow(eigenvalues)){
-      curr_eigenvalue <- read_eigenvalue(eigenvalues, K) # Load current eigenvalue as a numerical type for comparison (function in eigen.R)
-      if(candidate_eigenvector(curr, curr_eigenvalue, epsilon)){
-        # If a candidate eigenvector is found, record this in the index column and exit the loop
-        eigen_index[i] <- K
-        break
-      }
-    }
+eigen_mixtime <- function(evolved_batch, batch){
+  # Extract B (number of elements)
+  B <- max(evolved_batch$element_index)
+  # Create initial mixtime vector
+  mixtime <- rep(0, B)
+  # Loop over every element of the batch, finding the mixing time
+  for(i in 1:B){
+    # Extract the classified column of eigen_indices over time
+    seq <- element_array(evolved_batch, index = i)$eigen_index
+    # Find the time such that the eigen_index is non-zero (implying near-convergence)
+    mixtime[i] <- min(which(seq != 0)) - 1
   }
-  # Once the eigenvalue crosscheck is complete, cbind the Index column with the evolved batch
-  cbind(evolved_batch, eigen_index)
+  mixtime[which(mixtime == Inf)] <- NA # Address Inf entries by NA'ing them
+  cbind(batch, mixtime)
 }
 
 #=================================================================================#

@@ -1,0 +1,52 @@
+---
+title: "Computational Simulation of the Eigenvalues of a Erdos-Renyi Matrix"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigenvectors.R")
+source(file = "../R/simulate.R")
+source(file = "../R/analyze.R")
+```
+
+```{r, echo = F}
+# global parameters
+bool_plot <- T
+bool_loud <- T
+bool_animate <- F
+```
+
+# Eigenvalues of a Erdos-Renyi Matrix
+
+```{r}
+set.seed(23)
+P <- RM_erdos(4, p_sparse = 0.5, stoch = F)
+```
+
+```{r}
+evals <- eval_frame(P)
+```
+
+```{r}
+it <- 1000
+evl_stack <- evals
+for(i in 1:it){
+  P <- RM_erdos(4, p_sparse = 0.5, stoch = F)
+  evl_stack <- rbind(evl_stack, eval_frame(P))
+}
+```
+
+```{r}
+eval_plot(evl_stack)
+```
+

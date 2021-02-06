@@ -4,11 +4,11 @@
 #=================================================================================#
 
 # Takes in an **FINAL-TIME** evolved batch to return an analysis of the simluated eigenvalues
-eigen_crosscheck <- function(evolved_batch, P, epsilon = 0.1){
+eigen_classify <- function(evolved_batch, P, epsilon = 0.1){
   # Extract the ratio array of the evolved batch
   ratios <- extract_ratios(evolved_batch)
   # Get the eigenvalue array
-  eigenvalues <- eval_frame(P)
+  eigenvalues <- spectrum(P)
   # Create associated eigenvalue index column (with 0 implying no match)
   eigen_index <- rep(0, nrow(evolved_batch))
   # Sift through the numerical "eigenvalues" and find potential matches
@@ -34,7 +34,7 @@ candidate_eigenvector <- function(vector, eigenvalue, epsilon){
   # Componentwise check on whether each ratio is within epsilon of the eigenvalue
   boolean_vector <- (abs(vector - eigenvalue) < epsilon)
   # If all the values are true, the vector is a candidate
-  !(FALSE %in% boolean_vector)
+  !((FALSE %in% boolean_vector) || (NA %in% boolean_vector))
 }
 
 #=================================================================================#

@@ -21,7 +21,7 @@ execute_batch <- function(RM_mattype, RM_args, batch_args = list(100), execution
   # Return the evolved stack
   stack
 }
-#run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE, final_time = TRUE){
+
 run_class0 <- function(P, batch, stack_args = list(20, TRUE)){
   # Unwind the variables
   steps <- stack_args[[1]]

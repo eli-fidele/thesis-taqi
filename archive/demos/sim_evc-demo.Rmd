@@ -1,0 +1,181 @@
+---
+title: "Computational Eigenvector Simulation"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(ggfortify)
+library(matrixcalc)
+library(zeallot)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigenvectors.R")
+source(file = "../R/simulate.R")
+source(file = "../R/animate.R")
+```
+
+```{r, echo = F}
+# global parameters
+bool_plot <- T
+bool_loud <- F
+```
+
+# Example 1: A Symmetric Stochastic Matrixx
+
+## Step 0: Setup the matrix
+
+```{r, echo = T}
+# Set seed
+set.seed(23)
+# Set parameters
+M <- 2
+mu <- 0
+sd <- 1
+# Generate matrix
+P <- RM_stoch(M, symm = T, sparsity = F)
+```
+
+### The Matrix
+
+```{r, echo = F}
+P
+```
+
+### Eigenvalues of the Symmetric Stochastic Matrix
+
+```{r}
+eigen_frame(P)
+```
+
+
+## Step 1: Get the batch 
+
+```{r}
+# Set batch parameters
+B <- 100
+# Create batch
+batch <- make_batch(M = M, B = B)
+head(batch)
+```
+
+
+## Step 2: Evolve the batch
+
+```{r}
+# Set evolution parameters
+steps <- 20
+# Evolve batch
+evolved_batch <- evolve_batch(batch, steps, with_steps = T)
+head(evolved_batch)
+tail(evolved_batch)
+```
+
+\newpage
+
+## Step 3: Analyze the batch
+
+```{r}
+# Plot the evolution arrays of the batch elements
+batch_data <- evolved_batch
+# 2d plot
+batch_2d_plot(batch_data, "(Symmetric Stochastic Matrix)")
+```
+
+\newpage
+
+# Example 2: A Symmetric Normal Matrix
+
+## Step 0: Setup the matrix
+
+```{r, echo = T}
+# Set seed
+set.seed(6)
+# Set parameters
+M <- 9
+mu <- 0
+sd <- 1
+# Generate matrix
+P <- RM_normal(M, c(mu,sd), symm = T)
+```
+
+### The Matrix
+
+```{r, echo = F}
+P
+```
+
+### The Eigenvalues
+
+```{r}
+eigen_frame(P)
+```
+
+
+## Step 1: Get the batch 
+
+```{r}
+# Set batch parameters
+B <- 100
+# Create batch
+batch <- make_batch(M = M, B = B)
+head(batch)
+```
+
+
+## Step 2: Evolve the batch
+
+```{r}
+# Set evolution parameters
+steps <- 20
+# Evolve batch
+evolved_batch <- evolve_batch(batch, steps, with_steps = T)
+# View
+head(evolved_batch)
+tail(evolved_batch)
+```
+
+\newpage
+
+## Step 3: Analyze the batch
+
+```{r}
+# Plot the evolution arrays of the batch elements
+batch_data <- evolved_batch
+# 3d plot
+batch_3d_plot(batch_data, "(Symmetric Normal Matrix)")
+```
+
+
+```{r}
+set.seed(27)
+M <- 3
+P <- RM_stoch(M, symm = T, sparsity = T)
+# Set batch parameters
+B <- 100
+# Create batch
+batch <- make_batch(M = M, B = B)
+# Set evolution parameters
+steps <- 10
+# Evolve batch
+evolved_batch <- evolve_batch(batch, steps, with_steps = T)
+```
+
+```{r}
+batch_3d_plot(evolved_batch)
+```
+
+```{r}
+#batch_2d_customplot(evolved_batch, n1 = 1, n2 = 2) + transition_time(V4)
+```
+
+
+
+
+

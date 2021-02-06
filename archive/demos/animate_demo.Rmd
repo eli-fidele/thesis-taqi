@@ -1,0 +1,181 @@
+---
+title: "Computational Eigenvector Simulation"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(ggfortify)
+library(matrixcalc)
+library(zeallot)
+library(gganimate)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/simulate.R")
+source(file = "../R/analyze.R")
+```
+
+```{r, echo = F}
+# global parameters
+bool_plot <- T
+bool_loud <- F
+bool_animate <- F
+```
+
+# Example 1: A Symmetric Stochastic Matrix
+
+```{r, echo = T, cache = T}
+
+################################
+### Step 0: Setup the matrix ###
+################################
+
+# Set seed
+set.seed(23)
+# Set parameters
+M <- 4
+# Generate matrix
+P <- RM_stoch(M, symm = T, sparsity = F)
+if(bool_loud){P}
+
+################################
+#### Step 1: Get the batch ####
+################################
+
+# Set batch parameters
+B <- 100
+# Create batch
+batch <- make_batch(M = M, B = B)
+if(bool_loud){head(batch)}
+
+##################################
+#### Step 2: Evolve the batch ####
+##################################
+
+# Set evolution parameters
+steps <- 10
+# Evolve and index batch
+evolved_batch <- evolve_batch(batch, steps, with_steps = T)
+# Index the batch 
+evolved_batch <- indexed_batch(evolved_batch, steps)
+if(bool_loud){head(evolved_batch)}
+
+####################################
+#### Step 3: Animate the batch! ####
+####################################
+
+# Plot the evolution arrays of the batch elements
+batch_data1 <- evolved_batch
+batch_scatterplot1 <- batch_2d_plot(batch_data1)
+
+# Add transition time
+batch_animation1 <- batch_scatterplot1 + transition_time(time = time)
+
+# Set me to true!
+bool_animate <- F
+if(bool_animate){batch_animation1}
+```
+
+```{r}
+eigenvalues <- eval_frame(P)
+```
+
+```{r}
+#anim_save(animation = batch_animation1, "stochastic.gif")
+#batch_2d_customplot(batch_data = time_array(batch_data1, at_time = 0), 1,2)
+```
+
+
+# Example 2: Normal Matrix
+
+```{r, echo = T, cache = T}
+
+################################
+### Step 0: Setup the matrix ###
+################################
+
+# Set seed
+set.seed(23)
+# Set parameters
+M <- 3
+mu <- 0
+sd <- 1
+normal_args <- c(mu, sd)
+# Generate matrix
+P <- RM_normal(M, normal_args)
+if(bool_loud){P}
+
+################################
+#### Step 1: Get the batch ####
+################################
+
+# Set batch parameters
+B <- 100
+# Create batch
+batch <- make_batch(M = M, B = B)
+if(bool_loud){head(batch)}
+
+##################################
+#### Step 2: Evolve the batch ####
+##################################
+
+# Set evolution parameters
+steps <- 10
+# Evolve batch
+evolved_batch <- evolve_batch(batch, steps)
+
+####################################
+#### Step 3: Analyze the batch! ####
+####################################
+
+# Get the final evolved batch elements after all steps
+fully_evolved <- time_array(evolved_batch, at_time = steps)
+fully_evolved
+```
+
+
+```{r, cache = T}
+
+####################################
+#### Step 4: Animate the batch! ####
+####################################
+
+# Plot the evolution arrays of the batch elements
+batch_data2 <- evolved_batch
+# Pairwise scatter plots
+plot_12 <- batch_2d_customplot(batch_data2, 1, 2)
+batch_animation2_1 <- plot_12 + transition_time(time = time)
+
+plot_23 <- batch_2d_customplot(batch_data2, 2, 3)
+batch_animation2_2 <- plot_23 + transition_time(time = time)
+
+plot_13 <- batch_2d_customplot(batch_data2, 1, 3)
+batch_animation2_3 <- plot_13 + transition_time(time = time)
+```
+
+```{r}
+# Set me to true!
+bool_animate1 <- T
+if(bool_animate1){batch_animation2_1}
+```
+
+```{r}
+# Set me to true!
+bool_animate2 <- F
+if(bool_animate2){batch_animation2_2}
+```
+
+```{r}
+# Set me to true!
+bool_animate3 <- F
+if(bool_animate3){batch_animation2_3}
+```
+
+
