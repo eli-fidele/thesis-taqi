@@ -20,9 +20,10 @@ source(file = "../R/simulate.R")
 source(file = "../R/ratios.R")
 source(file = "../R/analyze.R")
 # global parameters
-bool_plot <- T
+bool_plot <- F
 bool_loud <- T
 bool_animate <- F
+data <- F
 ```
 
 # Eigenvalues of a Normal Matrix
@@ -33,10 +34,10 @@ M <- 4
 # Generate matrix
 P <- RM_normal(M, normal_args = c(0,1), symm = T)
 # Run a batch
-batch <- make_batch(M, B = 1000)
+batch <- make_batch(M, B = 100)
 # Evolve a batch
-#evolved_batch <- evolve_batch(P, batch, steps = 30)
-evolved_batch <- read_csv(file = "../data/stdnormal_4_1000.csv")
+if(!data){evolved_batch <- evolve_batch(P, batch, steps = 30)}
+if(data){evolved_batch <- read_csv(file = "../data/stdnormal_4_1000.csv")}
 # Get eigenvalues
 eigenvalues <- eigen(P)$values
 eigenvalues
@@ -45,14 +46,16 @@ eigenvalues
 
 ```{r}
 # Classify candidate eigenvectors
-#evolved_batch0 <- eigen_classify(evolved_batch, P, epsilon = 0.1)
-evolved_batch0 <- read_csv(file = "../data/evolved_batch0.csv")
+if(!data){evolved_batch0 <- eigen_classify(evolved_batch, P, epsilon = 0.05)}
+if(data){evolved_batch0 <- read_csv(file = "../data/evolved_batch0.csv")}
 # Add mixing times to the batch
 batch0 <- eigen_mixtime(evolved_batch0,batch)
 ```
 
 ```{r}
-ggplot(data = batch0) + geom_histogram(mapping = aes(x = mixtime), fill = "deepskyblue3", labs = "Mixing Time Distribution for a Symmetric Standard Normal Matrix")
+hist <-ggplot(data = batch0) + 
+  geom_histogram(mapping = aes(x = mixtime), fill = "deepskyblue3") + 
+  labs(title = "Mixing Time Distribution for a Symmetric Standard Normal Matrix", y = "")
 ```
 
 ```{r}
@@ -61,10 +64,12 @@ plot2 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x2, y = mixtime,
 plot3 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x3, y = mixtime, color = mixtime))
 plot4 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x4, y = mixtime, color = mixtime))
 #grid.arrange(plot1,plot2,plot3,plot4)
-plot1
-plot2
-plot3
-plot4
+if(bool_plot){  
+  plot1
+  plot2
+  plot3
+  plot4
+}
 ```
 
 ```{r}
@@ -74,15 +79,14 @@ plot3 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x3, y = x4, colo
 plot4 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x4, y = x2, color = mixtime))
 plot5 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x4, y = x3, color = mixtime))
 plot6 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x4, y = x1, color = mixtime))
-```
-
-```{r}
-plot1
-plot2
-plot3
-plot4
-plot5
-plot6
+if(bool_plot){  
+  plot1
+  plot2
+  plot3
+  plot4
+  plot5
+  plot6
+}
 ```
 
 

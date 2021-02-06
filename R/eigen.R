@@ -20,49 +20,18 @@ ensemble_spectrum <- function(ensemble, indexed = TRUE){
 # Returns a tidied dataframe of the eigenvalues of a random matrix
 spectrum <- function(P, indexed = TRUE){
   M <- nrow(P) # Obtain dimension
-  eval_array <- data.frame(eigen(P)$values) # Get eigenvalues
+  eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues
   eigenvalues <- matrix(rep(NA,2*M), ncol = 2) # Create matrix to hold eigenvalues
   colnames(eigenvalues) <- c("Re","Im") # Rename columns
   # Add the components to the array
   for(i in 1:M){
-    curr <- eval_array[i,]
+    curr <- eigen_array[i,]
     eigenvalues[i, ] <- c(round(Re(curr),5),round(Im(curr),5)) 
   }
   # Index the eigenvalues
   if(indexed){eigenvalues <- cbind(eigenvalues, data.frame(Index = 1:nrow(eigenvalues)))}
   data.frame(eigenvalues)
 }
-
-#=================================================================================#
-#                             EIGENFRAME FUNCTIONS
-#=================================================================================#
-
-# Returns a tidied dataframe of the eigenvectors of a random matrix
-evec_frame <- function(P){
-  M <- length(P[1,])
-  eigenvectors <- data.frame(eigen(P)$vectors)
-  complex <- matrix(rep(NA,3*M*M), ncol = 3) # set 3 to hold (re,im) pair and whose row it belongs to
-  colnames(complex) <- c("Re","Im","row_i")
-  for(i in 1:M){
-    for(j in 1:M){
-      curr <- eigenvectors[i,j]
-      complex[ M*(i-1) + j, ] <- c(round(Re(curr),5),round(Im(curr),5),i) 
-    }
-  }
-  data.frame(complex)
-}
-
-
-#=================================================================================#
-#                               HELPER FUNCTIONS
-#=================================================================================#
-
-# Read in the eigenvalue in the Kth row from a eigenvalue array and return a numerical
-read_eigenvalue <- function(eigenvalues, K){complex(real = eigenvalues[K,1], imaginary = eigenvalues[K,2])}
-
-#=================================================================================#
-#                             EIGENFRAME PLOTTING
-#=================================================================================#
 
 # Plots the eigenvalues of a given matrix P
 spectrum_plot <- function(P, mat_type=""){
@@ -83,6 +52,32 @@ spectrum_plot <- function(P, mat_type=""){
     ggforce::geom_circle(aes(x0 = 0, y0 = 0, r = r), color = "steelblue") +
     coord_fixed(ratio = 1) +
     theme(legend.position = "none")
+}
+
+#=================================================================================#
+#                               HELPER FUNCTIONS
+#=================================================================================#
+
+# Read in the eigenvalue in the Kth row from a eigenvalue array and return a numerical
+read_eigenvalue <- function(eigenvalues, K){complex(real = eigenvalues[K,1], imaginary = eigenvalues[K,2])}
+
+#=================================================================================#
+#                             EIGENFRAME FUNCTIONS
+#=================================================================================#
+
+# Returns a tidied dataframe of the eigenvectors of a random matrix
+evec_frame <- function(P){
+  M <- length(P[1,])
+  eigenvectors <- data.frame(eigen(P)$vectors)
+  complex <- matrix(rep(NA,3*M*M), ncol = 3) # set 3 to hold (re,im) pair and whose row it belongs to
+  colnames(complex) <- c("Re","Im","row_i")
+  for(i in 1:M){
+    for(j in 1:M){
+      curr <- eigenvectors[i,j]
+      complex[ M*(i-1) + j, ] <- c(round(Re(curr),5),round(Im(curr),5),i) 
+    }
+  }
+  data.frame(complex)
 }
 
 # Plots the eigenvalues of a given matrix P
@@ -110,3 +105,4 @@ evec_plot <- function(P, loud=F, mat_type=""){
     coord_fixed(ratio = 1) +
     theme(legend.position = "none")
 }
+
