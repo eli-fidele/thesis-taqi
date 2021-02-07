@@ -3,13 +3,29 @@
 #                                 BATCH GENERATION
 #=================================================================================#
 
-# Generate and evolve a batch of points for a given matrix P 
-run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE, final_time = FALSE){
-  M <- ncol(P)
+# Simulation to determine the eigenvalue mixing time of a random matrix.
+mixtime_sim <- function(P, B, steps, epsilon = 0.1){
+  init_sim <- initial_sim(P, B, steps) # Initialize the simulation
+  # Extract the arrays
+  batch <- init_sim[[1]]
+  evolved_batch <- init_sim[[2]]
+  # Perform the mixing time analysis
+  evolved_batch <- eigen_classify(evolved_batch, P, epsilon) # Classify candidate eigenvectors
+  eigen_index <- by_time(evolved_batch, at_time = steps)$eigen_index # Get the array at the final time
+  batch <- cbind(batch, eigen_index) # Add the eigen_index of the batch elements to the array
+  batch <- eigen_mixtime(evolved_batch, batch) # Add the mixing times to the batch element array
+  # Return list of arrays
+  list(batch, evolved_batch)
+}
+
+# Generate and evolve a batch of points for a given random matrix P. 
+# This function is a basic "initial" simulation. Other simulation functions will utilize this function 
+initial_sim <- function(P, B, steps){
   # Make the batch
-  batch <- make_batch(M, B, lambda)
+  batch <- make_batch(M = ncol(P), B)
   # Evolve the batch and return it
-  evolve_batch(P, batch, steps, with_ratios = with_ratios, final_time = final_time)
+  evolved_batch <- evolve_batch(P, batch, steps, ratios = TRUE)
+  list(batch, evolved_batch)
 }
 
 #=================================================================================#
@@ -19,8 +35,7 @@ run_batch <- function(P, B = 50, lambda = 1, steps = 25, with_ratios = TRUE, fin
 # Generate a Monte Carlo batch
 make_batch <- function(M, B, lambda = 1, complex = FALSE){
   batch <- matrix(rep(NA, B * M), nrow = B)  # create [B x M] batch matrix
-  # If prompted, generate complex-valued random elements 
-  if(complex){ 
+  if(complex){ # If prompted, generate complex-valued random elements 
     for(i in 1:B){batch[i,] <- complex(real = runif(n = M, min = -lambda, max = lambda), imaginary = runif(n = M, min = -lambda, max = lambda))}
   } else {
     for(i in 1:B){batch[i,] <- runif(n = M, min = -lambda, max = lambda)} # Otherwise, generate real-valued random elements
@@ -30,57 +45,52 @@ make_batch <- function(M, B, lambda = 1, complex = FALSE){
 }
 
 # Evolve each element of the batch by a given number of steps and return the evolved stack of arrays
-evolve_batch <- function(P, batch, steps, burn_in = 1, with_ratios = TRUE, final_time = FALSE){
-  evolved_stack <- evolve(batch[1,], P, steps, burn_in) # Initialize by append first batch element's evolution array
+evolve_batch <- function(P, batch, steps, burn_in = 1, ratios = TRUE){
   B <- nrow(batch) # Get number of batch elements
+  evolved_stack <- evolve(batch[1,], P, steps, burn_in) # Initialize by append first batch element's evolution array
   for(i in 2:B){ 
-    #evol <-  # Obtain evolution array of current element of the batch 
-    evolved_stack <- rbind(evolved_stack, evolve(batch[i,], P, steps, burn_in)) # Recursively row bind the stack
+    evol <-  evolve(batch[i,], P, steps, burn_in) # Obtain evolution array of current element of the batch 
+    evolved_stack <- rbind(evolved_stack, evol) # Recursively row bind the stack
   }
   rownames(evolved_stack) <- 1:nrow(evolved_stack) # Standardize row names
-  evolved_stack <- indexed_batch(evolved_stack, steps) # Index the batch elements 
-  if(with_ratios){evolved_stack <- append_ratios(evolved_stack)} # Append ratios if prompted
-  if(final_time){evolved_stack <- by_time(evolved_stack, at_time = steps)} # If prompted, return the array at just the final time 
+  evolved_stack <- add_indices(evolved_stack, steps) # Index the batch elements 
+  if(ratios){evolved_stack <- append_ratios(evolved_stack)} # Append ratios if prompted
   # Return the stack
   evolved_stack
 }
 
-# Evolves an element of a batch by the matrix P and returns the evolved array
+# Evolves an element of a batch by the matrix P and returns the array of the evolution sequence
 evolve <- function(v, P, steps, burn_in = 1){
   M <- ncol(P)
   # Simulate the evolution matrix of a given batch element
-  vals <- matrix(rep(NA, M * steps), ncol = M)
-  vals <- standardize_colnames(vals) # Standardize column names
-  # Add a column to track the steps/time
-  vals <- cbind(vals, rep(0, steps+1))
+  seq <- matrix(rep(NA, M * steps), ncol = M)
+  seq <- standardize_colnames(seq) # Standardize column names
+  seq <- cbind(seq, rep(0, steps+1)) # Add a column to track the steps/time
   # Evolve the batch element
   for(i in 1:steps){
     evolved_row <- as.numeric(v) %*% matrix.power(P,burn_in*i)
     # Evolve the vector, then append the time index to it
-    vals[i, ] <- cbind(evolved_row, i)
+    seq[i, ] <- cbind(evolved_row, i)
   }
   # Add the initial batch element to the beginning of the array
-  vals <- rbind(c(as.numeric(v),0),vals)
+  seq <- rbind(c(as.numeric(v),0),seq)
   # Rename steps column to 'time'
-  colnames(vals)[ncol(vals)] <- "time"
-  vals
+  colnames(seq)[ncol(seq)] <- "time"
+  seq
 }
 
 #=================================================================================#
-#                            INDEXING HELPER FUNCTIONS
+#                            NAMING/INDEXING HELPER FUNCTIONS
 #=================================================================================#
 
 # This method adds an index to clarify which rows belong to which batch element's evolution array it belongs
-indexed_batch <- function(evolved_batch, steps){
-  # See if the batch is indexed already
-  if(!("element_index" %in% colnames(evolved_batch))){
+add_indices <- function(evolved_batch, steps){
   # Create the element index column
   element_index <- rep(NA, nrow(evolved_batch))
   # Index the elements in the entire batch using the floor function and return the binded dataframe
   for(i in 1:nrow(evolved_batch)){element_index[i] <- 1 + floor((i-1)/(steps+1))}
-  return(data.frame(cbind(evolved_batch,element_index)))
-  } # If the batch was indexed already, just return it
-  else{return(evolved_batch)}
+  evolved_batch <- cbind(evolved_batch,element_index)
+  data.frame(evolved_batch)  # Return the batch
 }
 
 # Standardizes an array with n dimensions to have column names of the form "prefix-x(i)" for i = 1,...,n

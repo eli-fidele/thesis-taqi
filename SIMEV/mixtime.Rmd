@@ -17,10 +17,10 @@ library(matrixcalc)
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
 source(file = "../R/simulate.R")
-source(file = "../R/ratios.R")
 source(file = "../R/analyze.R")
+source(file = "../R/other/vis.R")
 # global parameters
-bool_plot <- F
+bool_plot <- T
 bool_loud <- T
 bool_animate <- F
 data <- F
@@ -32,62 +32,64 @@ data <- F
 set.seed(23)
 M <- 4
 # Generate matrix
-P <- RM_normal(M, normal_args = c(0,1), symm = T)
-# Run a batch
-batch <- make_batch(M, B = 100)
-# Evolve a batch
-if(!data){evolved_batch <- evolve_batch(P, batch, steps = 30)}
-if(data){evolved_batch <- read_csv(file = "../data/stdnormal_4_1000.csv")}
-# Get eigenvalues
-eigenvalues <- eigen(P)$values
-eigenvalues
-```
-
-
-```{r}
-# Classify candidate eigenvectors
-if(!data){evolved_batch0 <- eigen_classify(evolved_batch, P, epsilon = 0.05)}
-if(data){evolved_batch0 <- read_csv(file = "../data/evolved_batch0.csv")}
-# Add mixing times to the batch
-batch0 <- eigen_mixtime(evolved_batch0,batch)
+P <- RM_normal(M, mean = 6, sd = 3, symm = F)
+# Look at the eigenvalues
+spectrum(P)
+# Simulate
+sim <- mixtime_sim(P, B = 50, steps = 30, epsilon = 0.2)
+# Get arrays
+batch <- sim[[1]]
+evolved_batch <- sim[[2]]
 ```
 
 ```{r}
-hist <-ggplot(data = batch0) + 
-  geom_histogram(mapping = aes(x = mixtime), fill = "deepskyblue3") + 
-  labs(title = "Mixing Time Distribution for a Symmetric Standard Normal Matrix", y = "")
+hist_mixtime(batch)
 ```
 
 ```{r}
-plot1 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x1, y = mixtime, color = mixtime))
-plot2 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x2, y = mixtime, color = mixtime))
-plot3 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x3, y = mixtime, color = mixtime))
-plot4 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x4, y = mixtime, color = mixtime))
-#grid.arrange(plot1,plot2,plot3,plot4)
+s1 <- mixtime4d(batch)
 if(bool_plot){  
-  plot1
-  plot2
-  plot3
-  plot4
+  s1[[1]]
+  s1[[2]]
+  s1[[3]]
+  s1[[4]]
 }
 ```
 
 ```{r}
-plot1 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x1, y = x2, color = mixtime))
-plot2 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x2, y = x3, color = mixtime))
-plot3 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x3, y = x4, color = mixtime))
-plot4 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x4, y = x2, color = mixtime))
-plot5 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x4, y = x3, color = mixtime))
-plot6 <- ggplot() + geom_point(data = batch0, mapping = aes(x = x4, y = x1, color = mixtime))
+s2 <- scatter_6d(batch)
 if(bool_plot){  
-  plot1
-  plot2
-  plot3
-  plot4
-  plot5
-  plot6
+  s2[[1]]
+  s2[[2]]
+  s2[[3]]
+  s2[[4]]
+  s2[[5]]
+  s2[[6]]
 }
 ```
 
 
+```{r}
+data <- T
+set.seed(23)
+# Generate a random matrix
+P <- RM_normal(M = 4, mean = 0, sd = 5, symm = T)
+# Analyze the simulated matrix
+if(!data){
+  sim <- mixtime_sim(P, B = 1000, steps = 50, epsilon = 0.01)
+  write_csv(sim[[1]], "batch1.csv")
+  write_csv(sim[[2]], "evolved_batch1.csv")
+  # Get arrays
+  batch <- sim[[1]]
+  evolved_batch <- sim[[2]]
+} else{
+  batch <- read_csv("batch1.csv")
+  evolved_batch <- read_csv("evolved_batch1.csv")
+}
+```
+
+```{r}
+hist_mixtime(batch)
+mixtime4d(batch)
+```
 

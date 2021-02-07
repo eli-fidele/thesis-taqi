@@ -3,18 +3,13 @@
 #                             RANDOM MATRIX FUNCTIONS
 #=================================================================================#
 
-RM_normal <- function(M, normal_args = c(0,1), symm = F){
-  # Extract parameters
-  mu <- normal_args[1]
-  sd <- normal_args[2]
+RM_normal <- function(M, mean = 0, sd = 1, symm = F){
   # Create [M x M] matrix
   P <- matrix(rep(NA, M * M), ncol = M)  
   # Generate rows
-  for(i in 1:M){
-    P[i,] <- rnorm(n = M, mean = mu, sd = sd)
-  }
+  for(i in 1:M){P[i,] <- rnorm(n = M, mean, sd)}
   # Make symmetric if prompted
-  if(symm == T){P <- equalize_triangles(P)}
+  if(symm == T){P <- make_symmetric(P)}
   # Return the matrix
   P
 }
@@ -28,7 +23,7 @@ RM_stoch <- function(M, symm = F, sparsity = F){
   # Make symmetric (if prompted)
   if(symm == T){
     # Equalize triangles
-    P <- equalize_triangles(P)
+    P <- make_symmetric(P)
     # Nullify diagonal
     diag(P) <- rep(0, M)
     # Normalize rows
@@ -48,10 +43,6 @@ RM_stoch <- function(M, symm = F, sparsity = F){
   P
 }
 
-#=================================================================================#
-#                         SPECIAL RANDOM MATRIX FUNCTIONS
-#=================================================================================#
-
 # Generate a tridiagonal matrix with normal entries
 RM_trid <- function(M, symm = F){
   diagonal <- rnorm(n = M, 0, 2)
@@ -61,8 +52,7 @@ RM_trid <- function(M, symm = F){
   P
 }
 
-# (Erdos-Renyi Graph)
-# p_sparse is a probability between [0,1) so edges are connected ~ Bern(p) 
+# (Erdos-Renyi Graph): p_sparse is a probability between [0,1) so edges are connected ~ Bern(p) 
 RM_erdos <- function(M, p_sparse, stoch = F){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
   p <- p_sparse # rename variable
@@ -105,38 +95,12 @@ r_zeros <- function(M){
   prob/sum(prob) # normalize
 }
 
-#=================================================================================#
-#                         RANDOM MATRIX DIAGNOSTICS 
-#=================================================================================#
-
-# Visualize the entries of a matrix as a histrogram
-visualize_entries <- function(P){
-  ggplot() + geom_histogram(data = data.frame(x = vectorize_matrix(P)), aes(x = x))
-  }
-
-# Obtain the nondiagonal entries of a row given its row index
-nondiagonal_entries <- function(row, row_index){
-  indices <- data.frame(idx = 1:length(row))
-  indices <- indices %>% filter(idx != row_index)
-  # return the row with the given indices
-  row[as.numeric(indices[,])]
-}
-
-# Vectorize matrix entries to study their distribution
-vectorize_matrix <- function(P){as.vector(P)}
-
-# returns proportion of positive entries of any matrix P
-pos_entries <- function(P){
-  pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))
-  pos_entries/(length(P))   
-}
-
 #=========================================================================#
-#                  (SYMMETRIC MATRICES) HELPER FUNCTIONS
+#                             HELPER FUNCTIONS
 #=========================================================================#
 
 # Manually make equal the upper triangle and lower triangle of the matrix
-equalize_triangles <- function(P){
+make_symmetric <- function(P){
   # Run over entry of the matrix
   for(i in 1:nrow(P)){
     for(j in 1:ncol(P)){
@@ -147,88 +111,10 @@ equalize_triangles <- function(P){
   P # Return Symmetric Matrix
 }
 
-#================================================================#
-#                NORMAL RANDOM MATRIX DIAGNOSTICS
-#================================================================#
-
-# Check if a matrix is symmetric 
-is_symmetric <- function(P){isSymmetric(P)}
-
-normal_params <- function(entries){
-  print(paste("Mean: ",round(mean(entries),3),sep=""))
-  print(paste("Standard Deviation: ",round(sqrt(var(entries)),3),sep=""))
-}
-
-# For a given normal matrix, visualize its entries as a histogram
-visualize_normal_entries <- function(P, normal_args){
-  # Vectorize the matrix into a row vector of its entries
-  elements_P <- data.frame(x = vectorize_matrix(P))
-  # Extract parameters
-  mu <- normal_args[1]
-  sd <- normal_args[2]
-  # Get theoretical distribution function
-  normal_density <- function(x){dnorm(x, mean = mu, sd = sd)}
-  # Plot the histogram of its entries
-  entries_hist <- ggplot(data = elements_P, mapping = aes(x)) + 
-    geom_histogram(bins = 20, aes(y = stat(density))) +
-    stat_function(fun = normal_density)
-  # Return plot
-  entries_hist
-}
-
-#=========================================================================#
-#                 STOCHASTIC RANDOM MATRIX DIAGNOSTICS 
-#=========================================================================#
-
-# Check if a matrix is stochastic
-is_row_stochastic <- function(P){
-  row_is_stoch <- rep(F, nrow(P))
-  for(i in 1:nrow(P)){
-    row_sum <- sum(P[i,])
-    row_is_stoch[i] <- (row_sum == 1)
-  }
-  !(F %in% row_is_stoch)
-}
-
-# Print out the sums of each of the rows (to check row-stochasticity)
-row_sums <- function(P){
-  for(i in 1:nrow(P)){
-    row_sum <- sum(P[i,])
-    print(paste("Row ",i,": ",(row_sum),sep=""))
-  }
-}
-
-# Print out the sums of each of the rows (to check row-stochasticity)
-col_sums <- function(P){
-  for(i in 1:ncol(P)){
-    col_sum <- sum(P[,i])
-    print(paste("Col ",i,": ",(col_sum),sep=""))
-  }
-}
-
-#=========================================================================#
-#                         HELPER FUNCTIONS 
-#=========================================================================#
-
-
-# If a diagonal entry at the i^th vector (row/column) has a negative value, renormalize the row and column of that vector index
-spread_negative_diagonal <- function(P, row_idx){
-  i <- row_idx
-  # Get troubled row
-  row_i <- P[i, ]
-  # Find positive entries
-  POS <- which(row_i > 0)
-  # Spread out the negative diagonal entry across each positive entry
-  diag_entry <- P[i,i]
-  portion <- diag_entry/length(POS)
-  # Renormalize the row by adding portions to positive entries
-  P[i, POS] <- P[i, POS] - portion
-  # Set diagonal to 0 
-  P[i,i] <- 0
-  renormalized <- P[i, ]/sum(P[i, ])
-  # Set column and row to renormalized, nonnegative stochastic row/column pair
-  P[i, ] <- renormalized
-  P[,i] <- t(renormalized)
-  # Return matrix
-  P
+# Obtain the nondiagonal entries of a row given its row index
+nondiagonal_entries <- function(row, row_index){
+  indices <- data.frame(idx = 1:length(row))
+  indices <- indices %>% filter(idx != row_index)
+  # return the row with the given indices
+  row[as.numeric(indices[,])]
 }
