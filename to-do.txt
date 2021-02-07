@@ -1,42 +1,54 @@
 
-TO DO FOR REAL:
+#===========================================================================#
+#                              	GENERAL
+#===========================================================================#
 
-fix the quick batch function so that it gives Q^n / Q^(n-1). and not just some funky burn in ratio stuff
+Create a quick batch function so that it gives Q^n / Q^(n-1). This should 
+be a fast way to get the eigen_index for an ENSEMBLE of matrices.
+
+
+#===========================================================================#
+#                                ANALYZE.R
+#===========================================================================#
 
 In analyze.R, try to use which() instead of the dplyr filter for filtering evolution arrays, this may save ALOT of time.
 
-write code to generate spectrum of a random matrix ensemble
+#===========================================================================#
+#                                ENSEMBLE.R
+#===========================================================================#
+
+
+#===========================================================================#
+#                               	EIGEN.R
+#===========================================================================#
 
 in EVC_stoch,  add code to generate complex eigenbtach initial plots (batch pooitnts sorted on the complex plane by their eigen_index)
 
-make a row r_xi histogram plot function (using help from extract_ratios).
-
-figure out the deal with matrices_n.R?
-
-figure out how to add ggtitle to grid of histograms in EVC_normal.Rmd in SMEV
-
--Visualization
-
-- Use latex2exp to generate better labelled eigenplots (r_i) 
-
--Code
+#===========================================================================#
+#                               MATRICES.R
+#===========================================================================#
 
 - Fix symmetric parameters for RM_stoch, RM_normal, RM_trid
-- Fix stochastic parameters for Rm_Erdos
-- Write general function for any M \in N yielding the r_xk for all k in evolution_batches
-
-* Evolution Batches
-- Analyze the velocity of convergence
-- Classify each batch element to the eigenvalues it eventually converges to (or the lack thereof)
-- Perform PCA on Stochastic Matrices (Singualar Value Decomposition) and try to leverage isomorphism to random walks on a graph
-
-
-
-
-Consider adding normalized option to matrices.R functions
-When we are considering studying eigenmetrics, we should normalize by sqrt(N) to account for increased dimension. (See LecNotes_RMT.pdf)
-
-In matrices_n.R, need to fix stochastic erdos renyi graphs.
+- Fix stochastic parameters for Rm_Erdos In matrices_n.R, need to fix stochastic erdos renyi graphs.
 instead, do if row_sum = 0, uniformly choose one of the nodes to have probability 1 in order for true stochasticity. 
 
-Also, for the batch simulations, consider creating an option where the batch elements are valid probability distributions (for the stochastic matrices) and ALSO COMPLEX.!!!
+#===========================================================================#
+#                               SIMULATE.R
+#===========================================================================#
+
+make_batch():
+- Add option for valid probability distributions for stochastic matrices.
+
+evolve_batch():
+- Fix/investigate the evolution of complex elements
+
+* Evolution Batches
+- Perform PCA on Stochastic Matrices (Singualar Value Decomposition) and try to leverage isomorphism to random walks on a graph
+
+#===========================================================================#
+#                               	VIS.R
+#===========================================================================#
+
+- Use latex2exp to generate better labelled eigenplots (r_i) 
+-figure out how to add ggtitle to grid of histograms in EVC_normal.Rmd in SMEV
+make a row r_xi histogram plot function (using help from extract_ratios).
