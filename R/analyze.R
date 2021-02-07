@@ -109,18 +109,18 @@ extract_ratios <- function(evolved_batch){
 # Extract the array for a particular element/a range of elements
 by_element <- function(evolved_batch, index){
   if(class(index) == "numeric"){
-    return(evolved_batch %>% filter(element_index == index))
+    evolved_batch %>% filter(element_index == index)
   } else {
-    return(evolved_batch %>% filter(element_index %in% index))
+    evolved_batch %>% filter(element_index %in% index)
   }
 }
 
 # Extract the array for a particular time/a range of times
 by_time <- function(evolved_batch, at_time){
   if(class(at_time) == "numeric"){
-    return(evolved_batch %>% filter(time == at_time))
+    evolved_batch %>% filter(time == at_time)
   } else {
-    return(evolved_batch %>% filter(time %in% at_time))
+    evolved_batch %>% filter(time %in% at_time)
   }
 }
 
