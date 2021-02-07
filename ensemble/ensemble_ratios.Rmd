@@ -17,7 +17,6 @@ library(matrixcalc)
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
 source(file = "../R/simulate.R")
-source(file = "../R/ratios.R")
 source(file = "../R/analyze.R")
 source(file = "../R/ensemble.R")
 # global parameters
@@ -25,6 +24,12 @@ bool_plot <- T
 bool_loud <- T
 bool_animate <- F
 ```
+
+```{r}
+args <- list(M = 4, mean = 0, sd = 1, symm = T)
+RM_ensemble(RM_normal, args, size = 5)
+```
+
 
 ```{r}
 set.seed(23)

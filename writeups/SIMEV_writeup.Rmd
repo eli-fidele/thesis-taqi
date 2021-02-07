@@ -22,14 +22,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Random Batches
 
-Let $\F$ be a field, and fix some $M \in \N$. Let $\B_\lambda \subset \F^M$ be a uniformly random batch of points in $\F^M$ in the $M$-hypercube of length $\lambda$. That is, 
+Let $\F$ be a field, and fix some $M \in \N$. Let $\B_\lambda \subset \F^M$ be a uniformly random batch of points in the $M$-hypercube of length $\lambda$. That is, 
 $$\B_\lambda = \{\vec{x} \mid x_i \sim \text{Unif}(-\lambda, \lambda) \text{ for } i = \onetoM\}$$
 
 $\textbf{Note:}$ If $\F = \mathbb{C}$, then take $\vec{x} \in \B_\lambda$ to mean $\vec{x} = a + bi \text{ where } a,b \sim \text{Unif}(-\lambda,\lambda)$.
 
 ### Finite Evolution Sequences
 
-Suppose we sample a random point from $\B_\lambda$ to emulate a random point $\vec{v} \in \F^M$. Additionally, let $Q \in \F^{M \times M}$ be a transition matrix over $\F$. Fixing a maximum power ('time') $T \in \N$, define the evolution sequence of $\vec{v}$ as follows:
+Suppose we sample a random point from $\B_\lambda$, emulating a random point $\vec{v} \in \F^M$. Additionally, let $Q \in \F^{M \times M}$ be a transition matrix over $\F$. Fixing a maximum power ('time') $T \in \N$, define the evolution sequence of $\vec{v}$ as follows:
 $$\Seq(v, Q, T) = (\alpha_n)_{n=1}^T \text{ where } \alpha_k = {v}Q^k$$
 
 If we do not impose a finiteness constraint on the sequence, we consider powers for $n \in \N$ or $t = \infty$
@@ -52,8 +52,8 @@ In other words, the consecutive ratio sequence of $v$ can be obtained by perform
 Because these sequences may never truly converge to eigenvectors of the matrix, we formalize a notion of "near convergence". As a prelimenary, we first define $\varepsilon$-equivalence. Let $\F$ be a field, and fix $\varepsilon \in \R^+$. Suppose we have vectors $v, v' \in \F^M$. Then, $v \sim_\epsilon v'$ if $||v - v'|| < \epsilon$ where $|| \cdot ||$ is the norm on $\F$.
 
 
-Let $\varepsilon \in \R^+$, and suppose we have an evolution sequence $(a[\vec{v}])_n$. Then, $a_n$ $\varepsilon$-converges at $N$ if:
-$$\exists N \in \N : \forall n \geq N \mid  a_N \sim_\epsilon a_n$$
+Let $\varepsilon \in \R^+$, and suppose we have an evolution sequence $(a[\vec{v}])_n$. Then, $a_n$ $\varepsilon$-converges at $N \in \N$ if:
+$$\forall n \geq N \mid  a_N \sim_\epsilon a_n$$
 
 \newpage
 
