@@ -4,7 +4,8 @@
 #=================================================================================#
 
 # Simulation to determine the eigenvalue mixing time of a random matrix.
-mixtime_sim <- function(P, B, steps, epsilon = 0.1){
+mixtime_sim <- function(P, batch_size, steps, epsilon = 0.1){
+  B <- batch_size
   init_sim <- initial_sim(P, B, steps) # Initialize the simulation
   # Extract the arrays
   batch <- init_sim[[1]]
@@ -24,7 +25,7 @@ initial_sim <- function(P, B, steps){
   # Make the batch
   batch <- make_batch(M = ncol(P), B)
   # Evolve the batch and return it
-  evolved_batch <- evolve_batch(P, batch, steps, ratios = TRUE)
+  evolved_batch <- evolve_batch(batch, P, steps, ratios = TRUE)
   list(batch, evolved_batch)
 }
 
@@ -45,7 +46,7 @@ make_batch <- function(M, B, lambda = 1, complex = FALSE){
 }
 
 # Evolve each element of the batch by a given number of steps and return the evolved stack of arrays
-evolve_batch <- function(P, batch, steps, burn_in = 1, ratios = TRUE){
+evolve_batch <- function(batch, P, steps, burn_in = 1, ratios = TRUE){
   B <- nrow(batch) # Get number of batch elements
   evolved_stack <- evolve(batch[1,], P, steps, burn_in) # Initialize by append first batch element's evolution array
   for(i in 2:B){ 

@@ -14,6 +14,15 @@ RM_normal <- function(M, mean = 0, sd = 1, symm = F){
   P
 }
 
+# Generate a tridiagonal matrix with normal entries
+RM_trid <- function(M, symm = F){
+  diagonal <- rnorm(n = M, 0, 2)
+  P <- diag(diagonal)
+  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rnorm(n = M, 0, 1)
+  # Return the matrix
+  P
+}
+
 # Generate random stochastic matrix of size M, with choice of row function {r_stochastic, r_zeros}
 RM_stoch <- function(M, symm = F, sparsity = F){
   P <- matrix(rep(NA, M * M), ncol = M)  # create [M x M] transition matrix
@@ -39,15 +48,6 @@ RM_stoch <- function(M, symm = F, sparsity = F){
     }
     diag(P) <- diag
     }
-  # Return the matrix
-  P
-}
-
-# Generate a tridiagonal matrix with normal entries
-RM_trid <- function(M, symm = F){
-  diagonal <- rnorm(n = M, 0, 2)
-  P <- diag(diagonal)
-  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rnorm(n = M, 0, 1)
   # Return the matrix
   P
 }
