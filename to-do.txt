@@ -11,7 +11,7 @@ be a fast way to get the eigen_index for an ENSEMBLE of matrices.
 #                                ANALYZE.R
 #===========================================================================#
 
-In analyze.R, try to use which() instead of the dplyr filter for filtering evolution arrays, this may save ALOT of time.
+In analyze.R, try to use which() instead of the dplyr::filter for filtering evolution arrays, this may save ALOT of time.
 
 #===========================================================================#
 #                                ENSEMBLE.R

@@ -32,11 +32,11 @@ data <- F
 set.seed(23)
 M <- 4
 # Generate matrix
-P <- RM_normal(M, mean = 6, sd = 3, symm = F)
+P <- RM_normal(3, mean = 0, sd = 2, symm = T)
 # Look at the eigenvalues
 spectrum(P)
 # Simulate
-sim <- mixtime_sim(P, B = 50, steps = 30, epsilon = 0.2)
+sim <- mixtime_sim(P, batch_size = 1000, steps = 25, epsilon = 0.2)
 # Get arrays
 batch <- sim[[1]]
 evolved_batch <- sim[[2]]
