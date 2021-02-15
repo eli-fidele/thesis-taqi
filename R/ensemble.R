@@ -1,5 +1,22 @@
 
+#=================================================================================#
+#                             ENSEMBLE SIMULATION 
+#=================================================================================#
 
+mixtime_ensemble <- function(ensemble, batch_size, steps, epsilon = 0.1){
+  ensemble_result <- sim_by_element(ensemble, batch_size, steps, epsilon, ensemble_index = 1) # Initialize the stack
+  # Go through rest of ensemble
+  for(i in 2:length(ensemble)){
+    NA
+  }
+}
+
+sim_by_element <- function(ensemble, batch_size, steps, epsilon, ensemble_index){
+  P <- ensemble[[ensemble_index]] # Extract the matrix
+  sim <- mixtime_sim(P, batch_size, steps, epsilon) # Get the simulation list for one matrix
+  c(sim, list(P))  # Extract the results alongside the matrix
+}
+  
 #=================================================================================#
 #                             RANDOM MATRIX ENSEMBLES 
 #=================================================================================#
@@ -23,7 +40,6 @@ RM_ensemble <- function(mat_type, args, size){
 #=================================================================================#
 #                               BATCH EXECUTION 
 #=================================================================================#
-
 
 # Executes a batch of run_batch function on elements of a random matrix ensemble.
 execute_batch <- function(RM_mattype, RM_args, batch_args = list(100), execution_class, stack_args = list(20, TRUE)){
