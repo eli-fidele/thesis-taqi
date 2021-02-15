@@ -3,52 +3,11 @@
 #                              	GENERAL
 #===========================================================================#
 
-Create a quick batch function so that it gives Q^n / Q^(n-1). This should 
+-Create a quick batch function so that it gives Q^n / Q^(n-1). This should 
 be a fast way to get the eigen_index for an ENSEMBLE of matrices.
 
 
-#===========================================================================#
-#                                ANALYZE.R
-#===========================================================================#
+- Analyze the quantile plot of the CRS distribution. Use qqplot. Perhaps check it against a location transformed Cauchy plot?
 
-In analyze.R, try to use which() instead of the dplyr::filter for filtering evolution arrays, this may save ALOT of time.
+- Writeup a radial density function for spectrum analysis. Perhaps consider enumerating other spectrum statistics: (sup, diff, ...)
 
-#===========================================================================#
-#                                ENSEMBLE.R
-#===========================================================================#
-
-
-#===========================================================================#
-#                               	EIGEN.R
-#===========================================================================#
-
-in EVC_stoch,  add code to generate complex eigenbtach initial plots (batch pooitnts sorted on the complex plane by their eigen_index)
-
-#===========================================================================#
-#                               MATRICES.R
-#===========================================================================#
-
-- Fix symmetric parameters for RM_stoch, RM_normal, RM_trid
-- Fix stochastic parameters for Rm_Erdos In matrices_n.R, need to fix stochastic erdos renyi graphs.
-instead, do if row_sum = 0, uniformly choose one of the nodes to have probability 1 in order for true stochasticity. 
-
-#===========================================================================#
-#                               SIMULATE.R
-#===========================================================================#
-
-make_batch():
-- Add option for valid probability distributions for stochastic matrices.
-
-evolve_batch():
-- Fix/investigate the evolution of complex elements
-
-* Evolution Batches
-- Perform PCA on Stochastic Matrices (Singualar Value Decomposition) and try to leverage isomorphism to random walks on a graph
-
-#===========================================================================#
-#                               	VIS.R
-#===========================================================================#
-
-- Use latex2exp to generate better labelled eigenplots (r_i) 
--figure out how to add ggtitle to grid of histograms in EVC_normal.Rmd in SMEV
-make a row r_xi histogram plot function (using help from extract_ratios).
