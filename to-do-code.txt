@@ -1,11 +1,4 @@
 
-#===========================================================================#
-#                              	GENERAL
-#===========================================================================#
-
-Create a quick batch function so that it gives Q^n / Q^(n-1). This should 
-be a fast way to get the eigen_index for an ENSEMBLE of matrices.
-
 
 #===========================================================================#
 #                                ANALYZE.R
@@ -22,7 +15,7 @@ In analyze.R, try to use which() instead of the dplyr::filter for filtering evol
 #                               	EIGEN.R
 #===========================================================================#
 
-in EVC_stoch,  add code to generate complex eigenbtach initial plots (batch pooitnts sorted on the complex plane by their eigen_index)
+in EVC_stoch,  add code to generate complex eigenbatch initial plots (batch points sorted on the complex plane by their eigen index)
 
 #===========================================================================#
 #                               MATRICES.R

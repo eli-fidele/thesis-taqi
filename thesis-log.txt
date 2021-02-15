@@ -1,8 +1,8 @@
 ========================================================
 			THESIS LOG
 ========================================================
-Monday, February 1st
-
+Monday, February 8th
+Today we discussed various topics. We discussed the ratio distribution that we saw, and there is a chance this might be some ratio distribution of chi-squared variables. We also were tinkering and exploring the mixing time statistics and were reasoning through why similar-signed matrices tended to converge faster. The takeaways are, I should continue exploring and organizing data for these computations for large-scale analysis. Lastly, we ended on the note that we will be discussing beta ensembles next meeting!
 
 
 
