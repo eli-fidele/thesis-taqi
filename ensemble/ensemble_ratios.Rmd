@@ -19,6 +19,7 @@ source(file = "../R/eigen.R")
 source(file = "../R/simulate.R")
 source(file = "../R/analyze.R")
 source(file = "../R/ensemble.R")
+source(file = "../R/vis.R")
 # global parameters
 bool_plot <- T
 bool_loud <- T
@@ -28,33 +29,44 @@ bool_animate <- F
 ```{r}
 # Create an simulate an ensemble of random matrices
 args <- list(M = 4, mean = 0, sd = 1, symm = T)
-ensemble <- RM_ensemble(RM_normal, args, size = 2)
+ensemble <- RM_ensemble(RM_normal, args, size = 50)
+# Run the ensemble for a single batch! Need to write new function in simulate.R for ensemble simulations specifically!
+#ensemble_sim <- mixtime_ensemble(ensemble, batch_size = 50, steps = 50) 
+#batch <- glue_arrays(ensemble_sim, array_index = 1)
+#evol_array <- glue_arrays(ensemble_sim, array_index = 2)
+batch <- read_csv("batch.csv")
+evol_array <- read_csv("evol_array.csv")
 ```
 
 ```{r}
-P <- ensemble[[1]]
-simres <- mixtime_sim(P, 5, 5)
-#do.call(c, list(P,simres))
-whats <- c(list(P), simres)
-whats2 <- whats
-biglist <- list(whats, whats2)
+#write_csv(batch,"batch.csv")
+#write_csv(evol_array,"evol_array.csv")
 ```
 
 
 ```{r}
-mixtime_ensemble <- function(ensemble, batch_size, steps, epsilon = 0.1){
-  # Initialize the stack
-  ensemble_result <- list(sim_by_element(ensemble, batch_size, steps, epsilon, ensemble_index = 1)) 
-  # Go through rest of ensemble
-  for(i in 2:length(ensemble)){
-    curr_result <- list(sim_by_element(ensemble, batch_size, steps, epsilon, ensemble_index = i)) 
-    ensemble_result <- c(ensemble_result, curr_result) # Concatenate results
-  }
-  ensemble_result
-}
+ggplot(data = batch) + 
+  geom_histogram(mapping = aes(x = mixtime, fill = eigen_index), bins = 50) + 
+  labs(title = "Mixing Time Distribution for a Symmetric Normal Matrix", y = "")
 ```
 
 ```{r}
-res <- mixtime_ensemble(ensemble, batch_size = 5, steps = 5)
+ratios <- evol_array$r_x2
+ratios <- ratios[!is.na(ratios)]
+ratios <- data.frame(r_x2 = ratios[which(abs(ratios) < 30)])
 ```
+
+
+```{r}
+ggplot() + geom_histogram(data = ratios, mapping = aes(x = r_x2), bins = 100)
+```
+
+
+```{r}
+batch_ <- batch %>% mutate(inv_mixtime = 1/mixtime)
+batch_$mat_idx <- as.factor(batch_$mat_idx)
+batch_$eigen_index <- as.factor(batch_$eigen_index)
+ggplot() + geom_point(data = batch_, mapping = aes(y = x1, x = inv_mixtime, color = eigen_index))
+```
+
 

@@ -28,11 +28,18 @@ bool_animate <- F
 ```{r, fig.height = 7}
 # Parameters
 size <- 100
-args <- list(M = 4, mean = 0, sd = 1, symm = T)
-ensemble <- RM_ensemble(RM_normal, args, size = 5)
+args <- list(M = 4, mean = 0, sd = 1, symm = F)
+ensemble <- RM_ensemble(RM_normal, args, size = 500)
+spec <- ensemble_spectrum(ensemble)
+spectrum_plot(spec)
 ```
 
-```{r}
-spectrum_plot(ensemble[[1]])
+```{r, fig.height = 7}
+# Parameters
+size <- 100
+args <- list(M = 3, mean = 7, sd = 3, symm = F)
+ensemble <- RM_ensemble(RM_normal, args, size = 500)
+spec <- ensemble_spectrum(ensemble)
+spectrum_plot(spec)
 ```
 

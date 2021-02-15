@@ -9,4 +9,25 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+This document shall serve as a skeleton for the documentation of the code documentation in the `RMat` package.
 
+## matrices.R
+
+Generates random matrices of the following classes:
+
+1. Normal
+2. Stochastic
+3. p-Stochastic (Erdos)
+4. Band
+
+## eigen.R
+
+Returns `tidyverse` styled dataframes of a matrix's spectrum (eigenvalues) for singular matrices and an ensemble of matrices. Also includes a plot feature.
+
+## simulate.R
+
+
+
+## analyze.R
+
+## ensemble.R

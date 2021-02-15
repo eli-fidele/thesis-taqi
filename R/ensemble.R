@@ -1,14 +1,38 @@
 
+
+#=================================================================================#
+#                             ENSEMBLE ANALYSIS
+#=================================================================================#
+
+# Combines the results of a ensemble simulation into a master array
+glue_arrays <- function(ensemble_sim, array_index = 1){
+  batch <- ensemble_sim[[1]][[array_index]] # Get first result
+  batch_size <- nrow(batch) # Get batch size for reference
+  mat_idx <- data.frame(mat_idx = rep(1, batch_size)) # Create matrix index column
+  batch <- cbind(batch, mat_idx) # Initialize the master batch
+  # Repeat for the rest of the elements
+  for(i in 2:length(ensemble_sim)){
+    curr_batch <- ensemble_sim[[i]][[array_index]] # Get array for matrix i 
+    mat_idx <- data.frame(mat_idx = rep(i, batch_size)) # Index matrix i
+    batch <- rbind(batch, cbind(curr_batch, mat_idx)) # Concatenate arrays
+  }
+  batch
+}
+
 #=================================================================================#
 #                             ENSEMBLE SIMULATION 
 #=================================================================================#
 
+# Simulates the mixtimes for an ensemble of matrices
 mixtime_ensemble <- function(ensemble, batch_size, steps, epsilon = 0.1){
-  ensemble_result <- sim_by_element(ensemble, batch_size, steps, epsilon, ensemble_index = 1) # Initialize the stack
+  # Initialize the stack
+  ensemble_result <- list(sim_by_element(ensemble, batch_size, steps, epsilon, ensemble_index = 1))
   # Go through rest of ensemble
   for(i in 2:length(ensemble)){
-    NA
+    curr_result <- sim_by_element(ensemble, batch_size, steps, epsilon, ensemble_index = i)
+    ensemble_result <- c(ensemble_result, list(curr_result)) # Concatenate results
   }
+  ensemble_result
 }
 
 sim_by_element <- function(ensemble, batch_size, steps, epsilon, ensemble_index){
@@ -34,37 +58,6 @@ RM_ensemble <- function(mat_type, args, size){
   ensemble <- replicate(n = size, expr = parse_args(fxn, args), simplify = F)
   # Return the ensemble
   ensemble
-}
-
-
-#=================================================================================#
-#                               BATCH EXECUTION 
-#=================================================================================#
-
-# Executes a batch of run_batch function on elements of a random matrix ensemble.
-execute_batch <- function(RM_mattype, RM_args, batch_args = list(100), execution_class, stack_args = list(20, TRUE)){
-  # Create the random matrix ensemble
-  ensemble <- RM_ensemble(RM_mattype, RM_args, 10)
-  # Obtain variables
-  M <- ncol(ensemble[[1]])
-  # Create the batch
-  batch <- make_batch(M, B = batch_args[[1]])
-  # Stack the batches
-  stack <- execution_class(ensemble[[1]], batch)
-  for(i in 2:length(ensemble)){
-    curr <- execution_class(ensemble[[i]], batch, stack_args)
-    stack <- rbind(stack, curr)
-  }
-  # Return the evolved stack
-  stack
-}
-
-run_class0 <- function(P, batch, stack_args = list(20, TRUE)){
-  # Unwind the variables
-  steps <- stack_args[[1]]
-  with_ratios <- stack_args[[2]]
-  # Evolve the batch and return it
-  evolve_batch(P, batch, steps, with_ratios)
 }
 
 #=================================================================================#
