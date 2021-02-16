@@ -14,4 +14,4 @@ The RMAT package is a package developed tandem with this thesis. Its primary fun
 - Simulating various random matrices
 - Simulating ensembles of these random matrices
 - Visualizing the eigenvalue spectra of these matrix ensembles
-- Simulating mixing time statistics on a random batch of points in a stochastic setting
+- Simulating and visualizing mixing time statistics on a random batch of points in a stochastic setting
