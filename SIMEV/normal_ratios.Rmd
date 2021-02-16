@@ -1,0 +1,166 @@
+---
+title: "Spectral Statistics of Normal Random Matrices"
+author: "Ali Taqi"
+output: pdf_document
+#  includes: 
+#    in_header: preamble.tex
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/simulate.R")
+source(file = "../R/analyze.R")
+# global parameters
+bool_plot <- T
+bool_loud <- T
+bool_animate <- F
+```
+
+# Eigenvalues of a Normal Matrix (T = 10)
+
+```{r}
+set.seed(23)
+# Generate a matrix
+P <- RM_normal(4, mean = 3, sd = 7, symm = T)
+# Evolve a batch
+sim <- mixtime_sim(P, batch_size = 250, steps = 10)
+# Get eigenvalues
+eigenvalues <- eigen(P)$values
+#eigenvalues
+```
+
+```{r}
+# Extract ratios
+ratios <- extract_ratios(sim[[2]])
+rxos <- ratios$r_x1
+```
+
+```{r}
+rxos <- data.frame(rx = sort(rxos[!is.na(rxos)]))
+```
+
+
+```{r}
+#qqline(y = ratios$r_x1, datax = T, distribution = qcauchy, qtype = 7)
+#qqnorm(y = ratios$r_x1)
+qqnorm(rxos)
+```
+
+```{r}
+sim_r <- data.frame(rx = sort(rcauchy(n = 2500, location = eigenvalues[1], scale = 2)))
+qqnorm(sim_r$rx)
+```
+
+
+
+# Ratio Visualization
+
+```{r}
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x1, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x2, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x3, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x4, color = element_index))
+```
+
+## Linear Ratios
+
+```{r}
+K <- 1
+m <- eigenvalues[K]
+L <- 1.5*abs(m)
+range = c(23,30)
+```
+
+```{r, fig.height = 10}
+p1 <- ratio_hist(ratios, 1, m, range)
+p2 <- ratio_hist(ratios, 2, m, range)
+p3 <- ratio_hist(ratios, 3, m, range)
+p4 <- ratio_hist(ratios, 4, m, range)
+grid.arrange(p1,p2,p3,p4,ncol=2)
+```
+
+## Log Ratios
+
+```{r}
+K <- 1
+m <- log_eigenvalues[K]
+range <- c(-3,7)
+```
+
+```{r, fig.height = 12}
+p1 <- ratio_hist(log_ratios, 1, m, range)
+p2 <- ratio_hist(log_ratios, 2, m, range)
+p3 <- ratio_hist(log_ratios, 3, m, range)
+p4 <- ratio_hist(log_ratios, 4, m, range)
+grid.arrange(p1,p2,p3,p4,ncol=2)
+```
+\newpage 
+
+# Eigenvalues of a Normal Matrix (T = 20)
+
+```{r}
+set.seed(23)
+# Generate a matrix
+P <- RM_normal(4, normal_args = c(3,7), symm = T)
+# Evolve a batch
+evolved_batch<- run_batch(P, B = 250, steps = 20, final_time = FALSE)
+# Get eigenvalues
+eigenvalues <- eigen(P)$values
+eigenvalues
+log_eigenvalues <- log(eigenvalues)
+# Extract ratios
+ratios <- extract_ratios(evolved_batch)
+log_ratios <- log(abs(ratios))
+```
+
+# Ratio Visualization
+
+```{r}
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x1, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x2, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x3, color = element_index))
+#ggplot() + geom_point(data=ratios, aes(x=time, y= r_x4, color = element_index))
+```
+
+## Linear Ratios
+
+```{r}
+K <- 1
+m <- eigenvalues[K]
+L <- 1.5*abs(m)
+range = c(23,30)
+```
+
+```{r, fig.height = 10}
+p1 <- ratio_hist(ratios, 1, m, range)
+p2 <- ratio_hist(ratios, 2, m, range)
+p3 <- ratio_hist(ratios, 3, m, range)
+p4 <- ratio_hist(ratios, 4, m, range)
+grid.arrange(p1,p2,p3,p4,ncol=2)
+```
+
+## Log Ratios
+
+```{r}
+K <- 1
+m <- log_eigenvalues[K]
+range <- c(-3,7)
+```
+
+```{r, fig.height = 12}
+p1 <- ratio_hist(log_ratios, 1, m, range)
+p2 <- ratio_hist(log_ratios, 2, m, range)
+p3 <- ratio_hist(log_ratios, 3, m, range)
+p4 <- ratio_hist(log_ratios, 4, m, range)
+grid.arrange(p1,p2,p3,p4,ncol=2)
+```
+

@@ -3,10 +3,13 @@
 #                         MIXTIME VISUALIZATION FUNCTIONS
 #=================================================================================#
 
-hist_mixtime <- function(batch){
+mixtime_histogram <- function(batch, bins = NA, mat = ""){
+  mixtimes <- batch$mixtime
+  mixtimes <- mixtimes[!is.na(mixtimes)]
+  if(is.na(bins)){bins <- range(mixtimes)[2] - range(mixtimes)[1] + 1}
   ggplot(data = batch) + 
-    geom_histogram(mapping = aes(x = mixtime), fill = "deepskyblue3") + 
-    labs(title = "Mixing Time Distribution for a Symmetric Normal Matrix", y = "")
+    geom_histogram(mapping = aes(x = mixtime), fill = "deepskyblue3", bins = bins) + 
+    labs(title = paste("Mixing Time Distribution for a ",mat,"Matrix",sep=""), y = "")
 }
 
 mixtime4d <- function(batch, grid = T){

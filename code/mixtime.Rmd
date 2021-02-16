@@ -1,0 +1,110 @@
+---
+title: "Mixing Times"
+author: "Ali Taqi"
+date: "2/5/2021"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/simulate.R")
+source(file = "../R/analyze.R")
+source(file = "../R/vis.R")
+# global parameters
+bool_plot <- F
+bool_loud <- T
+bool_animate <- F
+data <- F
+```
+
+# Mixing Times of a Symmetric Normal Matrix
+
+```{r}
+data <- T
+set.seed(23)
+# Generate a random matrix
+P <- RM_normal(M = 4, mean = 0, sd = 5, symm = T)
+# Analyze the simulated matrix
+if(!data){
+  sim <- mixtime_sim(P, B = 1000, steps = 50, epsilon = 0.01)
+  write_csv(sim[[1]], "data/batch1.csv")
+  write_csv(sim[[2]], "data/evolved_batch1.csv")
+  # Get arrays
+  batch <- sim[[1]]
+  evolved_batch <- sim[[2]]
+} else{
+  batch <- read_csv("data/batch1.csv")
+  evolved_batch <- read_csv("data/evolved_batch1.csv")
+}
+```
+
+## The Matrix
+
+```{r}
+P
+```
+
+## The Eigenvalues
+
+```{r}
+spectrum(P)
+```
+
+
+## Visualizations
+
+```{r}
+mixtime_histogram(batch, bins = 43)
+mixtime4d(batch)
+```
+
+\newpage
+
+```{r}
+set.seed(23)
+M <- 4
+# Generate matrix
+P <- RM_normal(3, mean = 0, sd = 2, symm = T)
+P
+# Look at the eigenvalues
+spectrum(P)
+# Simulate
+sim <- mixtime_sim(P, batch_size = 500, steps = 25, epsilon = 0.2)
+# Get arrays
+batch <- sim[[1]]
+evolved_batch <- sim[[2]]
+```
+
+```{r}
+mixtime_histogram(batch, bins = 50)
+```
+
+```{r}
+if(bool_plot){  
+  s1 <- mixtime4d(batch)
+  s1[[1]]
+  s1[[2]]
+  s1[[3]]
+  s1[[4]]
+}
+```
+
+```{r}
+if(bool_plot){  
+  s2 <- scatter_6d(batch)
+  s2[[1]]
+  s2[[2]]
+  s2[[3]]
+  s2[[4]]
+  s2[[5]]
+  s2[[6]]
+}
+```

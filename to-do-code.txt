@@ -43,5 +43,5 @@ evolve_batch():
 #===========================================================================#
 
 - Use latex2exp to generate better labelled eigenplots (r_i) 
--figure out how to add ggtitle to grid of histograms in EVC_normal.Rmd in SMEV
-make a row r_xi histogram plot function (using help from extract_ratios).
+- figure out how to add ggtitle to grid of histograms in EVC_normal.Rmd in SMEV
+- make a row r_xi histogram plot function (using help from extract_ratios).

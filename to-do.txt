@@ -11,3 +11,6 @@ be a fast way to get the eigen_index for an ENSEMBLE of matrices.
 
 - Writeup a radial density function for spectrum analysis. Perhaps consider enumerating other spectrum statistics: (sup, diff, ...)
 
+- Get the total variational distance computations setup.
+
+- Create some shiny-style app to visualize sliding parameters like: (epsilon, sparsity, matrix size)

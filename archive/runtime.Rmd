@@ -1,0 +1,45 @@
+---
+title: "runtime analysis"
+author: "Ali Taqi"
+date: "2/6/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/simulate.R")
+source(file = "../R/ratios.R")
+source(file = "../R/analyze.R")
+```
+
+```{r}
+set.seed(23)
+M <- 4
+# Generate matrix
+P <- RM_normal(M, normal_args = c(0,1), symm = T)
+# Run a batch
+batch <- make_batch(M, B = 100)
+```
+
+```{r}
+steps <- 5
+it <- 5
+```
+
+```{r warning = F, message = F}
+timer <- function(){
+  start_time <- Sys.time()
+  evolved_batch <- evolve_batch(P, batch, steps = steps)
+  end_time <- Sys.time()
+  # Return computation time
+  end_time - start_time
+}
+time_vec <- data.frame(t = replicate(n = it, expr = timer()))
+```
+
+```{r}
+mean(time_vec$t)
+ggplot(data = data.frame(time_vec), aes(t)) + geom_histogram(bins = 11)
+```
