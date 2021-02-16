@@ -1,0 +1,83 @@
+---
+title: 'Mixing Times of Erdos-Renyi Walks'
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", fig.height = 4, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/simulate.R")
+source(file = "../R/analyze.R")
+source(file = "../R/vis.R")
+# global parameters
+bool_plot <- T
+bool_loud <- F
+bool_animate <- F
+```
+
+```{r}
+# Document simulation parameters
+n <- 10
+batch_size <- 500
+steps <- 25
+```
+
+
+# Erdos-Renyi Walk Mixing Times
+
+```{r}
+set.seed(23)
+# Generate a stochastic matrix
+P <- RM_erdos(n = n, p_sparse = 0.8, stoch = T)
+P
+# Evolve a batch
+sim <- mixtime_sim(P, batch_size, steps)
+# Extract the arrays
+batch <- sim[[1]]
+evolved_batch <- sim[[2]]
+if(bool_loud){head(batch)}
+mixtime_histogram(batch, mat = "Erdos-0.8 ")
+prop_mixed(batch)
+```
+
+\newpage
+
+```{r}
+set.seed(23)
+# Generate a stochastic matrix
+P <- RM_erdos(n = n, p_sparse = 0.5, stoch = T)
+P
+# Evolve a batch
+sim <- mixtime_sim(P, batch_size, steps)
+# Extract the arrays
+batch <- sim[[1]]
+evolved_batch <- sim[[2]]
+if(bool_loud){head(batch)}
+mixtime_histogram(batch, mat = "Erdos-0.5 ")
+prop_mixed(batch)
+```
+
+\newpage
+
+```{r}
+set.seed(23)
+# Generate a stochastic matrix
+P <- RM_erdos(n = n, p_sparse = 0.2, stoch = T)
+P
+# Evolve a batch
+sim <- mixtime_sim(P, batch_size, steps)
+# Extract the arrays
+batch <- sim[[1]]
+evolved_batch <- sim[[2]]
+if(bool_loud){head(batch)}
+mixtime_histogram(batch, mat = "Erdos-0.2 ")
+prop_mixed(batch)
+```

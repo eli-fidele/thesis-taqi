@@ -5,13 +5,8 @@ date: "2/15/2021"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
-                      message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", fig.height = 4, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(knitr)
 library(patchwork)
@@ -25,7 +20,7 @@ source(file = "../R/analyze.R")
 source(file = "../R/vis.R")
 # global parameters
 bool_plot <- T
-bool_loud <- T
+bool_loud <- F
 bool_animate <- F
 ```
 
@@ -34,29 +29,15 @@ bool_animate <- F
 ```{r}
 set.seed(23)
 # Generate a stochastic matrix
-P <- RM_stoch(4, symm = T)
+P <- RM_stoch(n = 4, symm = T)
 P
 # Evolve a batch
-sim <- mixtime_sim(P, batch_size = 500, steps = 20)
+sim <- mixtime_sim(P, batch_size = 100, steps = 20)
 # Extract the arrays
 batch <- sim[[1]]
 evolved_batch <- sim[[2]]
 if(bool_loud){head(batch)}
 mixtime_histogram(batch, mat = "Stochastic ")
+prop_mixed(batch)
 ```
 
-# Erdos-Renyi Walk Mixing Times
-
-```{r}
-set.seed(23)
-# Generate a stochastic matrix
-P <- RM_erdos(n = 4, p_sparse = 0.7, stoch = T)
-P
-# Evolve a batch
-sim <- mixtime_sim(P, batch_size = 500, steps = 20)
-# Extract the arrays
-batch <- sim[[1]]
-evolved_batch <- sim[[2]]
-if(bool_loud){head(batch)}
-mixtime_histogram(batch, mat = "Stochastic ")
-```

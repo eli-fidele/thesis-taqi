@@ -19,6 +19,12 @@ eigen_mixtime <- function(evolved_batch, batch){
   cbind(batch, mixtime)
 }
 
+# Outputs the proportion of batch elements which are mixed
+prop_mixed <- function(batch){
+  prop_unmixed <- 1 - length(which(is.na(batch$mixtime)))/nrow(batch)
+  paste("This batch is ",100*round(prop_unmixed, 3),"% mixed.",sep="")
+}
+
 #=================================================================================#
 #                       EIGENVALUE ANALYSIS OF EVOLUTION ARRAYS
 #=================================================================================#
