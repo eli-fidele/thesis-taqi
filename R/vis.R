@@ -41,7 +41,7 @@ scatter_6d <- function(batch){
 
 # Gives a scatterplot of the ratio entries of the consecutive ratio sequence over time
 
-ratio_scatter <- function(data, n1, mean = 0, range = c(-10,10)){
+ratios_scatterplot <- function(data, n1, mean = 0, range = c(-10,10)){
   ggplot() + 
     geom_scatter(data = data, mapping = aes_string(x= paste("r_x",n1,sep="")), fill = "deepskyblue3") + xlim(range) + 
     geom_vline(xintercept = mean, color = "blue") + scale_fill_discrete(c("")) +
@@ -49,11 +49,16 @@ ratio_scatter <- function(data, n1, mean = 0, range = c(-10,10)){
 }
 
 # Gives a distribution of the ratio entries of the consecutive ratio sequence
-ratio_hist <- function(data, n1, mean = 0, range = c(-10,10)){
+ratios_histogram <- function(ratios, bins = NA){
+  mean <- mean(ratios$ratio)
+  sd <- var(ratios$ratio)
+  range <- c(mean - 3*sd, mean + 3*sd)
+  if(is.na(bins)){bins <- 30*range[2]}
   ggplot() + 
-    geom_histogram(data = data, mapping = aes_string(x= paste("r_x",n1,sep="")), fill = "deepskyblue3") + xlim(range) + 
+    geom_histogram(data = ratios, mapping = aes(x=ratio), fill = "deepskyblue3", bins = bins) +
     geom_vline(xintercept = mean, color = "blue") + scale_fill_discrete(c("")) +
-    labs(title = "Distribution of Ratios from the Consecutive Ratio Sequence")
+    labs(title = "Distribution of Ratios from the Consecutive Ratio Sequence") +
+    xlim(range)
 }
 
 #=================================================================================#

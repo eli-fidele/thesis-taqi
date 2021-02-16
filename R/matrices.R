@@ -118,3 +118,19 @@ nondiagonal_entries <- function(row, row_index){
   # return the row with the given indices
   row[as.numeric(indices[,])]
 }
+
+# Check if a matrix is stochastic
+is_row_stochastic <- function(P){
+  row_is_stoch <- rep(F, nrow(P))
+  for(i in 1:nrow(P)){
+    row_sum <- sum(P[i,])
+    row_is_stoch[i] <- (row_sum == 1)
+  }
+  !(F %in% row_is_stoch)
+}
+
+# returns proportion of positive entries of any matrix P
+pos_entries <- function(P){
+  pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))
+  pos_entries/(length(P))   
+}

@@ -22,8 +22,9 @@ mixtime_sim <- function(P, batch_size, steps, epsilon = 0.1){
 # Generate and evolve a batch of points for a given random matrix P. 
 # This function is a basic "initial" simulation. Other simulation functions will utilize this function 
 initial_sim <- function(P, B, steps){
-  # Make the batch
-  batch <- make_batch(M = ncol(P), B)
+  # Elements may be uniform only if the matrix isn't stochastic
+  if(!is_row_stochastic(P)){batch <- make_batch(M = ncol(P), B)} 
+  else{batch <- make_stochBatch(M = ncol(P), B)}
   # Evolve the batch and return it
   evolved_batch <- evolve_batch(batch, P, steps, ratios = TRUE)
   list(batch, evolved_batch)
@@ -32,6 +33,19 @@ initial_sim <- function(P, B, steps){
 #=================================================================================#
 #                       ELEMENTARY BATCH SIMULATION FUNCTIONS
 #=================================================================================#
+
+# Generate a Monte Carlo batch of an initial probability distribution
+make_stochBatch <- function(M, B, complex = FALSE){
+  batch <- matrix(rep(NA, B * M), nrow = B)  # create [B x M] batch array
+  if(!complex){ # If prompted, generate complex-valued random elements 
+    for(i in 1:B){batch[i,] <- r_stochastic(M)}
+  } 
+  else {
+    for(i in 1:B){batch[i,] <- NA} # Otherwise, generate complex elements of modulus 1
+  }
+  batch <- standardize_colnames(batch) # standardize the column names
+  data.frame(batch) # return batch
+}
 
 # Generate a Monte Carlo batch
 make_batch <- function(M, B, lambda = 1, complex = FALSE){

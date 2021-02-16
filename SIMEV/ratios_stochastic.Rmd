@@ -34,7 +34,7 @@ n <- 4
 mean <- 0
 sd <- 2
 # Batch parameters
-batch_size <- 30
+batch_size <- 100
 steps <- 20
 epsilon <- 0.05
 ```
@@ -42,7 +42,7 @@ epsilon <- 0.05
 ```{r}
 set.seed(23)
 # Generate a matrix
-P <- RM_normal(n, mean, sd, symm = T)
+P <- RM_stoch(n, symm = T)
 # Evolve a batch
 sim <- mixtime_sim(P, batch_size, steps, epsilon)
 # Extract arrays
@@ -68,8 +68,8 @@ eigenvalues
 ```{r}
 max_time <- max(evolved_batch$time)
 mean_mixtime <- mean(batch$mixtime)
-ratios <- data.frame(ratio = ratios_by_time(evolved_batch, at_time = 5:14, log = T))
-ratios_histogram(ratios, bins = 400)
+ratios <- data.frame(ratio = ratios_by_time(evolved_batch, at_time = 5:14, log = F))
+ratios_histogram(ratios, bins = 40)
 ```
 
 ## Ratio of Two Normal Variables

@@ -5,7 +5,7 @@ date: "2/4/2021"
 output: pdf_document
 ---
 
-Currently, the thesis loosely focuses on "Spectral Statistics of Random Matrices". To narrow down our focus, this document will outline and organize the potential avenues of focus.
+Currently, the thesis loosely focuses on "Spectral Statistics of Random Matrices". To narrow down our focus, this document will outline and organize the potential avenues of focus. Listed below are the different types of matrices to explore. For each matrix, there is a list of 'free parameters'. Simulations controlling and varying these parameters provide viable avenues of exploration.
 
 ## Stochastic Matrices
 

@@ -67,6 +67,37 @@ candidate_eigenvector <- function(vector, eigenvalue, epsilon){
 #                       RATIO ANALYSIS OF EVOLUTION ARRAYS
 #=================================================================================#
 
+# Helper function, returns a vector of all the ratio entries at a given time
+ratios_by_time <- function(evolved_batch, at_time, log = T){
+  ratios <- extract_ratios(by_time(evolved_batch, at_time))
+  ratios <- ratios[,2:ncol(ratios)]
+  if(log){ratios <- log(ratios)}
+  all_ratios <- as.vector(ratios$r_x1)
+  for(col in 2:ncol(ratios)){
+    curr_row <- as.vector(ratios[,col])
+    all_ratios <- c(all_ratios, curr_row)
+  }
+  all_ratios
+}
+
+# Gives the variance of the ratio entries for all the columns by time
+variance_by_time <- function(evolved_batch, min_time = 1, log = T){
+  max_time <- max(evolved_batch$time)
+  variances <- rep(NA, max_time)
+  for(i in min_time:max_time){
+    curr_var <- var(ratios_by_time(evolved_batch, at_time = i))
+    if(log){curr_var <- log(curr_var)}
+    variances[i] <- curr_var
+  }
+  ggplot(data = data.frame(time = 1:max_time, variance = variances), mapping = aes(x = time, y = variance)) + 
+    geom_point(color = "deepskyblue2") + 
+    geom_line(color = "deepskyblue2") +
+    labs(title = "Variance of the Ratio Entries by Matrix Power")
+}
+
+#=================================================================================#
+#                       RATIO GENERATION FROM EVOLUTION ARRAYS
+#=================================================================================#
 
 # Find the ratios between the steps for a given element array
 element_ratios <- function(curr_element){

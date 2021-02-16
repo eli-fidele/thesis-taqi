@@ -5,7 +5,7 @@ Monday, Feb 15
 Hello Nate!
 
 Consider checking out these documents:
-/code/mixtime.pdf - I ran a very simulation of "mixing times" for a symmetric normal matrix and plotted the distribution of the mixing times. The result is a pleasant surprise!
+/code/normal_mixtime.pdf - I ran a very simulation of "mixing times" for a symmetric normal matrix and plotted the distribution of the mixing times. The result is a pleasant surprise!
 
 ========================================================
 
