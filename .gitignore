@@ -1,9 +1,9 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-.DS_Store
-.log
+*.Rproj.user
+*.Rhistory
+*.RData
+*.Ruserdata
+*.DS_Store
+*.log
 
 #Mac
 *.DS_store
