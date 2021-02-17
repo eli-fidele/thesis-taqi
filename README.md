@@ -17,7 +17,7 @@ The RMAT package is a package developed tandem with this thesis. Its primary fun
 
 ## The 'mixtimes' package
 
-The RMAT package is a package developed tandem with this thesis. Its primary functionality includes:
+The mixtimes package is a package developed tandem with this thesis. Its primary functionality includes:
 
 - Simulating various stochastic random matrices
 - Simulating and visualizing mixing time statistics on a random batch of points in a stochastic setting
