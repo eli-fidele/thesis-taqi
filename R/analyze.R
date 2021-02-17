@@ -78,7 +78,7 @@ ratios_by_time <- function(evolved_batch, at_time, log = T){
     curr_row <- as.vector(ratios[,col]) 
     all_ratios <- c(all_ratios, curr_row) # Concatenate the rest of the consective rows' ratios
   }
-  abs(all_ratios) # Return ratios
+  all_ratios # Return ratios
 }
 
 # Gives the variance of the ratio entries for all the columns by time

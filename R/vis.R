@@ -39,7 +39,7 @@ variance_scatterplot <- function(evolved_batch, at_time = NA, log = T){
 }
 
 # Gives a distribution of the ratio entries of the consecutive ratio sequence
-ratios_histogram <- function(evolved_batch, at_time = NA, log = T, alpha = 0.99, bins = 200){
+ratios_histogram <- function(evolved_batch, at_time = NA, log = T, norms = T, alpha = 0.99, bins = 200){
   # Extract parameters 
   max_time <- max(evolved_batch$time)
   num_elements <- max(evolved_batch$element_index) # Number of batch elements
@@ -50,6 +50,7 @@ ratios_histogram <- function(evolved_batch, at_time = NA, log = T, alpha = 0.99,
   num_entries <- length(at_time) * num_elements * dims # For normalizing distribution
   # Get ratios using ratio_by_time()
   ratios <- data.frame(ratio = ratios_by_time(evolved_batch, at_time, log))
+  if(norms){ratios <- abs(ratios)} # Get norms of the ratios if prompted
   ratios$ratio <- ratios[is.numeric(ratios$ratio),] # Drop NAs
   # Return plot
   color0 <- "darkorchid3"
@@ -60,7 +61,7 @@ ratios_histogram <- function(evolved_batch, at_time = NA, log = T, alpha = 0.99,
     scale_fill_discrete(c("")) +
     labs(title = paste("Distribution of ",plot_str,
                        "Ratio Norms from the Consecutive Ratio Sequence",sep=""),
-         y = "Probability") +
+          y = "Probability") +
     xlim(range)
 }
 
