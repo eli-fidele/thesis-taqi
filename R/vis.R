@@ -15,29 +15,6 @@ mixtime_histogram <- function(batch, bins = NA, mat = ""){
     labs(title = paste("Mixing Time Distribution for a ",mat,"Random Matrix",sep=""), y = "")
 }
 
-mixtime4d <- function(batch, grid = T){
-  plot1 <- ggplot() + geom_point(data = batch, mapping = aes(x = x1, y = mixtime, color = mixtime))
-  plot2 <- ggplot() + geom_point(data = batch, mapping = aes(x = x2, y = mixtime, color = mixtime))
-  plot3 <- ggplot() + geom_point(data = batch, mapping = aes(x = x3, y = mixtime, color = mixtime))
-  plot4 <- ggplot() + geom_point(data = batch, mapping = aes(x = x4, y = mixtime, color = mixtime))
-  if(grid){
-    grid.arrange(plot1,plot2,plot3,plot4)
-  } else{
-    list(plot1,plot2,plot3,plot4)
-  }
-}
-
-mixtime6d <- function(batch){
-  plot1 <- ggplot() + geom_point(data = batch, mapping = aes(x = x1, y = x2, color = mixtime))
-  plot2 <- ggplot() + geom_point(data = batch, mapping = aes(x = x2, y = x3, color = mixtime))
-  plot3 <- ggplot() + geom_point(data = batch, mapping = aes(x = x3, y = x4, color = mixtime))
-  plot4 <- ggplot() + geom_point(data = batch, mapping = aes(x = x4, y = x2, color = mixtime))
-  plot5 <- ggplot() + geom_point(data = batch, mapping = aes(x = x4, y = x3, color = mixtime))
-  plot6 <- ggplot() + geom_point(data = batch, mapping = aes(x = x4, y = x1, color = mixtime))
-  list(plot1,plot2,plot3,plot4,plot5,plot6)
-}
-
-
 #=================================================================================#
 #                         RATIO VISUALIZATION FUNCTIONS
 #=================================================================================#
