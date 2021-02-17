@@ -71,22 +71,22 @@ candidate_eigenvector <- function(vector, eigenvalue, epsilon){
 ratios_by_time <- function(evolved_batch, at_time, log = T){
   # Extract ratios for a given time and remove the 'element_index' column.
   ratios <- extract_ratios(by_time(evolved_batch, at_time))
-  ratios <- ratios[,2:ncol(ratios)]
+  ratios <- ratios[,2:ncol(ratios)] # Drop non-ratio columns
   if(log){ratios <- log(ratios)} # Take log if prompted
   all_ratios <- as.vector(ratios$r_x1) # Initialize vector by taking ratios in first row
   for(col in 2:ncol(ratios)){ 
     curr_row <- as.vector(ratios[,col]) 
     all_ratios <- c(all_ratios, curr_row) # Concatenate the rest of the consective rows' ratios
   }
-  all_ratios # Return ratios
+  abs(all_ratios) # Return ratios
 }
 
 # Gives the variance of the ratio entries for all the columns by time
 variance_by_time <- function(evolved_batch, at_time, log = T){
   variances <- rep(NA, length(at_time)) # Create a vector to hold the variance for each time
   for(i in 1:length(at_time)){ 
-    curr_var <- var(ratios_by_time(evolved_batch, at_time = i)) # Get the variance at that time
-    if(log){curr_var <- log(curr_var)} # Take log if prompted
+    curr_var <- var(ratios_by_time(evolved_batch, at_time = i, log), na.rm = T) # Get the variance at that time
+    #if(log){curr_var <- log(curr_var)} # Take log if prompted
     variances[i] <- curr_var
     }
   variances # Return variances

@@ -16,3 +16,5 @@ be a fast way to get the eigen_index for an ENSEMBLE of matrices.
 - Create some shiny-style app to visualize sliding parameters like: (epsilon, sparsity, matrix size)
 
 - Write a function mixtime_sim_EP that takes a vector of epsilons, appends an epsilon_index column to the batches, and returns a stack of batches for histogram visualization
+
+- When considering log-ratios, take absolute value of the numbers! (last time of ratios_by_time)

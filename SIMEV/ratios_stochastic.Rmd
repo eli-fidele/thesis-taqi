@@ -1,5 +1,5 @@
 ---
-title: "Spectral Statistics of Normal Random Matrices"
+title: "Spectral Statistics of Stochastic Matrices"
 author: "Ali Taqi"
 output: pdf_document
 #  includes: 
@@ -34,55 +34,53 @@ bool_animate <- F
 #=======================
 # Matrix parameters
 n <- 4
-symm <- F
 # Batch parameters
 batch_size <- 500
-steps <- 5
+steps <- 7
 epsilon <- 0.05
 #==========================
 #         SIMULATE 
 #==========================
 set.seed(23)
 # Generate a matrix
-P <- RM_stoch(n, symm)
+P <- RM_stoch(n, symm = F)
+P
 # Evolve a batch
 sim <- mixtime_sim(P, batch_size, steps, epsilon)
 # Extract arrays
 batch <- sim[[1]]
 evolved_batch <- sim[[2]]
+mixtime_histogram(batch, mat = "Stochastic ")
 ```
 
-## Log-Variance over Time
-
 ```{r}
-if(!bool_plot){variance_scatterplot(evolved_batch, log = T)}
-```
-
-## Log-Ratio Distribution
-
-```{r}
+## Log-Ratio Distribution Plot
 bool_loud <- T
 # Get eigenvalues
 eigenvalues <- eigen(P)$values
-if(bool_loud){eigenvalues}
-ratios_histogram(ratios, log = T, alpha = 0.99, bins = 100)
+if(bool_loud){
+  print("Eigenvalues of the Matrix")
+  spectrum(P)
+  #eigenvalues
+  }
+ratios_histogram(evolved_batch, log = T, alpha = 0.99, bins = 100)
+## Log-Variance over Time
+if(!bool_plot){variance_scatterplot(evolved_batch, log = T)}
 ```
 
-## Ratio of Two Normal Variables (Cauchy Distribution)
-
 ```{r}
+## Ratio of Two Normal Variables (Cauchy Distribution)
 set.seed(23)
 mean <- 0
 n_sample <- 10000
-norm1 <- rnorm(n = n_sample, mean = mean-0.01, sd = 0.02) # Lower variance
+norm1 <- rnorm(n = n_sample, mean = mean-0.01, sd = 0.05) # Lower variance
 norm2 <- rnorm(n = n_sample, mean = mean, sd = 0.1)
 ratio_norm <- data.frame(ratio_norm = norm1/norm2)
 ggplot(data = ratio_norm, mapping = aes(x = ratio_norm)) + 
-  geom_histogram(bins = 50) +
-  xlim(quantile(ratio_norm$ratio_norm, probs = c(0.01,0.99)))
+  geom_histogram(aes(y = stat(count / n_sample), bins = 50), fill = "darkorchid2") +
+  xlim(quantile(ratio_norm$ratio_norm, probs = c(0.01,0.99))) +
+  labs(title = "Ratio of Two Normal Variables (Cauchy Distribution)")
 ```
-
-## Ratio of Two Chi-Squared Variables
 
 ```{r}
 set.seed(23)
@@ -90,7 +88,7 @@ df <- 1000
 chi1 <- rchisq(n = 10000, df = df)
 chi2 <- rchisq(n = 10000, df = df)
 ratio_chi <- data.frame(ratio_chi = chi1/chi2)
-ggplot(data = ratio_chi, mapping = aes(x = ratio_chi)) + geom_histogram(bins = 100)
+#ggplot(data = ratio_chi, mapping = aes(x = ratio_chi)) + geom_histogram(bins = 100)
 ```
 
 ```{r}

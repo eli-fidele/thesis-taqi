@@ -1,0 +1,34 @@
+---
+title: "Statistics of the Ratios in the CRS"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Possible Distributions
+
+Recall that we are considering the entries of the consecutive ratio sequence. One possible distribution of these entries is a Cauchy distribution.
+
+A $\text{Cauchy}(x_0, \gamma)$ distribution has the following:
+
+PDF: $\frac{1}{\pi\gamma \left[1+\left(\frac{x-x_0}{\gamma}\right)^2\right]}$ \newline
+Median: $x_0$ \newline
+Mean: Undefined \newline
+Variance: Undefined \newline
+
+
+A $\text{Log-Cauchy}(\mu, \sigma)$ distribution has the following:
+
+PDF: $\frac{1}{\pi x}\left[\frac{\sigma}{\ln(x - \mu)^2 + \sigma^2}\right]$ \newline
+Median: $e^\mu$ \newline
+Mean: $\infty$ \newline
+Variance: $\infty$ \newline
+
+## Variance by Power
+
+Additionally, we also consider the plots of the variance of the CRS by a given time. In clearer terms, we also consider the following:
+
+$$V(n) = \text{Var}\left(\frac{\vec{a}Q^{n+1}}{\vec{a}Q^n}\right) \text{ for } \vec{a} = (a_i) \text{ where } a_i \sim \text{Unif}(-\lambda,\lambda)$$

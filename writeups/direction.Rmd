@@ -5,68 +5,22 @@ date: "2/4/2021"
 output: pdf_document
 ---
 
-Currently, the thesis loosely focuses on "Spectral Statistics of Random Matrices". To narrow down our focus, this document will outline and organize the potential avenues of focus. Listed below are the different types of matrices to explore. For each matrix, there is a list of 'free parameters'. Simulations controlling and varying these parameters provide viable avenues of exploration.
+Currently, the thesis loosely focuses on "Spectral Statistics of Random Matrices". To narrow down our focus, this document will outline and organize the potential avenues of focus. Listed below are the avenues of spectral statistics to explore.
 
-## Stochastic Matrices
+For a given matrix (ensemble), consider the following spectral statistics:
 
-Stochastic matrices are ergodic if they have a limiting distribution that is also the stationary distribution. This is achieved when the matrix represents a Markov chain that is aperiodic and irreducible. 
+## Eigenvalue specrtra
 
-- What happens to the mixing time $t$ if we force the matrix to be symmetric?
-
-$\textbf{Free Parameters:}$
-\begin{enumerate}
-  \item Boolean: Symmetric
-  \item Boolean: Sparse/Fully Connected
-  \item Integer: $M \in \mathbb{N}$ (Matrix Dimension)
-\end{enumerate}
-
-## Erdos-Renyi Graphs
-
-Walks on an ERG represent a parameterizable class of stochastic matrices. Specifically, we can parameterize its sparsity or connectedness with a parameter $p$.
-
-- How does $p$ impact the mixing time of the Markov Chain?
-- How does $p$ impact the spectrum of the random matrix ensemble?
-
-$\textbf{Free Parameters:}$
-\begin{enumerate}
-  \item Real Number: $p_{\text{sparsity}} \in [0,1]$
-  \item Integer: $M \in \mathbb{N}$ (Matrix Dimension)
-\end{enumerate}
+1. The actual spectra of the RM(E), under varying free parameters. $(\sigma(P))$
+1. The spacings between the eigenvalues, and related statistics. $\{\lambda_i - \lambda_j \mid \lambda_i, \lambda_j \in \sigma(P)\}$
+1. Radial density/distribution of the eigenvalues. $P(||\lambda_i|| = r) \text{ for } r \in[0,1]$
 
 
-## Normal Matrices
+## Consecutive Ratio Sequences
 
-For normal matrices, we study a hidden markov chain in the CRS. Because this is no longer a traditional stochastic setting, the term "mixing time" is overloaded. Let the mixing time represent the power needed such that a row vector is $\varepsilon$-convergent to an eigenvector of the matrix's largest eigenvalue.
+1. The distribution of the ratios (and log-ratios) in the CRS. ($\frac{(\alpha_n)_j}{(\alpha_{n-1})_j} \text{ for } j = 1,\dots,M \text{ and } \alpha_k = \vec{a}Q^k$)
+1. Variance of the ratios at a given matrix time/power $n$. ($V(n) = \text{Var}\left(\left|\frac{\vec{a}Q^{n+1}}{\vec{a}Q^n}\right|\right)$)
 
-- How do the parameters $\mu$, $\sigma$ of the matrix ensemble affect mixing time?
-- What properties exist in the entries of the CRS? How are they distributed and are they i.i.d entrywise?
-- What happens to the mixing time $t$ if we force the matrix to be symmetric?
-- Do the signs of the entries in the matrix impact mixing time, and how so?
+## Mixing Times
 
-$\textbf{Free Parameters:}$
-\begin{enumerate}
-  \item Real Numbers: $\mu,\sigma \in \mathbb{R}$
-  \item Boolean: Symmetric
-  \item Integer: $M \in \mathbb{N}$ (Matrix Dimension)
-\end{enumerate}
-
-
-## Band Matrices
-
-A band matrix is a matrix parameterizable by band length, an integer $k \in \mathbb{N^+}$ than stipulates all entries of the matrix be within $k$ entries away from the main diagonal. Let the convention be that $k = 0$ is a diagonal matrix and $k=1$ a tridiagonal matrix.
-
-- What about the mixing times stochastic band matrices?
-- What about the mixing times of normal band matrices?
-
-$\textbf{Free Parameters:}$
-\begin{enumerate}
-  \item Integer: $k \in \mathbb{N^+}$
-  \item Boolean: Symmetric
-  \item Integer: $M \in \mathbb{N}$ (Matrix Dimension)
-\end{enumerate}
-
-So, all in all, we have two notions of mixing time. One is the official mixing time of stochastic matrices. The other is one for approximating eigenvectors of the matrix. 
-
-## Goals
-
-- Create package for random matrices and random ensemble.
+1. The mixing time distribution for various matrices under varying free parameters.

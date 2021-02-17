@@ -9,10 +9,11 @@ mixtime_histogram <- function(batch, bins = NA, mat = ""){
   mixtimes <- mixtimes[!is.na(mixtimes)] # Remove NAs
   if(class(bins) == "logical"){bins <- range(mixtimes)[2] - range(mixtimes)[1] + 1}
   # Return plot
-  color0 <- "deeporchid2"
+  color0 <- "darkorchid2"
   ggplot(data = batch, mapping = aes(x = mixtime)) + 
-    geom_histogram(, fill = color0, bins = bins) + 
-    labs(title = paste("Mixing Time Distribution for a ",mat,"Random Matrix",sep=""), y = "")
+    geom_histogram(mapping = aes(y = stat(count / length(mixtimes))), fill = color0, bins = bins) + 
+    labs(title = paste("Mixing Time Distribution for a ",mat,"Random Matrix",sep=""), 
+         y = "Probability")
 }
 
 #=================================================================================#
@@ -25,7 +26,7 @@ variance_scatterplot <- function(evolved_batch, at_time = NA, log = T){
   # Initialize the time range to default
   if(class(at_time) == "logical"){at_time <- 2:max_time}
   # Get variances
-  variances <- variance_by_time(evolved_batch, at_time, log = T)
+  variances <- variance_by_time(evolved_batch, at_time, log)
   # Setup and return plot
   color0 <- "darkorchid3"
   if(log){plot_str <- "Log-"} else{plot_str <- ""}
@@ -33,25 +34,34 @@ variance_scatterplot <- function(evolved_batch, at_time = NA, log = T){
          mapping = aes(x = time, y = variance)) + 
     geom_point(color = color0) +
     geom_line(color = color0) +
-    labs(title = paste(plot_str,"Variance of the Ratio Entries by Matrix Power",sep=""),
-         y = paste(plot_str,"Variance",sep=""))
+    labs(title = paste("Variance of the ",plot_str,"Ratio Entries by Matrix Power",sep=""),
+         y = paste("Variance",sep=""))
 }
 
 # Gives a distribution of the ratio entries of the consecutive ratio sequence
-ratios_histogram <- function(ratios, at_time = NA, log = T, alpha = 0.99, bins = 200){
+ratios_histogram <- function(evolved_batch, at_time = NA, log = T, alpha = 0.99, bins = 200){
+  # Extract parameters 
   max_time <- max(evolved_batch$time)
+  num_elements <- max(evolved_batch$element_index) # Number of batch elements
+  # Extract number of dimensions, remove non-indexed columns, divide by 2 since x_i, r_xi
+  dims <- (ncol(evolved_batch) - 3)/2 
   # Initialize the time range to default
   if(class(at_time) == "logical"){at_time <- 2:max_time}
-  ratios <- data.frame(ratio = ratios_by_time(evolved_batch, at_time, log = T))
+  num_entries <- length(at_time) * num_elements * dims # For normalizing distribution
+  # Get ratios using ratio_by_time()
+  ratios <- data.frame(ratio = ratios_by_time(evolved_batch, at_time, log))
+  ratios$ratio <- ratios[is.numeric(ratios$ratio),] # Drop NAs
   # Return plot
   color0 <- "darkorchid3"
+  range <- quantile(ratios, probs = quantiles_alpha(alpha), na.rm = T) # Get alpha % of data
   if(log){plot_str <- "Log-"} else{plot_str <- ""}
   ggplot(data = ratios, mapping = aes(x=ratio)) + 
-    geom_histogram(fill = color0, bins = bins) +
+    geom_histogram(mapping = aes(y = stat(count / num_entries)), fill = color0, bins = bins) +
     scale_fill_discrete(c("")) +
     labs(title = paste("Distribution of ",plot_str,
-                       "Ratios from the Consecutive Ratio Sequence",sep="")) +
-    xlim(quantile(ratios$ratio, probs = quantiles_alpha(alpha))) # 
+                       "Ratios from the Consecutive Ratio Sequence",sep=""),
+         y = "Probability") +
+    xlim(range)
 }
 
 # Create a vector of quantiles containing alpha % of the data
