@@ -53,6 +53,25 @@ evolved_batch <- sim[[2]]
 mixtime_histogram(batch, mat = "Stochastic ")
 ```
 
+\newpage
+
+```{r}
+## Log-Ratio Distribution Plot
+bool_loud <- T
+# Get eigenvalues
+eigenvalues <- eigen(P)$values
+if(bool_loud){
+  print("Eigenvalues of the Matrix")
+  spectrum(P)
+  #eigenvalues
+  }
+ratios_histogram(evolved_batch, log = F, alpha = 0.99, bins = 100)
+## Log-Variance over Time
+if(!bool_plot){variance_scatterplot(evolved_batch, log = F)}
+```
+
+\newpage
+
 ```{r}
 ## Log-Ratio Distribution Plot
 bool_loud <- T

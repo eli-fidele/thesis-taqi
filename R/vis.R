@@ -34,7 +34,7 @@ variance_scatterplot <- function(evolved_batch, at_time = NA, log = T){
          mapping = aes(x = time, y = variance)) + 
     geom_point(color = color0) +
     geom_line(color = color0) +
-    labs(title = paste("Variance of the ",plot_str,"Ratio Entries by Matrix Power",sep=""),
+    labs(title = paste("Variance of the ",plot_str,"Ratio Entry Norms by Matrix Power",sep=""),
          y = paste("Variance",sep=""))
 }
 
@@ -59,7 +59,7 @@ ratios_histogram <- function(evolved_batch, at_time = NA, log = T, alpha = 0.99,
     geom_histogram(mapping = aes(y = stat(count / num_entries)), fill = color0, bins = bins) +
     scale_fill_discrete(c("")) +
     labs(title = paste("Distribution of ",plot_str,
-                       "Ratios from the Consecutive Ratio Sequence",sep=""),
+                       "Ratio Norms from the Consecutive Ratio Sequence",sep=""),
          y = "Probability") +
     xlim(range)
 }

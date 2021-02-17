@@ -5,7 +5,14 @@ Monday, Feb 15
 Hello Nate!
 
 Consider checking out these documents:
-/code/normal_mixtime.pdf - I ran a very simulation of "mixing times" for a symmetric normal matrix and plotted the distribution of the mixing times. The result is a pleasant surprise!
+
+	/code/mixtime_erdos.pdf - In this document, I ran some preliminary simulations of the walks on Erdos -Renyi graph to (finally) look at the effect of the sparsity (p) on the matrix's mixing time. It's currently only a single matrix representing each sparsity level, but as a preliminary, we see sparsity has an positive relationship with mixing time, as we might expect!
+
+	/SIMEV/ratios_normal.pdf - In this document, I simulated some a symmetric normal matrix and ran a simulated random batch. The mixing time distribution is - well - symmetric, seemingly normal-ish. I also plotted the distribution of the ratio norms and the log-transformed version. It seems like the untransformed version is a very Cauchy-looking distribution around the largest eigenvalue. (See reference distribution in the end of the document). Also, I thought it would be interested to look at the variance of the entries at a given power of the matrix (to see the distribution of (aQ^n+1 / aQ^n) at power n. The log version is quite interesting to look at.
+
+	/SIMEV/ratios_stochastic.pdf - In this document, I simulated a regular stochastic matrix and simulated a random batch. Seems like it has a small mixing time. The distribution of ratio norms from the CRS seems like a Cauchy distribution around 1, which is nice! I've put a Cauchy distribution for reference at the end of the document.
+
+ 
 
 ========================================================
 
