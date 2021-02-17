@@ -3,13 +3,16 @@
 #                         MIXTIME VISUALIZATION FUNCTIONS
 #=================================================================================#
 
+# Returns a histogram of the mixing times of a batch array
 mixtime_histogram <- function(batch, bins = NA, mat = ""){
-  mixtimes <- batch$mixtime
-  mixtimes <- mixtimes[!is.na(mixtimes)]
-  if(is.na(bins)){bins <- range(mixtimes)[2] - range(mixtimes)[1] + 1}
-  ggplot(data = batch) + 
-    geom_histogram(mapping = aes(x = mixtime), fill = "deepskyblue3", bins = bins) + 
-    labs(title = paste("Mixing Time Distribution for a ",mat,"Matrix",sep=""), y = "")
+  mixtimes <- batch$mixtime # Get vector of mixtimes
+  mixtimes <- mixtimes[!is.na(mixtimes)] # Remove NAs
+  if(class(bins) == "logical"){bins <- range(mixtimes)[2] - range(mixtimes)[1] + 1}
+  # Return plot
+  color0 <- "deeporchid2"
+  ggplot(data = batch, mapping = aes(x = mixtime)) + 
+    geom_histogram(, fill = color0, bins = bins) + 
+    labs(title = paste("Mixing Time Distribution for a ",mat,"Random Matrix",sep=""), y = "")
 }
 
 mixtime4d <- function(batch, grid = T){
@@ -24,7 +27,7 @@ mixtime4d <- function(batch, grid = T){
   }
 }
 
-scatter_6d <- function(batch){
+mixtime6d <- function(batch){
   plot1 <- ggplot() + geom_point(data = batch, mapping = aes(x = x1, y = x2, color = mixtime))
   plot2 <- ggplot() + geom_point(data = batch, mapping = aes(x = x2, y = x3, color = mixtime))
   plot3 <- ggplot() + geom_point(data = batch, mapping = aes(x = x3, y = x4, color = mixtime))
@@ -39,8 +42,48 @@ scatter_6d <- function(batch){
 #                         RATIO VISUALIZATION FUNCTIONS
 #=================================================================================#
 
-# Gives a scatterplot of the ratio entries of the consecutive ratio sequence over time
+# Gives a variance scatterplot of the ratio entries over time
+variance_scatterplot <- function(evolved_batch, at_time = NA, log = T){
+  max_time <- max(evolved_batch$time) # Get the maximum time for the evolved batch
+  # Initialize the time range to default
+  if(class(at_time) == "logical"){at_time <- 2:max_time}
+  # Get variances
+  variances <- variance_by_time(evolved_batch, at_time, log = T)
+  # Setup and return plot
+  color0 <- "darkorchid3"
+  if(log){plot_str <- "Log-"} else{plot_str <- ""}
+  ggplot(data = data.frame(time = at_time, variance = variances),
+         mapping = aes(x = time, y = variance)) + 
+    geom_point(color = color0) +
+    geom_line(color = color0) +
+    labs(title = paste(plot_str,"Variance of the Ratio Entries by Matrix Power",sep=""),
+         y = paste(plot_str,"Variance",sep=""))
+}
 
+# Gives a distribution of the ratio entries of the consecutive ratio sequence
+ratios_histogram <- function(ratios, at_time = NA, log = T, alpha = 0.99, bins = 200){
+  max_time <- max(evolved_batch$time)
+  # Initialize the time range to default
+  if(class(at_time) == "logical"){at_time <- 2:max_time}
+  ratios <- data.frame(ratio = ratios_by_time(evolved_batch, at_time, log = T))
+  # Return plot
+  color0 <- "darkorchid3"
+  if(log){plot_str <- "Log-"} else{plot_str <- ""}
+  ggplot(data = ratios, mapping = aes(x=ratio)) + 
+    geom_histogram(fill = color0, bins = bins) +
+    scale_fill_discrete(c("")) +
+    labs(title = paste("Distribution of ",plot_str,
+                       "Ratios from the Consecutive Ratio Sequence",sep="")) +
+    xlim(quantile(ratios$ratio, probs = quantiles_alpha(alpha))) # 
+}
+
+# Create a vector of quantiles containing alpha % of the data
+quantiles_alpha <- function(alpha){
+  remaining <- (1 - alpha)/2
+  c(remaining, alpha+remaining)
+}
+
+# Gives a scatterplot of the ratio entries of the consecutive ratio sequence over time
 ratios_scatterplot <- function(data, n1, mean = 0, range = c(-10,10)){
   ggplot() + 
     geom_scatter(data = data, mapping = aes_string(x= paste("r_x",n1,sep="")), fill = "deepskyblue3") + xlim(range) + 
@@ -48,18 +91,6 @@ ratios_scatterplot <- function(data, n1, mean = 0, range = c(-10,10)){
     labs(title = "Distribution of Ratios from the Consecutive Ratio Sequence")
 }
 
-# Gives a distribution of the ratio entries of the consecutive ratio sequence
-ratios_histogram <- function(ratios, bins = NA){
-  mean <- mean(ratios$ratio)
-  sd <- var(ratios$ratio)
-  range <- c(mean - 3*sd, mean + 3*sd)
-  if(is.na(bins)){bins <- 30*range[2]}
-  ggplot() + 
-    geom_histogram(data = ratios, mapping = aes(x=ratio), fill = "deepskyblue3", bins = bins) +
-    geom_vline(xintercept = mean, color = "blue") + scale_fill_discrete(c("")) +
-    labs(title = "Distribution of Ratios from the Consecutive Ratio Sequence") +
-    xlim(range)
-}
 
 #=================================================================================#
 #                           BATCH VISUALIZATION FUNCTIONS
@@ -106,11 +137,7 @@ batch_2d_plot <- function(batch_data, mat_str = ""){
 # Plots the eigenvalues of a given matrix P
 spectrum_plot <- function(P, mat_type=""){
   # Check if we have a stack of matrices or singular matrix
-  if(nrow(P) == ncol(P)){
-    array <- spectrum(P)
-  } else{
-    array <- P 
-  }
+  if(nrow(P) == ncol(P)){array <- spectrum(P)} else{array <- P}
   # Plot parameters
   r <- 1
   ep <- 0.5

@@ -26,7 +26,7 @@ prop_mixed <- function(batch){
 }
 
 #=================================================================================#
-#                       EIGENVALUE ANALYSIS OF EVOLUTION ARRAYS
+#                       EIGENVALUE CLASSIFICATION OF RATIOS
 #=================================================================================#
 
 # Takes in an **FINAL-TIME** evolved batch to return an analysis of the simluated eigenvalues
@@ -69,30 +69,27 @@ candidate_eigenvector <- function(vector, eigenvalue, epsilon){
 
 # Helper function, returns a vector of all the ratio entries at a given time
 ratios_by_time <- function(evolved_batch, at_time, log = T){
+  # Extract ratios for a given time and remove the 'element_index' column.
   ratios <- extract_ratios(by_time(evolved_batch, at_time))
   ratios <- ratios[,2:ncol(ratios)]
-  if(log){ratios <- log(ratios)}
-  all_ratios <- as.vector(ratios$r_x1)
-  for(col in 2:ncol(ratios)){
-    curr_row <- as.vector(ratios[,col])
-    all_ratios <- c(all_ratios, curr_row)
+  if(log){ratios <- log(ratios)} # Take log if prompted
+  all_ratios <- as.vector(ratios$r_x1) # Initialize vector by taking ratios in first row
+  for(col in 2:ncol(ratios)){ 
+    curr_row <- as.vector(ratios[,col]) 
+    all_ratios <- c(all_ratios, curr_row) # Concatenate the rest of the consective rows' ratios
   }
-  all_ratios
+  all_ratios # Return ratios
 }
 
 # Gives the variance of the ratio entries for all the columns by time
-variance_by_time <- function(evolved_batch, min_time = 1, log = T){
-  max_time <- max(evolved_batch$time)
-  variances <- rep(NA, max_time)
-  for(i in min_time:max_time){
-    curr_var <- var(ratios_by_time(evolved_batch, at_time = i))
-    if(log){curr_var <- log(curr_var)}
+variance_by_time <- function(evolved_batch, at_time, log = T){
+  variances <- rep(NA, length(at_time)) # Create a vector to hold the variance for each time
+  for(i in 1:length(at_time)){ 
+    curr_var <- var(ratios_by_time(evolved_batch, at_time = i)) # Get the variance at that time
+    if(log){curr_var <- log(curr_var)} # Take log if prompted
     variances[i] <- curr_var
-  }
-  ggplot(data = data.frame(time = 1:max_time, variance = variances), mapping = aes(x = time, y = variance)) + 
-    geom_point(color = "deepskyblue2") + 
-    geom_line(color = "deepskyblue2") +
-    labs(title = "Variance of the Ratio Entries by Matrix Power")
+    }
+  variances # Return variances
 }
 
 #=================================================================================#

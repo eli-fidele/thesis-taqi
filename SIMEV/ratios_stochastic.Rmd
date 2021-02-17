@@ -26,72 +26,71 @@ bool_loud <- F
 bool_animate <- F
 ```
 
-# Consecutive Ratio Sequence: Symmetric Normal Matrix
+# Consecutive Ratio Sequence: Stochastic Matrix
 
 ```{r}
+#=======================
+#         SETUP 
+#=======================
 # Matrix parameters
 n <- 4
-mean <- 0
-sd <- 2
+symm <- F
 # Batch parameters
-batch_size <- 100
-steps <- 20
+batch_size <- 500
+steps <- 5
 epsilon <- 0.05
-```
-
-```{r}
+#==========================
+#         SIMULATE 
+#==========================
 set.seed(23)
 # Generate a matrix
-P <- RM_stoch(n, symm = T)
+P <- RM_stoch(n, symm)
 # Evolve a batch
 sim <- mixtime_sim(P, batch_size, steps, epsilon)
 # Extract arrays
 batch <- sim[[1]]
 evolved_batch <- sim[[2]]
-# Get eigenvalues
-eigenvalues <- eigen(P)$values
-if(bool_loud){eigenvalues}
 ```
 
 ## Log-Variance over Time
 
 ```{r}
-if(!bool_plot){variance_by_time(evolved_batch, min_time = 1)/variance_by_time(evolved_batch, min_time = 10)}
+if(!bool_plot){variance_scatterplot(evolved_batch, log = T)}
 ```
 
 ## Log-Ratio Distribution
 
 ```{r}
-eigenvalues
+bool_loud <- T
+# Get eigenvalues
+eigenvalues <- eigen(P)$values
+if(bool_loud){eigenvalues}
+ratios_histogram(ratios, log = T, alpha = 0.99, bins = 100)
 ```
 
-```{r}
-max_time <- max(evolved_batch$time)
-mean_mixtime <- mean(batch$mixtime)
-ratios <- data.frame(ratio = ratios_by_time(evolved_batch, at_time = 5:14, log = F))
-ratios_histogram(ratios, bins = 40)
-```
-
-## Ratio of Two Normal Variables
+## Ratio of Two Normal Variables (Cauchy Distribution)
 
 ```{r}
 set.seed(23)
-df <- 100
-norm1 <- rnorm(n = 10000, mean = mean, sd = 2)
-norm2 <- rnorm(n = 10000, mean = mean, sd = 2)
+mean <- 0
+n_sample <- 10000
+norm1 <- rnorm(n = n_sample, mean = mean-0.01, sd = 0.02) # Lower variance
+norm2 <- rnorm(n = n_sample, mean = mean, sd = 0.1)
 ratio_norm <- data.frame(ratio_norm = norm1/norm2)
-ggplot(data = ratio_norm, mapping = aes(x = ratio_norm)) + geom_histogram() + xlim(c(-10,10))
+ggplot(data = ratio_norm, mapping = aes(x = ratio_norm)) + 
+  geom_histogram(bins = 50) +
+  xlim(quantile(ratio_norm$ratio_norm, probs = c(0.01,0.99)))
 ```
 
 ## Ratio of Two Chi-Squared Variables
 
 ```{r}
 set.seed(23)
-df <- 100
+df <- 1000
 chi1 <- rchisq(n = 10000, df = df)
 chi2 <- rchisq(n = 10000, df = df)
 ratio_chi <- data.frame(ratio_chi = chi1/chi2)
-ggplot(data = ratio_chi, mapping = aes(x = ratio_chi)) + geom_histogram()
+ggplot(data = ratio_chi, mapping = aes(x = ratio_chi)) + geom_histogram(bins = 100)
 ```
 
 ```{r}
