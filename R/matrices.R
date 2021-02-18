@@ -37,7 +37,7 @@ RM_beta <- function(N, beta, complex = F){
   df_seq <- beta*(N - seq(1,N-1)) # Get degrees of freedom sequence for offdigonal
   P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rchisq(N-1, df_seq) # Generate tridiagonal
   # Add complex entries, if prompted
-  if(complex){P <- P + (1i * RM_beta(N, beta))}
+  if(complex){P <- P + .make_hermitian((1i * RM_beta(N, beta)))}
   P <- P/sqrt(2) # Rescale the entries by 1/sqrt(2)
   P # Return the matrix
 }
