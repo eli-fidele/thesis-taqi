@@ -45,7 +45,7 @@ read_eigenvalue <- function(spectrum, K){complex(real = spectrum[K,1], imaginary
 #                         SPECTRUM VISUALIZATION FUNCTIONS
 #=================================================================================#
 
-# Plots the eigenvalues of a given matrix P
+# Plots the eigenvalues of a given matrix (ensemble) in the array P
 spectrum_plot <- function(P, mat_type=""){
   # Plot parameters
   r <- 1
