@@ -4,12 +4,10 @@
 #=================================================================================#
 
 RM_normal <- function(n, mean = 0, sd = 1, symm = F){
-  # Create [n x n] matrix
-  P <- matrix(rep(NA, n * n), ncol = n)  
-  # Generate rows
-  for(i in 1:n){P[i,] <- rnorm(n = n, mean, sd)}
+  # Create [n x n] matrix with normally distributed entries
+  P <- matrix(rnorm(n^2, mean, sd), nrow = n)  
   # Make symmetric if prompted
-  if(symm == T){P <- make_symmetric(P)}
+  if(symm == T){P <- make_hermitian(P)}
   # Return the matrix
   P
 }
@@ -99,13 +97,13 @@ r_zeros <- function(n){
 #                             HELPER FUNCTIONS
 #=========================================================================#
 
-# Manually make equal the upper triangle and lower triangle of the matrix
-make_symmetric <- function(P){
+# Manually make equate the entries in the upper triangle to the conjugate of those in the lower triangle of the matrix
+make_hermitian <- function(P){
   # Run over entry of the matrix
   for(i in 1:nrow(P)){
     for(j in 1:ncol(P)){
       # Restrict view to one of the triangles (i < j): Lower Triangle
-      if(i < j){P[i,j] <- P[j,i]} # Equalize lower and upper triangles
+      if(i < j){P[i,j] <- Conj(P[j,i])} # Equalize lower and upper triangles, making conjugate if complex
     }
   }
   P # Return Symmetric Matrix

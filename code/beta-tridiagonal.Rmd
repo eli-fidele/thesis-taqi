@@ -13,6 +13,7 @@ library(patchwork)
 library(gridExtra)
 library(matrixcalc)
 library(ggforce)
+library(futile.matrix)
 # Load files
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
@@ -22,6 +23,81 @@ bool_plot <- F
 bool_loud <- F
 bool_animate <- F
 ```
+
+
+
+```{r}
+RM_normal <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
+  # Create [n x n] matrix with normally distributed entries
+  P <- matrix(rnorm(N^2, mean, sd), nrow = N)  
+  # Make symmetric if prompted
+  if(symm || hermitian){P <- make_hermitian(P)}
+  # Returns a matrix with complex entries if prompted
+  if(complex){
+    if(hermitian){
+      P <- P + 1i * RM_normal(N, mean, sd, symm = T)
+    } else{
+      P <- P + 1i * RM_normal(N, mean, sd, symm = F)
+    }
+  }
+  # Return the matrix
+  P
+}
+```
+
+```{r}
+RM_normal <- function(n, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
+  # Create [n x n] matrix
+  P <- matrix(rep(NA, n * n), ncol = n)  
+  # Generate rows, casing on whether user asks for complex numbers
+  if(!complex){
+    for(i in 1:n){P[i,] <- rnorm(n, mean, sd)}
+  } else{
+      for(i in 1:n){P[i,] <- complex(real = rnorm(n, mean, sd), imaginary = rnorm(n, mean, sd))}
+    }
+  # Make symmetric if prompted
+  if(symm || hermitian){P <- make_symmetric(P)}
+  # Return the matrix
+  P
+}
+```
+
+```{r}
+set.seed(23)
+P <- RM_normal(3, complex = T, hermitian = T)
+P
+#source("../archive/R/matrix-diagnostics.R")
+#visualize_normal_entries(P)
+```
+
+
+```{r}
+for(i in 1:B){batch[i,] <- complex(real = runif(n = M, min = -lambda, max = lambda), imaginary = runif(n = M, min = -lambda, max = lambda))}
+```
+
+
+```{r}
+model <- WignerModel(10)
+m <- rmatrix(model)
+
+## Not run: 
+e <- Ensemble(20, model)
+hist(max_eigen(e), freq=FALSE)
+
+## End(Not run)
+```
+
+```{r}
+model <- WignerModel(5)
+m <- rmatrix(model)
+e <- Ensemble(20, model)
+```
+
+```{r}
+ens_spectrum <- ensemble_spectrum(ensemble = e)
+spectrum_plot(ens_spectrum)
+```
+
 
 ```{r}
 # Generate a Gaussian (Hermite) Beta Ensemble matrix with Non-Invariant Dumitriu's Tridiagonal Model
@@ -49,37 +125,6 @@ chi_offdiagonal <- function(n, beta){
 ```
 
 ```{r}
-# Plots the eigenvalues of a given matrix P
-spectrum_plot <- function(P, mat_type=""){
-  # Check if we have a stack of matrices or singular matrix
-  if(nrow(P) == ncol(P)){
-    array <- spectrum(P)
-  } else{array <- P}
-  # Plot parameters
-  r <- 1
-  x_window <- 0.5
-  x_range <- c(-(r + x_window), (r + x_window)) # Widen the width of the plot
-  circle <- data.frame(x0 = 0, y0 = 0, r = r)
-  # Color plot parameters
-  color0 <- "steelblue"
-  color1 <- "deepskyblue3"
-  # Plot
-  ggplot(array) + 
-    geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = color0) +
-    geom_point(data = array, aes(x = Re, y = Im), color = color1) +
-    theme(legend.position = "none") +
-    xlim(x_range) + ylim(-r,r) + 
-    labs(x = "Re", y = "Im", title = paste("Spectrum of an ",mat_type,"Ensemble",sep = "")) +
-    coord_fixed(ratio = 1)
-}
-#beg <- Sys.time()
-#spectrum_plot(ens_spectrum)
-#end <- Sys.time()
-#end-beg
-```
-
-
-```{r}
 #RM_trid(n = 7)
 #chi_offdiagonal(5, 2)
 GE_beta(5,2)
@@ -89,7 +134,13 @@ GE_beta(5,2)
 size <- 5
 n <- 5
 beta <- 4
-ensemble <- RM_ensemble(GE_beta, args = list(n = 10, beta = 4), size = 3)
+ensemble <- RM_ensemble(GE_beta, args = list(n = 3, beta = 3), size = 100)
+ens_spectrum <- ensemble_spectrum(ensemble = ensemble)
+spectrum_plot(ens_spectrum)
+```
+
+```{r}
+ensemble <- RM_ensemble(RM_normal, args = list(n = 10, mean = 10, sd = 3, symm = F, complex = T, hermitian = T), size = 500)
 ens_spectrum <- ensemble_spectrum(ensemble = ensemble)
 spectrum_plot(ens_spectrum)
 ```

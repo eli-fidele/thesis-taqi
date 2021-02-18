@@ -23,16 +23,20 @@ normal_params <- function(entries){
 }
 
 # For a given normal matrix, visualize its entries as a histogram
-visualize_normal_entries <- function(P, normal_args){
+visualize_normal_entries <- function(P){
   # Vectorize the matrix into a row vector of its entries
   elements_P <- data.frame(x = as.vector(P))
-  # Extract parameters
-  mu <- normal_args[1]
-  sd <- normal_args[2]
+  reals_P <- Re(elements_P$x)
+  imags_P <- Im(elements_P$x)
+  entries_P <- data.frame(x = c(reals_P, imags_P))
+  mu <- mean(entries_P$x)
+  print(mu)
+  sd <- sqrt(var(entries_P$x))
+  print(sd)
   # Get theoretical distribution function
   normal_density <- function(x){dnorm(x, mean = mu, sd = sd)}
   # Plot the histogram of its entries
-  entries_hist <- ggplot(data = elements_P, mapping = aes(x)) + 
+  entries_hist <- ggplot(data = entries_P, mapping = aes(x)) + 
     geom_histogram(bins = 20, aes(y = stat(density))) +
     stat_function(fun = normal_density)
   # Return plot

@@ -72,6 +72,8 @@ parse_args <- function(fxn, args){
   if(n_args == 2){return(fxn(args[[1]], args[[2]]))}
   if(n_args == 3){return(fxn(args[[1]], args[[2]], args[[3]]))}
   if(n_args == 4){return(fxn(args[[1]], args[[2]], args[[3]], args[[4]]))}
+  if(n_args == 5){return(fxn(args[[1]], args[[2]], args[[3]], args[[4]], args[[5]]))}
+  if(n_args == 6){return(fxn(args[[1]], args[[2]], args[[3]], args[[4]], args[[5]], args[[6]]))}
 }
 
 # Take a list of arguments, and an index holding a vector to properly return a vector of the arguments
