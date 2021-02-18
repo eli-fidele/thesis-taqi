@@ -14,6 +14,7 @@ library(knitr)
 library(patchwork)
 library(gridExtra)
 library(matrixcalc)
+library(devtools)
 # Load files
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
@@ -25,6 +26,11 @@ bool_plot <- F
 bool_loud <- F
 bool_animate <- F
 ```
+
+```{r}
+
+```
+
 
 # Consecutive Ratio Sequence: Symmetric Normal Matrix
 

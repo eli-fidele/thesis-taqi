@@ -35,22 +35,22 @@ spectrum <- function(P, indexed = TRUE){
 }
 
 #=================================================================================#
-#                               HELPER FUNCTIONS
-#=================================================================================#
-
-# Read in the eigenvalue in the Kth row from a eigenvalue array and return a numerical
-read_eigenvalue <- function(spectrum, K){complex(real = spectrum[K,1], imaginary = spectrum[K,2])}
-
-#=================================================================================#
 #                         SPECTRUM VISUALIZATION FUNCTIONS
 #=================================================================================#
 
 # Plots the eigenvalues of a given matrix P
-spectrum_plot <- function(P, mat_type=""){
-  # Check if we have a stack of matrices or singular matrix
-  if(nrow(P) == ncol(P)){
-    array <- spectrum(P)
-  } else{array <- P}
+spectrum_plot <- function(P, mat_str = ""){
+  # See if we have a ensemble of matrices or a single matrix
+  not_ensemble <- (nrow(P) == ncol(P))
+  # If not ensemble, directly process the spectrum
+  if(not_ensemble){
+    eigen_spectrum <- spectrum(P)
+    mat_str <- paste(mat_str, "Matrix", sep = " ")
+    }
+  else{ # Otherwise, process the ensemble first, and update the plot string.
+    eigen_spectrum <- ensemble_spectrum(P)
+    mat_str <- paste(mat_str, "Matrix Ensemble", sep = " ")
+    }
   # Plot parameters
   r <- 1
   x_window <- 0.5
@@ -60,13 +60,20 @@ spectrum_plot <- function(P, mat_type=""){
   color0 <- "steelblue"
   color1 <- "deepskyblue3"
   # Plot
-  ggplot(array) + 
+  ggplot(eigen_spectrum) + 
     #geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = color0) +
-    geom_point(data = array, aes(x = Re, y = Im, color = Re), alpha = 0.75) +
+    geom_point(mapping = aes(x = Re, y = Im, color = Re), alpha = 0.75) +
     scale_color_continuous(type = "viridis") +
     theme(legend.position = "none") +
-    labs(x = "Re", y = "Im", title = paste("Spectrum of an ",mat_type,"Ensemble",sep = "")) #+
+    labs(x = "Re", y = "Im", title = paste("Spectrum of a ",mat_str,sep = "")) #+
     #xlim(x_range) + 
     #ylim(-r,r) + 
     #coord_fixed(ratio = 1)
 }
+
+#=================================================================================#
+#                               HELPER FUNCTIONS
+#=================================================================================#
+
+# Read in the eigenvalue in the Kth row from a eigenvalue array and return a numerical
+read_eigenvalue <- function(spectrum, K){complex(real = spectrum[K,1], imaginary = spectrum[K,2])}

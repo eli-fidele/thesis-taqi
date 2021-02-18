@@ -117,25 +117,3 @@ batch_2d_plot <- function(batch_data, mat_str = ""){
     theme(legend.position = "none") +
     labs(title = paste("Evolution of a Markov Chain",mat_str))
 }
-
-#=================================================================================#
-#                         SPECTRUM VISUALIZATION FUNCTIONS
-#=================================================================================#
-
-# Plots the eigenvalues of a given matrix P
-spectrum_plot <- function(P, mat_type=""){
-  # Check if we have a stack of matrices or singular matrix
-  if(nrow(P) == ncol(P)){array <- spectrum(P)} else{array <- P}
-  # Plot parameters
-  r <- 1
-  ep <- 0.5
-  # Plot
-  ggplot(array) + 
-    geom_point(aes(x = Re, y = Im), color = "deepskyblue3") + 
-    labs(x = "Re", y = "Im", title = paste("Spectrum of an ",mat_type,"Ensemble",sep = "")) +
-    xlim(-(r+ep),(r+ep)) + ylim(-r,r) +
-    ggforce::geom_circle(aes(x0 = 0, y0 = 0, r = r), color = "steelblue") +
-    coord_fixed(ratio = 1) +
-    theme(legend.position = "none")
-}
-
