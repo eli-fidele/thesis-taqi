@@ -109,17 +109,17 @@ RM_erdos <- function(N, p, stoch = T){
 #                            STOCHASTIC ROW FUNCTIONS
 #=================================================================================#
 
-# generates stochastic rows of size M
-r_stochastic <- function(n){
-  prob <- runif(n,0,1)
+# generates stochastic rows of size N
+r_stochastic <- function(N){
+  prob <- runif(N,0,1)
   prob/sum(prob) # normalize
 }
 
-# generates same rows as in r_stochastic(n), but with introduced random sparsity
-r_zeros <- function(n){
-  prob <- runif(n,0,1)
-  num_zeros <- sample(1:(n-1),1) # At most n-1 zeros, as to ensure stochastic property
-  choices <- sample(1:n, num_zeros) # Choose edges to disconnect
+# generates same rows as in r_stochastic(N), but with introduced random sparsity
+r_zeros <- function(N){
+  prob <- runif(N,0,1)
+  num_zeros <- sample(1:(N-1),1) # At most N-1 zeros, as to ensure stochastic property
+  choices <- sample(1:N, num_zeros) # Choose edges to disconnect
   prob[choices] <- 0
   prob/sum(prob) # normalize
 }

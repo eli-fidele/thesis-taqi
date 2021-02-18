@@ -23,8 +23,7 @@ mixtime_sim <- function(P, batch_size, steps, epsilon = 0.1){
 # This function is a basic "initial" simulation. Other simulation functions will utilize this function 
 initial_sim <- function(P, B, steps){
   # Elements may be uniform only if the matrix isn't stochastic
-  if(!is_row_stochastic(P)){batch <- make_batch(M = ncol(P), B)} 
-  else{batch <- make_stochBatch(M = ncol(P), B)}
+  batch <- make_batch(N = ncol(P), B, stoch = is_row_stochastic(P))
   # Evolve the batch and return it
   evolved_batch <- evolve_batch(batch, P, steps, ratios = TRUE)
   list(batch, evolved_batch)
@@ -34,27 +33,16 @@ initial_sim <- function(P, B, steps){
 #                       ELEMENTARY BATCH SIMULATION FUNCTIONS
 #=================================================================================#
 
-# Generate a Monte Carlo batch of an initial probability distribution
-make_stochBatch <- function(M, B, complex = FALSE){
-  batch <- matrix(rep(NA, B * M), nrow = B)  # create [B x M] batch array
-  if(!complex){ # If prompted, generate complex-valued random elements 
-    for(i in 1:B){batch[i,] <- r_stochastic(M)}
-  } 
-  else {
-    for(i in 1:B){batch[i,] <- NA} # Otherwise, generate complex elements of modulus 1
+# Generate a Monte Carlo batch of uniform points in an M-hypercube, or a random set of initial probability distributions
+make_batch <- function(N, B, lambda = 1, complex = FALSE, stoch = FALSE){
+  batch <- matrix(rep(NA, B * N), nrow = B)  # create [B x N] batch matrix
+  for(i in 1:B){
+    # Generate real-valued uniformly random elements unless matrix stochastic
+    if(!stoch){batch[i,] <- runif(n = N, min = -lambda, max = lambda)} else{
+      batch[i,] <- r_stochastic(N) # Otherwise, create random initial probability distributions
+    } 
   }
-  batch <- standardize_colnames(batch) # standardize the column names
-  data.frame(batch) # return batch
-}
-
-# Generate a Monte Carlo batch
-make_batch <- function(M, B, lambda = 1, complex = FALSE){
-  batch <- matrix(rep(NA, B * M), nrow = B)  # create [B x M] batch matrix
-  if(complex){ # If prompted, generate complex-valued random elements 
-    for(i in 1:B){batch[i,] <- complex(real = runif(n = M, min = -lambda, max = lambda), imaginary = runif(n = M, min = -lambda, max = lambda))}
-  } else {
-    for(i in 1:B){batch[i,] <- runif(n = M, min = -lambda, max = lambda)} # Otherwise, generate real-valued random elements
-  }
+  if(complex){batch <- batch + 1i * make_batch(N, B, lambda, stoch = stoch)} # Add complex component if prompted
   batch <- standardize_colnames(batch) # standardize the column names
   data.frame(batch) # return batch
 }
@@ -76,9 +64,9 @@ evolve_batch <- function(batch, P, steps, burn_in = 1, ratios = TRUE){
 
 # Evolves an element of a batch by the matrix P and returns the array of the evolution sequence
 evolve <- function(v, P, steps, burn_in = 1){
-  M <- ncol(P)
+  N <- ncol(P)
   # Simulate the evolution matrix of a given batch element
-  seq <- matrix(rep(NA, M * steps), ncol = M)
+  seq <- matrix(rep(NA, N * steps), ncol = N)
   seq <- standardize_colnames(seq) # Standardize column names
   seq <- cbind(seq, rep(0, steps+1)) # Add a column to track the steps/time
   # Evolve the batch element
