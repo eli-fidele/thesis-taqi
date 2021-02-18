@@ -6,7 +6,7 @@
 #                              SPECTRUM FUNCTIONS
 #=================================================================================#
 
-# Returns a tidied dataframe of the eigenvalues of a random matrix
+# Returns a tidied dataframe of the eigenvalues of a matrix ensemble
 ensemble_spectrum <- function(ensemble, indexed = FALSE){
   K <- length(ensemble) # Get size of ensemble
   spectra <- spectrum(ensemble[[1]], indexed) # Initialize the spectra stack by evaluating the initial matrix
@@ -22,15 +22,15 @@ ensemble_spectrum <- function(ensemble, indexed = FALSE){
 spectrum <- function(P, indexed = TRUE){
   M <- nrow(P) # Obtain dimension
   eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues
-  eigenvalues <- matrix(rep(NA,2*M), ncol = 2) # Create matrix to hold eigenvalues
-  colnames(eigenvalues) <- c("Re","Im") # Rename columns
+  eigenvalues <- matrix(rep(NA, 2*M), ncol = 2) # Create matrix to hold eigenvalues
+  colnames(eigenvalues) <- c("Re", "Im") # Rename columns
   # Add the components to the array
   for(i in 1:M){
     curr <- eigen_array[i,]
-    eigenvalues[i, ] <- c(round(Re(curr),5),round(Im(curr),5)) 
+    eigenvalues[i, ] <- c(round(Re(curr), 5), round(Im(curr), 5)) # Round to nearest 5 decimalds
   }
   # Index the eigenvalues
-  if(indexed){eigenvalues <- cbind(eigenvalues, data.frame(Index = 1:nrow(eigenvalues)))}
+  if(indexed){eigenvalues <- cbind(eigenvalues, data.frame(eigen_index = 1:nrow(eigenvalues)))}
   data.frame(eigenvalues)
 }
 
