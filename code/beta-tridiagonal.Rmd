@@ -13,7 +13,6 @@ library(patchwork)
 library(gridExtra)
 library(matrixcalc)
 library(ggforce)
-library(futile.matrix)
 # Load files
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
@@ -24,135 +23,56 @@ bool_loud <- F
 bool_animate <- F
 ```
 
-
-
-```{r}
-RM_normal <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
-  # Create [n x n] matrix with normally distributed entries
-  P <- matrix(rnorm(N^2, mean, sd), nrow = N)  
-  # Make symmetric if prompted
-  if(symm || hermitian){P <- make_hermitian(P)}
-  # Returns a matrix with complex entries if prompted
-  if(complex){
-    if(hermitian){
-      P <- P + 1i * RM_normal(N, mean, sd, symm = T)
-    } else{
-      P <- P + 1i * RM_normal(N, mean, sd, symm = F)
-    }
-  }
-  # Return the matrix
-  P
-}
-```
-
-```{r}
-RM_normal <- function(n, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
-  # Create [n x n] matrix
-  P <- matrix(rep(NA, n * n), ncol = n)  
-  # Generate rows, casing on whether user asks for complex numbers
-  if(!complex){
-    for(i in 1:n){P[i,] <- rnorm(n, mean, sd)}
-  } else{
-      for(i in 1:n){P[i,] <- complex(real = rnorm(n, mean, sd), imaginary = rnorm(n, mean, sd))}
-    }
-  # Make symmetric if prompted
-  if(symm || hermitian){P <- make_symmetric(P)}
-  # Return the matrix
-  P
-}
-```
-
 ```{r}
 set.seed(23)
-P <- RM_normal(3, complex = T, hermitian = T)
-P
-#source("../archive/R/matrix-diagnostics.R")
-#visualize_normal_entries(P)
+RM_normal(N=4,complex=T,hermitian = T)
 ```
 
 
 ```{r}
-for(i in 1:B){batch[i,] <- complex(real = runif(n = M, min = -lambda, max = lambda), imaginary = runif(n = M, min = -lambda, max = lambda))}
-```
-
-
-```{r}
-model <- WignerModel(10)
-m <- rmatrix(model)
-
-## Not run: 
-e <- Ensemble(20, model)
-hist(max_eigen(e), freq=FALSE)
-
-## End(Not run)
-```
-
-```{r}
-model <- WignerModel(5)
-m <- rmatrix(model)
-e <- Ensemble(20, model)
-```
-
-```{r}
-ens_spectrum <- ensemble_spectrum(ensemble = e)
-spectrum_plot(ens_spectrum)
-```
-
-
-```{r}
-# Generate a Gaussian (Hermite) Beta Ensemble matrix with Non-Invariant Dumitriu's Tridiagonal Model
-GE_beta <- function(n, beta){
-  # Set the diagonal as a N(0,2) distributed row.
-  diagonal <- rnorm(n, mean = 0, sd = 2)
-  P <- diag(diagonal)
-  # Set the off-1 diagonals as chi squared variables with df(beta), as given in Dumitriu's model
-  df_seq <- beta*(n - seq(1,n-1)) # Get degrees of freedom sequence for offdigonal
-  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rchisq(n-1, df_seq) # Generate tridiagonal
-  # Rescale the entries by 1/sqrt(2)
-  P <- P/sqrt(2)
-  # Return the matrix
-  P
-}
-
-# Helper function generating the offdiagonal of the generalized beta hermitian matrix
-chi_offdiagonal <- function(n, beta){
-  offdiag <- rep(0, n-1) # Initialize the offdiagonal
-  # Set each entry to the chi squared of appopriate df as a function of decreasing multiple of beta
-  df_vec <- beta*(n - seq(1,n-1))
-  print(df_vec)
-  rchisq(n-1, df_vec)
-}
-```
-
-```{r}
-#RM_trid(n = 7)
-#chi_offdiagonal(5, 2)
-GE_beta(5,2)
-```
-
-```{r}
+# Set seed
+set.seed(23)
+# Parameters
 size <- 5
-n <- 5
-beta <- 4
-ensemble <- RM_ensemble(GE_beta, args = list(n = 3, beta = 3), size = 100)
-ens_spectrum <- ensemble_spectrum(ensemble = ensemble)
-spectrum_plot(ens_spectrum)
-```
-
-```{r}
-ensemble <- RM_ensemble(RM_normal, args = list(n = 10, mean = 10, sd = 3, symm = F, complex = T, hermitian = T), size = 500)
+N <- 5
+beta <- 100
+complex <- F
+# Ensemble spectrum
+ensemble <- RM_ensemble(RM_beta, args = list(N, beta, complex), size = 1000)
 ens_spectrum <- ensemble_spectrum(ensemble = ensemble)
 spectrum_plot(ens_spectrum)
 ```
 
 
 ```{r}
-GEB_spectrum <- function(n, beta, size){
-  ensemble_spectrum(ensemble = RM_ensemble(GE_beta, args = list(n, beta), size))
+# Set seed
+set.seed(23)
+ensemble <- RM_ensemble(RM_normal, args = list(n = 100, mean = 0, sd = 1, symm = F, complex = T, hermitian = F), size = 50)
+ens_spectrum <- ensemble_spectrum(ensemble = ensemble)
+spectrum_plot(ens_spectrum)
+```
+
+```{r}
+# Set seed
+set.seed(23)
+ensemble <- RM_ensemble(RM_normal, args = list(n = 100, mean = 0, sd = 1, symm = F, complex = T, hermitian = T), size = 50)
+ens_spectrum <- ensemble_spectrum(ensemble = ensemble)
+spectrum_plot(ens_spectrum)
+```
+
+
+```{r}
+GEB_spectrum <- function(N, beta, complex, size){
+  spec <- ensemble_spectrum(ensemble = RM_ensemble(RM_beta, args = list(N, beta, complex), size))
+  spectrum_plot(spec)
 }
+# Set seed
+set.seed(23)
+GEB_spectrum(N = 100, beta = 4, complex = F, size = 100)
 ```
 
 ```{r}
-GEB_spectrum(n = 5, beta = 4, size = 10)
+GEB_spectrum(N = 100, beta = 4, complex = T, size = 100)
 ```
+
 

@@ -15,10 +15,3 @@ The RMAT package is a package developed tandem with this thesis. Its primary fun
 - Simulating ensembles of these random matrices
 - Visualizing the eigenvalue spectra of these matrix ensembles
 
-## The 'mixtimes' package
-
-The mixtimes package is a package developed tandem with this thesis. Its primary functionality includes:
-
-- Simulating various stochastic random matrices
-- Simulating and visualizing mixing time statistics on a random batch of points in a stochastic setting
-

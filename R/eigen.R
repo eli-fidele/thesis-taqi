@@ -61,11 +61,12 @@ spectrum_plot <- function(P, mat_type=""){
   color1 <- "deepskyblue3"
   # Plot
   ggplot(array) + 
-    geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = color0) +
-    geom_point(data = array, aes(x = Re, y = Im), color = color1) +
+    #geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = color0) +
+    geom_point(data = array, aes(x = Re, y = Im, color = Re), alpha = 0.75) +
+    scale_color_continuous(type = "viridis") +
     theme(legend.position = "none") +
+    labs(x = "Re", y = "Im", title = paste("Spectrum of an ",mat_type,"Ensemble",sep = "")) #+
     #xlim(x_range) + 
     #ylim(-r,r) + 
-    labs(x = "Re", y = "Im", title = paste("Spectrum of an ",mat_type,"Ensemble",sep = "")) #+
     #coord_fixed(ratio = 1)
 }

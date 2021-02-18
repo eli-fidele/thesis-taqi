@@ -1,15 +1,23 @@
 
 #=================================================================================#
-#                             RANDOM MATRIX FUNCTIONS
+#                           NORMAL RANDOM MATRICES 
 #=================================================================================#
 
-RM_normal <- function(n, mean = 0, sd = 1, symm = F){
+RM_normal <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
   # Create [n x n] matrix with normally distributed entries
-  P <- matrix(rnorm(n^2, mean, sd), nrow = n)  
+  P <- matrix(rnorm(N^2, mean, sd), nrow = N)  
   # Make symmetric if prompted
-  if(symm == T){P <- make_hermitian(P)}
+  if(symm || hermitian){P <- make_hermitian(P)}
+  # Returns a matrix with complex entries if prompted
+  if(complex){
+    if(hermitian){
+      P <- P + 1i * RM_normal(N, mean, sd, symm = T)
+    } else{
+      P <- P + 1i * RM_normal(N, mean, sd, symm = F)
+    }
+  }
   # Return the matrix
-  P
+  P/sqrt(N)
 }
 
 # Generate a tridiagonal matrix with normal entries
@@ -20,6 +28,26 @@ RM_trid <- function(n, symm = F){
   # Return the matrix
   P
 }
+
+# Generate a Gaussian (Hermite) Beta Ensemble matrix with Non-Invariant Dumitriu's Tridiagonal Model
+RM_beta <- function(N, beta, complex = F){
+  # Set the diagonal as a N(0,2) distributed row.
+  diagonal <- rnorm(N, mean = 0, sd = 2)
+  P <- diag(diagonal)
+  # Set the off-1 diagonals as chi squared variables with df(beta), as given in Dumitriu's model
+  df_seq <- beta*(N - seq(1,N-1)) # Get degrees of freedom sequence for offdigonal
+  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rchisq(N-1, df_seq) # Generate tridiagonal
+  # Add complex entries, if prompted
+  if(complex){P <- P + (1i * RM_beta(N, beta))}
+  # Rescale the entries by 1/sqrt(2)
+  P <- P/sqrt(2)
+  # Return the matrix
+  P
+}
+
+#=================================================================================#
+#                           STOCHASTIC RANDOM MATRICES 
+#=================================================================================#
 
 # Generate random stochastic matrix of size n, with choice of row function {r_stochastic, r_zeros}
 RM_stoch <- function(n, symm = F, sparsity = F){
