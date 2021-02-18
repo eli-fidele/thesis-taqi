@@ -17,6 +17,8 @@ library(matrixcalc)
 library(devtools)
 # Load files
 source(file = "../R/matrices.R")
+source(file = "../R/matrices-diagnostics.R")
+source(file = "../R/ensemble.R")
 source(file = "../R/eigen.R")
 source(file = "../R/simulate.R")
 source(file = "../R/analyze.R")
@@ -28,7 +30,7 @@ bool_animate <- F
 ```
 
 ```{r}
-
+#.standardize_colnames(data.frame(x=1,y=2))
 ```
 
 
@@ -43,9 +45,9 @@ n <- 4
 mean <- 0
 sd <- 2
 # Batch parameters
-batch_size <- 500
+batch_size <- 20
 steps <- 45
-epsilon <- 0.05
+epsilon <- 0.2
 #==========================
 #         SIMULATE 
 #==========================
@@ -54,11 +56,11 @@ set.seed(23)
 P <- RM_normal(n, mean, sd, symm = T)
 P
 # Evolve a batch
-sim <- mixtime_sim(P, batch_size, steps, epsilon)
+sim <- sim_mixtime(P, batch_size, steps, epsilon)
 # Extract arrays
 batch <- sim[[1]]
 evolved_batch <- sim[[2]]
-prop_mixed(batch)
+.prop_mixed(batch)
 ```
 
 \medskip
@@ -77,7 +79,7 @@ bool_loud <- T
 # Get eigenvalues
 print("Eigenvalues of the Matrix")
 spectrum(P)
-ratios_histogram(evolved_batch, log = F, alpha = 0.90, bins = 200)
+ratios_histogram(evolved_batch, log = F, alpha = 0.90, norms = F, bins = 200)
 ```
 
 ```{r, fig.height = 3.5}
@@ -90,7 +92,7 @@ variance_scatterplot(evolved_batch, log = F)
 ```{r}
 ## Log-Ratio Distribution Plot
 bool_loud <- T
-ratios_histogram(evolved_batch, log = T, alpha = 0.90, bins = 200)
+ratios_histogram(evolved_batch, log = T, alpha = 0.90, norms = F, bins = 200)
 ```
 
 ```{r, fig.height = 3.5}
@@ -109,7 +111,7 @@ norm1 <- rnorm(n = n_sample, mean = mean-0.5, sd = 0.7) # Lower variance
 norm2 <- rnorm(n = n_sample, mean = mean, sd = 2)
 ratio_norm <- data.frame(ratio_norm = norm1/norm2)
 ggplot(data = ratio_norm, mapping = aes(x = ratio_norm)) + 
-  geom_histogram(aes(y = stat(count / n_sample), bins = 50), fill = "darkorchid2") +
+  geom_histogram(aes(y = stat(count / n_sample), bins = 2000), fill = "darkorchid2") +
   xlim(quantile(ratio_norm$ratio_norm, probs = c(0.01,0.99))) +
   labs(title = "Ratio of Two Normal Variables (Cauchy Distribution)")
 ```

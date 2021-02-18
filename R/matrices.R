@@ -7,7 +7,7 @@ RM_normal <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F)
   # Create [n x n] matrix with normally distributed entries
   P <- matrix(rnorm(N^2, mean, sd), nrow = N)  
   # Make symmetric if prompted
-  if(symm || hermitian){P <- make_hermitian(P)}
+  if(symm || hermitian){P <- .make_hermitian(P)}
   # Returns a matrix with complex entries if prompted
   if(complex){
     if(hermitian){
@@ -67,7 +67,7 @@ RM_stoch <- function(N, symm = F, sparsity = F){
     diag <- rep(0, ncol(P))
     for(i in 1:nrow(P)){
       row <- P[i, ]
-      diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
+      diag[i] <- (1 - sum(.nondiagonal_entries(row, i)))
     }
     diag(P) <- diag
     }
@@ -97,7 +97,7 @@ RM_erdos <- function(N, p, stoch = T){
       diag <- rep(0, ncol(P))
       for(i in 1:nrow(P)){
         row <- P[i, ]
-        diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
+        diag[i] <- (1 - sum(.nondiagonal_entries(row, i)))
       }
       diag(P) <- diag
     }
@@ -129,7 +129,7 @@ r_zeros <- function(N){
 #=========================================================================#
 
 # Manually make equate the entries in the upper triangle to the conjugate of those in the lower triangle of the matrix
-make_hermitian <- function(P){
+.make_hermitian <- function(P){
   # Run over entry of the matrix
   for(i in 1:nrow(P)){
     for(j in 1:ncol(P)){
@@ -141,7 +141,7 @@ make_hermitian <- function(P){
 }
 
 # Obtain the nondiagonal entries of a row given its row index
-nondiagonal_entries <- function(row, row_index){
+.nondiagonal_entries <- function(row, row_index){
   indices <- data.frame(idx = 1:length(row))
   indices <- indices %>% filter(idx != row_index)
   # return the row with the given indices
@@ -149,7 +149,7 @@ nondiagonal_entries <- function(row, row_index){
 }
 
 # Check if a matrix is stochastic
-is_row_stochastic <- function(P){
+.is_row_stochastic <- function(P){
   row_is_stoch <- rep(F, nrow(P))
   for(i in 1:nrow(P)){
     row_sum <- sum(P[i,])
@@ -159,7 +159,7 @@ is_row_stochastic <- function(P){
 }
 
 # returns proportion of positive entries of any matrix P
-pos_entries <- function(P){
+.pos_entries <- function(P){
   pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))
   pos_entries/(length(P))   
 }

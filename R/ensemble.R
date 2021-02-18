@@ -5,7 +5,7 @@
 #=================================================================================#
 
 # Combines the results of a ensemble simulation into a master array
-glue_arrays <- function(ensemble_sim, array_index = 1){
+sim.glue_arrays <- function(ensemble_sim, array_index = 1){
   batch <- ensemble_sim[[1]][[array_index]] # Get first result
   batch_size <- nrow(batch) # Get batch size for reference
   mat_idx <- data.frame(mat_idx = rep(1, batch_size)) # Create matrix index column
@@ -47,15 +47,15 @@ sim_by_element <- function(ensemble, batch_size, steps, epsilon, ensemble_index)
 
 # Random matrix ensemble
 ## FIX: generalize to multiple arguments rather than just dimensions, accounting for defaults
-RM_ensemble <- function(mat_type, args, size){
+RME <- function(mat_type, args, size){
   # If the mat_type entry is not the function itself, parse the mat_type string
   if(class(mat_type) == "function"){
     fxn <- mat_type
   } else{
-    fxn <- parse_RMfxn(mat_type)  
+    fxn <- .parse_RMfxn(mat_type)  
   }
   # Replicate with appopriate number of arguments by using parse_args
-  ensemble <- replicate(n = size, expr = parse_args(fxn, args), simplify = F)
+  ensemble <- replicate(n = size, expr = .parse_args(fxn, args), simplify = F)
   # Return the ensemble
   ensemble
 }
@@ -65,7 +65,7 @@ RM_ensemble <- function(mat_type, args, size){
 #=================================================================================#
 
 
-parse_args <- function(fxn, args){
+.parse_args <- function(fxn, args){
   # Get number of arguments
   n_args <- length(args)
   if(n_args == 1){return(fxn(args[[1]]))}
@@ -78,13 +78,11 @@ parse_args <- function(fxn, args){
 
 # Take a list of arguments, and an index holding a vector to properly return a vector of the arguments
 # Steps: get the length of the vector argument, then do args[[i]][j] for j in 1:len(vec)
-vector_arg <- function(args, index){
-  NA
-}
+#vector_arg <- function(args, index){NA}
 
 # Elementary matrix type string parser
 # FUTURE: develop to enable string subsets to be appopriately parsed.
-parse_RMfxn <- function(type_str){
+.parse_RMfxn <- function(type_str){
   # Basic lexicon of string interpretation
   normal_str <- c("Normal", "normal","norm","n","N")
   stoch_str <- c("Stochastic","stochastic", "stoch", "st", "s", "S")
@@ -117,12 +115,12 @@ parse_RMfxn <- function(type_str){
 # Arbitrary stacker function which returns a stacked array of the results
 # Dimensions to ensure correct sizing, or unnecessary?
 # Argument array conventions?
-stacker <- function(fxn, args, iter, dimensions){
-  stack <- fxn(args[1,]) # Initialize the array
-  for(i in 2:iter){ # Iterate over the rest of the argument array
-    curr <- fxn(args[i,])
-    stack <- rbind(stack, curr)
-  }
-  stack # Return the stack
-}
+#stacker <- function(fxn, args, iter, dimensions){
+# stack <- fxn(args[1,]) # Initialize the array
+# for(i in 2:iter){ # Iterate over the rest of the argument array
+#   curr <- fxn(args[i,])
+#   stack <- rbind(stack, curr)
+# }
+# stack # Return the stack
+#}
 

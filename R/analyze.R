@@ -20,7 +20,7 @@ eigen_mixtime <- function(evolved_batch, batch){
 }
 
 # Outputs the proportion of batch elements which are mixed
-prop_mixed <- function(batch){
+.prop_mixed <- function(batch){
   prop_unmixed <- 1 - length(which(is.na(batch$mixtime)))/nrow(batch)
   paste("This batch is ",100*round(prop_unmixed, 3),"% mixed.",sep="")
 }
@@ -43,8 +43,8 @@ eigen_classify <- function(evolved_batch, P, epsilon = 0.1){
     curr <- ratios[i,2:ncol(ratios)] 
     # Try to see if any of the eigenvalues fit
     for(K in 1:nrow(eigenvalues)){
-      curr_eigenvalue <- read_eigenvalue(eigenvalues, K) # Load current eigenvalue as a numerical type for comparison (function in eigen.R)
-      if(candidate_eigenvector(curr, curr_eigenvalue, epsilon)){
+      curr_eigenvalue <- .read_eigenvalue(eigenvalues, K) # Load current eigenvalue as a numerical type for comparison (function in eigen.R)
+      if(.candidate_eigenvector(curr, curr_eigenvalue, epsilon)){
         # If a candidate eigenvector is found, record this in the index column and exit the loop
         eigen_index[i] <- K
         break
@@ -56,7 +56,7 @@ eigen_classify <- function(evolved_batch, P, epsilon = 0.1){
 }
 
 # Given a ratio row, check to see if a vector is a candidate eigenvector
-candidate_eigenvector <- function(vector, eigenvalue, epsilon){
+.candidate_eigenvector <- function(vector, eigenvalue, epsilon){
   # Componentwise check on whether each ratio is within epsilon of the eigenvalue
   boolean_vector <- (abs(vector - eigenvalue) < epsilon)
   # If all the values are true, the vector is a candidate
@@ -66,6 +66,38 @@ candidate_eigenvector <- function(vector, eigenvalue, epsilon){
 #=================================================================================#
 #                       RATIO ANALYSIS OF EVOLUTION ARRAYS
 #=================================================================================#
+
+# Gives the variance of the ratio entries for all the columns by time
+variance_by_time <- function(evolved_batch, at_time, log = T){
+  variances <- rep(NA, length(at_time)) # Create a vector to hold the variance for each time
+  for(i in 1:length(at_time)){ 
+    curr_var <- var(ratios_by_time(evolved_batch, at_time = i, log), na.rm = T) # Get the variance at that time
+    #if(log){curr_var <- log(curr_var)} # Take log if prompted
+    variances[i] <- curr_var
+    }
+  variances # Return variances
+}
+
+#=================================================================================#
+#               RATIO GENERATION / FILTERING FROM EVOLUTION ARRAYS
+#=================================================================================#
+
+# Append ratio of row elements by each step
+append_ratios <- function(evolved_batch){
+  # Extract number of batch elements
+  B <- max(evolved_batch$element_index)
+  # Get the ratios in the array for the first element
+  ratio_stack <- ratios_by_element(evolved_batch, element_index = 1)
+  # Repeat for the rest, concatenating by row
+  for(i in 2:B){
+    curr_ratios <- ratios_by_element(evolved_batch, element_index = i)
+    ratio_stack <- rbind(ratio_stack, curr_ratios)
+  }
+  # Standardize the column names
+  ratio_stack <- .standardize_colnames(ratio_stack, prefix = "r_")
+  # Return evolved batch with the ratios
+  cbind(evolved_batch, ratio_stack)
+}
 
 # Helper function, returns a vector of all the ratio entries at a given time
 ratios_by_time <- function(evolved_batch, at_time, log = T){
@@ -81,23 +113,10 @@ ratios_by_time <- function(evolved_batch, at_time, log = T){
   all_ratios # Return ratios
 }
 
-# Gives the variance of the ratio entries for all the columns by time
-variance_by_time <- function(evolved_batch, at_time, log = T){
-  variances <- rep(NA, length(at_time)) # Create a vector to hold the variance for each time
-  for(i in 1:length(at_time)){ 
-    curr_var <- var(ratios_by_time(evolved_batch, at_time = i, log), na.rm = T) # Get the variance at that time
-    #if(log){curr_var <- log(curr_var)} # Take log if prompted
-    variances[i] <- curr_var
-    }
-  variances # Return variances
-}
-
-#=================================================================================#
-#                       RATIO GENERATION FROM EVOLUTION ARRAYS
-#=================================================================================#
-
 # Find the ratios between the steps for a given element array
-element_ratios <- function(curr_element){
+ratios_by_element <- function(evolved_batch, element_index){
+  # Get the array for the current indexed element
+  curr_element <- by_element(evolved_batch, element_index)
   # Get number of dimensions and steps
   M <- ncol(curr_element) - 2
   steps <- nrow(curr_element)
@@ -112,21 +131,6 @@ element_ratios <- function(curr_element){
   ratio_stack
 }
 
-# Append ratio of row elements by each step
-append_ratios <- function(evolved_batch){
-  # Extract B
-  B <- max(evolved_batch$element_index)
-  # Assuming two non-element columns (time, index) initialize the ratio stack
-  r_stack <- element_ratios(by_element(evolved_batch, 1))
-  for(i in 2:B){
-    curr_ratios <- element_ratios(by_element(evolved_batch, i))
-    r_stack <- rbind(r_stack, curr_ratios)
-  }
-  # Standardize the column names
-  r_stack <- standardize_colnames(r_stack, prefix = "r_")
-  # Return evolved batch with the ratios
-  cbind(evolved_batch, r_stack)
-}
 
 #=================================================================================#
 #                       EVOLUTION ARRAY FILTERING FUNCTIONS
@@ -136,7 +140,7 @@ append_ratios <- function(evolved_batch){
 extract_ratios <- function(evolved_batch){
   # Get number of dimensions and steps (two for time and element_index; divide by two for xi and r_xi)
   M <- (ncol(evolved_batch) - 2)/2
-  # Return the array with only the ratios
+  # Return the array with only the ratios, assumming two non-element columns        
   evolved_batch[,(M+2):(2*M+2)]
 }
 
