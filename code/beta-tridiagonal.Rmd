@@ -1,0 +1,104 @@
+---
+title: "Generalizing the Beta Ensembles with Tridiagonal Matrices"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+library(ggforce)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/ensemble.R")
+# global parameters
+bool_plot <- F
+bool_loud <- F
+bool_animate <- F
+```
+
+```{r}
+# Generate a Gaussian (Hermite) Beta Ensemble matrix with Non-Invariant Dumitriu's Tridiagonal Model
+GE_beta <- function(n, beta){
+  # Set the diagonal as a N(0,2) distributed row.
+  diagonal <- rnorm(n, mean = 0, sd = 2)
+  P <- diag(diagonal)
+  # Set the off-1 diagonals as chi squared variables with df(beta), as given in Dumitriu's model
+  df_seq <- beta*(n - seq(1,n-1)) # Get degrees of freedom sequence for offdigonal
+  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rchisq(n-1, df_seq) # Generate tridiagonal
+  # Rescale the entries by 1/sqrt(2)
+  P <- P/sqrt(2)
+  # Return the matrix
+  P
+}
+
+# Helper function generating the offdiagonal of the generalized beta hermitian matrix
+chi_offdiagonal <- function(n, beta){
+  offdiag <- rep(0, n-1) # Initialize the offdiagonal
+  # Set each entry to the chi squared of appopriate df as a function of decreasing multiple of beta
+  df_vec <- beta*(n - seq(1,n-1))
+  print(df_vec)
+  rchisq(n-1, df_vec)
+}
+```
+
+```{r}
+# Plots the eigenvalues of a given matrix P
+spectrum_plot <- function(P, mat_type=""){
+  # Plot parameters
+  r <- 1
+  x_window <- 0.5
+  x_range <- c(-(r + x_window), (r + x_window)) # Widen the width of the plot
+  circle <- data.frame(x0 = 0, y0 = 0, r = r)
+  # Check if we have a stack of matrices or singular matrix
+  if(nrow(P) == ncol(P)){
+    array <- spectrum(P)
+  } else{array <- P}
+  # Plot
+  ggplot(array) + 
+    geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = "steelblue") +
+    geom_point(data = array, aes(x = Re, y = Im), color = "deepskyblue3") +
+    theme(legend.position = "none") +
+    xlim(x_range) + ylim(-r,r) + 
+    labs(x = "Re", y = "Im", title = paste("Spectrum of an ",mat_type,"Ensemble",sep = "")) +
+    coord_fixed(ratio = 1)
+}
+beg <- Sys.time()
+spectrum_plot(ens_spectrum)
+end <- Sys.time()
+end-beg
+```
+
+
+```{r}
+#RM_trid(n = 7)
+#chi_offdiagonal(5, 2)
+GE_beta(5,2)
+```
+
+```{r}
+size <- 5
+n <- 5
+beta <- 4
+ensemble <- RM_ensemble(GE_beta, args = list(n = 10, beta = 4), size = 3)
+ens_spectrum <- ensemble_spectrum(ensemble = ensemble)
+spectrum_plot(ens_spectrum)
+```
+
+
+```{r}
+GEB_spectrum <- function(n, beta, size){
+  ensemble_spectrum(ensemble = RM_ensemble(GE_beta, args = list(n, beta), size))
+}
+```
+
+```{r}
+GEB_spectrum(n = 5, beta = 4, size = 10)
+```
+

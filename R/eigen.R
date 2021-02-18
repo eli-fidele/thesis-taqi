@@ -49,17 +49,19 @@ read_eigenvalue <- function(spectrum, K){complex(real = spectrum[K,1], imaginary
 spectrum_plot <- function(P, mat_type=""){
   # Plot parameters
   r <- 1
-  ep <- 0.5
+  x_window <- 0.5
+  x_range <- c(-(r + x_window), (r + x_window)) # Widen the width of the plot
+  circle <- data.frame(x0 = 0, y0 = 0, r = r)
   # Check if we have a stack of matrices or singular matrix
   if(nrow(P) == ncol(P)){
     array <- spectrum(P)
   } else{array <- P}
   # Plot
   ggplot(array) + 
-    geom_point(aes(x = Re, y = Im), color = "deepskyblue3") + 
+    geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = "steelblue") +
+    geom_point(data = array, aes(x = Re, y = Im), color = "deepskyblue3") +
+    theme(legend.position = "none") +
+    xlim(x_range) + ylim(-r,r) + 
     labs(x = "Re", y = "Im", title = paste("Spectrum of an ",mat_type,"Ensemble",sep = "")) +
-    xlim(-(r+ep),(r+ep)) + ylim(-r,r) +
-    ggforce::geom_circle(aes(x0 = 0, y0 = 0, r = r), color = "steelblue") +
-    coord_fixed(ratio = 1) +
-    theme(legend.position = "none")
+    coord_fixed(ratio = 1)
 }
