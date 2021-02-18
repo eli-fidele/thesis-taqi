@@ -16,17 +16,16 @@ RM_normal <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F)
       P <- P + 1i * RM_normal(N, mean, sd, symm = F)
     }
   }
-  # Return the matrix
-  P/sqrt(N)
+  P <- P/sqrt(N) # Rescale the matrix
+  P # Return the matrix
 }
 
 # Generate a tridiagonal matrix with normal entries
-RM_trid <- function(n, symm = F){
-  diagonal <- rnorm(n = n, 0, 2)
+RM_trid <- function(N, symm = F){
+  diagonal <- rnorm(N = N, 0, 2)
   P <- diag(diagonal)
   P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rnorm(n = n, 0, 1)
-  # Return the matrix
-  P
+  P# Return the matrix
 }
 
 # Generate a Gaussian (Hermite) Beta Ensemble matrix with Non-Invariant Dumitriu's Tridiagonal Model
@@ -39,10 +38,8 @@ RM_beta <- function(N, beta, complex = F){
   P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rchisq(N-1, df_seq) # Generate tridiagonal
   # Add complex entries, if prompted
   if(complex){P <- P + (1i * RM_beta(N, beta))}
-  # Rescale the entries by 1/sqrt(2)
-  P <- P/sqrt(2)
-  # Return the matrix
-  P
+  P <- P/sqrt(2) # Rescale the entries by 1/sqrt(2)
+  P # Return the matrix
 }
 
 #=================================================================================#
@@ -50,17 +47,17 @@ RM_beta <- function(N, beta, complex = F){
 #=================================================================================#
 
 # Generate random stochastic matrix of size n, with choice of row function {r_stochastic, r_zeros}
-RM_stoch <- function(n, symm = F, sparsity = F){
-  P <- matrix(rep(NA, n * n), ncol = n)  # create [n x n] transition matrix
+RM_stoch <- function(N, symm = F, sparsity = F){
+  P <- matrix(rep(NA, N * N), ncol = N)  # create [N x N] transition matrix
   if(sparsity){row_fn <- r_zeros} else {row_fn <- r_stochastic} # choose row function
   # Generate rows
-  for(i in 1:n){P[i,] <- row_fn(n)}
+  for(i in 1:N){P[i,] <- row_fn(N)}
   # Make symmetric (if prompted)
   if(symm == T){
-    # Equalize triangles
-    P <- make_symmetric(P)
+    # Make lower and upper triangles equal
+    P <- make_hermitian(P)
     # Nullify diagonal
-    diag(P) <- rep(0, n)
+    diag(P) <- rep(0, N)
     # Normalize rows
     for(i in 1:nrow(P)){
       row <- P[i, ]
@@ -78,28 +75,34 @@ RM_stoch <- function(n, symm = F, sparsity = F){
   P
 }
 
-# (Erdos-Renyi Graph): p_sparse is a probability between [0,1) so edges are connected ~ Bern(p) 
-RM_erdos <- function(n, p_sparse, stoch = F){
-  P <- matrix(rep(NA, n * n), ncol = n)  # create [n x n] transition matrix
-  p <- p_sparse # rename variable
-  for(i in 1:n){
-    # generate current row
-    curr_row <- runif(n,0,1)
-    # sample number of zeros ~ Bin(n,o)
-    num_zeros <- rbinom(1,n,p)
-    choices <- sample(1:n, num_zeros) # Isomorphic to Erdos-Renyi graphs!
-    curr_row[choices] <- 0
-    # Normalize if to be stochastic
-    if (stoch == T){
-      if(sum(curr_row) == 0){curr_row <- curr_row} else{
-      curr_row <- curr_row/sum(curr_row)
-      } 
+# An Erdos-Renyi Graph is a graph whose edges are connected ~ Bern(p)
+# This simulates a transition matrix for a random walk on an ER-p graph, where p = p_sparse.
+RM_erdos <- function(N, p, stoch = T){
+  P <- matrix(rep(NA, N * N), ncol = N)  # create [N x N] transition matrix
+  for(i in 1:N){
+    row <- runif(N,0,1) # Generate a uniform row of probabilites
+    num_zeros <- rbinom(1,N,p) # Sample number of zeros so degree i ~ Bin(n,p)
+    # Choose vertices to nullify based on sampled degree of vertex
+    choices <- sample(1:N, num_zeros)
+    row[choices] <- 0
+    P[i,] <- row
+    # Normalize rows
+    for(i in 1:nrow(P)){
+      row <- P[i, ]
+      P[i,] <- row/sum(row)
     }
-    # append the row
-    P[i,] <- curr_row             
+    # If the matrix is truly stochastic, rows with all zeros will have their diagonal become 1
+    if(stoch){  
+      # Set diagonal such that rows sum to 1
+      diag <- rep(0, ncol(P))
+      for(i in 1:nrow(P)){
+        row <- P[i, ]
+        diag[i] <- (1 - sum(nondiagonal_entries(row, i)))
+      }
+      diag(P) <- diag
+    }
   }
-  # Return the matrix
-  P
+  P # Return the matrix
 }
 
 #=================================================================================#
