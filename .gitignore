@@ -6,7 +6,7 @@
 *.log
 
 #Mac
-*.DS_store
+.DS_Store
 
 #PDF
 
