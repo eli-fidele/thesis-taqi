@@ -11,7 +11,7 @@ RM_normal <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F)
   # Returns a matrix with complex entries if prompted
   if(complex){
     if(hermitian){
-      P <- P + 1i * RM_normal(N, mean, sd, symm = T)
+      P <- P + .make_hermitian(1i * RM_normal(N, mean, sd, symm = T))
     } else{
       P <- P + 1i * RM_normal(N, mean, sd, symm = F)
     }
