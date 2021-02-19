@@ -15,6 +15,7 @@ library(matrixcalc)
 # Load files
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
+source(file = "../R/evolve.R")
 source(file = "../R/simulate.R")
 source(file = "../R/analyze.R")
 source(file = "../R/vis.R")
@@ -31,10 +32,10 @@ data <- F
 data <- T
 set.seed(23)
 # Generate a random matrix
-P <- RM_normal(M = 4, mean = 0, sd = 5, symm = T)
+P <- RM_norm(N = 4, mean = 0, sd = 5, symm = T)
 # Analyze the simulated matrix
 if(!data){
-  sim <- mixtime_sim(P, B = 1000, steps = 50, epsilon = 0.01)
+  sim <- sim_mixtime(P, B = 1000, steps = 50, epsilon = 0.01)
   write_csv(sim[[1]], "data/batch1.csv")
   write_csv(sim[[2]], "data/evolved_batch1.csv")
   # Get arrays
@@ -63,7 +64,7 @@ spectrum(P)
 
 ```{r}
 mixtime_histogram(batch, bins = 43)
-mixtime4d(batch)
+#.mixtime4d(batch)
 ```
 
 \newpage
@@ -72,12 +73,12 @@ mixtime4d(batch)
 set.seed(23)
 M <- 4
 # Generate matrix
-P <- RM_normal(3, mean = 0, sd = 2, symm = T)
+P <- RM_norm(3, mean = 0, sd = 2, symm = T)
 P
 # Look at the eigenvalues
 spectrum(P)
 # Simulate
-sim <- mixtime_sim(P, batch_size = 500, steps = 25, epsilon = 0.2)
+sim <- sim_mixtime(P, batch_size = 500, steps = 25, epsilon = 0.2)
 # Get arrays
 batch <- sim[[1]]
 evolved_batch <- sim[[2]]

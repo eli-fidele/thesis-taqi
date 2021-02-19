@@ -1,0 +1,99 @@
+---
+title: "Functional Programming in R"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(purrr)
+library(matrixcalc)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/evolve.R")
+source(file = "../R/analyze.R")
+source(file = "../R/simulate.R")
+source(file = "../R/vis.R")
+```
+
+```{r}
+#replicate(n = 100, .pos_entries(RM_stoch(3, symm = T), T), simplify = T)
+#sum(replicate(n = 100, .isStochastic(RM_stoch(3, symm = T)), simplify = T))/100
+N <- 5
+P <- RM_stoch(N, symm = T)
+batch <- generate_batch(N, batch_size = 10, stoch = .isStochastic(P))
+steps <- 20
+#evolved_batch <- evolve_batch(batch, P, steps)
+#by.time(evolved_batch, at_time = 20)
+```
+
+```{r}
+# Evolve each element of the batch by a given number of steps and return the evolved stack of arrays
+evolve_batch <- function(batch, P, steps){
+  B <- nrow(batch) # Get number of batch elements
+  evolved_stack <- evolve(batch[1,], P, steps, burn_in) # Initialize by append first batch element's evolution array
+  for(i in 2:B){ 
+    evol <-  evolve(batch[i,], P, steps, burn_in) # Obtain evolution array of current element of the batch 
+    evolved_stack <- rbind(evolved_stack, evol) # Recursively row bind the stack
+  }
+  rownames(evolved_stack) <- 1:nrow(evolved_stack) # Standardize row names
+  evolved_stack <- .add_indices(evolved_stack, steps) # Index the batch elements 
+  if(ratios){evolved_stack <- append_ratios(evolved_stack)} # Append ratios if prompted
+  # Return the stack
+  evolved_stack
+}
+```
+
+```{r}
+# Get number of batch elements
+B <- nrow(batch)
+# Recursively rowbind the evolved row at powers t = 2,...,steps for all the batch elements
+evolved_stack <- do.call("rbind",lapply(X = 1:B, FUN = function(i, batch, P, steps){evolve(v = batch[i,], P, steps)}, batch, P, steps))
+# Preprocess for return
+evolved_stack <- .add_indices(evolved_stack, steps) # Index the batch elements 
+evolved_stack <- .append_ratios(evolved_stack) # Append ratios
+rownames(evolved_stack) <- 1:nrow(evolved_stack) # Standardize row names
+evolved_stack # Return the stack
+```
+
+```{r}
+evolved_stack <- evolve(batch[1,], P, steps) # Initialize by append first batch element's evolution array
+for(i in 2:B){ 
+  evol <-  evolve(v = batch[i,], P, steps) # Obtain evolution array of current element of the batch 
+  evolved_stack <- rbind(evolved_stack, evol) # Recursively row bind the stack
+}
+
+
+```
+
+```{r}
+
+```
+
+```{r}
+evolved_batch <- evolved_stack
+# Extract number of batch elements
+B <- max(evolved_batch$element_index)
+# Get the ratios in the array for the first element
+ratio_stack <- .ratios_by_element(evolved_batch, element_index = 1)
+# Repeat for the rest, concatenating by row
+for(i in 2:B){
+  curr_ratios <- .ratios_by_element(evolved_batch, element_index = i)
+  ratio_stack <- rbind(ratio_stack, curr_ratios)
+}
+# Standardize the column names
+ratio_stack <- .standardize_colnames(ratio_stack, prefix = "r_")
+# Return evolved batch with the ratios
+cbind(evolved_batch, ratio_stack)
+```
+
+
+```{r}
+.standardize_colnames(evolve(.stoch_row(3), P, steps = 5), time = T)
+```
+
+
+
+

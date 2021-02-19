@@ -27,7 +27,7 @@ spectrum <- function(P, indexed = TRUE){
   # Add the components to the array
   for(i in 1:M){
     curr <- eigen_array[i,]
-    eigenvalues[i, ] <- c(round(Re(curr), 5), round(Im(curr), 5)) # Round to nearest 5 decimalds
+    eigenvalues[i, ] <- c(round(Re(curr), 5), round(Im(curr), 5)) # Round to nearest 5 decimals
   }
   # Index the eigenvalues
   if(indexed){eigenvalues <- cbind(eigenvalues, data.frame(eigen_index = 1:nrow(eigenvalues)))}

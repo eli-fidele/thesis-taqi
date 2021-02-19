@@ -6,14 +6,11 @@
 
 # Generate a Monte Carlo batch of uniform points in an M-hypercube, or a random set of initial probability distributions
 generate_batch <- function(N, batch_size, lambda = 1, complex = FALSE, stoch = FALSE){
-  B <- batch_size # Rename variable for aesthetic
-  batch <- matrix(rep(NA, B * N), nrow = B)  # create [B x N] batch matrix
-  for(i in 1:B){
-    # Generate real-valued uniformly random elements unless matrix stochastic
-    if(!stoch){batch[i,] <- runif(n = N, min = -lambda, max = lambda)} else{
-      batch[i,] <- .stoch_row(N) # Otherwise, create random initial probability distributions
-    } 
-  }
+  B <- batch_size # Rename variable for brevity
+  # Generate real-valued uniformly random elements unless matrix stochastic
+  if(stoch){batch <- do.call("rbind", lapply(X = rep(N, B), FUN = .stoch_row))}
+  # Otherwise, create random initial probability distributions
+  else{batch <- do.call("rbind", lapply(X = rep(N, B), FUN = function(N, lambda){runif(N, -lambda, lambda)}, lambda = lambda))} 
   if(complex){batch <- batch + 1i * generate_batch(N, B, lambda, stoch = stoch)} # Add complex component if prompted
   batch <- .standardize_colnames(batch) # Standardize the column names
   data.frame(batch) # Return batch
@@ -21,17 +18,16 @@ generate_batch <- function(N, batch_size, lambda = 1, complex = FALSE, stoch = F
 
 # Evolve each element of the batch by a given number of steps and return the evolved stack of arrays
 evolve_batch <- function(batch, P, steps){
-  B <- nrow(batch) # Get number of batch elements
-  evolved_stack <- evolve(batch[1,], P, steps) # Initialize by append first batch element's evolution array
-  for(i in 2:B){ 
-    evol <-  evolve(batch[i,], P, steps) # Obtain evolution array of current element of the batch 
-    evolved_stack <- rbind(evolved_stack, evol) # Recursively row bind the stack
-  }
+  # Get number of batch elements
+  B <- nrow(batch)
+  # Recursively rowbind the evolved row at powers t = 2,...,steps for all the batch elements
+  evolved_stack <- do.call("rbind",lapply(X = 1:B, FUN = function(i, batch, P, steps){evolve(v = batch[i,], P, steps)}, batch, P, steps))
+  # Preprocess for return
   evolved_stack <- .add_indices(evolved_stack, steps) # Index the batch elements 
   evolved_stack <- .append_ratios(evolved_stack) # Append ratios
   rownames(evolved_stack) <- 1:nrow(evolved_stack) # Standardize row names
   # Return the stack
-  evolved_stack
+  evolved_stack 
 }
 
 # Evolves an element of a batch (v) by the matrix P and returns the array of the evolution sequence
@@ -42,47 +38,37 @@ evolve <- function(v, P, steps){
   seq # Return the array 
 }
 
+# Returns vector multiplied by i^th power of P and index of i as "time"
+.mat_power <- function(i, v, P){c((as.numeric(v) %*% matrix.power(P,i)), i)}
+
 
 #=================================================================================#
 #                                 HELPER FUNCTIONS
 #=================================================================================#
 
-# Returns vector multiplied by i^th power of P and index of i as "time"
-.mat_power <- function(i, v, P){c((as.numeric(v) %*% matrix.power(P,i)), i)}
-
 # Append ratio of row elements by each step
 .append_ratios <- function(evolved_batch){
   # Extract number of batch elements
   B <- max(evolved_batch$element_index)
-  # Get the ratios in the array for the first element
-  ratio_stack <- .ratios_by_element(evolved_batch, element_index = 1)
-  # Repeat for the rest, concatenating by row
-  for(i in 2:B){
-    curr_ratios <- .ratios_by_element(evolved_batch, element_index = i)
-    ratio_stack <- rbind(ratio_stack, curr_ratios)
-  }
-  # Standardize the column names
-  ratio_stack <- .standardize_colnames(ratio_stack, prefix = "r_")
+  ratio_stack <- do.call("rbind",lapply(1:B, .ratios_by_element, evolved_batch)) # Get the element ratios for every element
+  ratio_stack <- .standardize_colnames(ratio_stack, prefix = "r_") # Standardize the column names
   # Return evolved batch with the ratios
   cbind(evolved_batch, ratio_stack)
 }
 
-# Find the ratios between the steps for a given element array
-.ratios_by_element <- function(evolved_batch, element_index){
-  # Get the array for the current indexed element
-  curr_element <- by.element(evolved_batch, element_index)
-  # Get number of dimensions and steps
-  M <- ncol(curr_element) - 2
-  steps <- nrow(curr_element)
-  # Initalize the stack
-  ratio_stack <- rep(NA, M)
-  for(i in 2:steps){
-    # Get ratio of rows from current step 
-    curr_ratios <- curr_element[i, 1:M]/curr_element[i-1, 1:M]
-    # Stack
-    ratio_stack <- rbind(ratio_stack, curr_ratios)
-  }
-  ratio_stack
+# Find the element ratios array between the steps for a given element array for all the times t = 1,...,steps
+.ratios_by_element <- function(element_index, evolved_batch){
+  curr_element <- by.element(evolved_batch, element_index) # Filter for current element
+  # Extract parameters
+  N <- ncol(curr_element) - 2 # No. of dimensions = No. of cols - time & element_index columns
+  steps <- nrow(curr_element) - 1 # Initial element not counted
+  # Helper function extracting the entry-wise ratio of elements for an element's entries at t = i by t = i-1.
+  .ROWratio <- function(i, evolved_element, N){evolved_element[i+1, 1:N]/evolved_element[i, 1:N]}
+  # Get rows for currently indexed element
+  evolved_element <- by.element(evolved_batch, element_index) 
+  initial_ratio <- rep(NA, N) # Initalize the stack
+  # Rowbind the ratios at time = 1 to time = steps.
+  rbind(initial_ratio, do.call("rbind",lapply(X = 1:steps, FUN = .ROWratio, evolved_element, N))) # Return element ratio stack
 }
 
 # Extract the array for a particular element/a range of elements
@@ -103,30 +89,27 @@ by.time <- function(evolved_batch, at_time){
   }
 }
 
-
 #=================================================================================#
 #                         NAMING/INDEXING HELPER FUNCTIONS
 #=================================================================================#
 
-# This method adds an index to clarify which rows belong to which batch element's evolution array it belongs
+# This function take the row of a evolved array with the number of steps used. It infers which element it is indexing and adds the time.
+# Since each batch element is evolved steps number of times, we use the floor function to map {1,...,steps+1} to {0,...,steps}.
 .add_indices <- function(evolved_batch, steps){
-  # Create the element index column
-  element_index <- rep(NA, nrow(evolved_batch))
-  # Index the elements in the entire batch using the floor function and return the binded dataframe
-  for(i in 1:nrow(evolved_batch)){element_index[i] <- 1 + floor((i-1)/(steps+1))}
-  evolved_batch <- cbind(evolved_batch,element_index)
-  data.frame(evolved_batch)  # Return the batch
+  num_states <- nrow(evolved_batch) # Get total number of states
+  .STATEidx <- function(i, steps){1 + floor((i-1)/(steps+1))} # Lambda helper function; formula for .add_indices
+  element_index <- data.frame(element_index = map_dbl(1:num_states, .f = .STATEidx, steps = steps))
+  cbind(evolved_batch,element_index) # Return the indexed evolved batch
 }
 
 # Standardizes an array with n dimensions to have column names of the form "prefix-x(i)" for i = 1,...,n
 .standardize_colnames <- function(array, time = F, prefix = ""){
   N <- ncol(array) - as.numeric(time) # Get dimension of the matrix
-  # Initialize a string vector for the column names, adding one colmun if time column is included
-  new_colnames <- rep("", N + as.numeric(time))
-  # Generate the standardized element column names, with prefix if added
-  for(i in 1:N){new_colnames[i] <- paste(prefix,"x",i,sep="")}
-  colnames(array) <- new_colnames
-  if(time){colnames(array)[N+1] <- "time"} # Rename time column
+  .DIMstr <- function(i, prefix = ""){paste(prefix,"x",i,sep="")} # Standarized element dimension column name ("xi" for DIM i)
+  # Map each column to standarized dimension string and add time column if prompted
+  if(time){colnames(array) <- c(map_chr(1:N, .f = .DIMstr, prefix = prefix), "time")}
+  else{colnames(array) <- map_chr(1:N, .f = .DIMstr, prefix = prefix)}
   array # Return array
 }
+
 
