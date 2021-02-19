@@ -117,7 +117,7 @@ RM_erdos <- function(N, p, stoch = T){
       if(i < j){P[i,j] <- Conj(P[j,i])} # Equalize lower and upper triangles, making conjugate if complex
     }
   }
-  P # Return Symmetric Matrix
+  P # Return Hermitian Matrix
 }
 
 # Return the non-diagonal entries of row i
