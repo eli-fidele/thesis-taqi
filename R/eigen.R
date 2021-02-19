@@ -19,18 +19,12 @@ ensemble_spectrum <- function(ensemble, indexed = FALSE){
 }
 
 # Returns a tidied dataframe of the eigenvalues of a random matrix
-spectrum <- function(P, indexed = TRUE){
-  M <- nrow(P) # Obtain dimension
+spectrum <- function(P){
+  N <- nrow(P) # Obtain matrix dimension
   eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues
-  eigenvalues <- matrix(rep(NA, 2*M), ncol = 2) # Create matrix to hold eigenvalues
-  colnames(eigenvalues) <- c("Re", "Im") # Rename columns
-  # Add the components to the array
-  for(i in 1:M){
-    curr <- eigen_array[i,]
-    eigenvalues[i, ] <- c(round(Re(curr), 5), round(Im(curr), 5)) # Round to nearest 5 decimals
-  }
-  # Index the eigenvalues
-  if(indexed){eigenvalues <- cbind(eigenvalues, data.frame(eigen_index = 1:nrow(eigenvalues)))}
+  spectrum_row <- function(i, array){c(round(Re(array[i,]), 5), round(Im(array[i,]), 5), abs(array[i,]), i)}
+  eigenvalues <- do.call("rbind", lapply(X = 1:N, FUN = spectrum_row, eigen_array))
+  colnames(eigenvalues) <- c("Re", "Im", "Norm", "Index") # Rename columns
   data.frame(eigenvalues)
 }
 

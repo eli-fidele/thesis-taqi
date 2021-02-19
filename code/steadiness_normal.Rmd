@@ -1,0 +1,114 @@
+---
+title: "Mixing Times"
+author: "Ali Taqi"
+date: "2/5/2021"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+library(purrr)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/evolve.R")
+source(file = "../R/simulate.R")
+source(file = "../R/analyze.R")
+source(file = "../R/vis.R")
+# global parameters
+bool_plot <- F
+bool_loud <- T
+bool_animate <- F
+```
+
+# Mixing Times of a Symmetric Normal Matrix
+
+```{r}
+data <- T
+# Set seed
+set.seed(23) 
+# Initialize parameters
+N <- 5
+batch_size <- 1000
+steps <- 45
+# Generate a random matrix
+P <- RM_norm(N = 5, mean = 0, sd = 1, symm = T)
+# Simulate
+if(!data){
+  sim <- sim_steadiness(P, batch_size, steps)
+  # Extract the arrays
+  batch <- sim[[1]]
+  evolved_batch <- sim[[2]]
+  # Mixtime simulation
+  sim_mix <- sim_mixtime(P, batch_size, steps)
+  batch_mx <- sim_mix[[1]]
+  evolved_batch_mx <- sim_mix[[2]]
+} else{
+  batch <- read_csv("batch.csv")
+  evolved_batch <- read_csv("evolved_batch.csv")
+  batch_mx <- read_csv("batch_mx.csv")
+  evolved_batch_mx <- read_csv("evolved_batch_mx.csv")
+}
+```
+
+```{r}
+#write_csv(batch, "batch.csv")
+#write_csv(evolved_batch, "evolved_batch.csv")
+#write_csv(batch_mx, "batch_mx.csv")
+#write_csv(evolved_batch_mx, "evolved_batch_mx.csv")
+```
+
+```{r}
+# Dimension spectra
+#ggplot() + geom_histogram(data = evolved_batch, mapping = aes(x = lst_stdy))
+#ggplot() + geom_histogram(data = evolved_batch, mapping = aes(x = mst_stdy))
+```
+
+```{r}
+late <- by.time(evolved_batch, at_time = 1:45)
+ggplot() + geom_jitter(data = late, mapping = aes(x = time, y = log(mean_stdns), color = as.factor(element_index))) + theme(legend.position = "none")
+```
+
+```{r}
+late <- by.time(evolved_batch, at_time = 10:45)
+ggplot() + geom_smooth(data = late, mapping = aes(x = time, y = log(mean_stdns), color = as.factor(element_index)), se = F) + theme(legend.position = "none")
+```
+
+```{r}
+late <- by.time(evolved_batch, at_time = 1:45)
+ggplot() + geom_jitter(data = late, mapping = aes(x = time, y = log(max_stdns), color = as.factor(element_index))) + theme(legend.position = "none")
+```
+
+```{r}
+late <- by.time(evolved_batch, at_time = 1:45)
+ggplot() + geom_smooth(data = late, mapping = aes(x = time, y = log(max_stdns), color = as.factor(element_index)), se = F) + theme(legend.position = "none")
+```
+
+```{r}
+late <- by.time(evolved_batch, at_time = 1:45)
+ggplot() + geom_jitter(data = late, mapping = aes(x = time, y = lst_stdy, color = as.factor(element_index))) + theme(legend.position = "none")
+```
+
+```{r}
+late <- by.time(evolved_batch, at_time = 1:45)
+ggplot() + geom_jitter(data = late, mapping = aes(x = time, y = mst_stdy, color = as.factor(element_index))) + theme(legend.position = "none")
+```
+
+
+```{r}
+mixtime_histogram(batch_mx)
+```
+
+```{r}
+ggplot() + geom_point(data = evolved_batch, mapping = aes(x = lst_stdy, y = mean_stdns))
+ggplot() + geom_point(data = evolved_batch, mapping = aes(x = mst_stdy, y = mean_stdns))
+ggplot() + geom_point(data = evolved_batch, mapping = aes(x = mst_stdy, y = max_stdns))
+ggplot() + geom_point(data = evolved_batch, mapping = aes(x = mst_stdy, y = max_stdns))
+```
+
+

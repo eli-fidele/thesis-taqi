@@ -30,17 +30,7 @@ evolved_batch <- evolve_batch(batch, P, steps)
 ```
 
 ```{r}
-# Extract the array for a particular element/a range of elements
-by.element <- function(evolved_batch, index){evolved_batch[which(evolved_batch$element_index %in% c(index)),]}
-
-# Extract the array for a particular time/a range of times
-by.time <- function(evolved_batch, at_time){evolved_batch[which(evolved_batch$time %in% c(at_time)),]}
-```
-
-```{r}
-by.element(evolved_batch, index = 1:2)
-by.element(evolved_batch, index = 2)
-
+P <- RM_norm(N = 10, complex = T)
 ```
 
 

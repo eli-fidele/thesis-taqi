@@ -11,9 +11,9 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
   # Returns a matrix with complex entries if prompted
   if(complex){
     if(hermitian){
-      P <- P + .make_hermitian(1i * RM_normal(N, mean, sd, symm = T))
+      P <- P + .make_hermitian(1i * RM_norm(N, mean, sd))
     } else{
-      P <- P + 1i * RM_normal(N, mean, sd, symm = F)
+      P <- P + 1i * RM_norm(N, mean, sd, symm = F)
     }
   }
   P <- P/sqrt(N) # Rescale the matrix
@@ -126,13 +126,14 @@ RM_erdos <- function(N, p, stoch = T){
   row[which(1:length(row) != row_index)]
   }
 
+#=========================================================================#
+#                         DIAGNOSTIC FUNCTIONS
+#=========================================================================#
+
 # Check if a matrix is stochastic
 .isStochastic <- function(P){
   row_is_stoch <- rep(F, nrow(P))
-  for(i in 1:nrow(P)){
-    row_sum <- sum(P[i,])
-    row_is_stoch[i] <- (row_sum == 1)
-  }
+  for(i in 1:nrow(P)){row_is_stoch[i] <- (sum(P[i,]) == 1)} # Row is stochastic when it sums to 1.
   !(F %in% row_is_stoch)
 }
 

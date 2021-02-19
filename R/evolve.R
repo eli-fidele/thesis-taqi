@@ -20,7 +20,7 @@ generate_batch <- function(N, batch_size, lambda = 1, complex = FALSE, stoch = F
 evolve_batch <- function(batch, P, steps){
   # Get number of batch elements
   B <- nrow(batch)
-  # Recursively rowbind the evolved row at powers t = 2,...,steps for all the batch elements
+  # Recursively rowbind the evolved row at powers k = 1,...,steps for all the batch elements
   evolved_stack <- do.call("rbind",lapply(X = 1:B, FUN = function(i, batch, P, steps){evolve(v = batch[i,], P, steps)}, batch, P, steps))
   # Preprocess for return
   evolved_stack <- .add_indices(evolved_stack, steps) # Index the batch elements 
@@ -33,13 +33,13 @@ evolve_batch <- function(batch, P, steps){
 # Evolves an element of a batch (v) by the matrix P and returns the array of the evolution sequence
 evolve <- function(v, P, steps){
   # Call the matrix over 0:steps, 0 being the original element
-  seq <- do.call("rbind",lapply(X = 0:steps, FUN = .mat_power, v = v, P = P)) 
+  seq <- do.call("rbind",lapply(X = 0:steps, FUN = .MATpower, v = v, P = P)) 
   seq <- .standardize_colnames(seq, time = T) # Standardize column names and labelling the time column
   seq # Return the array 
 }
 
-# Returns vector multiplied by i^th power of P and index of i as "time"
-.mat_power <- function(n, v, P){c((as.numeric(v) %*% matrix.power(P,i)), i)}
+# Returns vector multiplied by k^th power of P and index of k as "time"
+.MATpower <- function(k, v, P){c((as.numeric(v) %*% matrix.power(P,k)), k)}
 
 
 #=================================================================================#
