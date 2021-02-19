@@ -20,10 +20,10 @@ sim_mixtime <- function(P, batch_size, steps, epsilon = 0.1){
 }
 
 # Generate and evolve a batch of points for a given random matrix P. 
-# This function is a basic "initial" simulation. Other simulation functions will utilize this function 
-sim_initial <- function(P, B, steps){
+# This function is a basic "initial" simulation. Other simulation functions will utilize this function as a base.
+sim_initial <- function(P, batch_size, steps){
   # Elements may be uniform only if the matrix isn't stochastic
-  batch <- generate_batch(N = ncol(P), B, stoch = .isStochastic(P))
+  batch <- generate_batch(N = ncol(P), batch_size, stoch = .isStochastic(P))
   # Evolve the batch and return it
   evolved_batch <- evolve_batch(batch, P, steps)
   list(batch, evolved_batch)
