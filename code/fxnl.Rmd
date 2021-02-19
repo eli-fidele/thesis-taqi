@@ -15,8 +15,15 @@ source(file = "../R/eigen.R")
 source(file = "../R/evolve.R")
 source(file = "../R/analyze.R")
 source(file = "../R/simulate.R")
+source(file = "../R/ensemble.R")
 source(file = "../R/vis.R")
 ```
+
+```{r}
+ensemble <- RME("norm",c(N = 20, 0, 1, F, T, T), ensemble_size = 1000)
+spectrum_plot(ensemble)
+```
+
 
 ```{r}
 #replicate(n = 100, .pos_entries(RM_stoch(3, symm = T), T), simplify = T)

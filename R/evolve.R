@@ -7,9 +7,9 @@
 # Generate a Monte Carlo batch of uniform points in an M-hypercube, or a random set of initial probability distributions
 generate_batch <- function(N, batch_size, lambda = 1, complex = FALSE, stoch = FALSE){
   B <- batch_size # Rename variable for brevity
-  # Generate real-valued uniformly random elements unless matrix stochastic
+  # Create random initial probability distributions if matrix is stochastic
   if(stoch){batch <- do.call("rbind", lapply(X = rep(N, B), FUN = .stoch_row))}
-  # Otherwise, create random initial probability distributions
+  # Otherwise, generate real-valued uniformly random elements
   else{batch <- do.call("rbind", lapply(X = rep(N, B), FUN = function(N, lambda){runif(N, -lambda, lambda)}, lambda = lambda))} 
   if(complex){batch <- batch + 1i * generate_batch(N, B, lambda, stoch = stoch)} # Add complex component if prompted
   batch <- .standardize_colnames(batch) # Standardize the column names
@@ -66,9 +66,8 @@ evolve <- function(v, P, steps){
   .ROWratio <- function(i, evolved_element, N){evolved_element[i+1, 1:N]/evolved_element[i, 1:N]}
   # Get rows for currently indexed element
   evolved_element <- by.element(evolved_batch, element_index) 
-  initial_ratio <- rep(NA, N) # Initalize the stack
   # Rowbind the ratios at time = 1 to time = steps.
-  rbind(initial_ratio, do.call("rbind",lapply(X = 1:steps, FUN = .ROWratio, evolved_element, N))) # Return element ratio stack
+  rbind(rep(NA, N), do.call("rbind",lapply(X = 1:steps, FUN = .ROWratio, evolved_element, N))) # Return element ratio stack
 }
 
 # Extract the array for a particular element/a range of elements

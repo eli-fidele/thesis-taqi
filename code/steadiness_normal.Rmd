@@ -101,6 +101,7 @@ ggplot() + geom_jitter(data = late, mapping = aes(x = time, y = mst_stdy, color 
 
 
 ```{r}
+.prop_mixed(batch_mx)
 mixtime_histogram(batch_mx)
 ```
 

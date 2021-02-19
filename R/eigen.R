@@ -7,15 +7,8 @@
 #=================================================================================#
 
 # Returns a tidied dataframe of the eigenvalues of a matrix ensemble
-ensemble_spectrum <- function(ensemble, indexed = FALSE){
-  K <- length(ensemble) # Get size of ensemble
-  spectra <- spectrum(ensemble[[1]], indexed) # Initialize the spectra stack by evaluating the initial matrix
-  # Evaluate the rest of the spectra for the matrices in the ensemble
-  for(i in 2:K){
-    curr <- spectrum(ensemble[[i]], indexed)
-    spectra <- rbind(curr,spectra)
-  }
-  spectra # Return the spectra for this ensemble
+ensemble_spectrum <- function(ensemble){
+  do.call("rbind",lapply(X = 1:length(ensemble), FUN = function(i){spectrum(ensemble[[i]])})) # Return the spectra for this ensemble
 }
 
 # Returns a tidied dataframe of the eigenvalues of a random matrix
@@ -35,7 +28,7 @@ spectrum <- function(P){
 # Plots the eigenvalues of a given matrix P
 spectrum_plot <- function(P, mat_str = ""){
   # See if we have a ensemble of matrices or a single matrix
-  not_ensemble <- (nrow(P) == ncol(P))
+  not_ensemble <- (class(nrow(P) == ncol(P)) == "numeric")
   # If not ensemble, directly process the spectrum
   if(not_ensemble){
     eigen_spectrum <- spectrum(P)

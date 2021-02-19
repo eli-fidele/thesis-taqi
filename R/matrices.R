@@ -23,8 +23,7 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
 # Generate a Gaussian (Hermite) Beta Ensemble matrix with Non-Invariant Dumitriu's Tridiagonal Model
 RM_beta <- function(N, beta, complex = F){
   # Set the diagonal as a N(0,2) distributed row.
-  diagonal <- rnorm(N, mean = 0, sd = 2)
-  P <- diag(diagonal)
+  P <- diag(rnorm(N, mean = 0, sd = 2))
   # Set the off-1 diagonals as chi squared variables with df(beta), as given in Dumitriu's model
   df_seq <- beta*(N - seq(1,N-1)) # Get degrees of freedom sequence for offdigonal
   P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rchisq(N-1, df_seq) # Generate tridiagonal
