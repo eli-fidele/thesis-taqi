@@ -51,7 +51,7 @@ RM_stoch <- function(N, symm = F, sparsity = F){
   # Generate the [N x N] stochastic matrix stacking N stochastic rows (using the chosen function)
   P <- do.call("rbind", lapply(X = rep(N, N), FUN = row_fxn))
   if(symm){ # Make symmetric (if prompted)
-    P <- .make_hermitian(P) # Make lower and upper triangles equal
+    P <- .make_hermitian(P) # Make lower and upper triangles equal to each other's conjugate transpose
     diag(P) <- rep(0, N) # Nullify diagonal
     for(i in 1:N){P[i, ] <- P[i, ]/sum(P[i, ])} # Normalize rows
     # Set diagonal to the diff. between 1 and the non-diagonal entry sums such that rows sum to 1
@@ -63,9 +63,9 @@ RM_stoch <- function(N, symm = F, sparsity = F){
 }
 
 # An Erdos-Renyi Graph is a graph whose edges are connected ~ Bern(p).
-# This simulates a transition matrix for a random walk on an ER-p graph, where p = p_sparse.
+# This simulates a transition matrix for a random walk on an ER-p graph
 RM_erdos <- function(N, p, stoch = T){
-  # Generate an [N x N] Erdos-Renyi walk stochastic matrix by stacking N p-stochastic rows (using the chosen function)
+  # Generate an [N x N] Erdos-Renyi walk stochastic matrix by stacking N p-stochastic rows
   P <- do.call("rbind", lapply(X = rep(N, N), FUN = .stoch_row_erdos, p = p))
   # If the matrix is to be truly stochastic, map rows with all zeros to have diagonal entry 1
   if(stoch){  
