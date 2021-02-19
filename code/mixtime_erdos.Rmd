@@ -14,8 +14,9 @@ library(matrixcalc)
 # Load files
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
-source(file = "../R/simulate.R")
+source(file = "../R/evolve.R")
 source(file = "../R/analyze.R")
+source(file = "../R/simulate.R")
 source(file = "../R/vis.R")
 # global parameters
 bool_plot <- T
@@ -25,10 +26,10 @@ bool_animate <- F
 
 ```{r}
 # Document simulation parameters
-n <- 10
-batch_size <- 1000
-steps <- 20
-epsilon <- 0.03
+N <- 10
+batch_size <- 500
+steps <- 8
+epsilon <- 0.015
 ```
 
 
@@ -36,17 +37,18 @@ epsilon <- 0.03
 
 ```{r}
 set.seed(23)
+p <- 0.4
 # Generate a stochastic matrix
-P <- RM_erdos(n = n, p_sparse = 0.65, stoch = T)
+P <- RM_erdos(N, p, stoch = T)
 P
 # Evolve a batch
-sim <- mixtime_sim(P, batch_size, steps, epsilon)
+sim <- sim_mixtime(P, batch_size, steps, epsilon)
 # Extract the arrays
 batch <- sim[[1]]
 evolved_batch <- sim[[2]]
 if(bool_loud){head(batch)}
-mixtime_histogram(batch, mat = "Erdos-0.8 ")
-prop_mixed(batch)
+mixtime_histogram(batch, mat = paste("Erdos-",p," ",sep=""))
+.prop_mixed(batch)
 ```
 
 \newpage

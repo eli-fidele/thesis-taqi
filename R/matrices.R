@@ -3,7 +3,7 @@
 #                           NORMAL RANDOM MATRICES 
 #=================================================================================#
 
-RM_normal <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
+RM_norm <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F){
   # Create [n x n] matrix with normally distributed entries
   P <- matrix(rnorm(N^2, mean, sd), nrow = N)  
   # Make symmetric if prompted
@@ -20,14 +20,6 @@ RM_normal <- function(N, mean = 0, sd = 1, symm = F, complex = F, hermitian = F)
   P # Return the matrix
 }
 
-# Generate a tridiagonal matrix with normal entries
-RM_trid <- function(N, symm = F){
-  diagonal <- rnorm(N = N, 0, 2)
-  P <- diag(diagonal)
-  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rnorm(n = n, 0, 1)
-  P# Return the matrix
-}
-
 # Generate a Gaussian (Hermite) Beta Ensemble matrix with Non-Invariant Dumitriu's Tridiagonal Model
 RM_beta <- function(N, beta, complex = F){
   # Set the diagonal as a N(0,2) distributed row.
@@ -42,65 +34,46 @@ RM_beta <- function(N, beta, complex = F){
   P # Return the matrix
 }
 
+# Generate a tridiagonal matrix with normal entries
+RM_trid <- function(N, symm = F){
+  diagonal <- rnorm(N = N, 0, 2)
+  P <- diag(diagonal)
+  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rnorm(n = n, 0, 1)
+  P # Return the matrix
+}
+
 #=================================================================================#
 #                           STOCHASTIC RANDOM MATRICES 
 #=================================================================================#
 
-# Generate random stochastic matrix of size n, with choice of row function {r_stochastic, r_zeros}
+# Generate random stochastic matrix of size n, with choice of row function {r_stoch, r_stoch_zeros}
 RM_stoch <- function(N, symm = F, sparsity = F){
-  P <- matrix(rep(NA, N * N), ncol = N)  # create [N x N] transition matrix
-  if(sparsity){row_fn <- r_zeros} else {row_fn <- r_stochastic} # choose row function
-  # Generate rows
-  for(i in 1:N){P[i,] <- row_fn(N)}
-  # Make symmetric (if prompted)
-  if(symm == T){
-    # Make lower and upper triangles equal
-    P <- make_hermitian(P)
-    # Nullify diagonal
-    diag(P) <- rep(0, N)
-    # Normalize rows
-    for(i in 1:nrow(P)){
-      row <- P[i, ]
-      P[i,] <- row/sum(row)
-    }
-    # Set diagonal such that rows sum to 1
-    diag <- rep(0, ncol(P))
-    for(i in 1:nrow(P)){
-      row <- P[i, ]
-      diag[i] <- (1 - sum(.nondiagonal_entries(row, i)))
-    }
+  if(sparsity){row_fxn <- .stoch_row_zeros} else {row_fxn <- .stoch_row} # Choose row function
+  # Generate the [N x N] stochastic matrix stacking N stochastic rows (using the chosen function)
+  P <- do.call("rbind", lapply(X = rep(N, N), FUN = row_fxn))
+  if(symm){ # Make symmetric (if prompted)
+    P <- .make_hermitian(P) # Make lower and upper triangles equal
+    diag(P) <- rep(0, N) # Nullify diagonal
+    for(i in 1:N){P[i, ] <- P[i, ]/sum(P[i, ])} # Normalize rows
+    # Set diagonal to the diff. between 1 and the non-diagonal entry sums such that rows sum to 1
+    diag <- vector("numeric", N)
+    for(i in 1:N){diag[i] <- (1 - sum(.nondiagonal_entries(row = P[i, ], row_index = i)))}
     diag(P) <- diag
-    }
-  # Return the matrix
-  P
+  }
+  P # Return the matrix
 }
 
-# An Erdos-Renyi Graph is a graph whose edges are connected ~ Bern(p)
+# An Erdos-Renyi Graph is a graph whose edges are connected ~ Bern(p).
 # This simulates a transition matrix for a random walk on an ER-p graph, where p = p_sparse.
 RM_erdos <- function(N, p, stoch = T){
-  P <- matrix(rep(NA, N * N), ncol = N)  # create [N x N] transition matrix
-  for(i in 1:N){
-    row <- runif(N,0,1) # Generate a uniform row of probabilites
-    num_zeros <- rbinom(1,N,p) # Sample number of zeros so degree i ~ Bin(n,p)
-    # Choose vertices to nullify based on sampled degree of vertex
-    choices <- sample(1:N, num_zeros)
-    row[choices] <- 0
-    P[i,] <- row
-    # Normalize rows
-    for(i in 1:nrow(P)){
-      row <- P[i, ]
-      P[i,] <- row/sum(row)
-    }
-    # If the matrix is truly stochastic, rows with all zeros will have their diagonal become 1
-    if(stoch){  
-      # Set diagonal such that rows sum to 1
-      diag <- rep(0, ncol(P))
-      for(i in 1:nrow(P)){
-        row <- P[i, ]
-        diag[i] <- (1 - sum(.nondiagonal_entries(row, i)))
-      }
-      diag(P) <- diag
-    }
+  # Generate an [N x N] Erdos-Renyi walk stochastic matrix by stacking N p-stochastic rows (using the chosen function)
+  P <- do.call("rbind", lapply(X = rep(N, N), FUN = .stoch_row_erdos, p = p))
+  # If the matrix is to be truly stochastic, map rows with all zeros to have diagonal entry 1
+  if(stoch){  
+    # Set diagonal to ensure that rows sum to 1
+    diag <- rep(0, N)
+    for(i in 1:N){diag[i] <- (1 - sum(.nondiagonal_entries(row = P[i, ], row_index = i)))}
+    diag(P) <- diag
   }
   P # Return the matrix
 }
@@ -109,20 +82,28 @@ RM_erdos <- function(N, p, stoch = T){
 #                            STOCHASTIC ROW FUNCTIONS
 #=================================================================================#
 
-# generates stochastic rows of size N
-r_stochastic <- function(N){
-  prob <- runif(N,0,1)
-  prob/sum(prob) # normalize
+# Generates stochastic rows of size N
+.stoch_row <- function(N){
+  row <- runif(N,0,1) # Sample probability distribution
+  row/sum(row) # Return normalized row
 }
 
-# generates same rows as in r_stochastic(N), but with introduced random sparsity
-r_zeros <- function(N){
-  prob <- runif(N,0,1)
-  num_zeros <- sample(1:(N-1),1) # At most N-1 zeros, as to ensure stochastic property
-  choices <- sample(1:N, num_zeros) # Choose edges to disconnect
-  prob[choices] <- 0
-  prob/sum(prob) # normalize
+# Generates same rows as in r_stoch(N), but with introduced random sparsity
+.stoch_row_zeros <- function(N){
+  row <- runif(N,0,1)
+  degree_vertex <- sample(1:(N-1), size = 1) # Sample a degree of at least 1, as to ensure row is stochastic
+  row[sample(1:N, size = degree_vertex)] <- 0 # Choose edges to sever and sever them
+  row/sum(row) # Return normalized row
 }
+
+# Generates a stochastic row with parameterized sparsity of p
+.stoch_row_erdos <- function(N, p){
+  row <- runif(N,0,1) # Generate a uniform row of probabilites
+  degree_vertex <- rbinom(1,N,1-p) # Sample number of zeros so that degree of row/vertex i ~ Bin(n,p)
+  row[sample(1:N, degree_vertex)] <- 0 # Choose edges to sever and sever them
+  if(sum(row) != 0){row/sum(row)} else{row} # Return normalized row only if non-zero (cannot divide by 0)
+}
+
 
 #=========================================================================#
 #                             HELPER FUNCTIONS
@@ -140,16 +121,13 @@ r_zeros <- function(N){
   P # Return Symmetric Matrix
 }
 
-# Obtain the nondiagonal entries of a row given its row index
+# Return the non-diagonal entries of row i
 .nondiagonal_entries <- function(row, row_index){
-  indices <- data.frame(idx = 1:length(row))
-  indices <- indices %>% filter(idx != row_index)
-  # return the row with the given indices
-  row[as.numeric(indices[,])]
-}
+  row[which(1:length(row) != row_index)]
+  }
 
 # Check if a matrix is stochastic
-.is_row_stochastic <- function(P){
+.isStochastic <- function(P){
   row_is_stoch <- rep(F, nrow(P))
   for(i in 1:nrow(P)){
     row_sum <- sum(P[i,])
@@ -158,8 +136,9 @@ r_zeros <- function(N){
   !(F %in% row_is_stoch)
 }
 
-# returns proportion of positive entries of any matrix P
-.pos_entries <- function(P){
-  pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))
+# Returns proportion of positive entries of any matrix P
+.pos_entries <- function(P, zero = F){
+  if(!zero){pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))}
+  else{pos_entries <- length(matrix(P[P[,] >= 0], nrow = 1))}
   pos_entries/(length(P))   
 }

@@ -47,15 +47,12 @@ sim_by_element <- function(ensemble, batch_size, steps, epsilon, ensemble_index)
 
 # Random matrix ensemble
 ## FIX: generalize to multiple arguments rather than just dimensions, accounting for defaults
-RME <- function(mat_type, args, size){
+RME <- function(mat_type, args, ensemble_size){
   # If the mat_type entry is not the function itself, parse the mat_type string
-  if(class(mat_type) == "function"){
-    fxn <- mat_type
-  } else{
-    fxn <- .parse_RMfxn(mat_type)  
-  }
+  if(class(mat_type) == "function"){fxn <- mat_type} 
+  else{fxn <- .parse_matString(mat_type)}
   # Replicate with appopriate number of arguments by using parse_args
-  ensemble <- replicate(n = size, expr = .parse_args(fxn, args), simplify = F)
+  ensemble <- replicate(n = ensemble_size, expr = .parse_args(fxn, args), simplify = F)
   # Return the ensemble
   ensemble
 }
@@ -82,30 +79,19 @@ RME <- function(mat_type, args, size){
 
 # Elementary matrix type string parser
 # FUTURE: develop to enable string subsets to be appopriately parsed.
-.parse_RMfxn <- function(type_str){
+.parse_matString <- function(type_str){
   # Basic lexicon of string interpretation
   normal_str <- c("Normal", "normal","norm","n","N")
   stoch_str <- c("Stochastic","stochastic", "stoch", "st", "s", "S")
   erdos_str <- c("Erdos","erdos","er","e", "ER", "E")
   # Test whether its normal
-  if(type_str %in% normal_str){
-    fxn <- RM_normal
-  }
+  if(type_str %in% normal_str){return(RM_norm)}
   # Test whether its stochastic
-  if(type_str %in% stoch_str){
-    fxn <- RM_stoch
-  }
-  # Test whether its an ER-graph stochastic
-  if(type_str %in% erdos_str){
-    fxn <- RM_erdos
-  }
+  if(type_str %in% stoch_str){return(RM_stoch)}
+  # Test whether its an Erdos-Renyi walk
+  if(type_str %in% erdos_str){return(RM_erdos)}
   # If all conditions fail, return NA
-  else{
-    fxn <- NA
-    print("Please try again.")
-  }
-  # Return function
-  fxn
+  else{warning("Matrix not found.")}
 }
 
 #=================================================================================#

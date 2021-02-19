@@ -3,7 +3,7 @@
 #                               MIXING TIME ANALYSIS
 #=================================================================================#
 
-eigen_mixtime <- function(evolved_batch, batch){
+.eigen_mixtime <- function(evolved_batch, batch){
   # Extract B (number of elements)
   B <- max(evolved_batch$element_index)
   # Create initial mixtime vector
@@ -11,7 +11,7 @@ eigen_mixtime <- function(evolved_batch, batch){
   # Loop over every element of the batch, finding the mixing time
   for(i in 1:B){
     # Extract the classified column of eigen_indices over time
-    seq <- by_element(evolved_batch, index = i)$eigen_index
+    seq <- by.element(evolved_batch, index = i)$eigen_index
     # Find the time such that the eigen_index is non-zero (implying near-convergence)
     mixtime[i] <- min(which(seq != 0)) - 1
   }
@@ -26,13 +26,28 @@ eigen_mixtime <- function(evolved_batch, batch){
 }
 
 #=================================================================================#
+#                       RATIO ANALYSIS OF EVOLUTION ARRAYS
+#=================================================================================#
+
+# Gives the variance of the ratio entries for all the columns by time
+variance_by_time <- function(evolved_batch, at_time, log = T){
+  variances <- rep(NA, length(at_time)) # Create a vector to hold the variance for each time
+  for(i in 1:length(at_time)){ 
+    curr_var <- var(ratios_by_time(evolved_batch, at_time = i, log), na.rm = T) # Get the variance at that time
+    #if(log){curr_var <- log(curr_var)} # Take log if prompted
+    variances[i] <- curr_var
+  }
+  variances # Return variances
+}
+
+#=================================================================================#
 #                       EIGENVALUE CLASSIFICATION OF RATIOS
 #=================================================================================#
 
 # Takes in an **FINAL-TIME** evolved batch to return an analysis of the simluated eigenvalues
-eigen_classify <- function(evolved_batch, P, epsilon = 0.1){
+.eigen_classify <- function(evolved_batch, P, epsilon = 0.1){
   # Extract the ratio array of the evolved batch
-  ratios <- extract_ratios(evolved_batch)
+  ratios <- .extract_ratios(evolved_batch)
   # Get the eigenvalue array
   eigenvalues <- spectrum(P)
   # Create associated eigenvalue index column (with 0 implying no match)
@@ -64,45 +79,13 @@ eigen_classify <- function(evolved_batch, P, epsilon = 0.1){
 }
 
 #=================================================================================#
-#                       RATIO ANALYSIS OF EVOLUTION ARRAYS
+#                         EVOLUTION ARRAY RATIO-FILTERING
 #=================================================================================#
-
-# Gives the variance of the ratio entries for all the columns by time
-variance_by_time <- function(evolved_batch, at_time, log = T){
-  variances <- rep(NA, length(at_time)) # Create a vector to hold the variance for each time
-  for(i in 1:length(at_time)){ 
-    curr_var <- var(ratios_by_time(evolved_batch, at_time = i, log), na.rm = T) # Get the variance at that time
-    #if(log){curr_var <- log(curr_var)} # Take log if prompted
-    variances[i] <- curr_var
-    }
-  variances # Return variances
-}
-
-#=================================================================================#
-#               RATIO GENERATION / FILTERING FROM EVOLUTION ARRAYS
-#=================================================================================#
-
-# Append ratio of row elements by each step
-append_ratios <- function(evolved_batch){
-  # Extract number of batch elements
-  B <- max(evolved_batch$element_index)
-  # Get the ratios in the array for the first element
-  ratio_stack <- ratios_by_element(evolved_batch, element_index = 1)
-  # Repeat for the rest, concatenating by row
-  for(i in 2:B){
-    curr_ratios <- ratios_by_element(evolved_batch, element_index = i)
-    ratio_stack <- rbind(ratio_stack, curr_ratios)
-  }
-  # Standardize the column names
-  ratio_stack <- .standardize_colnames(ratio_stack, prefix = "r_")
-  # Return evolved batch with the ratios
-  cbind(evolved_batch, ratio_stack)
-}
 
 # Helper function, returns a vector of all the ratio entries at a given time
 ratios_by_time <- function(evolved_batch, at_time, log = T){
   # Extract ratios for a given time and remove the 'element_index' column.
-  ratios <- extract_ratios(by_time(evolved_batch, at_time))
+  ratios <- .extract_ratios(by.time(evolved_batch, at_time))
   ratios <- ratios[,2:ncol(ratios)] # Drop non-ratio columns
   if(log){ratios <- log(ratios)} # Take log if prompted
   all_ratios <- as.vector(ratios$r_x1) # Initialize vector by taking ratios in first row
@@ -113,52 +96,12 @@ ratios_by_time <- function(evolved_batch, at_time, log = T){
   all_ratios # Return ratios
 }
 
-# Find the ratios between the steps for a given element array
-ratios_by_element <- function(evolved_batch, element_index){
-  # Get the array for the current indexed element
-  curr_element <- by_element(evolved_batch, element_index)
-  # Get number of dimensions and steps
-  M <- ncol(curr_element) - 2
-  steps <- nrow(curr_element)
-  # Initalize the stack
-  ratio_stack <- rep(NA, M)
-  for(i in 2:steps){
-    # Get ratio of rows from current step 
-    curr_ratios <- curr_element[i, 1:M]/curr_element[i-1, 1:M]
-    # Stack
-    ratio_stack <- rbind(ratio_stack, curr_ratios)
-  }
-  ratio_stack
-}
-
-
-#=================================================================================#
-#                       EVOLUTION ARRAY FILTERING FUNCTIONS
-#=================================================================================#
-
 # Extracts the ratio columns for a given batch
-extract_ratios <- function(evolved_batch){
+.extract_ratios <- function(evolved_batch){
   # Get number of dimensions and steps (two for time and element_index; divide by two for xi and r_xi)
   M <- (ncol(evolved_batch) - 2)/2
   # Return the array with only the ratios, assumming two non-element columns        
   evolved_batch[,(M+2):(2*M+2)]
 }
 
-# Extract the array for a particular element/a range of elements
-by_element <- function(evolved_batch, index){
-  if(class(index) == "numeric"){
-    evolved_batch %>% filter(element_index == index)
-  } else {
-    evolved_batch %>% filter(element_index %in% index)
-  }
-}
-
-# Extract the array for a particular time/a range of times
-by_time <- function(evolved_batch, at_time){
-  if(class(at_time) == "numeric"){
-    evolved_batch %>% filter(time == at_time)
-  } else {
-    evolved_batch %>% filter(time %in% at_time)
-  }
-}
 
