@@ -39,7 +39,7 @@ evolve <- function(v, P, steps){
 }
 
 # Returns vector multiplied by i^th power of P and index of i as "time"
-.mat_power <- function(i, v, P){c((as.numeric(v) %*% matrix.power(P,i)), i)}
+.mat_power <- function(n, v, P){c((as.numeric(v) %*% matrix.power(P,i)), i)}
 
 
 #=================================================================================#
@@ -72,22 +72,10 @@ evolve <- function(v, P, steps){
 }
 
 # Extract the array for a particular element/a range of elements
-by.element <- function(evolved_batch, index){
-  if(class(index) == "numeric"){
-    evolved_batch %>% filter(element_index == index)
-  } else {
-    evolved_batch %>% filter(element_index %in% index)
-  }
-}
+by.element <- function(evolved_batch, index){evolved_batch[which(evolved_batch$element_index %in% c(index)),]}
 
 # Extract the array for a particular time/a range of times
-by.time <- function(evolved_batch, at_time){
-  if(class(at_time) == "numeric"){
-    evolved_batch %>% filter(time == at_time)
-  } else {
-    evolved_batch %>% filter(time %in% at_time)
-  }
-}
+by.time <- function(evolved_batch, at_time){evolved_batch[which(evolved_batch$time %in% c(at_time)),]}
 
 #=================================================================================#
 #                         NAMING/INDEXING HELPER FUNCTIONS
