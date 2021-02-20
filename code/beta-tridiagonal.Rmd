@@ -14,6 +14,7 @@ library(gridExtra)
 library(matrixcalc)
 library(ggforce)
 # Load files
+#library(RMAT)
 source(file = "../R/matrices.R")
 source(file = "../R/eigen.R")
 source(file = "../R/ensemble.R")
@@ -25,7 +26,7 @@ bool_animate <- F
 
 ```{r}
 set.seed(23)
-RM_normal(N=4,complex=T,hermitian = T)
+RM_norm(N = 2, cplx = T, herm = T)
 ```
 
 

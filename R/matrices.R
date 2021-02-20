@@ -18,10 +18,18 @@
 #'   Reserved for when complex = T, otherwise use symm = T.
 #' @return A random matrix with normally distributed entries.
 #' @examples
+#' # N(1,2) distributed matrix
 #' P <- RM_norm(N = 3, mean = 1, sd = 2)
+#'
+#' # N(0,5) distributed matrix with real symmetric entries
 #' P <- RM_norm(N = 7, sd = 5, symm = TRUE)
+#'
+#' # 7x7 standard normal matrix with complex entries
 #' Q <- RM_norm(N = 7, cplx = TRUE)
-#' Q <- RM_norm(N = 5, mean = 0, cplx = TRUE, herm = TRUE)
+#'
+#' # N(2,1) distributed matrix with hermitian complex entries
+#' Q <- RM_norm(N = 5, mean = 2, cplx = TRUE, herm = TRUE)
+#'
 RM_norm <- function(N, mean = 0, sd = 1, symm = F, cplx = F, herm = F){
   # Create [N x N] matrix with normally distributed entries
   P <- matrix(rnorm(N^2, mean, sd), nrow = N)
@@ -51,6 +59,7 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = F, cplx = F, herm = F){
 #' @examples
 #' P <- RM_beta(N = 3, beta = 4)
 #' P <- RM_beta(N = 10, beta = 17)
+#'
 RM_beta <- function(N, beta, cplx = F){
   # Set the diagonal as a N(0,2) distributed row.
   P <- diag(rnorm(N, mean = 0, sd = 2))
@@ -70,7 +79,10 @@ RM_beta <- function(N, beta, cplx = F){
 #' @return A random tridiagonal matrix with N(0,2) diagonal and N(0,1) band.
 #' @examples
 #' P <- RM_trid(N = 3)
+#'
+#' # Symmetric tridiagonal matrix
 #' P <- RM_trid(N = 9, symm = TRUE)
+#'
 RM_trid <- function(N, symm = F){
   diagonal <- rnorm(n = N, 0, 2)
   P <- diag(diagonal)
@@ -96,6 +108,7 @@ RM_trid <- function(N, symm = F){
 #' P <- RM_stoch(N = 9, sparsity = TRUE)
 #' Q <- RM_stoch(N = 9, symm = TRUE)
 #' Q <- RM_stoch(N = 9, symm = TRUE, sparsity = TRUE)
+#'
 RM_stoch <- function(N, symm = F, sparsity = F){
   if(sparsity){row_fxn <- .stoch_row_zeros} else {row_fxn <- .stoch_row} # Choose row function
   # Generate the [N x N] stochastic matrix stacking N stochastic rows (using the chosen function)
@@ -124,11 +137,17 @@ RM_stoch <- function(N, symm = F, sparsity = F){
 #'   changing this parameter may lead to the function returning invalid transition matrices.
 #' @return A random stochastic matrix corrosponding to a walk on an Erdos-Renyi graph with probability p.
 #' @examples
-#' P <- RM_erdos(N = 3, p = 0.2) # Very sparse graph
-#' P <- RM_erdos(N = 5, p = 1) # Completely connected graph
+#' # Very sparse graph
+#' P <- RM_erdos(N = 3, p = 0.2)
+#'
 #' P <- RM_erdos(N = 9, p = 0.6)
+#'
+#' # Completely connected graph
+#' P <- RM_erdos(N = 5, p = 1)
+#'
 #' # May yield invalid transition matrix.
 #' Q <- RM_erdos(N = 5, p = 0.3, stoch = FALSE)
+#'
 RM_erdos <- function(N, p, stoch = T){
   # Generate an [N x N] Erdos-Renyi walk stochastic matrix by stacking N p-stochastic rows
   P <- do.call("rbind", lapply(X = rep(N, N), FUN = .stoch_row_erdos, p = p))

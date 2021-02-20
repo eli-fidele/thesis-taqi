@@ -6,36 +6,85 @@
 #                              SPECTRUM FUNCTIONS
 #=================================================================================#
 
-# Returns a tidied dataframe of the eigenvalues of a matrix ensemble
-ensemble_spectrum <- function(ensemble){
-  do.call("rbind",lapply(X = 1:length(ensemble), FUN = function(i){spectrum(ensemble[[i]])})) # Return the spectra for this ensemble
+#' @title Obtain the eigenvalue spectrum of a matrix or ensemble of matrices.
+#'
+#' @description Returns a tidied dataframe of the eigenvalues of a random matrix or ensemble.
+#'
+#' @param array a square matrix or matrix ensemble whose eigenvalues are to be returned
+#'
+#' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
+#' @examples
+#' # Eigenvalue spectrum of a matrix
+#' P <- RM_norm(N = 5)
+#' spectrum_P <- spectrum(P)
+#'
+#' Q <- matrix(runif(2^2), ncol = 2)
+#' spectrum_Q <- spectrum(Q)
+#'
+#' # Eigenvalue spectra of ensemble matrices
+#' #ensemble <- RME("norm", args = c(N = 3), ensemble_size = 10)
+#' #ensemble_spectrum <- spectrum(ensemble)
+#'
+spectrum <- function(array){
+  # If input is a matrix, proceed to get its spectrum
+  if(class(P) == "matrix"){
+    P <- array
+    N <- nrow(P) # Obtain matrix dimension
+    eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues
+    spectrum_row <- function(i, tbl){c(round(Re(tbl[i,]), 5), round(Im(tbl[i,]), 5), abs(tbl[i,]), i)}
+    eigenvalues <- do.call("rbind", lapply(X = 1:N, FUN = spectrum_row, tbl = eigen_array))
+    colnames(eigenvalues) <- c("Re", "Im", "Norm", "Index") # Rename columns
+    data.frame(eigenvalues)
+  }
+  # Otherwise, recursively obtain the ensemble's spectrum by row binding each matrix's returned spectrum
+  else{
+    ensemble <- array
+    .ensemble_spectrum(ensemble)
+  }
 }
 
-# Returns a tidied dataframe of the eigenvalues of a random matrix
-spectrum <- function(P){
-  N <- nrow(P) # Obtain matrix dimension
-  eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues
-  spectrum_row <- function(i, array){c(round(Re(array[i,]), 5), round(Im(array[i,]), 5), abs(array[i,]), i)}
-  eigenvalues <- do.call("rbind", lapply(X = 1:N, FUN = spectrum_row, eigen_array))
-  colnames(eigenvalues) <- c("Re", "Im", "Norm", "Index") # Rename columns
-  data.frame(eigenvalues)
+# Helper function for spectrum, returns a tidied dataframe of the eigenvalues of a matrix ensemble input
+.ensemble_spectrum <- function(ensemble){
+  do.call("rbind",lapply(X = 1:length(ensemble), FUN = function(i){spectrum(ensemble[[i]])})) # Return the spectra for this ensemble
 }
 
 #=================================================================================#
 #                         SPECTRUM VISUALIZATION FUNCTIONS
 #=================================================================================#
 
-# Plots the eigenvalues of a given matrix P
-spectrum_plot <- function(P, mat_str = ""){
+#' @title Visualize a plot of the eigenvalue spectrum of a matrix or ensemble of matrices.
+#'
+#' @description Returns a scatterplot of the eigenvalues of a random matrix or ensemble.
+#'
+#' @param array a square matrix or matrix ensemble whose eigenvalues are to be plotted
+#' @param mat_str (optional) a string argument of the class of the matrix to label the plot title.
+#'
+#' @return A ggplot object containing a scatterplot of the matrix/matrix ensemble's spectrum.
+#' @examples
+#' # Eigenvalue spectrum of a matrix
+#' P <- RM_norm(N = 5)
+#' #spectrum_plot(P)
+#'
+#' # Labelled spectrum plot of a beta matrix
+#' Q <- RM_beta(N = 4, beta = 2)
+#' #spectrum_plot(Q, mat_str = "Beta")
+#'
+#' # Eigenvalue spectra of ensemble matrices
+#' #ensemble <- RME("norm", args = c(N = 3), ensemble_size = 10)
+#' #spectrum_plot(ensemble)
+#'
+spectrum_plot <- function(array, mat_str = ""){
   # See if we have a ensemble of matrices or a single matrix
-  not_ensemble <- (class(nrow(P) == ncol(P)) == "numeric")
-  # If not ensemble, directly process the spectrum
+  not_ensemble <- (class(nrow(array) == ncol(array)) == "numeric")
+  # If not ensemble, directly process the spectrum of the matrix
   if(not_ensemble){
+    P <- array # Rename matrix
     eigen_spectrum <- spectrum(P)
     mat_str <- paste(mat_str, "Matrix", sep = " ")
     }
   else{ # Otherwise, process the ensemble first, and update the plot string.
-    eigen_spectrum <- ensemble_spectrum(P)
+    ensemble <- array
+    eigen_spectrum <- .ensemble_spectrum(ensemble)
     mat_str <- paste(mat_str, "Matrix Ensemble", sep = " ")
     }
   # Plot parameters
