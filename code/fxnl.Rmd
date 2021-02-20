@@ -20,6 +20,11 @@ source(file = "../R/vis.R")
 ```
 
 ```{r}
+spectrum(RM_norm(5))
+```
+
+
+```{r}
 square <- function(x){x^2}
 formals(square)
 body(square)
@@ -44,6 +49,7 @@ RME_norm(ensemble_size = 2, N = 3)
 
 ```{r}
 ensemble <- RME("norm",c(N = 20, 0, 1, F, T, T), ensemble_size = 1000)
+spectrum(ensemble)
 spectrum_plot(ensemble)
 ```
 
