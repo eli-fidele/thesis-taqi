@@ -94,8 +94,8 @@ by.time <- function(evolved_batch, at_time){evolved_batch[which(evolved_batch$ti
   N <- ncol(array) - as.numeric(time) # Get dimension of the matrix
   .DIMstr <- function(i, prefix = ""){paste(prefix,"x",i,sep="")} # Standarized element dimension column name ("xi" for DIM i)
   # Map each column to standarized dimension string and add time column if prompted
-  if(time){colnames(array) <- c(map_chr(1:N, .f = .DIMstr, prefix = prefix), "time")}
-  else{colnames(array) <- map_chr(1:N, .f = .DIMstr, prefix = prefix)}
+  if(time){colnames(array) <- c(purrr::map_chr(1:N, .f = .DIMstr, prefix = prefix), "time")}
+  else{colnames(array) <- purrr::map_chr(1:N, .f = .DIMstr, prefix = prefix)}
   array # Return array
 }
 

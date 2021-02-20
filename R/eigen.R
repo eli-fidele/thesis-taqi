@@ -47,14 +47,14 @@ spectrum_plot <- function(P, mat_str = ""){
   color0 <- "steelblue"
   color1 <- "deepskyblue3"
   # Plot
-  ggplot(eigen_spectrum) + 
+  ggplot2::ggplot(eigen_spectrum) +
     #geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = color0) +
     geom_point(mapping = aes(x = Re, y = Im, color = Re), alpha = 0.75) +
     scale_color_continuous(type = "viridis") +
     theme(legend.position = "none") +
     labs(x = "Re", y = "Im", title = paste("Spectrum of a ",mat_str,sep = "")) #+
-    #xlim(x_range) + 
-    #ylim(-r,r) + 
+    #xlim(x_range) +
+    #ylim(-r,r) +
     #coord_fixed(ratio = 1)
 }
 
