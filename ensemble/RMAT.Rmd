@@ -7,5 +7,42 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+devtools::install_github(repo = "ataqi23/RMAT", force = TRUE)
+```
+
+```{r}
+library(RMAT)
+source("../R/eigen.R")
+```
+
+```{r}
+?RM_norm
+?RM_erdos
+?RM_stoch
+?RM_beta
+#?RM_unif
+#?RM_beta
+#?RM_gmma
+```
+
+```{r}
+# Eigenvalue spectrum of a matrix
+P <- RM_norm(N = 5)
+spectrum_P <- spectrum(P)
+
+Q <- matrix(runif(2^2), ncol = 2)
+spectrum_Q <- spectrum(Q)
+
+# Eigenvalue spectra of ensemble matrices
+ensemble <- RME("norm", args = c(N = 3), ensemble_size = 10)
+ensemble_spectrum <- spectrum(ensemble)
+```
+
+```{r}
+spectrum_plot(spectrum)
+spectrum_plot(ensemble_spectrum)
+```
+```{r}
+
 ```
 

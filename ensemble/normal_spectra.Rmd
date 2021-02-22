@@ -29,8 +29,8 @@ bool_animate <- F
 # Parameters
 size <- 100
 args <- list(M = 4, mean = 0, sd = 1, symm = F)
-ensemble <- RM_ensemble(RM_normal, args, size = 500)
-spec <- ensemble_spectrum(ensemble)
+ensemble <- RME(RM_norm, args, ensemble_size = 500)
+spec <- .ensemble_spectrum(ensemble)
 spectrum_plot(spec)
 ```
 
