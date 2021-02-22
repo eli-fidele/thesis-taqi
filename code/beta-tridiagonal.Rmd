@@ -22,6 +22,7 @@ source(file = "../R/ensemble.R")
 bool_plot <- F
 bool_loud <- F
 bool_animate <- F
+devtools::install_github(repo = "ataqi23/RMAT")
 ```
 
 ```{r}
