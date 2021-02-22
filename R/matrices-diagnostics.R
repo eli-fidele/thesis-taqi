@@ -23,11 +23,15 @@
 #                    NORMAL RANDOM MATRIX DIAGNOSTICS
 #========================================================================#
 
-.normal_params <- function(entries){
-  if(class(entries) == "data.frame"){entries <- entries[[1]]}
+.normal_params <- function(array){
+  if(class(array) == "data.frame"){entries <- array[[1]]}
+  else{entries <- as.vector(array)}
+  mu <- mean(entries)
+  sd <- sqrt(var(entries))
   # Vectorize the matrix into a row vector of its entries
-  print(paste("Mean: ",round(mean(entries),3),sep=""))
-  print(paste("Standard Deviation: ",round(sqrt(var(entries)),3),sep=""))
+  #print(paste("Mean: ",round(mu, 3),sep=""))
+  #print(paste("Standard Deviation: ",round(sd, 3),sep=""))
+  list(mu, sd)
 }
 
 # For a given normal matrix, visualize its entries as a histogram
