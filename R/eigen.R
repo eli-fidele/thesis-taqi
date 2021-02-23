@@ -51,7 +51,11 @@ spectrum <- function(array){
 }
 
 # Read in the eigenvalue in the Kth row from a eigenvalue array and return a numerical
-.read_eigenvalue <- function(spectrum, K){complex(real = spectrum[K,1], imaginary = spectrum[K,2])}
+.read_eigenvalue <- function(spectrum, K){
+  # if im is 0 maybe return real val
+  # filter for index (largest == 1)
+  complex(real = spectrum[K,1], imaginary = spectrum[K,2])
+  }
 
 #=================================================================================#
 #                         SPECTRUM VISUALIZATION FUNCTIONS
@@ -79,19 +83,12 @@ spectrum <- function(array){
 #' spectrum_plot(ensemble)
 #'
 spectrum_plot <- function(array, mat_str = ""){
-  # See if we have a ensemble of matrices or a single matrix
-  is_ensemble <- (class(array) != "matrix")
-  # If not ensemble, directly process the spectrum of the matrix
-  if(!is_ensemble){
-    P <- array # Rename matrix
-    eigen_spectrum <- spectrum(P)
-    mat_str <- paste(mat_str, "Matrix", sep = " ")
-    }
-  else{ # Otherwise, process the ensemble first, and update the plot string.
-    ensemble <- array
-    eigen_spectrum <- .ensemble_spectrum(ensemble)
-    mat_str <- paste(mat_str, "Matrix Ensemble", sep = " ")
-    }
+  # Process spectrum of the matrix/ensemble
+  eigen_spectrum <- spectrum(array)
+  # Infer plot title string from which type of array (matrix/ensemble)
+  is_mat <- class(array) == "matrix"
+  if(is_mat){mat_str <- paste(mat_str, "Matrix", sep = " ")}
+  else{mat_str <- paste(mat_str, "Matrix Ensemble", sep = " ")}
   # Plot parameters
   #r <- 1
   #x_window <- 0.5
