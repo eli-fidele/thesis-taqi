@@ -12,17 +12,20 @@ source("../R/header.R")
 ```
 
 ```{r}
-RME_norm <- function(..., size){lapply(X = rep(N, size), FUN = RM_norm, ...)}
-RME_norm(N = 3, size = 2)
-ensemble <- RME("norm",c(N = 20, 0, 1, F, T, T), ensemble_size = 1000)
-spectrum(ensemble)
-spectrum_plot(ensemble)
+N <- 100
+ensemble <- RME_norm(N, mean = 0, sd = 1, cplx = T, herm = T, size = 250)
+# Returns largest eigenvalues of the matrix
+spectrum_plot(ensemble, "Standard Normal Complex Hermitian")
 ```
 
 ```{r}
-# Function factor for RME_ functions.
-RME_constructor <- function(RM_matrix){
-  function(N, ..., size){lapply(X = rep(N, size), FUN = RM_matrix, ...)}
-}
+
 ```
+
+
+```{r}
+spec <- spectrum(ensemble, largest = TRUE)
+spectrum.plot(spec)
+```
+
 

@@ -25,25 +25,34 @@
 #' ensemble <- RME("norm", args = c(N = 3), ensemble_size = 10)
 #' ensemble_spectrum <- spectrum(ensemble)
 #'
-spectrum <- function(array){
-  # See if we have a ensemble of matrices or a single matrix
+spectrum <- function(array, largest = F, smallest = F){
+  # Infer type of array (matrix or ensemble) then parse accordingly.
   is_ensemble <- (class(array) == "list")
-  # If input is a matrix, proceed to get its spectrum
+  # One type of array is inferred, obtain the eigenvalue array
   if(!is_ensemble){
-    P <- array # Rename array
-    N <- nrow(P) # Obtain matrix dimension
-    eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues
+    P <- array 
+    eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues of matrix
     spectrum_row <- function(i, tbl){c(round(Re(tbl[i,]), 5), round(Im(tbl[i,]), 5), abs(tbl[i,]), i)}
-    eigenvalues <- do.call("rbind", lapply(X = 1:N, FUN = spectrum_row, tbl = eigen_array)) # Extract eigenvalues
-    colnames(eigenvalues) <- c("Re", "Im", "Norm", "Index") # Rename columns
-    return(data.frame(eigenvalues))
+    eigenvalues <- do.call("rbind", lapply(X = 1:nrow(P), FUN = spectrum_row, tbl = eigen_array)) # Extract eigenvalues
+    eigenvalues <- data.frame(eigenvalues) # Array of eigenvalues
+    colnames(eigenvalues) <- c("Re", "Im", "Norm", "Order") # Rename columns
   }
   # Otherwise, recursively obtain the ensemble's spectrum by row binding each matrix's returned spectrum
   else{
-    ensemble <- array # Rename array
-    return(.ensemble_spectrum(ensemble))
+    ensemble <- array
+    eigenvalues <- .ensemble_spectrum(ensemble)
   }
+  # Once the eigenvalue array is obtained, filter for wanted statistics
+  if(smallest){eigenvalues <- eigenvalues[which(eigenvalues$Order == which.min(eigenvalues$Order)),]}
+  if(largest){eigenvalues <- eigenvalues[which(eigenvalues$Order == 1),]}
+  #if(class(order) != NULL){eigenvalues <- eigenvalues %>% filter(Order %in% c(order))}
+  # Return spectrum of eigenvalues
+  eigenvalues
 }
+
+# Returns largest eigenvalues of the matrix
+.LRGST <- function(spectrum){}
+.SMLST <- function(spectrum){spectrum[which(spectrum$Index == 1)]}
 
 # Helper function for spectrum, returns a tidied dataframe of the eigenvalues of a matrix ensemble input
 .ensemble_spectrum <- function(ensemble){
@@ -82,13 +91,14 @@ spectrum <- function(array){
 #' ensemble <- RME("norm", args = c(N = 3), ensemble_size = 10)
 #' spectrum_plot(ensemble)
 #'
-spectrum_plot <- function(array, mat_str = ""){
+spectrum.plot <- function(array, mat_str = ""){
   # Process spectrum of the matrix/ensemble
-  eigen_spectrum <- spectrum(array)
+  if(class(array) == "list" || class(array) == "matrix"){eigen_spectrum <- spectrum(array)}
+  else{eigen_spectrum <- array}
   # Infer plot title string from which type of array (matrix/ensemble)
   is_mat <- class(array) == "matrix"
-  if(is_mat){mat_str <- paste(mat_str, "Matrix", sep = " ")}
-  else{mat_str <- paste(mat_str, "Matrix Ensemble", sep = " ")}
+  if(is_mat){class_str <- paste("Matrix", sep = "")}
+  else{class_str <- paste("Matrix Ensemble", sep = "")}
   # Plot parameters
   #r <- 1
   #x_window <- 0.5
@@ -100,10 +110,10 @@ spectrum_plot <- function(array, mat_str = ""){
   # Plot
   ggplot2::ggplot(eigen_spectrum) +
     #geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = color0) +
-    geom_point(mapping = aes(x = Re, y = Im, color = Re), alpha = 0.75) +
+    geom_point(mapping = aes(x = Re, y = Im, color = Order), alpha = 0.75) +
     scale_color_continuous(type = "viridis") +
-    theme(legend.position = "none") +
-    labs(x = "Re", y = "Im", title = paste("Spectrum of a ",mat_str,sep = "")) #+
+    #theme(legend.position = "none") +
+    labs(x = "Re", y = "Im", title = paste("Spectrum of a",mat_str,class_str,sep = " ")) #+
     #xlim(x_range) +
     #ylim(-r,r) +
     #coord_fixed(ratio = 1)

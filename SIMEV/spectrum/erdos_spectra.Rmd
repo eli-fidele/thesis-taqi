@@ -13,98 +13,64 @@ library(knitr)
 library(patchwork)
 library(gridExtra)
 library(matrixcalc)
+library(sjPlot)
 # Load files
 source(file = "../../R/header.R")
-.src(depth = 2)
+.srcp(depth = 2, preset = 1)
 # global parameters
 bool_plot <- T
 bool_loud <- T
 bool_animate <- F
 ```
 
-```{r, fig.height = 7}
+# Erdos-Renyi Matrix Ensemble
+
+```{r}
+erdos_args <- function(N, p_vec){
+  vals <- do.call("rbind",lapply(X = p_vec, FUN = function(p, N){rep(c(N,p))}, N))
+  colnames(vals) <- c("N", "p")
+  vals
+}
+# get args
+args <- erdos_args(N = 500, seq(0,1,length.out = 8))
 # Parameters
-size <- 100
-# Generate ER spectra
-p <- 0.2
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot1 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-
-p <- 0.4
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot2 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-
-p <- 0.6
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot3 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-
-p <- 0.8
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot4 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-#Plot
-grid.arrange(plot1,plot2,plot3,plot4,ncol=2)
+size <- 1e4
+# Generate ER spectra plots
+spec.erdos <- function(N, p, size){
+  spectrum.plot(RME_erdos(N, p, size), mat_str = paste(p,"-Erdos",sep=""))
+  }
+plots <- map2(args[,1], args[,2], .f = spec.erdos, size)
 ```
+
+```{r, fig.height = 12, fig.width = 8}
+# plot grid of ensemble spectra
+grid.arrange(plots[[1]],plots[[2]],plots[[3]],plots[[4]], ncol = 2)
+```
+
 
 \newpage
 
-```{r, fig.height = 7}
-# Parameters
-size <- 100
-# Generate ER spectra
-p <- 0.1
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot1 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
 
-p <- 0.35
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot2 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-
-p <- 0.65
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot3 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-
-p <- 0.9
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot4 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-
-# Plot
-grid.arrange(plot1,plot2,plot3,plot4,ncol=2)
+```{r, fig.height = 12, fig.width = 8}
+# plot grid of ensemble spectra
+grid.arrange(plots[[4]],plots[[5]],plots[[6]],plots[[7]], ncol = 2)
 ```
 
-\newpage
+# Stochastic Matrix Ensemble
 
-```{r, fig.height = 10}
-# Parameters
-size <- 100
-# Generate ER spectra
-p <- 0.05
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot1 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+```{r}
+N <- 100
+ensemble <- RME_stoch(N, symm = T, size = 250)
+# Returns largest eigenvalues of the matrix
+spectrum.plot(ensemble, "Symmetric Stochastic")
+```
 
-p <- 0.15
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot2 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
 
-p <- 0.85
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot3 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-
-p <- 0.95
-erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
-erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
-plot4 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
-
-# Plot
-grid.arrange(plot1,plot2,plot3,plot4,ncol=2)
+```{r}
+# proof of frobenius theorem: largest eigenvalue = 1
+# also maybe proof of p sparsity, complex conjugate root 
+N <- 100
+ensemble <- RME_stoch(N, symm = F, size = 250)
+# Returns largest eigenvalues of the matrix
+spectrum.plot(ensemble, "Stochastic")
 ```

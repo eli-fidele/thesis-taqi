@@ -68,3 +68,20 @@
 # Print out the sums of each of the rows (to check row-stochasticity)
 .col_sums <- function(P){for(i in 1:ncol(P)){print(paste("Col ",i,": ",(sum(P[,i])),sep=""))}}
 
+#=========================================================================#
+#                         DIAGNOSTIC FUNCTIONS
+#=========================================================================#
+
+# Check if a matrix is stochastic
+.isStochastic <- function(P){
+  row_is_stoch <- rep(F, nrow(P))
+  for(i in 1:nrow(P)){row_is_stoch[i] <- (sum(P[i,]) == 1)} # Row is stochastic when it sums to 1.
+  !(F %in% row_is_stoch)
+}
+
+# Returns proportion of positive entries of any matrix P
+.pos_entries <- function(P, zero = F){
+  if(!zero){pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))}
+  else{pos_entries <- length(matrix(P[P[,] >= 0], nrow = 1))}
+  pos_entries/(length(P))
+}
