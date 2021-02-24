@@ -11,6 +11,7 @@
 #'   deterministic properties (usually in spectral statistics) at the ensemble level.
 #'
 #' @inheritParams RM_norm
+#' @param ... any default-valued parameters taken as arguments by the RM_ variant of this function
 #' @param size the number of matrices to be simulated in the ensemble
 #' @return An ensemble (list) of normal matrices as specified by the matrix arguments.
 #' @examples
@@ -28,6 +29,7 @@ RME_norm <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_norm, ...)}
 #'   deterministic properties (usually in spectral statistics) at the ensemble level.
 #'
 #' @inheritParams RM_beta
+#' @param ... any default-valued parameters taken as arguments by the RM_ variant of this function
 #' @param size the number of matrices to be simulated in the ensemble
 #' @return An ensemble (list) of beta matrices as specified by the matrix arguments.
 #' @examples
@@ -45,6 +47,7 @@ RME_beta <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_beta, ...)}
 #'   deterministic properties (usually in spectral statistics) at the ensemble level.
 #'
 #' @inheritParams RM_stoch
+#' @param ... any default-valued parameters taken as arguments by the RM_ variant of this function
 #' @param size the number of matrices to be simulated in the ensemble
 #' @return An ensemble (list) of stochastic matrices as specified by the matrix arguments.
 #' @examples
@@ -62,6 +65,7 @@ RME_stoch <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_stoch, ...
 #'   deterministic properties (usually in spectral statistics) at the ensemble level.
 #'
 #' @inheritParams RM_erdos
+#' @param ... any default-valued parameters taken as arguments by the RM_ variant of this function
 #' @param size the number of matrices to be simulated in the ensemble
 #' @return An ensemble (list) of Erdos-Renyi transition matrices as specified by the matrix arguments.
 #' @examples

@@ -5,6 +5,27 @@
 #                              EIGENVALUE DISPERSION
 #=================================================================================#
 
+#' @title Obtain the dispersion of eigenvalues of a matrix or ensemble of matrices.
+#'
+#' @description Returns a vector of the eigenvalues dispersions of a random matrix or ensemble.
+#'
+#' @param array a square matrix or matrix ensemble whose eigenvalues are to be returned
+#' @param components returns the array with resolved real and imaginary components; otherwise returns complex-valued eigenvalues
+#' @param norm use the norm metric for eigenvalue dispersion; otherwise returns absolute dispersion metric
+#'
+#' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
+#' @examples
+#' # Eigenvalue spectrum of a matrix
+#' P <- RM_norm(N = 5)
+#' spectrum_P <- spectrum(P)
+#'
+#' Q <- matrix(runif(2^2), ncol = 2)
+#' spectrum_Q <- spectrum(Q)
+#'
+#' # Eigenvalue spectra of ensemble matrices
+#' ensemble <- RME_norm(N = 3, size = 10)
+#' ensemble_spectrum <- spectrum(ensemble)
+#'
 dispersion <- function(array, components = T, norm = T){
   # Infer type of array (matrix or ensemble) then parse accordingly.
   is_ensemble <- (class(array) == "list")
@@ -17,7 +38,7 @@ dispersion <- function(array, components = T, norm = T){
   # Otherwise, recursively obtain the ensemble's spectrum by row binding each matrix's returned differences
   else{
     ensemble <- array
-    diffs <- map_dfr(.x = ensemble, .f = .eigen_deltas)
+    diffs <- purrr::map_dfr(.x = ensemble, .f = .eigen_deltas)
   }
   # Return differences
   diffs
@@ -52,6 +73,9 @@ dispersion <- function(array, components = T, norm = T){
 #' @description Returns a tidied dataframe of the eigenvalues of a random matrix or ensemble.
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalues are to be returned
+#' @param components returns the array with resolved real and imaginary components; otherwise returns complex-valued eigenvalues
+#' @param largest returns the largest eigenvalues of the matrix (ensemble)
+#' @param smallest returns the smallest eigenvalues of the matrix (ensemble)
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
 #' @examples
@@ -133,7 +157,7 @@ spectrum <- function(array, components = T, largest = F, smallest = F){
 #' spectrum.plot(Q, mat_str = "Beta")
 #'
 #' # Eigenvalue spectra of ensemble matrices
-#' ensemble <- RME("norm", args = c(N = 3), ensemble_size = 10)
+#' ensemble <- RME_norm(N = 3, size = 10)
 #' spectrum.plot(ensemble)
 #'
 spectrum.plot <- function(array, mat_str = ""){
