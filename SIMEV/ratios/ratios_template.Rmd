@@ -1,0 +1,129 @@
+---
+title: "Spectral Statistics of Normal Random Matrices"
+author: "Ali Taqi"
+output: pdf_document
+#  includes: 
+#    in_header: preamble.tex
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(matrixcalc)
+# Load libraries and files
+source(file = "../../R/header.R")
+.src(depth = 2)
+# global parameters
+bool_plot <- F
+bool_loud <- F
+bool_animate <- F
+```
+
+# Consecutive Ratio Sequence: Symmetric Normal Matrix
+
+```{r}
+#=======================
+#         SETUP 
+#=======================
+# Matrix parameters
+n <- 4
+mean <- 0
+sd <- 2
+# Batch parameters
+batch_size <- 500
+steps <- 45
+epsilon <- 0.05
+#==========================
+#         SIMULATE 
+#==========================
+set.seed(23)
+# Generate a matrix
+P <- RM_norm(n, mean, sd, symm = T)
+P
+# Evolve a batch
+sim <- sim_mixtime(P, batch_size, steps, epsilon)
+# Extract arrays
+batch <- sim[[1]]
+evolved_batch <- sim[[2]]
+prop_mixed(batch)
+```
+
+\medskip
+\medskip
+\medskip
+
+```{r, fig.height = 5.5}
+mixtime_histogram(batch, mat = "Symmetric Normal ")
+```
+
+\newpage
+
+```{r}
+## Log-Ratio Distribution Plot
+bool_loud <- T
+# Get eigenvalues
+print("Eigenvalues of the Matrix")
+spectrum(P)
+ratios_histogram(evolved_batch, log = F, alpha = 0.90, bins = 200)
+```
+
+```{r, fig.height = 3.5}
+## Log-Variance over Time
+variance_scatterplot(evolved_batch, log = F)
+```
+
+\newpage
+
+```{r}
+## Log-Ratio Distribution Plot
+bool_loud <- T
+ratios_histogram(evolved_batch, log = T, alpha = 0.90, bins = 200)
+```
+
+```{r, fig.height = 3.5}
+## Log-Variance over Time
+variance_scatterplot(evolved_batch, log = T)
+```
+
+\newpage
+
+```{r}
+## Ratio of Two Normal Variables (Cauchy Distribution)
+set.seed(23)
+mean <- 0
+n_sample <- 10000
+norm1 <- rnorm(n = n_sample, mean = mean-0.5, sd = 0.7) # Lower variance
+norm2 <- rnorm(n = n_sample, mean = mean, sd = 2)
+ratio_norm <- data.frame(ratio_norm = norm1/norm2)
+ggplot(data = ratio_norm, mapping = aes(x = ratio_norm)) + 
+  geom_histogram(aes(y = stat(count / n_sample), bins = 50), fill = "darkorchid2") +
+  xlim(quantile(ratio_norm$ratio_norm, probs = c(0.01,0.99))) +
+  labs(title = "Ratio of Two Normal Variables (Cauchy Distribution)")
+```
+
+```{r}
+set.seed(23)
+df <- 1000
+chi1 <- rchisq(n = 10000, df = df)
+chi2 <- rchisq(n = 10000, df = df)
+ratio_chi <- data.frame(ratio_chi = chi1/chi2)
+#ggplot(data = ratio_chi, mapping = aes(x = ratio_chi)) + geom_histogram(bins = 100)
+```
+
+```{r}
+# Extract ratios
+#ratios <- extract_ratios(sim[[2]])
+#rxos <- ratios$r_x1
+#rxos <- data.frame(rx = sort(rxos[!is.na(rxos)]))
+#qqnorm(rxos$rx)
+```
+
+```{r}
+#sim_r <- data.frame(rx = sort(rcauchy(n = 2500, location = eigenvalues[1], scale = 2)))
+#qqnorm(sim_r$rx)
+```
+
+
+
+

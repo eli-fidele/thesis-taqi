@@ -1,0 +1,45 @@
+---
+title: "Ensemble Testing"
+author: "Ali Taqi"
+date: "2/5/2021"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+# Load files
+source(file = "../R/matrices.R")
+source(file = "../R/eigen.R")
+source(file = "../R/simulate.R")
+source(file = "../R/analyze.R")
+source(file = "../R/ensemble.R")
+# global parameters
+bool_plot <- T
+bool_loud <- T
+bool_animate <- F
+```
+
+```{r, fig.height = 7}
+# Parameters
+size <- 100
+args <- list(M = 4, mean = 0, sd = 1, symm = F)
+ensemble <- RME(RM_norm, args, ensemble_size = 500)
+spec <- .ensemble_spectrum(ensemble)
+spectrum_plot(spec)
+```
+
+```{r, fig.height = 7}
+# Parameters
+size <- 100
+args <- list(M = 3, mean = 7, sd = 3, symm = F)
+ensemble <- RM_ensemble(RM_normal, args, size = 500)
+spec <- ensemble_spectrum(ensemble)
+spectrum_plot(spec)
+```
+

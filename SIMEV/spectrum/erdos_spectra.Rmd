@@ -1,0 +1,110 @@
+---
+title: "Ensemble Testing"
+author: "Ali Taqi"
+date: "2/5/2021"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+# Load files
+source(file = "../../R/header.R")
+.src(depth = 2)
+# global parameters
+bool_plot <- T
+bool_loud <- T
+bool_animate <- F
+```
+
+```{r, fig.height = 7}
+# Parameters
+size <- 100
+# Generate ER spectra
+p <- 0.2
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot1 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.4
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot2 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.6
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot3 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.8
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot4 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+#Plot
+grid.arrange(plot1,plot2,plot3,plot4,ncol=2)
+```
+
+\newpage
+
+```{r, fig.height = 7}
+# Parameters
+size <- 100
+# Generate ER spectra
+p <- 0.1
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot1 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.35
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot2 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.65
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot3 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.9
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot4 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+# Plot
+grid.arrange(plot1,plot2,plot3,plot4,ncol=2)
+```
+
+\newpage
+
+```{r, fig.height = 10}
+# Parameters
+size <- 100
+# Generate ER spectra
+p <- 0.05
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot1 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.15
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot2 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.85
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot3 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+p <- 0.95
+erdos_ensemble <- RM_ensemble("erdos",args = list(4,p,T), size = size)
+erdos_spectrum <- ensemble_spectrum(ensemble = erdos_ensemble)
+plot4 <- spectrum_plot(erdos_spectrum, mat_type = paste(p,"-Erdos ",sep=""))
+
+# Plot
+grid.arrange(plot1,plot2,plot3,plot4,ncol=2)
+```

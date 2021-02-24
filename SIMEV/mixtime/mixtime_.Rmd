@@ -1,0 +1,47 @@
+---
+title: 'Mixing Time Simulation'
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = F, message = F, warning = F, fig.align = "center", fig.height = 4)
+# Load libraries
+library(tidyverse)
+library(matrixcalc)
+library(patchwork)
+# Load files
+source(file = "../../R/header.R")
+.src(depth = 2)
+# Global parameters
+bool_plot <- T
+bool_loud <- F
+```
+
+```{r}
+# Global simulation parameters
+N <- 7
+batch_size <- 500
+steps <- 8
+epsilon <- 0.015
+```
+
+# Mixing Time Simulation
+
+```{r}
+set.seed(23)
+p <- 0.4
+# Generate a matrix
+P <- RM_erdos(N, p, stoch = T)
+if(bool_loud){P}
+# Evolve a batch
+sim <- sim_mixtime(P, batch_size, steps, epsilon)
+# Extract the arrays
+batch <- sim[[1]]
+evolved_batch <- sim[[2]]
+if(bool_loud){head(batch)}
+mixtime_histogram(batch, mat = "")
+.prop_mixed(batch)
+```
+
+

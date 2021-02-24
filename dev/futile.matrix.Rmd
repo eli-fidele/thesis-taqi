@@ -1,0 +1,32 @@
+---
+title: "futile.matrix"
+author: "Ali Taqi"
+date: "2/17/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(futile.matrix)
+```
+
+```{r}
+model <- WignerModel(10)
+m <- rmatrix(model)
+
+## Not run: 
+e <- Ensemble(20, model)
+hist(max_eigen(e), freq=FALSE)
+
+## End(Not run)
+```
+
+```{r}
+model <- WignerModel(5)
+m <- rmatrix(model)
+e <- Ensemble(20, model)
+# Plot spectrum
+ens_spectrum <- ensemble_spectrum(ensemble = e)
+spectrum_plot(ens_spectrum)
+```
+

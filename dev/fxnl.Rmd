@@ -1,0 +1,68 @@
+---
+title: "Functional Programming in R"
+author: "Ali Taqi"
+output: pdf_document
+---
+
+```{r setup, include=FALSE, echo = F}
+knitr::opts_chunk$set(echo = TRUE)
+# Import dependencies
+require(tidyverse)
+require(patchwork)
+require(matrixcalc)
+# Load libraries and files
+source(file = "../R/header.R")
+.src(depth = 1)
+```
+
+```{r}
+spectrum(RM_norm(5))
+```
+
+```{r}
+matr
+```
+
+
+```{r}
+square <- function(x){x^2}
+formals(square)
+body(square)
+environment(square)
+environment(.append_ratios)
+```
+
+```{r}
+weights <- runif(n = 5, 30, 40)
+attr(weights, "animal") <- "dog"
+attributes(weights)$animal
+```
+
+```{r}
+RME_norm <- function(ensemble_size, N, ...){lapply(X = rep(N, ensemble_size), FUN = RM_norm, ...)}
+RME_norm(ensemble_size = 2, N = 3)
+```
+
+
+```{r}
+ensemble <- RME("norm",c(N = 20, 0, 1, F, T, T), ensemble_size = 1000)
+spectrum(ensemble)
+spectrum_plot(ensemble)
+```
+
+```{r}
+#replicate(n = 100, .pos_entries(RM_stoch(3, symm = T), T), simplify = T)
+#sum(replicate(n = 100, .isStochastic(RM_stoch(3, symm = T)), simplify = T))/100
+N <- 5
+P <- RM_stoch(N, symm = T)
+batch <- generate_batch(N, batch_size = 10, stoch = .isStochastic(P))
+steps <- 3
+evolved_batch <- evolve_batch(batch, P, steps)
+#by.time(evolved_batch, at_time = 20)
+```
+
+```{r}
+P <- RM_norm(N = 10, complex = T)
+```
+
+
