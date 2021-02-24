@@ -1,0 +1,28 @@
+---
+title: "Ensemble Dev"
+author: "Ali Taqi"
+date: "2/23/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+RME_norm <- function(..., size){lapply(X = rep(N, size), FUN = RM_norm, ...)}
+RME_norm(N = 3, size = 2)
+ensemble <- RME("norm",c(N = 20, 0, 1, F, T, T), ensemble_size = 1000)
+spectrum(ensemble)
+spectrum_plot(ensemble)
+```
+
+```{r}
+# Function factor for RME_ functions.
+RME_constructor <- function(RM_matrix){
+  function(N, ..., size){lapply(X = rep(N, size), FUN = RM_matrix, ...)}
+}
+```
+
