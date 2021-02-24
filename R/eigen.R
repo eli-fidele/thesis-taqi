@@ -126,15 +126,15 @@ spectrum <- function(array, components = T, largest = F, smallest = F){
 #' @examples
 #' # Eigenvalue spectrum of a matrix
 #' P <- RM_norm(N = 5)
-#' spectrum_plot(P)
+#' spectrum.plot(P)
 #'
 #' # Labelled spectrum plot of a beta matrix
 #' Q <- RM_beta(N = 4, beta = 2)
-#' spectrum_plot(Q, mat_str = "Beta")
+#' spectrum.plot(Q, mat_str = "Beta")
 #'
 #' # Eigenvalue spectra of ensemble matrices
 #' ensemble <- RME("norm", args = c(N = 3), ensemble_size = 10)
-#' spectrum_plot(ensemble)
+#' spectrum.plot(ensemble)
 #'
 spectrum.plot <- function(array, mat_str = ""){
   # Process spectrum of the matrix/ensemble
