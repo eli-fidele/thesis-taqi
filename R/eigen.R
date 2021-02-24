@@ -1,6 +1,12 @@
 
 # This script includes functions that help extract and plot eigenvalues of matrices.
 
+#=================================================================================#
+#                              EIGENVALUE DISPERSION
+#=================================================================================#
+
+
+
 
 #=================================================================================#
 #                              SPECTRUM FUNCTIONS
@@ -51,7 +57,10 @@ spectrum <- function(array, largest = F, smallest = F){
 }
 
 # Returns largest eigenvalues of the matrix
-.LRGST <- function(spectrum){}
+.LRGST <- function(spectrum){
+  lgst_index <- which.max(spectrum$Index)
+  spectrum[which(spectrum$Index == lgst_index)]
+}
 .SMLST <- function(spectrum){spectrum[which(spectrum$Index == 1)]}
 
 # Helper function for spectrum, returns a tidied dataframe of the eigenvalues of a matrix ensemble input

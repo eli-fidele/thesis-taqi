@@ -79,6 +79,23 @@
   !(F %in% row_is_stoch)
 }
 
+# Check if a matrix is hermitian
+.isHermitian <- function(P){
+  N <- nrow(P)
+  tri <- rep(F,(N*(N-1)/2)) # Count entries in lower triangle + diagonal
+  k <- 0
+  # Run over entry of the matrix
+  for(i in 1:nrow(P)){
+    for(j in 1:ncol(P)){
+      if(i < j){ # Constrict view to lower triangle
+        k <- k + 1
+        tri[k] <- (P[i,j] == Conj(P[j,i]))
+      }
+    }
+  }
+  !(FALSE %in% tri)
+}
+
 # Returns proportion of positive entries of any matrix P
 .pos_entries <- function(P, zero = F){
   if(!zero){pos_entries <- length(matrix(P[P[,] > 0], nrow = 1))}

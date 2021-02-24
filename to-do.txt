@@ -3,6 +3,18 @@
 #                              	GENERAL
 #===========================================================================#
 
+- Add feature for spectrum to return array with unresolved eigenvalues (components = F?)
+
+- Add RM_"unif, gamma, beta" matrices, etc..
+
+- Update ensemble documentation
+
+- Make sure Github package is working!!
+
+- Beta ensemble spectra
+
+- Write functional analogues of maxim for epsilon, N, and other free parameter type simulations
+
 -Create a quick batch function so that it gives Q^n / Q^(n-1). This should 
 be a fast way to get the eigen_index for an ENSEMBLE of matrices.
 

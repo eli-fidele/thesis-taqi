@@ -1,5 +1,77 @@
 
 #=================================================================================#
+#                             RANDOM MATRIX ENSEMBLES
+#=================================================================================#
+
+
+#' @title Generate an ensemble of normal random matrices
+#'
+#' @description Given the same arguments as RM_norm, this function returns an ensemble of that particular class of matrix.
+#'   While random matrices usually do not exude unique properties on their own, they do indeed have
+#'   deterministic properties (usually in spectral statistics) at the ensemble level.
+#'
+#' @inheritParams RM_norm 
+#' @param size the number of matrices to be simulated in the ensemble
+#' @return An ensemble (list) of normal matrices as specified by the matrix arguments.
+#' @examples
+#' 
+#' # Generate an ensemble of standard normal 3x3 matrices of size 20
+#' ensemble <- RME_norm, args = c(N = 3, mean = 0, sd = 1), ensemble_size = 20)
+#'
+RME_norm <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_norm, ...)}
+
+
+#' @title Generate an ensemble of random beta matrices
+#'
+#' @description Given the same arguments as RM_norm, this function returns an ensemble of that particular class of matrix.
+#'   While random matrices usually do not exude unique properties on their own, they do indeed have
+#'   deterministic properties (usually in spectral statistics) at the ensemble level.
+#'
+#' @inheritParams RM_beta
+#' @param size the number of matrices to be simulated in the ensemble
+#' @return An ensemble (list) of beta matrices as specified by the matrix arguments.
+#' @examples
+#' 
+#' # Generate an ensemble of standard normal 3x3 matrices of size 20
+#' ensemble <- RME_norm, args = c(N = 3, mean = 0, sd = 1), ensemble_size = 20)
+#'
+RME_beta <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_beta, ...)}
+
+
+#' @title Generate an ensemble of stochastic matrices
+#'
+#' @description Given the same arguments as RM_stoch, this function returns an ensemble of that particular class of matrix.
+#'   While random matrices usually do not exude unique properties on their own, they do indeed have
+#'   deterministic properties (usually in spectral statistics) at the ensemble level.
+#'
+#' @inheritParams RM_stoch 
+#' @param size the number of matrices to be simulated in the ensemble
+#' @return An ensemble (list) of stochastic matrices as specified by the matrix arguments.
+#' @examples
+#' 
+#' # Generate an ensemble of standard normal 3x3 matrices of size 20
+#' ensemble <- RME_norm, args = c(N = 3, mean = 0, sd = 1), ensemble_size = 20)
+#'
+RME_stoch <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_stoch, ...)}
+
+
+#' @title Generate an ensemble of Erdos-Renyi transition matrices
+#'
+#' @description Given the same arguments as RM_norm, this function returns an ensemble of that particular class of matrix.
+#'   While random matrices usually do not exude unique properties on their own, they do indeed have
+#'   deterministic properties (usually in spectral statistics) at the ensemble level.
+#'
+#' @inheritParams RM_erdos 
+#' @param size the number of matrices to be simulated in the ensemble
+#' @return An ensemble (list) of Erdos-Renyi transition matrices as specified by the matrix arguments.
+#' @examples
+#' 
+#' # Generate an ensemble of standard normal 3x3 matrices of size 20
+#' ensemble <- RME_norm, args = c(N = 3, mean = 0, sd = 1), ensemble_size = 20)
+#'
+RME_erdos <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_erdos, ...)}
+
+#=================================================================================#
 #                           NORMAL RANDOM MATRICES
 #=================================================================================#
 
