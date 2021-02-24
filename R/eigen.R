@@ -5,8 +5,43 @@
 #                              EIGENVALUE DISPERSION
 #=================================================================================#
 
+dispersion <- function(array, components = T, norm = T){
+  # Infer type of array (matrix or ensemble) then parse accordingly.
+  is_ensemble <- (class(array) == "list")
+  round <- 5
+  # One type of array is inferred, obtain the differences array
+  if(!is_ensemble){
+    P <- array
+    diffs <- .eigen_deltas(P, norm)
+  }
+  # Otherwise, recursively obtain the ensemble's spectrum by row binding each matrix's returned differences
+  else{
+    ensemble <- array
+    diffs <- map_dfr(.x = ensemble, .f = .eigen_deltas)
+  }
+  # Return differences
+  diffs
+}
 
-
+# Find the eigenvalue dispersion of a given matrix
+.eigen_deltas <- function(P, norm = T){
+  eigenvalues <- data.frame(values = eigen(P)$values)
+  N <- nrow(P)
+  diffs <- rep(0,N*(N-1)/2)
+  k <- 0
+  # Run over entry of the matrix
+  for(i in 1:N){
+    for(j in 1:N){
+      # Restrict view to one of the triangles; (i < j): Lower Triangles
+      if(i < j){
+        k <- k + 1
+        if(!norm){diffs[k] <- eigenvalues[i,] - eigenvalues[j,]}
+        else{diffs[k] <- abs(eigenvalues[i,] - eigenvalues[j,])}
+      }
+    }
+  }
+  data.frame(diff = diffs) # Return eigenvalue differences
+}
 
 #=================================================================================#
 #                              SPECTRUM FUNCTIONS
@@ -28,17 +63,18 @@
 #' spectrum_Q <- spectrum(Q)
 #'
 #' # Eigenvalue spectra of ensemble matrices
-#' ensemble <- RME("norm", args = c(N = 3), ensemble_size = 10)
+#' ensemble <- RME_norm(N = 3, size = 10)
 #' ensemble_spectrum <- spectrum(ensemble)
 #'
-spectrum <- function(array, largest = F, smallest = F){
+spectrum <- function(array, components = T, largest = F, smallest = F){
   # Infer type of array (matrix or ensemble) then parse accordingly.
   is_ensemble <- (class(array) == "list")
+  round <- 5
   # One type of array is inferred, obtain the eigenvalue array
   if(!is_ensemble){
-    P <- array 
+    P <- array
     eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues of matrix
-    spectrum_row <- function(i, tbl){c(round(Re(tbl[i,]), 5), round(Im(tbl[i,]), 5), abs(tbl[i,]), i)}
+    spectrum_row <- function(i, tbl){c(round(Re(tbl[i,]), round), round(Im(tbl[i,]), round), abs(tbl[i,]), i)}
     eigenvalues <- do.call("rbind", lapply(X = 1:nrow(P), FUN = spectrum_row, tbl = eigen_array)) # Extract eigenvalues
     eigenvalues <- data.frame(eigenvalues) # Array of eigenvalues
     colnames(eigenvalues) <- c("Re", "Im", "Norm", "Order") # Rename columns
@@ -57,11 +93,11 @@ spectrum <- function(array, largest = F, smallest = F){
 }
 
 # Returns largest eigenvalues of the matrix
-.LRGST <- function(spectrum){
-  lgst_index <- which.max(spectrum$Index)
-  spectrum[which(spectrum$Index == lgst_index)]
+.SMLST <- function(spectrum){
+  smlst_index <- which.max(spectrum$Index)
+  spectrum[which(spectrum$Index == smlst_index)]
 }
-.SMLST <- function(spectrum){spectrum[which(spectrum$Index == 1)]}
+.LRGST <- function(spectrum){spectrum[which(spectrum$Index == 1)]}
 
 # Helper function for spectrum, returns a tidied dataframe of the eigenvalues of a matrix ensemble input
 .ensemble_spectrum <- function(ensemble){

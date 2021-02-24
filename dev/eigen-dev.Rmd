@@ -12,36 +12,41 @@ source("../R/header.R")
 ```
 
 ```{r}
-N <- 4
-P <- RM_norm(N)
-eigenvals <- data.frame(values = eigen(P)$values)
-#for i > j find l_i - l_j for i,j in 1...n 
-#eigenvalue differences!
-```
-
-```{r}
-# Manually make equate the entries in the upper triangle to the conjugate of those in the lower triangle of the matrix
-.eigen_deltas <- function(P){
-  eigenvalues <- data.frame(values = eigen(P)$values)
-  N <- nrow(P)
-  diffs <- rep(0,N*(N-1)/2)
-  k <- 0 
-  # Run over entry of the matrix
-  for(i in 1:N){
-    for(j in 1:N){
-      # Restrict view to one of the triangles; (i < j): Lower Triangles
-      if(i < j){
-        k <- k + 1
-        diffs[k] <- eigenvalues[i,] - eigenvalues[j,]
-      } 
-    }
-  }
-  diffs # Return Hermitian Matrix
+dispersion.plot <- function(entries, bins = 100){
+  #entries <- dispersion(array)
+  ggplot() + 
+    geom_histogram(data = entries, aes(x = diff), fill = "darkorchid4", bins = bins)
 }
 ```
 
 ```{r}
-.find_deltas(P)
+N <- 30
+P <- RME_norm(N, size = 10000)
+diffs <- dispersion(P)
+dispersion.plot(diffs)
 ```
 
+```{r}
+N <- 20
+P <- RME_stoch(N = 20, size = 1000)
+diffs <- dispersion(P)
+dispersion.plot(diffs)
+```
+
+```{r}
+beta.DISP <- function(beta, bins = 100){
+  P <- RME_beta(N = 50, beta, size = 1000)
+  diffs <- dispersion(P)
+  dispersion.plot(diffs, bins) + labs(title = paste("Beta =",beta))
+}
+```
+
+```{r}
+beta.DISP(2)
+beta.DISP(3)
+beta.DISP(4)
+beta.DISP(7)
+beta.DISP(37)
+beta.DISP(92)
+```
 
