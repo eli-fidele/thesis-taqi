@@ -6,13 +6,13 @@
 
 #' @title Generate an ensemble of normal random matrices
 #'
-#' @description Given the same arguments as RM_norm, this function returns an ensemble of that particular class of matrix.
+#' @description Given the same arguments as RM_norm, this function returns an ensemble of random normal matrices.
 #'   While random matrices usually do not exude unique properties on their own, they do indeed have
-#'   deterministic properties (usually in spectral statistics) at the ensemble level.
+#'   deterministic properties at the ensemble level in terms of their spectral statistics.
 #'
 #' @inheritParams RM_norm
-#' @param ... any default-valued parameters taken as arguments by the RM_ variant of this function
-#' @param size the number of matrices to be simulated in the ensemble
+#' @param ... any default-valued parameters taken as arguments by RM_norm()
+#' @param size the size of the ensemble (i.e. number of matrices)
 #' @return An ensemble (list) of normal matrices as specified by the matrix arguments.
 #' @examples
 #'
@@ -26,54 +26,56 @@ RME_norm <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_norm, ...)}
 #'
 #' @description Given the same arguments as RM_norm, this function returns an ensemble of that particular class of matrix.
 #'   While random matrices usually do not exude unique properties on their own, they do indeed have
-#'   deterministic properties (usually in spectral statistics) at the ensemble level.
+#'   deterministic properties at the ensemble level in terms of their spectral statistics.
 #'
 #' @inheritParams RM_beta
-#' @param ... any default-valued parameters taken as arguments by the RM_ variant of this function
-#' @param size the number of matrices to be simulated in the ensemble
+#' @param size the size of the ensemble (i.e. number of matrices)
 #' @return An ensemble (list) of beta matrices as specified by the matrix arguments.
 #' @examples
 #'
-#' # Generate an ensemble of standard normal 3x3 matrices of size 20
-#' # ensemble <-
+#' # Generate an ensemble of 10x10 beta matrices with beta = 4 of size 100.
+#' ensemble <- RME_beta(N = 10, beta = 4, size = 100)
 #'
-RME_beta <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_beta, ...)}
+RME_beta <- function(N, beta, size){lapply(X = rep(N, size), FUN = RM_beta, beta)}
 
 
 #' @title Generate an ensemble of stochastic matrices
 #'
-#' @description Given the same arguments as RM_stoch, this function returns an ensemble of that particular class of matrix.
+#' @description Given the same arguments as RM_stoch, this function returns an ensemble of random stochastic matrices.
 #'   While random matrices usually do not exude unique properties on their own, they do indeed have
-#'   deterministic properties (usually in spectral statistics) at the ensemble level.
+#'   deterministic properties at the ensemble level in terms of their spectral statistics.
 #'
 #' @inheritParams RM_stoch
-#' @param ... any default-valued parameters taken as arguments by the RM_ variant of this function
-#' @param size the number of matrices to be simulated in the ensemble
+#' @param ... pass any default-valued parameters taken as arguments by RM_stoch()
+#' @param size the size of the ensemble (i.e. number of matrices)
 #' @return An ensemble (list) of stochastic matrices as specified by the matrix arguments.
 #' @examples
 #'
-#' # Generate an ensemble of standard normal 3x3 matrices of size 20
-#' # ensemble <-
+#' # Generate an ensemble of random 5x5 transition matrices of size 20.
+#' ensemble <- RME_stoch(N = 5, size = 20)
+#'
+#' # Generate an ensemble of symmetric random 5x5 transition matrices of size 20.
+#' ensemble <- RME_stoch(N = 5, symm = TRUE, size = 20)
 #'
 RME_stoch <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_stoch, ...)}
 
 
 #' @title Generate an ensemble of Erdos-Renyi transition matrices
 #'
-#' @description Given the same arguments as RM_norm, this function returns an ensemble of that particular class of matrix.
+#' @description Given the same arguments as RM_norm, this function returns an ensemble of random Erdos-Renyi stochastic matrices.
 #'   While random matrices usually do not exude unique properties on their own, they do indeed have
-#'   deterministic properties (usually in spectral statistics) at the ensemble level.
+#'   deterministic properties at the ensemble level in terms of their spectral statistics.
 #'
 #' @inheritParams RM_erdos
-#' @param ... any default-valued parameters taken as arguments by the RM_ variant of this function
-#' @param size the number of matrices to be simulated in the ensemble
+#' @param ... any default-valued parameters taken as arguments by RM_erdos()
+#' @param size the size of the ensemble (i.e. number of matrices)
 #' @return An ensemble (list) of Erdos-Renyi transition matrices as specified by the matrix arguments.
 #' @examples
 #'
-#' # Generate an ensemble of standard normal 3x3 matrices of size 20
-#' # ensemble <-
+#' # Generate an ensemble of 10x10 Erdos-Renyi transition matrices of size 50 with p = 0.7
+#' # ensemble <- RME_erdos(N = 10, p = 0.7, size = 50)
 #'
-RME_erdos <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_erdos, ...)}
+RME_erdos <- function(N, p, ..., size){lapply(X = rep(N, size), FUN = RM_erdos, p, ...)}
 
 #=================================================================================#
 #                           NORMAL RANDOM MATRICES
@@ -106,18 +108,16 @@ RME_erdos <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_erdos, ...
 #' # N(2,1) distributed matrix with hermitian complex entries
 #' Q <- RM_norm(N = 5, mean = 2, cplx = TRUE, herm = TRUE)
 #'
-RM_norm <- function(N, mean = 0, sd = 1, symm = F, cplx = F, herm = F){
+RM_norm <- function(N, mean = 0, sd = 1, symm = FALSE, cplx = FALSE, herm = FALSE){
   # Create [N x N] matrix with normally distributed entries
   P <- matrix(rnorm(N^2, mean, sd), nrow = N)
-  # Make symmetric if prompted
+  # Make symmetric/hermitian if prompted
   if(symm || herm){P <- .make_hermitian(P)}
   # Returns a matrix with complex (and hermitian) entries if prompted
   if(cplx){
-    if(herm){
-      P <- P + .make_hermitian(1i * RM_norm(N, mean, sd))
-    } else{
-      P <- P + 1i * RM_norm(N, mean, sd, symm = F) # If not hermitian, recursively add a "real" instance of the imaginary components.
-    }
+    Im_P <- (1i * RM_norm(N, mean, sd)) # Recursively add imaginary components as 1i * instance of real-valued matrix.
+    if(herm){P <- P + .make_hermitian(Im_P)}  # Make imaginary part hermitian if prompted
+    else{P <- P + Im_P}
   }
   P # Return the matrix
 }
@@ -130,20 +130,21 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = F, cplx = F, herm = F){
 #'
 #' @param N number of dimensions of the square matrix
 #' @param beta the value of the beta parameter for the beta ensemble
-#' @param cplx indicates whether the matrix should have complex entries.
 #' @return A random Hermite beta matrix with any integer parameter beta
 #' @examples
-#' P <- RM_beta(N = 3, beta = 4)
-#' P <- RM_beta(N = 10, beta = 17)
 #'
-RM_beta <- function(N, beta, cplx = F){
+#' # Generate a 3x3 random beta matrix with beta = 4
+#' P <- RM_beta(N = 3, beta = 4)
+#'
+#' # Generate a 10x10 random beta matrix with beta = 21
+#' P <- RM_beta(N = 10, beta = 21)
+#'
+RM_beta <- function(N, beta){
   # Set the diagonal as a N(0,2) distributed row.
   P <- diag(rnorm(N, mean = 0, sd = sqrt(2)))
   # Set the off-1 diagonals as chi squared variables with df(beta), as given in Dumitriu's model
   df_seq <- beta*(N - seq(1, N-1)) # Get degrees of freedom sequence for offdigonal
   P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- sqrt(rchisq(N-1, df_seq)) # Generate tridiagonal
-  # Add complex entries, if prompted
-  #if(cplx){P <- P + .make_hermitian((1i * RM_beta(N, beta)))}
   P <- P/sqrt(2) # Rescale the entries by 1/sqrt(2)
   P # Return the matrix
 }
@@ -154,12 +155,14 @@ RM_beta <- function(N, beta, cplx = F){
 #' @param symm indicates whether the matrix should be symmetric; equal to its transpose.
 #' @return A random tridiagonal matrix with N(0,2) diagonal and N(0,1) band.
 #' @examples
+#'
+#' # Generate a 3x3 standard normal tridiagonal matrix
 #' P <- RM_trid(N = 3)
 #'
 #' # Symmetric tridiagonal matrix
 #' P <- RM_trid(N = 9, symm = TRUE)
 #'
-RM_trid <- function(N, symm = F){
+RM_trid <- function(N, symm = FALSE){
   diagonal <- rnorm(n = N, 0, 2)
   P <- diag(diagonal)
   P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- rnorm(n = N, 0, 1)
