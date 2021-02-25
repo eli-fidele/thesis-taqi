@@ -42,11 +42,13 @@ beta.DISP <- function(beta, bins = 100){
 ```
 
 ```{r}
+beta.DISP(1)
 beta.DISP(2)
 beta.DISP(3)
 beta.DISP(4)
+beta.DISP(5)
+beta.DISP(6)
 beta.DISP(7)
-beta.DISP(37)
-beta.DISP(92)
+beta.DISP(8)
 ```
 
