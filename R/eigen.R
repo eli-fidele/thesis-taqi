@@ -34,18 +34,23 @@
 #'
 dispersion <- function(array, norm = T, components = T, digits = 3){
   is_ensemble <- (class(array) == "list") # Infer type of array (matrix or ensemble)
-  # Once type of array is inferred, obtain the dispersion array
-  if(!is_ensemble){diffs <- .dispersion_matrix(array, norm)} # Array is a matrix
+  # Array is a matrix; call function returning dispersion for singleton
+  if(!is_ensemble){.dispersion_matrix(array, norm)}
   # Array is an ensemble; recursively row binding each matrix's dispersions
-  else{diffs <- purrr::map_dfr(.x = array, .f = .dispersion_matrix, components, norm)}
+  else{
+    pairs <- .unique_pairs(N) # Compute pairs to avoid computational waste and pass as argument
+    purrr::map_dfr(.x = array, .f = .dispersion_matrix, norm, components, digits, pairs)
+  }
 }
 
 # Find the eigenvalue dispersions for a given matrix
-.dispersion_matrix <- function(P, norm = T, components = T, digits = 3){
+.dispersion_matrix <- function(P, norm = T, components = T, digits = 3, pairs = NA){
   #eigenvalues <- .spectrum_matrix(P, components = F, digits) # Get the eigenvalues of a matrix
   eigenvalues <- eigen(P)$values
   N <- nrow(P) # Get matrix dimension
-  idx_pairs <- .unique_pairs(N) # Enumerate unique pairs of N eigenvalues
+  # If uninitialized for the ensemble, enumerate unique pairs of N eigenvalues
+  if(class(pairs) == "logical"){idx_pairs <- .unique_pairs(N)}
+  else{idx_pairs <- pairs} # Otherwise, read in pre-computed values 
   # User is requesting a norm function rather than a setting of Euclidean norm
   if(class(norm) != "logical"){
     norm_fn <- function(x){(abs(x))^norm}
@@ -107,7 +112,7 @@ dispersion.plot <- function(array, bins = 100){
   # Plot parameters
   color0 <- "darkorchid4"
   # Return plot
-  ggplot(data = entries, aes(x = diff)) +
+  ggplot(data = entries, aes(x = Dispersion)) +
     geom_histogram(mapping = aes(y = stat(count / num_entries)), fill = color0, bins = bins)+
     scale_fill_discrete(c("")) +
     labs(title = "Distribution of Eigenvalue Spacings", y = "Probability")
@@ -147,8 +152,7 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
   # One type of array is inferred, obtain the eigenvalue array
   if(!is_ensemble){.spectrum_matrix(array)}
   # Otherwise, recursively get ensemble's spectrum by row binding each matrix's spectrum
-  else{purrr::map_dfr(1:length(array), FUN = function(i){spectrum(ensemble[[i]])},
-                      components, largest, smallest, digits)}
+  else{purrr::map_dfr(1:length(array), FUN = function(i){.spectrum_matrix}, components, largest, smallest, digits)}
 }
 
 # Helper function returning tidied eigenvalue array for a matrix
@@ -163,7 +167,7 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
 }
 
 # Read and parse an eigenvalue from an eigen(P)$value array
-.resolve_eigenvalue <- function(order, eigenvalues, components = T, digits = 3){
+.resolve_eigenvalue <- function(order, eigenvalues, components, digits){
   # Read from eigen(P)$values 
   eigenvalue <- eigenvalues[order]
   # If components are requested, resolve parts into seperate columns
