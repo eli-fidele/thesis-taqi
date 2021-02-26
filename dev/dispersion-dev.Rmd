@@ -20,40 +20,7 @@ dispersion.plot <- function(entries, bins = 100){
 ```
 
 ```{r}
-spectrum <- function(array, components = T, largest = F, smallest = F, digits = 3){
-  # Infer type of array (matrix or ensemble) then parse accordingly.
-  is_ensemble <- (class(array) == "list")
-  # One type of array is inferred, obtain the eigenvalue array
-  if(!is_ensemble){.spectrum_matrix(array)}
-  # Otherwise, recursively get ensemble's spectrum by row binding each matrix's spectrum
-  else{purrr::map_dfr(1:length(array), FUN = function(i){spectrum(ensemble[[i]])},
-                      components, largest, smallest, digits)}
-}
 
-# Helper function returning tidied eigenvalue array for a matrix
-.spectrum_matrix <- function(P, components = T, largest = F, smallest = F, digits = 3){
-  eigen_array <- eigen(P)$values # Get eigenvalues of matrix P
-  # Get largest eigenvalue
-  if(largest){.resolve_eigenvalue(order = 1, eigen_array, components)} 
-  # Get smallest eigenvalue
-  else if(smallest){.resolve_eigenvalue(order = nrow(P), eigen_array, components)}
-  # Get all the eigenvalues
-  purrr::map_dfr(1:nrow(P), .resolve_eigenvalue, eigen_array, components, digits)
-}
-
-# Read and parse an eigenvalue from an eigen(P)$value array
-.resolve_eigenvalue <- function(order, eigen_array, components = T, digits = 3){
-  # Read from eigen(P)$values 
-  eigenvalue <- eigen_array[order]
-  # If components are requested, resolve parts into seperate columns
-  if(components){
-    data.frame(Re = round(Re(eigenvalue),digits), Im = round(Im(eigenvalue),digits),
-               Norm = round(abs(eigenvalue), digits), Order = order)
-    }
-  else{data.frame(Eigenvalue = round(eigenvalue, digits), 
-                  Norm = round(abs(eigenvalue), digits), Order = order)
-    }
-}
 ```
 
 

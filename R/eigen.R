@@ -10,8 +10,9 @@
 #' @description Returns a vector of the eigenvalue spacings of a random matrix or ensemble.
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalue spacings are to be returned
-#' @param components returns the array with resolved real and imaginary components; otherwise returns complex-valued vectors/distances
 #' @param norm use the norm metric for eigenvalue spacing; otherwise returns absolute difference metric
+#' @param components returns the array with resolved real and imaginary components; otherwise returns complex-valued vectors/distances
+#' @param digits number of digits to round up values to
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
 #' @examples
@@ -31,33 +32,50 @@
 #' # Alternatively, use the pipe
 #' #disp_ensemble <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
-dispersion <- function(array, components = T, norm = T){
-  is_ensemble <- (class(array) == "list") # Infer type of array (matrix or ensemble) then parse accordingly
+dispersion <- function(array, norm = T, components = T, digits = 3){
+  is_ensemble <- (class(array) == "list") # Infer type of array (matrix or ensemble)
   # Once type of array is inferred, obtain the dispersion array
-  if(!is_ensemble){diffs <- .eigen_deltas(array, norm)} # Array is a matrix
-  else{diffs <- purrr::map_dfr(.x = array, .f = .eigen_deltas)} # Array is an ensemble; recursively row binding each matrix's dispersions
-  diffs # Return differences
+  if(!is_ensemble){diffs <- .dispersion_matrix(array, norm)} # Array is a matrix
+  # Array is an ensemble; recursively row binding each matrix's dispersions
+  else{diffs <- purrr::map_dfr(.x = array, .f = .dispersion_matrix, components, norm)}
 }
 
-# Find the eigenvalue dispersion of a given matrix
-.eigen_deltas <- function(P, norm = T){
-  eigenvalues <- spectrum(P)
-  N <- nrow(P)
-  diffs <- rep(0, N*(N-1)/2) # N choose 2 number of possible eigenvalue pair differences
-  k <- 0
-  # Run over pair combination, asserting i > j to avoid repeats
-  for(i in 1:N){
-    for(j in 1:N){
-      if(i < j){
-        k <- k + 1
-        if(!norm){diffs[k] <- eigenvalues[i,] - eigenvalues[j,]}
-        else{diffs[k] <- abs(eigenvalues[i,] - eigenvalues[j,])}
-      }
+# Find the eigenvalue dispersions for a given matrix
+.dispersion_matrix <- function(P, norm = T, components = T, digits = 3){
+  #eigenvalues <- .spectrum_matrix(P, components = F, digits) # Get the eigenvalues of a matrix
+  eigenvalues <- eigen(P)$values
+  N <- nrow(P) # Get matrix dimension
+  idx_pairs <- .unique_pairs(N) # Enumerate unique pairs of N eigenvalues
+  # User is requesting a norm function rather than a setting of Euclidean norm
+  if(class(norm) != "logical"){
+    norm_fn <- function(x){(abs(x))^norm}
+    purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, components, digits)
+  } else{
+    purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm, components, digits)
     }
-  }
-  data.frame(diff = diffs) # Return eigenvalue differences
 }
 
+# Read and parse a dispersion observation between eigenvalue i and j.
+.resolve_dispersion <- function(i, j, eigenvalues, norm, components, digits){
+  # Compute the difference
+  difference <- eigenvalues[i] - eigenvalues[j]
+  # Resolve parameters of desired dispersion metric
+  if(class(norm) == "function"){disp <- data.frame(Dispersion = norm(difference))} 
+  else if(norm){disp <- data.frame(Dispersion = abs(difference))}
+  else{
+    if(components){disp <- data.frame(Disp_Re = Re(difference), Disp_Im = Im(difference))} 
+    else{disp <- data.frame(Dispersion = difference)}
+  }
+  disp <- round(disp, digits) # Round digits
+  cbind(disp, data.frame(OrderDiff = i - j))
+}
+
+# Enumerate the unique pairs given N items
+.unique_pairs <- function(N){
+  is <- do.call("c",map(1:N, function(i){rep(i,N)}))
+  js <- rep(1:N, N)
+  do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i > j){c(i = i, j = j)}}))
+}
 #=================================================================================#
 #                         DISPERSION VISUALIZATION FUNCTIONS
 #=================================================================================#
@@ -107,6 +125,7 @@ dispersion.plot <- function(array, bins = 100){
 #' @param components returns the array with resolved real and imaginary components; otherwise returns complex-valued eigenvalues
 #' @param largest returns the largest eigenvalues of the matrix (ensemble)
 #' @param smallest returns the smallest eigenvalues of the matrix (ensemble)
+#' @param digits number of digits to round up values to
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
 #' @examples
@@ -122,49 +141,40 @@ dispersion.plot <- function(array, bins = 100){
 #' ensemble <- RME_norm(N = 3, size = 10)
 #' ensemble_spectrum <- spectrum(ensemble)
 #'
-spectrum <- function(array, components = T, largest = F, smallest = F){
+spectrum <- function(array, components = T, largest = F, smallest = F, digits = 3){
   # Infer type of array (matrix or ensemble) then parse accordingly.
   is_ensemble <- (class(array) == "list")
-  round <- 5
   # One type of array is inferred, obtain the eigenvalue array
-  if(!is_ensemble){
-    P <- array
-    eigen_array <- data.frame(eigen(P)$values) # Get eigenvalues of matrix
-    spectrum_row <- function(i, tbl){c(round(Re(tbl[i,]), round), round(Im(tbl[i,]), round), abs(tbl[i,]), i)}
-    eigenvalues <- do.call("rbind", lapply(X = 1:nrow(P), FUN = spectrum_row, tbl = eigen_array)) # Extract eigenvalues
-    eigenvalues <- data.frame(eigenvalues) # Array of eigenvalues
-    colnames(eigenvalues) <- c("Re", "Im", "Norm", "Order") # Rename columns
-  }
-  # Otherwise, recursively obtain the ensemble's spectrum by row binding each matrix's returned spectrum
-  else{
-    ensemble <- array
-    eigenvalues <- .ensemble_spectrum(ensemble)
-  }
-  # Once the eigenvalue array is obtained, filter for wanted statistics
-  if(smallest){eigenvalues <- .specSMALLEST(spectrum)}
-  if(largest){eigenvalues <- .specLARGEST(spectrum)}
-  #if(class(order) != NULL){eigenvalues <- eigenvalues %>% filter(Order %in% c(order))}
-  # Return spectrum of eigenvalues
-  eigenvalues
+  if(!is_ensemble){.spectrum_matrix(array)}
+  # Otherwise, recursively get ensemble's spectrum by row binding each matrix's spectrum
+  else{purrr::map_dfr(1:length(array), FUN = function(i){spectrum(ensemble[[i]])},
+                      components, largest, smallest, digits)}
 }
 
-# Returns smallest eigenvalues of the matrix
-.specSMALLEST <- function(spectrum){spectrum[which(spectrum$Order == which.max(spectrum$Order)),]}
-
-# Returns largest eigenvalues of the matrix
-.specLARGEST <- function(spectrum){spectrum[which(spectrum$Order == 1),]}
-
-# Helper function for spectrum, returns a tidied dataframe of the eigenvalues of a matrix ensemble input
-.ensemble_spectrum <- function(ensemble){
-  do.call("rbind",lapply(X = 1:length(ensemble), FUN = function(i){spectrum(ensemble[[i]])})) # Return the spectra for this ensemble
+# Helper function returning tidied eigenvalue array for a matrix
+.spectrum_matrix <- function(P, components = T, largest = F, smallest = F, digits = 3){
+  eigenvalues <- eigen(P)$values # Get eigenvalues of matrix P
+  # Get largest eigenvalue
+  if(largest){.resolve_eigenvalue(order = 1, eigenvalues, components)} 
+  # Get smallest eigenvalue
+  else if(smallest){.resolve_eigenvalue(order = nrow(P), eigenvalues, components)}
+  # Get all the eigenvalues
+  purrr::map_dfr(1:nrow(P), .resolve_eigenvalue, eigenvalues, components, digits)
 }
 
-# Read in the eigenvalue in the Kth row from a eigenvalue array and return a numerical
-.read_eigenvalue <- function(spectrum, K){
-  # if im is 0 maybe return real val
-  # filter for index (largest == 1)
-  complex(real = spectrum[K,1], imaginary = spectrum[K,2])
+# Read and parse an eigenvalue from an eigen(P)$value array
+.resolve_eigenvalue <- function(order, eigenvalues, components = T, digits = 3){
+  # Read from eigen(P)$values 
+  eigenvalue <- eigenvalues[order]
+  # If components are requested, resolve parts into seperate columns
+  if(components){
+    data.frame(Re = round(Re(eigenvalue),digits), Im = round(Im(eigenvalue),digits),
+               Norm = round(abs(eigenvalue), digits), Order = order)
   }
+  else{data.frame(Eigenvalue = round(eigenvalue, digits), 
+                  Norm = round(abs(eigenvalue), digits), Order = order)
+  }
+}
 
 #=================================================================================#
 #                         SPECTRUM VISUALIZATION FUNCTIONS
