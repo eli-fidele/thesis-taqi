@@ -38,7 +38,7 @@ dispersion <- function(array, norm = T, components = T, digits = 3){
   if(!is_ensemble){.dispersion_matrix(array, norm)}
   # Array is an ensemble; recursively row binding each matrix's dispersions
   else{
-    pairs <- .unique_pairs(N) # Compute pairs to avoid computational waste and pass as argument
+    pairs <- .unique_pairs(nrow(array[[1]])) # Compute pairs to avoid computational waste and pass as argument
     purrr::map_dfr(.x = array, .f = .dispersion_matrix, norm, components, digits, pairs)
   }
 }
@@ -50,7 +50,7 @@ dispersion <- function(array, norm = T, components = T, digits = 3){
   N <- nrow(P) # Get matrix dimension
   # If uninitialized for the ensemble, enumerate unique pairs of N eigenvalues
   if(class(pairs) == "logical"){idx_pairs <- .unique_pairs(N)}
-  else{idx_pairs <- pairs} # Otherwise, read in pre-computed values 
+  else{idx_pairs <- pairs} # Otherwise, read in pre-computed values
   # User is requesting a norm function rather than a setting of Euclidean norm
   if(class(norm) != "logical"){
     norm_fn <- function(x){(abs(x))^norm}
@@ -65,14 +65,14 @@ dispersion <- function(array, norm = T, components = T, digits = 3){
   # Compute the difference
   difference <- eigenvalues[i] - eigenvalues[j]
   # Resolve parameters of desired dispersion metric
-  if(class(norm) == "function"){disp <- data.frame(Dispersion = norm(difference))} 
+  if(class(norm) == "function"){disp <- data.frame(Dispersion = norm(difference))}
   else if(norm){disp <- data.frame(Dispersion = abs(difference))}
   else{
-    if(components){disp <- data.frame(Disp_Re = Re(difference), Disp_Im = Im(difference))} 
+    if(components){disp <- data.frame(Disp_Re = Re(difference), Disp_Im = Im(difference))}
     else{disp <- data.frame(Dispersion = difference)}
   }
   disp <- round(disp, digits) # Round digits
-  cbind(disp, data.frame(OrderDiff = i - j))
+  cbind(disp, data.frame(OrderDiff = as.double(i - j))) # Add difference of order metric
 }
 
 # Enumerate the unique pairs given N items
@@ -106,16 +106,40 @@ dispersion <- function(array, norm = T, components = T, digits = 3){
 #' # ensemble <- RME_norm(N = 3, size = 10)
 #' # dispersion.plot(ensemble)
 #'
-dispersion.plot <- function(array, bins = 100){
-  entries <- dispersion(array)
-  num_entries <- length(entries) # Get number of entries
+dispersion.histogram <- function(array, ..., bins = 100){
+  dispersions <- dispersion(array, ...)
+  num_entries <- nrow(dispersions) # Get number of entries
   # Plot parameters
   color0 <- "darkorchid4"
   # Return plot
-  ggplot(data = entries, aes(x = Dispersion)) +
-    geom_histogram(mapping = aes(y = stat(count / num_entries)), fill = color0, bins = bins)+
-    scale_fill_discrete(c("")) +
+  ggplot(data = dispersions, mapping = aes(x = Dispersion, y = stat(count / num_entries))) +
+    geom_histogram(bins = bins) +
     labs(title = "Distribution of Eigenvalue Spacings", y = "Probability")
+}
+
+dispersion.scatterplot <- function(array, ...){
+  # Plot parameters
+  color0 <- "darkorchid4"
+  # Get variances by level
+  dispersion(array, ...) %>%
+    ggplot(mapping = aes(x = Dispersion, y = OrderDiff, color = OrderDiff)) +
+    geom_point() +
+    scale_color_continuous(type = "viridis") +
+    labs(title = "Distribution of Eigenvalue Spacings by Ranking Difference Class", y = "Ranking Difference")
+}
+
+dispersion.varplot <- function(array, ...){
+  # Plot parameters
+  color0 <- "darkorchid4"
+  # Get variances by level
+  dispersion(array, ...) %>%
+    group_by(OrderDiff) %>%
+    summarize(Var_Disp = var(Dispersion), size = n()) %>%
+    ggplot(mapping = aes(x = OrderDiff, y = Var_Disp, color = Var_Disp, size = size)) +
+    geom_point() +
+    scale_color_continuous(type = "viridis") +
+    #scale_size_manual(values = c(1,2)) +
+    labs(title = "Variance of Eigenvalue Spacings by Ranking Difference Class", x = "Ranking Difference", y = "Variance")
 }
 
 #=================================================================================#
@@ -152,14 +176,14 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
   # One type of array is inferred, obtain the eigenvalue array
   if(!is_ensemble){.spectrum_matrix(array)}
   # Otherwise, recursively get ensemble's spectrum by row binding each matrix's spectrum
-  else{purrr::map_dfr(1:length(array), FUN = function(i){.spectrum_matrix}, components, largest, smallest, digits)}
+  else{purrr::map_dfr(array, .spectrum_matrix, components, largest, smallest, digits)}
 }
 
 # Helper function returning tidied eigenvalue array for a matrix
 .spectrum_matrix <- function(P, components = T, largest = F, smallest = F, digits = 3){
   eigenvalues <- eigen(P)$values # Get eigenvalues of matrix P
   # Get largest eigenvalue
-  if(largest){.resolve_eigenvalue(order = 1, eigenvalues, components)} 
+  if(largest){.resolve_eigenvalue(order = 1, eigenvalues, components)}
   # Get smallest eigenvalue
   else if(smallest){.resolve_eigenvalue(order = nrow(P), eigenvalues, components)}
   # Get all the eigenvalues
@@ -168,14 +192,14 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
 
 # Read and parse an eigenvalue from an eigen(P)$value array
 .resolve_eigenvalue <- function(order, eigenvalues, components, digits){
-  # Read from eigen(P)$values 
+  # Read from eigen(P)$values
   eigenvalue <- eigenvalues[order]
   # If components are requested, resolve parts into seperate columns
   if(components){
     data.frame(Re = round(Re(eigenvalue),digits), Im = round(Im(eigenvalue),digits),
                Norm = round(abs(eigenvalue), digits), Order = order)
   }
-  else{data.frame(Eigenvalue = round(eigenvalue, digits), 
+  else{data.frame(Eigenvalue = round(eigenvalue, digits),
                   Norm = round(abs(eigenvalue), digits), Order = order)
   }
 }
@@ -195,17 +219,17 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
 #' @examples
 #' # Eigenvalue spectrum plot of a matrix
 #' P <- RM_norm(N = 5)
-#' spectrum.plot(P)
+#' spectrum.scatterplot(P)
 #'
 #' # Labelled spectrum plot of a beta matrix
 #' Q <- RM_beta(N = 4, beta = 2)
-#' spectrum.plot(Q, mat_str = "Beta")
+#' spectrum.scatterplot(Q, mat_str = "Beta")
 #'
 #' # Eigenvalue spectra plot of an ensemble of normal matrices
 #' ensemble <- RME_norm(N = 3, size = 10)
-#' spectrum.plot(ensemble)
+#' spectrum.scatterplot(ensemble)
 #'
-spectrum.plot <- function(array, mat_str = ""){
+spectrum.scatterplot <- function(array, mat_str = ""){
   # Process spectrum of the matrix/ensemble
   if(class(array) == "list" || class(array) == "matrix"){eigen_spectrum <- spectrum(array)}
   else{eigen_spectrum <- array}

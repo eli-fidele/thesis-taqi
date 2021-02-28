@@ -1,0 +1,53 @@
+---
+title: "On Spectra and Dispersions"
+author: "Ali Taqi"
+#date: "2/26/2021"
+output: 
+  pdf_document:
+    includes: 
+      in_header: "commands.tex"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Definitions
+
+\begin{definition}[Spectrum]
+Given a matrix $P$, the spectrum of $P$ is defined as the ordered multiset of its eigenvalues, denoted by $\sigma(P) = \{\lambda_i\}_{i=1}^n$  and $\lambda_1 \leq \dots  \leq \lambda_n$.
+\end{definition}
+
+\begin{definition}[Hermite-Gaussian $\beta$-ensemble]
+The Hermite $\beta$-ensemble is the ensemble of random matrices whose eigenvalues have the joint probability density function:
+\begin{align*}
+f_\beta(\lambda) = c_H^\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta e^{-1/2\sum_i \lambda_i^2}
+\end{align*}
+where the normalization constant $c_H^\beta$ is given by:
+\begin{align*}
+c_H^\beta = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \beta/2)}{\Gamma(1 + \beta j/2)}
+\end{align*}
+They represent a matrix whose entries have $\beta$ real number components.
+\end{definition}
+
+\begin{definition}[Ranking Delta]
+The ranking delta is a function $\delta: \N \times \N \to \N$ which takes the index of two eigenvalues (from an \textbf{ordered} spectrum) and returns their difference. In other words, $\delta : (\lambda_i,\lambda_j) \mapsto (i - j)$.
+\end{definition}
+
+With the function $\delta$, we may take the set of unique eigenvalue pairs $(i > j)$ and partition it into equivalence classes. To achieve this, we define the equivalence relation $\sim_\delta$ which says $(\lambda_m,\lambda_n) \sim_\delta (\lambda_p,\lambda_q) \iff (m -n) = (p-q)$. These equivalence classes then naturally corrospond to pairs a set distance $\rho = i - j$ apart. So, for a $N \times N$ matrix, $\delta$ assumes a range $\rho \in \{ 1,\dots,N-1\}$.
+
+In summary, $\sim_\delta$ takes the set $\{(\lambda_i, \lambda_j) \mid \lambda_i, \lambda_j \in \sigma(P) \text{ and } i > j \}$ and surjectively partitions it onto the equivalence classes $[(\lambda_i, \lambda_j)]_\rho$ for $\rho \in \{ 1,\dots,N-1\}$. Note that the sizes of each equivalence class are $\textbf{never equal}$. With this partition in mind, we consider the eigenvalue dispersions under each of those equivalence classes.
+
+\begin{definition}[Dispersion]
+Define the dispersion of a pair of two eigenvalues $\lambda_i$, $\lambda_j$ to be the output of a function that maps their difference to $\R$ using some norm (metric of distance) $|\cdot|^*$. More concisely, a dispersion metric is some function $\Delta : \Cc \times \Cc \to \R$ such that $\Delta : (\lambda_i, \lambda_j) \mapsto |\lambda_j - \lambda_i|^*$.
+
+One usual metric is the standard norm $| \cdot |$. As seen in the density of the Hermite-Gaussian $\beta$ ensembles, another norm worth worth noting is the $\beta$-norm: $|\cdot|^\beta$ for $\beta \in \N$. 
+
+\end{definition}
+
+## Spectral Statistics
+
+We consider the following spectral statistics:
+
+1. $\E(\Delta \mid \rho)$ \newline
+1. $\Var(\Delta \mid \rho)$.

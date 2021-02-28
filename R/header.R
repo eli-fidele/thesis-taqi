@@ -21,7 +21,7 @@ require(matrixcalc)
   # Get directory path based on directory depth for use in directories with given variable depth
   dir_path <- paste(c(rep("../",depth-1),"../R/"), sep = "", collapse = "")
   # Script file presets
-  preset1 <- c("eigen.R", "ensemble.R", "matrices.R", "mat-diag.R")
+  preset1 <- c("eigen.R", "matrices.R", "mat-diag.R")
   preset2 <- c(preset1, "analyze.R", "evolve.R", "simulate.R", "vis.R")
   # Set preset
   if(preset == 1){script_files <- preset1}

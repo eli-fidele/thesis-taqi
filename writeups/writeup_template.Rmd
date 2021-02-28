@@ -1,0 +1,17 @@
+---
+title: "My Writeup"
+author: "Ali Taqi"
+#date: "2/26/2021"
+output: 
+  pdf_document:
+    includes: 
+      in_header: "commands.tex"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# My writeup
+
+I love the $\Normal(0,1)$ distribution!

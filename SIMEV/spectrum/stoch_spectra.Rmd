@@ -1,0 +1,44 @@
+---
+title: "Ensemble Testing"
+author: "Ali Taqi"
+date: "2/5/2021"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(patchwork)
+library(gridExtra)
+library(matrixcalc)
+library(sjPlot)
+# Load files
+source(file = "../../R/header.R")
+.srcp(depth = 2, preset = 1)
+# global parameters
+bool_plot <- T
+bool_loud <- T
+bool_animate <- F
+```
+
+# Stochastic Matrix Ensemble
+
+```{r}
+N <- 100
+ensemble <- RME_stoch(N, symm = T, size = 250)
+# Returns largest eigenvalues of the matrix
+spectrum.scatterplot(ensemble, "Symmetric Stochastic")
+```
+
+
+```{r}
+# proof of frobenius theorem: largest eigenvalue = 1
+# also maybe proof of p sparsity, complex conjugate root 
+N <- 100
+ensemble <- RME_stoch(N, symm = F, size = 250)
+# Returns largest eigenvalues of the matrix
+spectrum.scatterplot(ensemble, "Stochastic")
+```
+

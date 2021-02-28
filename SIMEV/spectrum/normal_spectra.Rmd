@@ -14,11 +14,8 @@ library(patchwork)
 library(gridExtra)
 library(matrixcalc)
 # Load files
-source(file = "../R/matrices.R")
-source(file = "../R/eigen.R")
-source(file = "../R/simulate.R")
-source(file = "../R/analyze.R")
-source(file = "../R/ensemble.R")
+source(file = "../../R/header.R")
+.src(d = 2)
 # global parameters
 bool_plot <- T
 bool_loud <- T
@@ -27,19 +24,21 @@ bool_animate <- F
 
 ```{r, fig.height = 7}
 # Parameters
-size <- 100
-args <- list(M = 4, mean = 0, sd = 1, symm = F)
-ensemble <- RME(RM_norm, args, ensemble_size = 500)
-spec <- .ensemble_spectrum(ensemble)
-spectrum_plot(spec)
+#size <- 100
+#args <- list(M = 4, mean = 0, sd = 1, symm = F)
+#ensemble <- RME(RM_norm, args, ensemble_size = 500)
+#spec <- .ensemble_spectrum(ensemble)
+#spectrum_plot(spec)
+RME_norm(20, size = 1000) %>% spectrum.scatterplot
 ```
 
 ```{r, fig.height = 7}
 # Parameters
-size <- 100
-args <- list(M = 3, mean = 7, sd = 3, symm = F)
-ensemble <- RM_ensemble(RM_normal, args, size = 500)
-spec <- ensemble_spectrum(ensemble)
-spectrum_plot(spec)
+#size <- 100
+#args <- list(M = 3, mean = 7, sd = 3, symm = F)
+#ensemble <- RM_ensemble(RM_normal, args, size = 500)
+#spec <- ensemble_spectrum(ensemble)
+#spectrum_plot(spec)
+RME_norm(10, 7, 3, size = 1000) %>% spectrum.scatterplot
 ```
 
