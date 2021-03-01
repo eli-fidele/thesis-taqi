@@ -84,24 +84,25 @@ dispersion <- function(array, norm = T, components = T, digits = 3){
 
 #' @title Visualize a plot of the eigenvalue difference spectrum of a matrix or ensemble of matrices.
 #'
-#' @description Returns a scatterplot of the eigenvalue spacings of a random matrix or ensemble.
+#' @description Returns a histogram of the eigenvalue spacings of a random matrix or ensemble.
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalues spacings are to be plotted
+#' @param ... any default-valued parameters taken as arguments by spectrum(array, ...)
 #' @param bins (optional) a string argument of the class of the matrix to label the plot title.
 #'
-#' @return A ggplot object containing a scatterplot of the matrix/matrix ensemble's eigenvalue spacings.
+#' @return A ggplot object containing a histogram of the matrix/matrix ensemble's eigenvalue spacings.
 #' @examples
 #' # Eigenvalue spacings plot of a normal matrix
 #' P <- RM_norm(N = 5)
-#' #dispersion.plot(P)
+#' #dispersion.histogram(P)
 #'
 #' # Eigenvalue spacings plot of a beta matrix
 #' Q <- RM_beta(N = 4, beta = 2)
-#' #dispersion.plot(Q, mat_str = "Beta")
+#' #dispersion.histogram(Q, mat_str = "Beta")
 #'
 #' # Eigenvalue spacings plot of an ensemble of normal matrices
 #' # ensemble <- RME_norm(N = 3, size = 10)
-#' # dispersion.plot(ensemble)
+#' # dispersion.histogram(ensemble)
 #'
 dispersion.histogram <- function(array, ..., bins = 100){
   # Process spectrum of the matrix/ensemble
@@ -116,6 +117,27 @@ dispersion.histogram <- function(array, ..., bins = 100){
     labs(title = "Distribution of Eigenvalue Spacings", y = "Probability")
 }
 
+#' @title Visualize a plot of the eigenvalue difference spectrum of a matrix or ensemble of matrices.
+#'
+#' @description Returns a scatterplot of the eigenvalue spacings of a random matrix or ensemble.
+#'
+#' @param array a square matrix or matrix ensemble whose eigenvalues spacings are to be plotted
+#' @param ... any default-valued parameters taken as arguments by spectrum(array, ...)
+#'
+#' @return A ggplot object containing a scatterplot of the matrix/matrix ensemble's eigenvalue spacings.
+#' @examples
+#' # Eigenvalue spacings plot of a normal matrix
+#' P <- RM_norm(N = 5)
+#' #dispersion.scatterplot(P)
+#'
+#' # Eigenvalue spacings plot of a beta matrix
+#' Q <- RM_beta(N = 4, beta = 2)
+#' #dispersion.scatterplot(Q, mat_str = "Beta")
+#'
+#' # Eigenvalue spacings plot of an ensemble of normal matrices
+#' # ensemble <- RME_norm(N = 3, size = 10)
+#' # dispersion.scatterplot(ensemble)
+#'
 dispersion.scatterplot <- function(array, ...){
   # Process dispersion of the matrix/ensemble; if array is a dispersion data frame, copy it.
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
@@ -130,7 +152,7 @@ dispersion.scatterplot <- function(array, ...){
     labs(title = "Distribution of Eigenvalue Spacings by Ranking Difference Class", y = "Ranking Difference")
 }
 
-dispersion.varplot <- function(array, ...){
+.dispersion.varplot <- function(array, ...){
   # Process dispersion of the matrix/ensemble; if array is a dispersion data frame, copy it.
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
   else{disps_df <- array}
@@ -216,21 +238,22 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
 #' @description Returns a scatterplot of the eigenvalues of a random matrix or ensemble.
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalues are to be plotted
+#' @param ... any default-valued parameters taken as arguments by spectrum(array, ...)
 #' @param mat_str (optional) a string argument of the class of the matrix to label the plot title.
 #'
 #' @return A ggplot object containing a scatterplot of the matrix/matrix ensemble's spectrum.
 #' @examples
 #' # Eigenvalue spectrum plot of a matrix
 #' P <- RM_norm(N = 5)
-#' spectrum.scatterplot(P)
+#' #spectrum.scatterplot(P)
 #'
 #' # Labelled spectrum plot of a beta matrix
 #' Q <- RM_beta(N = 4, beta = 2)
-#' spectrum.scatterplot(Q, mat_str = "Beta")
+#' #spectrum.scatterplot(Q, mat_str = "Beta")
 #'
 #' # Eigenvalue spectra plot of an ensemble of normal matrices
 #' ensemble <- RME_norm(N = 3, size = 10)
-#' spectrum.scatterplot(ensemble)
+#' #spectrum.scatterplot(ensemble)
 #'
 spectrum.scatterplot <- function(array, ..., mat_str = ""){
   # Process spectrum of the matrix/ensemble
@@ -263,15 +286,15 @@ spectrum.scatterplot <- function(array, ..., mat_str = ""){
 #' @examples
 #' # Eigenvalue spectrum plot of a matrix
 #' P <- RM_norm(N = 5)
-#' spectrum.histogram(P)
+#' #spectrum.histogram(P)
 #'
 #' # Labelled spectrum plot of a beta matrix
 #' Q <- RM_beta(N = 4, beta = 2)
-#' spectrum.histogram(Q, mat_str = "Beta")
+#' #spectrum.histogram(Q, mat_str = "Beta")
 #'
 #' # Eigenvalue spectra plot of an ensemble of normal matrices
 #' ensemble <- RME_norm(N = 3, size = 10)
-#' spectrum.histogram(ensemble)
+#' #spectrum.histogram(ensemble)
 #'
 spectrum.histogram <- function(array, ..., imaginary = F, bins = 100, mat_str = ""){
   # Process spectrum of the matrix/ensemble

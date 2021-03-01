@@ -13,13 +13,13 @@ library(viridis)
 .src(1)
 ```
 
-# Standard Normal, Different Norms (Standard and Power-4)
+# Standard Normal; Complex Entries
 
 ```{r}
 P <- RM_norm(100, cplx = T)
 P %>% dispersion.histogram()
 P %>% dispersion.scatterplot()
-P %>% dispersion.varplot()
+#P %>% dispersion.varplot()
 ```
 
 \newpage 
@@ -32,7 +32,7 @@ P <- RM_norm(100, mean = 10, cplx = T, herm = T)
 P %>% spectrum.scatterplot()
 P %>% dispersion.histogram()
 P %>% dispersion.scatterplot()
-P %>% dispersion.varplot()
+#P %>% dispersion.varplot()
 ```
 
 \newpage 
@@ -44,7 +44,7 @@ ens <- RME_beta(N = 20, beta = 4, size = 100)
 ens %>% spectrum.scatterplot()
 ens %>% dispersion.histogram()
 ens %>% dispersion.scatterplot()
-ens %>% dispersion.varplot()
+#ens %>% dispersion.varplot()
 ```
 
 # Beta = 4 (Power-4 Norm)
@@ -53,7 +53,7 @@ ens %>% dispersion.varplot()
 ens %>% spectrum.scatterplot()
 ens %>% dispersion.histogram(norm = 4) 
 ens %>% dispersion.scatterplot(norm = 4)
-ens %>% dispersion.varplot(norm = 4)
+#ens %>% dispersion.varplot(norm = 4)
 ```
 
 ```{r}
@@ -61,6 +61,6 @@ ens <- RME_beta(N = 20, beta = 4, size = 100)
 ens %>% spectrum.scatterplot()
 ens %>% dispersion.histogram()
 ens %>% dispersion.scatterplot()
-ens %>% dispersion.varplot()
+#ens %>% dispersion.varplot()
 ```
 

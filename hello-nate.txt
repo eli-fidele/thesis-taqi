@@ -8,6 +8,18 @@ Heres a quick rundown of documents to discuss:
 
 Compare: hello-nate/symmevc_OLD.pdf Versus hello-nate/symmevc_NEW.pdf
 
+2. I've implemented functions to extract the spacings between the eigenvalues of matrices calling them "dispersions". I wrote about my ideas in the file:
+
+hello-nate/spectrum-writeup.pdf
+
+3. With these ideas about ranking difference as a statistic in mind, there are accompanying plots you could find in: 
+
+hello-nate/spectral-plots.pdf
+
+4. Lastly, I've been working all week on my implementations, documentation, and tidying my functions into the nice little package I told you about. You could find a copy of the source file for the package in the main directory called:
+
+RMAT_0.1.1.tar.gz
+
 ========================================================
 Monday, Feb 15
 

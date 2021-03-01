@@ -21,16 +21,14 @@ dispersion.plot <- function(entries, bins = 100){
 
 ```{r}
 N <- 30
-P <- RME_norm(N, size = 10000)
-diffs <- dispersion(P)
-dispersion.plot(diffs)
+RME_norm(N, size = 250) %>% dispersion.histogram()
+#diffs <- dispersion(P)
+#dispersion.plot(diffs)
 ```
 
 ```{r}
 N <- 20
-P <- RME_stoch(N = 20, size = 1000)
-diffs <- dispersion(P)
-dispersion.plot(diffs)
+RME_stoch(N = 20, size = 1000) %>% dispersion.histogram
 ```
 
 ```{r}
@@ -41,7 +39,5 @@ beta.DISP <- function(beta, bins = 100){
 }
 ```
 
-```{r}
 
-```
 
