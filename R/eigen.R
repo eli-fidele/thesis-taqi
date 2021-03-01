@@ -33,11 +33,10 @@
 #' #disp_ensemble <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
 dispersion <- function(array, norm = T, components = T, digits = 3){
-  is_ensemble <- (class(array) == "list") # Infer type of array (matrix or ensemble)
-  # Array is a matrix; call function returning dispersion for singleton
-  if(!is_ensemble){.dispersion_matrix(array, norm)}
+  # Array is a matrix; call function returning dispersion for singleton matrix
+  if(class(array) == "list"){.dispersion_matrix(array, norm, components, digits)}
   # Array is an ensemble; recursively row binding each matrix's dispersions
-  else{
+  else if(class(array) == "matrix"){
     pairs <- .unique_pairs(nrow(array[[1]])) # Compute pairs to avoid computational waste and pass as argument
     purrr::map_dfr(.x = array, .f = .dispersion_matrix, norm, components, digits, pairs)
   }
@@ -107,21 +106,26 @@ dispersion <- function(array, norm = T, components = T, digits = 3){
 #' # dispersion.plot(ensemble)
 #'
 dispersion.histogram <- function(array, ..., bins = 100){
-  dispersions <- dispersion(array, ...)
-  num_entries <- nrow(dispersions) # Get number of entries
+  # Process spectrum of the matrix/ensemble
+  if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
+  else{disps_df <- array}
+  num_entries <- nrow(disps_df) # Get number of entries
   # Plot parameters
   color0 <- "darkorchid4"
   # Return plot
-  ggplot(data = dispersions, mapping = aes(x = Dispersion, y = stat(count / num_entries))) +
+  ggplot(data = disps_df, mapping = aes(x = Dispersion, y = stat(count / num_entries))) +
     geom_histogram(bins = bins) +
     labs(title = "Distribution of Eigenvalue Spacings", y = "Probability")
 }
 
 dispersion.scatterplot <- function(array, ...){
+  # Process spectrum of the matrix/ensemble
+  if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
+  else{disps_df <- array}
   # Plot parameters
   color0 <- "darkorchid4"
   # Get variances by level
-  dispersion(array, ...) %>%
+  disps_df %>%
     ggplot(mapping = aes(x = Dispersion, y = OrderDiff, color = OrderDiff)) +
     geom_point() +
     scale_color_continuous(type = "viridis") +
@@ -129,10 +133,13 @@ dispersion.scatterplot <- function(array, ...){
 }
 
 dispersion.varplot <- function(array, ...){
+  # Process spectrum of the matrix/ensemble
+  if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
+  else{disps_df <- array}
   # Plot parameters
   color0 <- "darkorchid4"
   # Get variances by level
-  dispersion(array, ...) %>%
+  disps_df %>%
     group_by(OrderDiff) %>%
     summarize(Var_Disp = var(Dispersion), size = n()) %>%
     ggplot(mapping = aes(x = OrderDiff, y = Var_Disp, color = Var_Disp, size = size)) +
@@ -174,7 +181,7 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
   # Infer type of array (matrix or ensemble) then parse accordingly.
   is_ensemble <- (class(array) == "list")
   # One type of array is inferred, obtain the eigenvalue array
-  if(!is_ensemble){.spectrum_matrix(array)}
+  if(!is_ensemble){.spectrum_matrix(array, components, largest, smallest, digits)}
   # Otherwise, recursively get ensemble's spectrum by row binding each matrix's spectrum
   else{purrr::map_dfr(array, .spectrum_matrix, components, largest, smallest, digits)}
 }
@@ -187,7 +194,7 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
   # Get smallest eigenvalue
   else if(smallest){.resolve_eigenvalue(order = nrow(P), eigenvalues, components)}
   # Get all the eigenvalues
-  purrr::map_dfr(1:nrow(P), .resolve_eigenvalue, eigenvalues, components, digits)
+  else{purrr::map_dfr(1:nrow(P), .resolve_eigenvalue, eigenvalues, components, digits)}
 }
 
 # Read and parse an eigenvalue from an eigen(P)$value array
@@ -266,6 +273,5 @@ spectrum.scatterplot <- function(array, mat_str = ""){
     #                                  colour = panel1))#+
     #xlim(x_range) +
     #ylim(-r,r) +
-    #coord_fixed(ratio = 1)
 }
 

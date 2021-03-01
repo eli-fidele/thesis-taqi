@@ -1,3 +1,12 @@
+Monday, Mar 1
+
+Hello Nate, Happy March!
+
+Heres a quick rundown of documents to discuss:
+
+1. I revisited my method of computationally proving symmetric matrices have real eigenvectors. Last time, it turns out my code for generating symmetric matrices had a small bug which made the matrices "less symmetric" and the effect increased as N (matrix dim) increased, which showed a false pattern of decreasing likelihood of real eigenvectors. I fixed the code and the results are now as expected!
+
+Compare: hello-nate/symmevc_OLD.pdf Versus hello-nate/symmevc_NEW.pdf
 
 ========================================================
 Monday, Feb 15

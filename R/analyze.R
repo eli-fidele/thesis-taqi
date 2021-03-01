@@ -88,7 +88,7 @@ variance_by_time <- function(evolved_batch, at_time, log = T){
   # Extract the ratio array of the evolved batch
   ratios <- .extract_ratios(evolved_batch)
   # Get the eigenvalue array
-  eigenvalues <- spectrum(P)
+  eigenvalues <- eigen(P)$values
   # Create associated eigenvalue index column (with 0 implying no match)
   eigen_index <- rep(0, nrow(evolved_batch))
   # Sift through the numerical "eigenvalues" and find potential matches
@@ -96,8 +96,8 @@ variance_by_time <- function(evolved_batch, at_time, log = T){
     # Go row by row, ignoring the element index column
     curr <- ratios[i,2:ncol(ratios)] 
     # Try to see if any of the eigenvalues fit
-    for(K in 1:nrow(eigenvalues)){
-      curr_eigenvalue <- .read_eigenvalue(eigenvalues, K) # Load current eigenvalue as a numerical type for comparison (function in eigen.R)
+    for(K in 1:length(eigenvalues)){
+      curr_eigenvalue <- eigenvalues[K] # Load current eigenvalue as a numerical type for comparison (function in eigen.R)
       if(.candidate_eigenvector(curr, curr_eigenvalue, epsilon)){
         # If a candidate eigenvector is found, record this in the index column and exit the loop
         eigen_index[i] <- K

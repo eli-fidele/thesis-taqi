@@ -87,18 +87,18 @@ ratios_histogram <- function(evolved_batch, at_time = NA, log = T, norms = T, al
 # Plots the evolution arrays of a 3D evolved batch
 .batch_3d_customplot <- function(batch_data,n1,n2,n3,mat_str=""){
   plot_empty <- ggplot() 
-  plot_12 <- batch_2d_customplot(batch_data, n1, n2,mat_str)
-  plot_23 <- batch_2d_customplot(batch_data, n2, n3,mat_str)
-  plot_13 <- batch_2d_customplot(batch_data, n1, n3,mat_str)
+  plot_12 <- .batch_2d_customplot(batch_data, n1, n2,mat_str)
+  plot_23 <- .batch_2d_customplot(batch_data, n2, n3,mat_str)
+  plot_13 <- .batch_2d_customplot(batch_data, n1, n3,mat_str)
   grid.arrange(plot_empty,plot_12,plot_23,plot_13, ncol = 2)
 }
 
 # Plots the evolution arrays of a 3D evolved batch
 .batch_3d_plot <- function(batch_data,mat_str=""){
   plot_empty <- ggplot() 
-  plot_12 <- batch_2d_customplot(batch_data, 1, 2,mat_str)
-  plot_23 <- batch_2d_customplot(batch_data, 2, 3,mat_str)
-  plot_13 <- batch_2d_customplot(batch_data, 1, 3,mat_str)
+  plot_12 <- .batch_2d_customplot(batch_data, 1, 2,mat_str)
+  plot_23 <- .batch_2d_customplot(batch_data, 2, 3,mat_str)
+  plot_13 <- .batch_2d_customplot(batch_data, 1, 3,mat_str)
   grid.arrange(plot_empty,plot_12,plot_23,plot_13, ncol = 2)
 }
 
