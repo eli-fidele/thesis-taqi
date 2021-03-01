@@ -12,7 +12,6 @@ library(knitr)
 library(patchwork)
 library(gridExtra)
 library(matrixcalc)
-library(purrr)
 # Load files
 source(file = "../R/header.R")
 .src(depth = 1)

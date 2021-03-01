@@ -1,0 +1,121 @@
+---
+title: "Untitled"
+author: "Ali Taqi"
+date: "2/28/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+erdos_args <- function(N, p_vec){
+  vals <- do.call("rbind",lapply(X = p_vec, FUN = function(p, N){rep(c(N,p))}, N))
+  colnames(vals) <- c("N", "p")
+  vals
+}
+# get args
+args <- erdos_args(N = 50, seq(0,1,length.out = 7))
+# Parameters
+size <- 1e4
+# Generate ER spectra plots
+spec.erdos <- function(N, p, size){
+  p <- round(p, 4)
+  spectrum.histogram(RME_erdos(N, p, size), mat_str = paste(p,"-Erdos",sep=""))
+}
+#plots <- map2(args[,1], args[,2], .f = spec.erdos, size)
+```
+
+```{r}
+spectrum_erdos <- function(array, p, components = T, largest = F, smallest = F, digits = 3){
+  # Infer type of array (matrix or ensemble) then parse accordingly.
+  is_ensemble <- (class(array) == "list")
+  # One type of array is inferred, obtain the eigenvalue array
+  if(!is_ensemble){.spectrum_erdosMAT(array, p, components, largest, smallest, digits)}
+  # Otherwise, recursively get ensemble's spectrum by row binding each matrix's spectrum
+  else{purrr::map_dfr(array, .spectrum_erdosMAT, p, components, largest, smallest, digits)}
+}
+
+.spectrum_erdosMAT <- function(P, p_con, ...){
+  p_conn <- data.frame(p = rep(p_con, nrow(P)))
+  cbind(spectrum(P, ...), p_conn)
+}
+```
+
+```{r}
+erdos_stack <- function(args, size){
+  fxn <- function(N,p, size){spectrum_erdos(RME_erdos(N, p, size), p)}
+  do.call("rbind", map2(args[,1], args[,2], .f = fxn, size = size))
+}
+```
+
+```{r}
+erdossss <- erdos_stack(args, size = 1000)
+```
+
+
+```{r}
+eval_hist <- ggplot(data = stack) + 
+  geom_histogram(mapping = aes(x = Re, fill = as.factor(p_sparsity))) +
+  labs(fill = "Sparsity", title = "Real Component of Eigenvalues of ER Matrices")
+eval_hist
+```
+
+```{r}
+#write_csv(stack, "erdos_renyi.csv")
+```
+
+```{r}
+#eval_scatter
+#eval_scatter + transition_states(states = p_sparsity)
+```
+
+## Mixed Eigenvalues
+
+```{r}
+# Filter eigenvalues with noncomplex components
+filtered <- stack[abs(stack[,1]) > 0,]
+# Filter eigenvalues with  nonreal components
+filtered <- filtered[abs(filtered[,2]) >= 0,]
+```
+
+```{r, fig.height = 10}
+eval_hist1 <- ggplot(data = filtered) + 
+  geom_histogram(mapping = aes(x = Re, fill = as.factor(p_sparsity))) +
+  labs(fill = "Sparsity", title = "Real Component of Mixed Eigenvalues of ER Matrices")
+eval_hist2 <- ggplot(data = filtered) + 
+  geom_histogram(mapping = aes(x = Im, fill = as.factor(p_sparsity))) +
+  labs(fill = "Sparsity", title = "Complex Component of Mixed Eigenvalues of ER Matrices")
+eval_hist1/eval_hist2
+```
+
+## Non-Zero-Real Eigenvalues
+
+```{r}
+# Filter eigenvalues with noncomplex components
+filtered <- stack[abs(stack[,1]) > 0,]
+filtered <- filtered[abs(filtered[,1]) != 1,]
+filtered <- filtered[abs(filtered[,2]) != 0,]
+```
+
+```{r, fig.height = 10}
+eval_hist1 <- ggplot(data = filtered) + 
+  geom_histogram(mapping = aes(x = Re, fill = as.factor(p_sparsity))) +
+  labs(fill = "Sparsity", title = "Real Component of Nontrivial Eigenvalues")
+eval_hist2 <- ggplot(data = filtered) + 
+  geom_histogram(mapping = aes(x = Im, fill = as.factor(p_sparsity))) +
+  labs(fill = "Sparsity", title = "Complex Component of Nontrivial Eigenvalues")
+eval_hist2
+```
+
+```{r, cache = T}
+real_anim <- eval_hist2 + transition_states(states = p_sparsity, state_length = 0.05, transition_length = 0.05, wrap = FALSE)
+#real_anim 
+```
+
+```{r}
+anim_save(animation = real_anim, filename = "complex_ev.gif")
+```

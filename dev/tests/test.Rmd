@@ -1,0 +1,33 @@
+---
+title: "test"
+author: "Ali Taqi"
+date: "2/23/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("test.R")
+```
+
+```{r}
+# Test proportion of numerically-valued (valid) symmetric stochastic matrices
+stoch.VALID(100, 5, symm = T)
+stoch.VALID(100, 50, symm = T)
+stoch.VALID(30, 150, symm = T)
+
+# Test row-stochasticity of symmetric stochastic matrices
+stoch.STOCH(100, 5, symm = F)
+stoch.STOCH(100, 50, symm = F)
+stoch.STOCH(30, 150, symm = F)
+```
+
+```{r}
+#tests to add
+# check if a matrix is hermitian
+# average norm of a complex matrixs entries
+# the distribution of normal matrix entries
+# the rank of eigenvalue ordering
+# i.e. do sort and check against initial ordering. if TRUE then eigen() orders them automatically
+```
+

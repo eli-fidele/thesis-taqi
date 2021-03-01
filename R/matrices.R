@@ -19,7 +19,7 @@
 #' # Generate an ensemble of standard normal 3x3 matrices of size 20
 #' ensemble <- RME_norm(N = 3, size = 20)
 #'
-RME_norm <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_norm, ...)}
+RME_norm <- function(N, mean, sd, ..., size){lapply(X = rep(N, size), FUN = RM_norm, ...)}
 
 
 #' @title Generate an ensemble of random beta matrices

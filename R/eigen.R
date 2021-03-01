@@ -34,9 +34,9 @@
 #'
 dispersion <- function(array, norm = T, components = T, digits = 3){
   # Array is a matrix; call function returning dispersion for singleton matrix
-  if(class(array) == "list"){.dispersion_matrix(array, norm, components, digits)}
+  if(class(array) == "matrix"){.dispersion_matrix(array, norm, components, digits)}
   # Array is an ensemble; recursively row binding each matrix's dispersions
-  else if(class(array) == "matrix"){
+  else if(class(array) == "list"){
     pairs <- .unique_pairs(nrow(array[[1]])) # Compute pairs to avoid computational waste and pass as argument
     purrr::map_dfr(.x = array, .f = .dispersion_matrix, norm, components, digits, pairs)
   }
@@ -44,19 +44,17 @@ dispersion <- function(array, norm = T, components = T, digits = 3){
 
 # Find the eigenvalue dispersions for a given matrix
 .dispersion_matrix <- function(P, norm = T, components = T, digits = 3, pairs = NA){
-  #eigenvalues <- .spectrum_matrix(P, components = F, digits) # Get the eigenvalues of a matrix
-  eigenvalues <- eigen(P)$values
+  eigenvalues <- eigen(P)$values # Get the eigenvalues of a matrix
   N <- nrow(P) # Get matrix dimension
   # If uninitialized for the ensemble, enumerate unique pairs of N eigenvalues
-  if(class(pairs) == "logical"){idx_pairs <- .unique_pairs(N)}
-  else{idx_pairs <- pairs} # Otherwise, read in pre-computed values
+  if(class(pairs) == "logical"){idx_pairs <- .unique_pairs(N)} else{idx_pairs <- pairs} # Otherwise, read in pre-computed values
   # User is requesting a norm function rather than a setting of Euclidean norm
   if(class(norm) != "logical"){
-    norm_fn <- function(x){(abs(x))^norm}
+    norm_fn <- function(x){(abs(x))^norm} # Beta norm
     purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, components, digits)
-  } else{
-    purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm, components, digits)
-    }
+  } 
+  # Otherwise, just use the absolute value norm
+  else{purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm, components, digits)}
 }
 
 # Read and parse a dispersion observation between eigenvalue i and j.
@@ -108,7 +106,7 @@ dispersion <- function(array, norm = T, components = T, digits = 3){
 dispersion.histogram <- function(array, ..., bins = 100){
   # Process spectrum of the matrix/ensemble
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
-  else{disps_df <- array}
+  else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
   num_entries <- nrow(disps_df) # Get number of entries
   # Plot parameters
   color0 <- "darkorchid4"
@@ -119,9 +117,9 @@ dispersion.histogram <- function(array, ..., bins = 100){
 }
 
 dispersion.scatterplot <- function(array, ...){
-  # Process spectrum of the matrix/ensemble
+  # Process dispersion of the matrix/ensemble; if array is a dispersion data frame, copy it.
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
-  else{disps_df <- array}
+  else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
   # Plot parameters
   color0 <- "darkorchid4"
   # Get variances by level
@@ -133,7 +131,7 @@ dispersion.scatterplot <- function(array, ...){
 }
 
 dispersion.varplot <- function(array, ...){
-  # Process spectrum of the matrix/ensemble
+  # Process dispersion of the matrix/ensemble; if array is a dispersion data frame, copy it.
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
   else{disps_df <- array}
   # Plot parameters
@@ -178,12 +176,10 @@ dispersion.varplot <- function(array, ...){
 #' ensemble_spectrum <- spectrum(ensemble)
 #'
 spectrum <- function(array, components = T, largest = F, smallest = F, digits = 3){
-  # Infer type of array (matrix or ensemble) then parse accordingly.
-  is_ensemble <- (class(array) == "list")
-  # One type of array is inferred, obtain the eigenvalue array
-  if(!is_ensemble){.spectrum_matrix(array, components, largest, smallest, digits)}
-  # Otherwise, recursively get ensemble's spectrum by row binding each matrix's spectrum
-  else{purrr::map_dfr(array, .spectrum_matrix, components, largest, smallest, digits)}
+  # Array is a matrix; call function returning eigenvalues for singleton matrix
+  if(class(array) == "matrix"){.spectrum_matrix(array, components, largest, smallest, digits)}
+  # Array is an ensemble; recursively row binding each matrix's eigenvalues
+  else if(class(array) == "list"){purrr::map_dfr(array, .spectrum_matrix, components, largest, smallest, digits)}
 }
 
 # Helper function returning tidied eigenvalue array for a matrix
@@ -236,42 +232,68 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
 #' ensemble <- RME_norm(N = 3, size = 10)
 #' spectrum.scatterplot(ensemble)
 #'
-spectrum.scatterplot <- function(array, mat_str = ""){
+spectrum.scatterplot <- function(array, ..., mat_str = ""){
   # Process spectrum of the matrix/ensemble
-  if(class(array) == "list" || class(array) == "matrix"){eigen_spectrum <- spectrum(array)}
+  if(class(array) == "list" || class(array) == "matrix"){eigen_spectrum <- spectrum(array, ...)}
   else{eigen_spectrum <- array}
-  if(mat_str != ""){pre_space <- " "} else{pre_space <- ""} # Format without given name
   # Infer plot title string from which type of array (matrix/ensemble)
-  is_mat <- class(array) == "matrix"
-  if(is_mat){plot_str <- paste(pre_space, mat_str," Matrix", sep = "", collapse = "")}
-  else{plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
+  plot_str <- .plot_title(class(array), mat_str)
   # Plot parameters
-  #r <- 1
-  #x_window <- 0.5
-  #x_range <- c(-(r + x_window), (r + x_window)) # Widen the width of the plot
-  #circle <- data.frame(x0 = 0, y0 = 0, r = r)
-  # Color plot parameters
-  #color0 <- "steelblue"
-  #color1 <- "deepskyblue3"
-  #panel0 <- "lightblue"
-  #panel1 <- "lightskyblue1"
   order <- eigen_spectrum[["Order"]]
   # Plot
-  ggplot2::ggplot(eigen_spectrum) +
-    #geom_circle(mapping = aes(x0 = x0, y0 = y0, r = r), data = circle, color = color0) +
+  eigen_spectrum %>%
+    ggplot() +
     geom_point(mapping = aes(x = Re, y = Im, color = order), alpha = 0.75) +
     scale_color_continuous(type = "viridis") +
-    labs(x = "Re", y = "Im", title = paste("Spectrum of a",plot_str,sep = "")) #+
-    #theme(legend.position = "none") +
-    #theme(
-    #  panel.background = element_rect(fill = panel0,
-    #                                  colour = panel0,
-    #                                  size = 0.5, linetype = "solid"),
-    #  panel.grid.major = element_line(size = 0.5, linetype = 'solid',
-    #                                  colour = panel1),
-    #  panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
-    #                                  colour = panel1))#+
-    #xlim(x_range) +
-    #ylim(-r,r) +
+    labs(x = "Re", y = "Im", title = paste("Spectrum of a",plot_str,sep = "")) +
+    coord_fixed()
 }
 
+#' @title Visualize a plot of the eigenvalue distribution of a matrix or ensemble of matrices.
+#'
+#' @description Returns a histogram of the eigenvalues of a random matrix or ensemble.
+#'
+#' @param array a square matrix or matrix ensemble whose eigenvalues are to be plotted
+#' @param ... any default-valued parameters taken as arguments by spectrum(array, ...)
+#' @param imaginary if TRUE, returns the distribution of imaginary components
+#' @param bins number of bins of the histogram
+#' @param mat_str (optional) a string argument of the class of the matrix to label the plot title.
+#'
+#' @return A ggplot object containing a histogram of the matrix/matrix ensemble's spectrum.
+#' @examples
+#' # Eigenvalue spectrum plot of a matrix
+#' P <- RM_norm(N = 5)
+#' spectrum.histogram(P)
+#'
+#' # Labelled spectrum plot of a beta matrix
+#' Q <- RM_beta(N = 4, beta = 2)
+#' spectrum.histogram(Q, mat_str = "Beta")
+#'
+#' # Eigenvalue spectra plot of an ensemble of normal matrices
+#' ensemble <- RME_norm(N = 3, size = 10)
+#' spectrum.histogram(ensemble)
+#'
+spectrum.histogram <- function(array, ..., imaginary = F, bins = 100, mat_str = ""){
+  # Process spectrum of the matrix/ensemble
+  if(class(array) == "list" || class(array) == "matrix"){eigen_spectrum <- spectrum(array, ...)}
+  else{eigen_spectrum <- array}
+  # Infer plot title string from which type of array (matrix/ensemble)
+  plot_str <- .plot_title(class(array), mat_str)
+  # Plot parameters
+  color0 <- "darkorchid4"
+  if(imaginary){component <- "Im"} else{component <- "Re"}
+  # Plot
+  eigen_spectrum %>%
+    ggplot() +
+    geom_histogram(mapping = aes_string(x = component), fill = color0) +
+    labs(x = component, y = "Frequency", title = paste("Spectrum of a",plot_str,sep = ""))
+}
+
+# Helper function returning appoporiate string for matrix/ensemble given a matrix type string and class of input array
+.plot_title <- function(array_class, mat_str){
+  if(mat_str != ""){pre_space <- " "} else{pre_space <- ""} # Format without given name
+  # Infer plot title string from which type of array (matrix/ensemble)
+  if(array_class == "matrix"){plot_str <- paste(pre_space, mat_str," Matrix", sep = "", collapse = "")}
+  else if(array_class == "list"){plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
+  plot_str
+}

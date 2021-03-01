@@ -42,7 +42,7 @@ spec.erdos <- function(N, p, size){
 plots <- map2(args[,1], args[,2], .f = spec.erdos, size)
 ```
 
-```{r, fig.height = 8, fig.width = 10}
+```{r, fig.height = 8}
 # plot grid of ensemble spectra
 grid.arrange(plots[[1]],plots[[2]],plots[[3]],plots[[4]], ncol = 1)
 ```
