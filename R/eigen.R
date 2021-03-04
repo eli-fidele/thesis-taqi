@@ -178,9 +178,9 @@ dispersion.scatterplot <- function(array, ...){
 #' @description Returns a tidied dataframe of the eigenvalues of a random matrix or ensemble.
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalues are to be returned
-#' @param components returns the array with resolved real and imaginary components; otherwise returns complex-valued eigenvalues
-#' @param largest returns the largest eigenvalues of the matrix (ensemble)
-#' @param smallest returns the smallest eigenvalues of the matrix (ensemble)
+#' @param order get eigenvalues with that given order (norm ranking); order 1 represents largest, order N represents smallest (where N is the number of eigenvalues). 
+#'   If uninitialized, returns the entire spectrum.
+#' @param components returns the array with resolved real and imaginary components if TRUE; otherwise returns complex-valued eigenvalues
 #' @param digits number of digits to round up values to
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
@@ -197,22 +197,24 @@ dispersion.scatterplot <- function(array, ...){
 #' ensemble <- RME_norm(N = 3, size = 10)
 #' ensemble_spectrum <- spectrum(ensemble)
 #'
-spectrum <- function(array, components = T, largest = F, smallest = F, digits = 3){
+spectrum <- function(array, order = NA, components = T, digits = 3){
   # Array is a matrix; call function returning eigenvalues for singleton matrix
-  if(class(array) == "matrix"){.spectrum_matrix(array, components, largest, smallest, digits)}
+  if(class(array) == "matrix"){.spectrum_matrix(array, components, order, digits)}
   # Array is an ensemble; recursively row binding each matrix's eigenvalues
-  else if(class(array) == "list"){purrr::map_dfr(array, .spectrum_matrix, components, largest, smallest, digits)}
+  else if(class(array) == "list"){purrr::map_dfr(array, .spectrum_matrix, components, order, digits)}
 }
 
 # Helper function returning tidied eigenvalue array for a matrix
-.spectrum_matrix <- function(P, components = T, largest = F, smallest = F, digits = 3){
+.spectrum_matrix <- function(P, order = NA, components = T, digits = 3){
   eigenvalues <- eigen(P)$values # Get eigenvalues of matrix P
-  # Get largest eigenvalue
-  if(largest){.resolve_eigenvalue(order = 1, eigenvalues, components)}
-  # Get smallest eigenvalue
-  else if(smallest){.resolve_eigenvalue(order = nrow(P), eigenvalues, components)}
-  # Get all the eigenvalues
-  else{purrr::map_dfr(1:nrow(P), .resolve_eigenvalue, eigenvalues, components, digits)}
+  # If uninitialized, get eigenvalues of all orders
+  if(class(order) == "logical"){order <- 1:nrow(P)} 
+  # Parse character inputs
+  else if(class(order) == "character"){order <- .parseORDER(order, P)}
+  # Otherwise, concatenate so single inputs become vectors
+  else{order <- c(order)}
+  # Get the eigenvalues
+  purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits)
 }
 
 # Read and parse an eigenvalue from an eigen(P)$value array
@@ -227,6 +229,19 @@ spectrum <- function(array, components = T, largest = F, smallest = F, digits = 
   else{data.frame(Eigenvalue = round(eigenvalue, digits),
                   Norm = round(abs(eigenvalue), digits), Order = order)
   }
+}
+
+# Parse character inputs for desired order
+.parseORDER <- function(order, P){
+  warning("Using a character input for order is not recommended. Please use a numeric input with the rank of the eigenvalue as it is more comprehensive.")
+  # Lexicon
+  order_1 <- c("1st","lrg","lgst","largest","first")
+  order_2 <- c("2nd","sec","sec_lgst","second_largest","second")
+  order_n <- c("nth","sml","smlst","smallest","last")
+  if(order %in% order_1){return(c(1))}
+  else if(order %in% order_2){return(c(2))}
+  else if(order %in% order_n){return(c(nrow(P)))}
+  else{stop("Invalid input. Try using an integer, range of integers, or another string input.")}
 }
 
 #=================================================================================#
