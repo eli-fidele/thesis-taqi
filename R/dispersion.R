@@ -33,13 +33,13 @@
 #' # Alternatively, use the pipe
 #' #disp_ensemble <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
-dispersion <- function(array, norm = T, diff_abs = F, components = T, digits = 3){
+dispersion <- function(array, norm = T, diff_abs = F, components = T, digits = 3, pairs = NA){
   # Array is a matrix; call function returning dispersion for singleton matrix
-  if(class(array) == "matrix"){.dispersion_matrix(array, norm, components, digits)}
+  if(class(array) == "matrix"){.dispersion_matrix(array, norm, diff_abs, components, digits, pairs)}
   # Array is an ensemble; recursively row binding each matrix's dispersions
   else if(class(array) == "list"){
-    pairs <- .unique_pairs(nrow(array[[1]])) # Compute pairs to avoid computational waste and pass as argument
-    purrr::map_dfr(.x = array, .f = .dispersion_matrix, norm, components, digits, pairs)
+    if(class(pairs) == "logical"){pairs <- .unique_pairs(nrow(array[[1]]))} # Compute pairs to avoid computational waste and pass as argument
+    purrr::map_dfr(.x = array, .f = .dispersion_matrix, norm, diff_abs, components, digits, pairs)
   }
 }
 
@@ -49,19 +49,20 @@ dispersion <- function(array, norm = T, diff_abs = F, components = T, digits = 3
   N <- nrow(P) # Get matrix dimension
   # If uninitialized for the ensemble, enumerate unique pairs of N eigenvalues
   if(class(pairs) == "logical"){idx_pairs <- .unique_pairs(N)} else{idx_pairs <- pairs} # Otherwise, read in pre-computed values
-  # User is requesting a norm function rather than a setting of Euclidean norm
-  if(class(norm) != "logical"){
-    norm_fn <- function(x){(abs(x))^norm} # Beta norm
-    purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, components, digits)
+  # Sort call based on norm argument (Euclidean or custom)
+  if(class(norm) == "logical"){ # Otherwise, just use the absolute value norm
+    purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm, components, diff_abs, digits)
   }
-  # Otherwise, just use the absolute value norm
-  else{purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm, components, digits)}
+  else if(class(norm) == "numeric"){ # User is requesting a beta-norm function; different than using Euclidean norm
+    norm_fn <- function(x){(abs(x))^norm} # Beta norm
+    purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, components, diff_abs, digits)
+  }
 }
 
 # Read and parse a dispersion observation between eigenvalue i and j.
 .resolve_dispersion <- function(i, j, eigenvalues, norm, components, diff_abs, digits){
   # Compute the difference
-  if(diff_abs){difference <- abs(eigenvalues[i]) - abs(eigenvalues[j])}else{difference <- eigenvalues[i] - eigenvalues[j]}
+  if(diff_abs){difference <- (abs(eigenvalues[i]) - abs(eigenvalues[j]))} else{difference <- eigenvalues[i] - eigenvalues[j]}
   # Resolve parameters of desired dispersion metric
   if(class(norm) == "function"){disp <- data.frame(Dispersion = norm(difference))}
   else if(norm){disp <- data.frame(Dispersion = abs(difference))}

@@ -1,0 +1,22 @@
+---
+title: "spectrum testing"
+author: "Ali Taqi"
+date: "3/5/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../../R/header.R")
+.src(d = 2)
+```
+
+```{r}
+P <- RME_norm(N = 5, cplx = T, herm = T, size = 10)
+Q <- RME_norm(N = 5, cplx = T, herm = T, size = 10) 
+```
+
+```{r}
+P %>% spectrum(order = 1, components = F)
+```
+

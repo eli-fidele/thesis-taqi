@@ -48,13 +48,10 @@ spectrum <- function(array, order = NA, components = T, digits = 3){
 .resolve_eigenvalue <- function(order, eigenvalues, components, digits){
   eigenvalue <- eigenvalues[order] # Read from eigen(P)$values
   # If components are requested, resolve parts into seperate columns
-  if(components){
-    data.frame(Re = round(Re(eigenvalue),digits), Im = round(Im(eigenvalue),digits),
-               Norm = round(abs(eigenvalue), digits), Order = order)
-  }
-  else{data.frame(Eigenvalue = round(eigenvalue, digits),
-                  Norm = round(abs(eigenvalue), digits), Order = order)
-  }
+  if(components){evalue <- data.frame(Re = Re(eigenvalue), Im = Im(eigenvalue), Norm = abs(eigenvalue), Order = order)}
+  else{evalue <- data.frame(Eigenvalue = eigenvalue, Norm = abs(eigenvalue), Order = order)}
+  evalue <- round(evalue, digits) # Round entries
+  evalue # Return resolved eigenvalue
 }
 
 #=================================================================================#
@@ -146,5 +143,6 @@ spectrum.histogram <- function(array, ..., imaginary = F, bins = 100, mat_str = 
   # Infer plot title string from which type of array (matrix/ensemble)
   if(array_class == "matrix"){plot_str <- paste(pre_space, mat_str," Matrix", sep = "", collapse = "")}
   else if(array_class == "list"){plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
+  else{plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
   plot_str
 }
