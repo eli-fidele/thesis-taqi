@@ -28,17 +28,21 @@ P <- RME_norm(N = 25, cplx = T, herm = T, size = 3000)
 
 ```{r}
 pairs_12 <- data.frame(i = 1, j = 2)
-disps <- P %>% dispersion(diff_abs = T, components = F, norm = T, pairs = pairs_12)
+disps <- P %>% dispersion(diff_abs = T, components = F, norm = F, pairs = pairs_12)
 disps %>% dispersion.histogram()
 ```
 
 ### Absolute Difference
 
+### Without Resolving Components
+
 ```{r}
 pairs_12 <- data.frame(i = 1, j = 2)
-disps <- P %>% dispersion(diff_abs = F, components = F, norm = T, pairs = pairs_12)
+disps <- P %>% dispersion(diff_abs = F, components = F, pairs = pairs_12)
 disps %>% dispersion.histogram()
 ```
+
+### Resolving Components
 
 ```{r}
 disps <- P %>% dispersion(diff_abs = F, components = T, norm = F, pairs = pairs_12)
@@ -49,14 +53,6 @@ disps %>%
   ggplot(aes(x = Disp_Im)) +
   geom_histogram()
 ```
-
-```{r}
-disps <- P %>% dispersion(diff_abs = T, components = F, norm = F, pairs = pairs_12)
-disps %>%
-  ggplot(aes(x = Dispersion)) +
-  geom_histogram()
-```
-
 
 \newpage
 
@@ -80,7 +76,8 @@ disps_cross <- data.frame(Dispersion = do.call("c",map(seq_along(spec1), functio
 ```{r}
 disps_cross %>%
   ggplot(mapping = aes(Dispersion)) +
-  geom_histogram(bins = 250)
+  geom_histogram(bins = 250) +
+  labs(title = "Distribution of |Lam_1 - Lam_2|")
 ```
 
 
@@ -89,7 +86,6 @@ disps_cross %>%
 ```{r}
 specP <- P %>% spectrum(components = F)
 ```
-
 
 ```{r}
 spec1 <- (specP %>% filter(Order == 1))$Eigenvalue
@@ -104,10 +100,6 @@ disps_cross2 <- data.frame(Dispersion = do.call("c",map(seq_along(spec1), functi
 disps_cross2 %>%
   ggplot(mapping = aes(Dispersion)) +
   geom_histogram(bins = 250)
-```
-
-```{r}
-dispsAD <- P %>% dispersion(diff_abs = F, components = F, norm = T, pairs = pairs_12)
 ```
 
 

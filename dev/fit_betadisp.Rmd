@@ -1,0 +1,62 @@
+---
+title: "fit_betadisp"
+author: "Ali Taqi"
+date: "3/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+source("../R/header.R")
+.src(d = 1)
+```
+
+## Fitting Dispersions of Beta = 4, N = 20
+
+```{r}
+ens <- RME_beta(N = 20, beta = 4, size = 10)
+# Spectra plots
+spec_ens <- ens %>% spectrum()
+spec_ens %>% spectrum.scatterplot()
+spec_ens %>% spectrum.histogram(imaginary = F, bins = 50)
+# Dispersion plots
+disp_ens <- ens %>% dispersion()
+```
+
+```{r}
+fit_disp <- lm(I(Dispersion) ~ 0 + OrderDiff, data = disp_ens)
+summary(fit_disp)
+plot(fit_disp)
+```
+
+```{r}
+res <- fit_disp$residuals
+disps_ens <- cbind(disps_ens, res)
+ggplot() + geom_point(data = disps_ens, mapping = aes(Dispersion, res, color = OrderDiff)) +
+  scale_color_gradient(low = "blue", high = "red")
+```
+
+## Fitting Dispersions of Beta = 4, N = 50
+
+```{r}
+ens <- RME_beta(N = 50, beta = 4, size = 1000)
+# Spectra plots
+spec_ens <-ens %>% spectrum()
+spec_ens %>% spectrum.scatterplot()
+spec_ens %>% spectrum.histogram(imaginary = F, bins = 50)
+# Dispersion plots
+disp_ens <- ens %>% dispersion.scatterplot()
+```
+
+```{r}
+fit_disp <- lm(I(Dispersion) ~ 0 + OrderDiff, data = disp_ens)
+summary(fit_disp)
+plot(fit_disp)
+```
+
+```{r}
+res <- fit_disp$residuals
+disps_ens <- cbind(disps_ens, res)
+ggplot() + geom_point(data = disps_ens, mapping = aes(Dispersion, res, color = OrderDiff)) +
+  scale_color_gradient(low = "blue", high = "red")
+```
