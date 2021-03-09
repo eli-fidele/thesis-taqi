@@ -1,0 +1,43 @@
+---
+title: "Eigen-Dev"
+author: "Ali Taqi"
+date: "2/23/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+dispersion.plot <- function(entries, bins = 100){
+  #entries <- dispersion(array)
+  ggplot() + 
+    geom_histogram(data = entries, aes(x = diff), fill = "darkorchid4", bins = bins)
+}
+```
+
+```{r}
+N <- 30
+RME_norm(N, size = 250) %>% dispersion.histogram()
+#diffs <- dispersion(P)
+#dispersion.plot(diffs)
+```
+
+```{r}
+N <- 20
+RME_stoch(N = 20, size = 1000) %>% dispersion.histogram
+```
+
+```{r}
+beta.DISP <- function(beta, bins = 100){
+  P <- RME_beta(N = 50, beta, size = 1000)
+  diffs <- dispersion(P)
+  dispersion.plot(diffs, bins) + labs(title = paste("Beta =",beta))
+}
+```
+
+
+

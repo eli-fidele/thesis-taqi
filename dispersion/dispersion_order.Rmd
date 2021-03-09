@@ -1,0 +1,84 @@
+---
+title: "Dispersion of Eigenvalues & Order Statistics"
+author: "Taqi"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(d = 1)
+```
+
+## Ensemble of 25x25 Complex Hermitian Matrices
+
+```{r}
+P <- RME_norm(N = 25, cplx = T, herm = T, size = 5000) 
+#P %>% dispersion(components = T)
+spec_P <- P %>% spectrum
+order_1 <- spec_P %>% filter(Order == 1)
+order_2 <- spec_P %>% filter(Order == 2)
+diff_12 <- order_1 - order_2
+```
+
+```{r}
+spec_P %>% spectrum.scatterplot()
+```
+
+## Distribution of Eigenvalue Norms
+
+```{r}
+diff_12 %>%
+  ggplot(mapping = aes(x = Norm)) +
+  geom_histogram(bins = 50)
+```
+
+## Distribution of the Eigenvalue Norm by Ranking
+
+```{r}
+ggplot() +
+  geom_histogram(data = order_1, mapping = aes(x = Norm, fill = "1"), bins = 50) +
+  geom_histogram(data = order_2, mapping = aes(x = Norm, fill = "2"), bins = 50)
+```
+
+## Eigenvalue Norm Distribution by Ranking
+
+```{r}
+spec_P %>%
+  ggplot(mapping = aes(x = Norm, group = Order, color = Order)) +
+  geom_density(kernel = "gaussian") +
+  scale_color_gradient(low = "red", high = "blue")
+```
+
+```{r, echo = F}
+# Get kurtosis of eigenvalues given an order for an ensemble of matrices
+order_kurtosis <- function(order, spectrum, fn){
+  spectrum_order <- spectrum %>% filter(Order == order)
+  norms <- spectrum_order$Norm
+  fn(norms)
+}
+#vec_order <- 1:nrow(P[[1]])
+#vec_kurtosis <- purrr::map_dbl(vec_order, order_kurtosis, spec_P, kurtosis)
+#df_kurtosis <- data.frame(Order = vec_order, Kurtosis = vec_kurtosis)
+
+# Plot 
+#df_kurtosis %>%
+#  ggplot(mapping = aes(Order, Kurtosis)) +
+#  geom_point() +
+#  geom_line()
+```
+
+## Variance of Eigenvalue Norms by Rank
+
+```{r}
+vec_order <- 1:nrow(P[[1]])
+vec_var <- purrr::map_dbl(vec_order, order_kurtosis, spec_P, var)
+df_var <- data.frame(Order = vec_order, Variance = vec_var)
+
+# Plot 
+df_var %>%
+  ggplot(mapping = aes(Order, Variance)) +
+  geom_point() +
+  geom_line()
+```
+
