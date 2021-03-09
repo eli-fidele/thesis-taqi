@@ -45,7 +45,7 @@ dispersion <- function(array, norm = T, diff_abs = F, components = T, digits = 3
 
 # Find the eigenvalue dispersions for a given matrix
 .dispersion_matrix <- function(P, norm = T, diff_abs = F, components = T, digits = 3, pairs = NA){
-  eigenvalues <- eigen(P)$values # Get the eigenvalues of a matrix
+  eigenvalues <- .sort_norm(eigen(P)$values) # Get the eigenvalues of a matrix
   N <- nrow(P) # Get matrix dimension
   # If uninitialized for the ensemble, enumerate unique pairs of N eigenvalues
   if(class(pairs) == "logical"){idx_pairs <- .unique_pairs(N)} else{idx_pairs <- pairs} # Otherwise, read in pre-computed values

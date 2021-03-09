@@ -7,8 +7,11 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 source("test.R")
 ```
+
+## Stochastic Matrices
 
 ```{r}
 # Test proportion of numerically-valued (valid) symmetric stochastic matrices
@@ -30,4 +33,28 @@ stoch.STOCH(30, 150, symm = F)
 # the rank of eigenvalue ordering
 # i.e. do sort and check against initial ordering. if TRUE then eigen() orders them automatically
 ```
+
+## Normal Matrices
+
+```{r}
+norm.SYMM(iter = 500, N = 20, cplx = T)
+norm.SYMM(iter = 500, N = 20, cplx = F)
+```
+
+```{r}
+ens <- norm.ENS1(5,5)
+spec_ens <- map_dfr(ens, .spectrum_matrix)
+```
+
+## Beta Matrices
+
+```{r}
+beta_ens <- RME_beta(N = 4, beta = 10, size = 1000)
+#beta.SYMM <- 
+```
+
+```{r}
+ens.SYMM(beta_ens)
+```
+
 

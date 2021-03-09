@@ -38,7 +38,7 @@ spectrum <- function(array, order = NA, components = T, digits = 3){
 
 # Helper function returning tidied eigenvalue array for a matrix
 .spectrum_matrix <- function(P, order = NA, components = T, digits = 3){
-  eigenvalues <- eigen(P)$values # Get eigenvalues of matrix P
+  eigenvalues <- .sort_norm(eigen(P)$values) # Get eigenvalues of matrix P, sorted by size
   if(class(order) == "logical"){order <- 1:nrow(P)} # If uninitialized, get eigenvalues of all orders
   else{order <- c(order)} # Otherwise, concatenate so single inputs become vectors
   purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits) # Get the eigenvalues
@@ -52,6 +52,11 @@ spectrum <- function(array, order = NA, components = T, digits = 3){
   else{evalue <- data.frame(Eigenvalue = eigenvalue, Norm = abs(eigenvalue), Order = order)}
   evalue <- round(evalue, digits) # Round entries
   evalue # Return resolved eigenvalue
+}
+
+# Sort an array of numbers by their norm (written for eigenvalue sorting)
+.sort_norm <- function(eigenvalues){
+  (data.frame(eigenvalue = eigenvalues, norm = abs(eigenvalues)) %>% arrange(desc(norm)))$eigenvalue
 }
 
 #=================================================================================#

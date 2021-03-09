@@ -10,10 +10,12 @@ source("../R/header.R")
 .src(d = 1)
 ```
 
+# 25x25 Complex Hermitian Matrix
+
 ```{r}
-P <- RME_norm(N = 25, symm = T, size = 10)
+P <- RME_norm(N = 25, cplx = T, herm = T, size = 1000)
 spec_P <- P %>% spectrum(order = 1:2, components = T)
-spec_P
+spec_P %>% spectrum.scatterplot()
 ```
 
 ```{r}
@@ -30,7 +32,7 @@ spec_P
 ```{r}
 pairs_12 <- data.frame(i = 1, j = 2)
 disps <- P %>% dispersion(diff_abs = T, components = F, norm = F, pairs = pairs_12)
-disps %>% dispersion.histogram()
+disps %>% dispersion.histogram(bins = 30)
 ```
 
 ### Absolute Difference
@@ -86,18 +88,12 @@ disps_cross %>%
 
 ```{r}
 specP <- P %>% spectrum(components = F)
-```
-
-```{r}
 spec1 <- (specP %>% filter(Order == 1))$Eigenvalue
 spec2 <- (specP %>% filter(Order == 2))$Eigenvalue
 ```
 
 ```{r}
 disps_cross2 <- data.frame(Dispersion = do.call("c",map(seq_along(spec1), function(x){abs(x - spec2)})))
-```
-
-```{r}
 disps_cross2 %>%
   ggplot(mapping = aes(Dispersion)) +
   geom_histogram(bins = 250)

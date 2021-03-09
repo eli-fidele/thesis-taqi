@@ -1,0 +1,29 @@
+---
+title: "evalnorm"
+author: "Ali Taqi"
+date: "3/8/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(d = 1)
+```
+
+```{r}
+set.seed(23)
+P <- RM_norm(5, symm = T)
+eigenvalues <- eigen(P)$values
+data.frame(Eigenvalue = eigenvalues)
+(data.frame(eigenvalue = eigenvalues, norm = abs(eigenvalues)) %>% arrange(desc(norm)))$eigenvalue
+```
+
+
+```{r}
+# Sort an array of numbers by their norm (written for eigenvalue sorting)
+.sort_norm <- function(eigenvalues){
+  
+}
+```
+
