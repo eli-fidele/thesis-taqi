@@ -68,6 +68,6 @@ $$\forall n \geq N \mid  a_N \sim_\epsilon a_n$$
 
 ## Initial Findings
 
-It seems to be the case that the $\textbf{log-transformed}$ entries of the CRS are normally distributed about $\log{\lambda_1}$ where $\lambda_1 = \max(\sigma(Q))$, the largest eigenvalue of $Q$. That is,
+It seems to be the case that the $\textbf{log-transformed}$ entries of the CRS are Cauchy distributed about $\log{\lambda_1}$ where $\lambda_1 = \max(\sigma(Q))$, the largest eigenvalue of $Q$. That is,
 
-$$r_i \sim \mathcal{N}(\ln\lambda_1, \sigma) \text{ for } i = \onetoM$$
+$$r_i \sim \text{Cauchy}(\ln\lambda_1) \text{ for } i = \onetoM$$

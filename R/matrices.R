@@ -3,6 +3,22 @@
 #                             RANDOM MATRIX ENSEMBLES
 #=================================================================================#
 
+#' @title Generate an ensemble of normal random matrices
+#'
+#' @description Given the same arguments as RM_norm, this function returns an ensemble of random normal matrices.
+#'   While random matrices usually do not exude unique properties on their own, they do indeed have
+#'   deterministic properties at the ensemble level in terms of their spectral statistics.
+#'
+#' @inheritParams RM_unif
+#' @param ... any default-valued parameters taken as arguments by RM_norm()
+#' @param size the size of the ensemble (i.e. number of matrices)
+#' @return An ensemble (list) of normal matrices as specified by the matrix arguments.
+#' @examples
+#'
+#' # Generate an ensemble of standard normal 3x3 matrices of size 20
+#' ensemble <- RME_norm(N = 3, size = 20)
+#'
+RME_unif <- function(N, min, max, ..., size){lapply(X = rep(N, size), FUN = RM_unif, min, max, ...)}
 
 #' @title Generate an ensemble of normal random matrices
 #'
@@ -19,7 +35,7 @@
 #' # Generate an ensemble of standard normal 3x3 matrices of size 20
 #' ensemble <- RME_norm(N = 3, size = 20)
 #'
-RME_norm <- function(N, mean, sd, ..., size){lapply(X = rep(N, size), FUN = RM_norm, ...)}
+RME_norm <- function(N, mean, sd, ..., size){lapply(X = rep(N, size), FUN = RM_norm, mean, sd, ...)}
 
 
 #' @title Generate an ensemble of random beta matrices
@@ -76,6 +92,49 @@ RME_stoch <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_stoch, ...
 #' # ensemble <- RME_erdos(N = 10, p = 0.7, size = 50)
 #'
 RME_erdos <- function(N, p, ..., size){lapply(X = rep(N, size), FUN = RM_erdos, p, ...)}
+
+#=================================================================================#
+#                                RANDOM MATRICES
+#=================================================================================#
+
+#' @title Generate a uniform random matrix
+#'
+#' @description Uniform random matrices are matrices with uniformly distributed entries. They are an elementary type of random matrix.
+#'
+#' @param N number of dimensions of the square matrix
+#' @param min minimum of the uniform distribution to be sampled from
+#' @param max maximum of the uniform distribution to be sampled from
+#' @param symm indicates whether the matrix should be symmetric (equal to its transpose).
+#' @param cplx indicates whether the matrix should have complex entries.
+#' @param herm indicates whether the matrix should be hermitian (equal to its conjugate transpose).
+#'   Reserved for when complex = T, otherwise use symm = T.
+#' @return A random matrix with uniformly distributed entries.
+#' @examples
+#' # Unif(1,2) distributed matrix
+#' P <- RM_unif(N = 3, min = 1, max = 2)
+#'
+#' # Unif(0,5) distributed matrix with real symmetric entries
+#' P <- RM_unif(N = 7, min = 0, max = 5, symm = TRUE)
+#'
+#' # Unif(0,1) distributed matrix with complex entries
+#' Q <- RM_unif(N = 7, min = 0, max = 1, cplx = TRUE)
+#'
+#' # Unif(2,10) distributed matrix with hermitian complex entries
+#' Q <- RM_unif(N = 5, min = 2, max = 10, cplx = TRUE, herm = TRUE)
+#'
+RM_unif <- function(N, min, max, symm = FALSE, cplx = FALSE, herm = FALSE){
+  # Create [N x N] matrix with uniformly distributed entries
+  P <- matrix(runif(N^2, min, max), nrow = N)
+  # Make symmetric/hermitian if prompted
+  if(symm || herm){P <- .make_hermitian(P)}
+  # Returns a matrix with complex (and hermitian) entries if prompted
+  if(cplx){
+    Im_P <- (1i * RM_unif(N, min, max)) # Recursively add imaginary components as 1i * instance of real-valued matrix.
+    if(herm){P <- P + .make_hermitian(Im_P)}  # Make imaginary part hermitian if prompted
+    else{P <- P + Im_P}
+  }
+  P # Return the matrix
+}
 
 #=================================================================================#
 #                           NORMAL RANDOM MATRICES

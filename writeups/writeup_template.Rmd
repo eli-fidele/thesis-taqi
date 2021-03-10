@@ -5,11 +5,13 @@ author: "Ali Taqi"
 output: 
   pdf_document:
     includes: 
-      in_header: "commands.tex"
+      in_header: ["commands.tex"]
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+source("../R/header.R")
+.src(1)
 ```
 
 # My writeup

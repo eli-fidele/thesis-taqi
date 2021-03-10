@@ -33,7 +33,7 @@
 #' # Alternatively, use the pipe
 #' #disp_ensemble <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
-dispersion <- function(array, norm = T, diff_abs = F, components = T, digits = 3, pairs = NA){
+dispersion <- function(array, norm = 1, diff_abs = F, components = T, digits = 3, pairs = NA){
   # Array is a matrix; call function returning dispersion for singleton matrix
   if(class(array) == "matrix"){.dispersion_matrix(array, norm, diff_abs, components, digits, pairs)}
   # Array is an ensemble; recursively row binding each matrix's dispersions
@@ -44,7 +44,7 @@ dispersion <- function(array, norm = T, diff_abs = F, components = T, digits = 3
 }
 
 # Find the eigenvalue dispersions for a given matrix
-.dispersion_matrix <- function(P, norm = T, diff_abs = F, components = T, digits = 3, pairs = NA){
+.dispersion_matrix <- function(P, norm = T, diff_abs = F, components = T, pairs = NA, digits = 3){
   eigenvalues <- .sort_norm(eigen(P)$values) # Get the eigenvalues of a matrix
   N <- nrow(P) # Get matrix dimension
   # If uninitialized for the ensemble, enumerate unique pairs of N eigenvalues
@@ -62,14 +62,12 @@ dispersion <- function(array, norm = T, diff_abs = F, components = T, digits = 3
 # Read and parse a dispersion observation between eigenvalue i and j.
 .resolve_dispersion <- function(i, j, eigenvalues, norm, components, diff_abs, digits){
   # Compute the difference
-  if(diff_abs){difference <- (abs(eigenvalues[i]) - abs(eigenvalues[j]))} else{difference <- eigenvalues[i] - eigenvalues[j]}
+  if(diff_abs){difference <- (abs(eigenvalues[i]) - abs(eigenvalues[j]))} 
+  else{difference <- eigenvalues[i] - eigenvalues[j]}
   # Resolve parameters of desired dispersion metric
-  if(class(norm) == "function"){disp <- data.frame(Dispersion = norm(difference))}
-  else if(norm){disp <- data.frame(Dispersion = abs(difference))}
-  else{
-    if(components){disp <- data.frame(Disp_Re = Re(difference), Disp_Im = Im(difference))}
-    else{disp <- data.frame(Dispersion = difference)}
-  }
+  disp <- data.frame(Dispersion = norm(difference))
+  if(components){disp <- data.frame(Disp_Re = Re(difference), Disp_Im = Im(difference))}
+  else{disp <- data.frame(Dispersion = difference)}
   disp <- round(disp, digits) # Round digits
   cbind(disp, data.frame(OrderDiff = as.double(i - j))) # Add difference of order metric
 }

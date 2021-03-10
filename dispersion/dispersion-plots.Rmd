@@ -17,6 +17,7 @@ library(viridis)
 
 ```{r}
 P <- RM_norm(100, cplx = T)
+disp_P <- dispersion(P, )
 P %>% dispersion.histogram()
 P %>% dispersion.scatterplot()
 #P %>% dispersion.varplot()

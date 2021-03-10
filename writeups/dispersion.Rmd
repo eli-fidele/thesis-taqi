@@ -1,0 +1,73 @@
+---
+title: "Dispersion Statistics"
+author: "Ali Taqi"
+output: 
+  pdf_document:
+    includes: 
+      in_header: ["commands.tex"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+source("../R/header.R")
+.src(1)
+```
+
+## Matrix & Ensemble Dispersion
+
+<!-- Suppose we have a random matrix $P$ or a random matrix ensemble $\Ens = \{P_i \sim \Normal(0,1) \mid \Cc^*\}_{i = 1}^n$ of complex Hermitian standard normal matrices. Suppose we have the ordered spectrum of $P$, $\sigma_P$ at hand. -->
+
+<!-- Then, we define the dispersion of a matrix as follows. -->
+
+Suppose we have a random matrix $P$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid \F\}$. Then we define their dispersion as follows. 
+
+\begin{definition}[Dispersion]
+The dispersion of a matrix $P \in \F^{N \times N}$ with respect to a dispersion metric $d: \Cc \times \Cc \to \F$, call it $\Delta_d(P)$, is defined as follows. Suppose $\sigma_P$ is the ordered spectrum of $P$ where $\sigma_P = \{\lambda_1, \dots, \lambda_N\}$. Then, let $\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \in \sigma_P \times \sigma_P \mid i > j\}$ be the set of unique lower-pair (<) combinations of ordered eigenvalues. Then, the dispersion of $P$ with respect to $d$ is simply the set $\Delta_d(P)=\{d(\lambda_i ,\lambda_j) \mid \pi_{ij} \in \Pi_<\}$. In the case we choose a different pairing scheme $\Pi_0$, we simply denote the dispersion as $\Delta_d(P, \Pi_0)$.
+\end{definition}
+
+\begin{definition}[Ensemble Dispersion]
+If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_d(\Ens)$. To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid \F\}$, then $\Delta_d(\Ens) = \bigcup_{i=1}^N \Delta_d(P_i)$.
+\end{definition}
+
+## Dispersion Metrics
+
+In the definition of matrix dispersions, we see that there is a free argument $d$ called the dispersion metric. This function $d$ is a general function whose domain is always $\Cc \times \Cc$ - a pair of two eigenvalues. Its range, strangely, could be any of the two fields $\R$ or $\Cc$. Most often, the dispersion metric will be a standard distance function so its range will often be the positive reals $\R^+$. Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the last three metrics are **symmetric** operations while the first is not.
+
+1. The identity difference: $d(x,y) = y - x$
+1. The standard norm: $d(x,y) = |y - x|$
+1. The $\beta$-norm: $d_\beta(x,y) = |y - x|^\beta$
+1. The difference of absolutes: $d(x,y) = |y| - |x|$
+
+\newpage
+
+## Bounds and Considerations
+
+One thing to consider from this dispersion set is what we could learn from it. The dispersion of a matrix $P$, $\Delta_d(P)$ could tell us quite a few things. One thing it could tell us is the distribution of the dispersion of eigenvalues given that we uniformly and randomly select a pair of eigenvalues; this works when $d$ is a symmetric function. However, if we are considered about spacings, then we must taking into consideration a few facts.
+
+### Linear Combinations
+
+The identity difference metric is not necessarily a "bad metric". In fact, it is one of the few metrics which allow transitivity under composition - which brings up an important detail. In the total dispersion $\Delta_d(P)$, there is some redundant information if we are totally concerned with spacings. Namely, consider the following fact:
+\begin{align*}
+\lambda_1 - \lambda_3 = (\lambda_1 - \lambda_2) - (\lambda_3 - \lambda_2)
+\end{align*}
+In other words, if $d$ is the ID dispersion metric, then $d(\pi_{13}) = d(\pi_{12}) - d(\pi_{32})$. We could say the second eigenvalue is a pivot in which we could perform right-cancellation.
+
+### Triangle Inequality
+
+However, as we said previously, only the identity difference metric gives us transitive properties. On the other hand, the other metrics provide us bounds when we compose them. They are given by a simple application of the reverse triangle inequality. Namely, consider the following fact:
+\begin{align*}
+||y| - |x|| \leq |y - x|
+\end{align*}
+If we let $d_1$ be the difference of absolutes metric and $d_2$ be the standard norm, then we could rephrase this as saying $|d_1(\pi_{ij})| \leq d_2(\pi_{ij})$. This is just a rephrasing of the inequality. However, if we are careful enough, we can remove the absolute value to obtain a more meaningful upper bound. The value of $d_1(\pi_{ij})$ can be interpreted as the difference between the sizes of $\lambda_j$ and $\lambda_i$. However, recall that in the standard definition of a dispersion, we use the **lower** pair combinations so that we get $i > j$, making the value $|\lambda_j|$ always greater than $|\lambda_i|$ by construction. As such, the left-hand value would always be positive, allowing us to drop the absolute value. So, we could say: 
+\begin{align*}
+d_1(\pi_{ij}) \leq d_2(\pi_{ij}) \given \pi_{ij} \in \Pi_>
+\end{align*}
+
+\newpage 
+
+## Sufficiency of Consecutive Pairs
+
+Recall from previously that with respect to the identity difference, some elements of the dispersion $\Delta_d(P)$ can be expressed as a linear combination of other elements. Note that using those linear combinations and the triangle inequality, we could derive the analogous bounds. It is quite useful to impose a condition that none of the values are a linear combination of the other. 
+
+So, we motivate a more restrictive definition of matrix dispersion: the consecutive-values dispersion $\Delta_d(P, \Pi_c)$. This dispersion is essentially a special case of the regular dispersion, but with a particular pairing scheme $\Pi_c$. To avoid this issue of linear combinations, we simply take the pairs of consecutive eigenvalues. In other words, $\Pi_c = \{(\lambda_i, \lambda_j) \in \sigma_P \times \sigma_P  \mid j = i+1\}_{i=1}^{N-1}$. This pairing scheme enumerates the pairs such that the dispersion metric has a natural mapping - it is simply the "distance" between an eigenvalue and the one that is one rank smaller than it.
+
