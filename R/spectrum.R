@@ -44,14 +44,29 @@ spectrum <- function(array, order = NA, components = T, digits = 3){
   purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits) # Get the eigenvalues
 }
 
+# Parses a matrix spectrum array for the eigenvalue at a given order, regardless of components setting
+.read_eigenvalue <- function(order, matrix_spectrum){
+  
+}
+
 # Read and parse an eigenvalue from an eigen(P)$value array
 .resolve_eigenvalue <- function(order, eigenvalues, components, digits){
   eigenvalue <- eigenvalues[order] # Read from eigen(P)$values
-  # If components are requested, resolve parts into seperate columns
-  if(components){evalue <- data.frame(Re = Re(eigenvalue), Im = Im(eigenvalue), Norm = abs(eigenvalue), Order = order)}
-  else{evalue <- data.frame(Eigenvalue = eigenvalue, Norm = abs(eigenvalue), Order = order)}
+  # Get norm and order columns (will unconditionally be returned)
+  norm_and_order <- data.frame(Norm = abs(eigenvalue), Order = order)
+  # If components are requested, resolve parts into seperate columns and cbind to norm and order
+  if(components){evalue <- cbind(data.frame(Re = Re(eigenvalue), Im = Im(eigenvalue)), norm_and_order)}
+  else{evalue <- cbind(data.frame(Eigenvalue = eigenvalue), norm_and_order)}
   evalue <- round(evalue, digits) # Round entries
   evalue # Return resolved eigenvalue
+}
+
+# Resorts the norm of an eigenvalue based on a particular metric of order; default is regular norm.
+resort_spectrum <- function(array_spectrum, scheme = "norm"){
+  NA
+  # Other schemes could be by sign; as in original "bug", we could always prioritize eigenvalues with positive sign
+  # Could be called scheme = "sign"
+  array_spectrum
 }
 
 # Sort an array of numbers by their norm (written for eigenvalue sorting)
@@ -87,18 +102,18 @@ spectrum <- function(array, order = NA, components = T, digits = 3){
 #'
 spectrum.scatterplot <- function(array, ..., mat_str = ""){
   # Process spectrum of the matrix/ensemble
-  if(class(array) == "list" || class(array) == "matrix"){eigen_spectrum <- spectrum(array, ...)}
-  else{eigen_spectrum <- array}
+  if(class(array) == "list" || class(array) == "matrix"){array_spectrum <- spectrum(array, ...)}
+  else{array_spectrum <- array} # Else, the array is a precomputed spectrum (avoid computational waste for multiple visualizations)
   # Infer plot title string from which type of array (matrix/ensemble)
-  plot_str <- .plot_title(class(array), mat_str)
+  title_str <- .plot_title(class(array), prefix = "Spectrum", mat_str)
   # Plot parameters
-  order <- eigen_spectrum[["Order"]]
+  order <- array_spectrum[["Order"]]
   # Plot
-  eigen_spectrum %>%
+  array_spectrum %>%
     ggplot() +
     geom_point(mapping = aes(x = Re, y = Im, color = order), alpha = 0.75) +
     scale_color_continuous(type = "viridis") +
-    labs(x = "Re", y = "Im", title = paste("Spectrum of a",plot_str,sep = "")) +
+    labs(x = "Re", y = "Im", title = paste(title_str,sep = "")) +
     coord_fixed()
 }
 
@@ -108,7 +123,7 @@ spectrum.scatterplot <- function(array, ..., mat_str = ""){
 #'
 #' @inheritParams spectrum
 #' @param ... any default-valued parameters taken as arguments by spectrum(array, ...)
-#' @param imaginary if TRUE, returns the distribution of imaginary components
+#' @param component a string specifying a specific component of the spectrum to display; either "Re" or "Im". Defaults to both
 #' @param bins number of bins of the histogram
 #' @param mat_str (optional) a string argument of the class of the matrix to label the plot title.
 #'
@@ -126,28 +141,39 @@ spectrum.scatterplot <- function(array, ..., mat_str = ""){
 #' ensemble <- RME_norm(N = 3, size = 10)
 #' #spectrum.histogram(ensemble)
 #'
-spectrum.histogram <- function(array, ..., imaginary = F, bins = 100, mat_str = ""){
+spectrum.histogram <- function(array, ..., component = NA, bins = 100, mat_str = ""){
   # Process spectrum of the matrix/ensemble
-  if(class(array) == "list" || class(array) == "matrix"){eigen_spectrum <- spectrum(array, ...)}
-  else{eigen_spectrum <- array}
+  if(class(array) == "list" || class(array) == "matrix"){array_spectrum <- spectrum(array, ...)}
+  else{array_spectrum <- array} # Else, the array is a precomputed spectrum (avoid computational waste for multiple visualizations)
   # Infer plot title string from which type of array (matrix/ensemble)
-  plot_str <- .plot_title(class(array), mat_str)
+  title_str <- .plot_title(class(array), prefix = "Spectrum", mat_str)
   # Plot parameters
-  color0 <- "darkorchid4"
-  if(imaginary){component <- "Im"} else{component <- "Re"}
-  # Plot
-  eigen_spectrum %>%
-    ggplot() +
-    geom_histogram(mapping = aes_string(x = component), fill = color0) +
-    labs(x = component, y = "Frequency", title = paste("Spectrum of a",plot_str,sep = ""))
+  color0 <- "mediumpurple3"
+  if(class(component) == "logical"){component <- c("Re", "Im")} # Set default to both components
+  # Plot lambda function
+  component_plot <- function(component){
+    # Plot parameters
+    component_str <- paste(" (",component,")",collapse = "")
+    # Plot
+    array_spectrum %>%
+      ggplot() +
+      geom_histogram(mapping = aes_string(x = component), fill = color0) +
+      labs(x = component, y = "Frequency", title = paste(title_str, component_str, sep = ""))
+  }
+  # Get list of plots
+  plots <- map(component, component_plot)
+  # If we have both components and patchwork is loaded, attach plots to each other
+  if(require(patchwork) && length(plots) == 2){plots[[1]] / plots[[2]]} else if(length(plots) == 1){plots[[1]]}
+  # Return the list of plots
+  else{plot_list}
 }
 
 # Helper function returning appoporiate string for matrix/ensemble given a matrix type string and class of input array
-.plot_title <- function(array_class, mat_str){
+.plot_title <- function(array_class, prefix, mat_str){
   if(mat_str != ""){pre_space <- " "} else{pre_space <- ""} # Format without given name
   # Infer plot title string from which type of array (matrix/ensemble)
   if(array_class == "matrix"){plot_str <- paste(pre_space, mat_str," Matrix", sep = "", collapse = "")}
   else if(array_class == "list"){plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
   else{plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
-  plot_str
+  paste(prefix," of a",plot_str, sep = "")
 }

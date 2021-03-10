@@ -35,7 +35,7 @@ RME_unif <- function(N, min, max, ..., size){lapply(X = rep(N, size), FUN = RM_u
 #' # Generate an ensemble of standard normal 3x3 matrices of size 20
 #' ensemble <- RME_norm(N = 3, size = 20)
 #'
-RME_norm <- function(N, mean, sd, ..., size){lapply(X = rep(N, size), FUN = RM_norm, mean, sd, ...)}
+RME_norm <- function(N, mean = 0, sd = 1, ..., size){lapply(X = rep(N, size), FUN = RM_norm, mean, sd, ...)}
 
 
 #' @title Generate an ensemble of random beta matrices

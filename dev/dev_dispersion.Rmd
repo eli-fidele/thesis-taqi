@@ -1,0 +1,26 @@
+---
+title: "Developer"
+author: "Taqi"
+date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# Some random matrices and ensembles
+P <- RM_norm(5, symm = T)
+ens <- RME_unif(3, min = 0, max = 1, size = 5)
+```
+
+```{r}
+# Pair schema
+# The largest pair scheme; Largest and second largest
+# The consecutive-value scheme (Sufficient such that no linear combiantions of the diseprsion metric exists); one apart
+# The triangular pair schema (for symmetric dispersion metrics); essentially all the combinations
+# The antisymmetric pair scheme (for assymetric dispersion metrics); essentially all the permutations  
+```

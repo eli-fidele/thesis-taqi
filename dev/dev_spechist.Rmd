@@ -13,11 +13,12 @@ source("../R/header.R")
 
 ```{r}
 # Some random matrices and ensembles
-P <- RM_norm(5, symm = T)
+P <- RME_norm(100, cplx = T, herm = T, size = 5)
 ens <- RME_unif(3, min = 0, max = 1, size = 5)
 ```
 
 ```{r}
 # Do stuff here
+P %>% spectrum.histogram()
 ```
 
