@@ -28,8 +28,8 @@
 #' # Eigenvalue spectra of ensemble matrices
 #' ensemble <- RME_norm(N = 3, size = 10)
 #' ensemble_spectrum <- spectrum(ensemble)
-#'
-spectrum <- function(array, order = NA, components = T, digits = 3){
+#' 
+spectrum <- function(array, order = NA, components = T, digits = 3){ #### Add sortBy = "norm" or "sign" feature????
   # Array is a matrix; call function returning eigenvalues for singleton matrix
   if(class(array) == "matrix"){.spectrum_matrix(array, order, components, digits)}
   # Array is an ensemble; recursively row binding each matrix's eigenvalues
@@ -44,10 +44,14 @@ spectrum <- function(array, order = NA, components = T, digits = 3){
   purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits) # Get the eigenvalues
 }
 
-# Parses a matrix spectrum array for the eigenvalue at a given order, regardless of components setting
-.read_eigenvalue <- function(order, matrix_spectrum){
-  
-}
+# Parses a matrix spectrum array for the eigenvalue at a given order as cplx type (for arithmetic)
+.read_eigenvalue <- function(order, mat_spectrum){
+  if(ncol(mat_spectrum) == 3){mat_spectrum[order, 1]} # If the components are resolved, return value in the first (Eigenvalue) column
+  else{ # Components are resolved; get components and make it a complex number for arithmetic prep
+    evalue <- complex(real = mat_spectrum[order, 1], imaginary = mat_spectrum[order, 2])
+    if(Im(evalue) != 0){evalue} else{as.numeric(evalue)} # If it is real, coerce it into a numeric to remove +0i 
+    }
+  }
 
 # Read and parse an eigenvalue from an eigen(P)$value array
 .resolve_eigenvalue <- function(order, eigenvalues, components, digits){

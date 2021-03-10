@@ -10,9 +10,8 @@
 #' @description Returns a vector of the eigenvalue spacings of a random matrix or ensemble.
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalue spacings are to be returned
-#' @param norm use the norm metric for eigenvalue spacing; otherwise returns absolute difference metric
-#' @param diff_abs return the dispersions by computing the different of absolutes of the eigenvalues
-#' @param components returns the array with resolved real and imaginary components; otherwise returns complex-valued vectors/distances
+#' @param norm type of norm used; defaults to 1 (the standard absolute value); otherwise raises to the power of argument |x|^norm
+#' @param pairs a dataframe with two columns (i & j) denoting the pairs of eigenvalues whose dispersions are to be computed
 #' @param digits number of digits to round up values to
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
@@ -33,46 +32,41 @@
 #' # Alternatively, use the pipe
 #' #disp_ensemble <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
-dispersion <- function(array, norm = 1, diff_abs = F, components = T, digits = 3, pairs = NA){
+dispersion <- function(array, norm = 1, pairs = NA, digits = 3){
   # Array is a matrix; call function returning dispersion for singleton matrix
-  if(class(array) == "matrix"){.dispersion_matrix(array, norm, diff_abs, components, digits, pairs)}
+  if(class(array) == "matrix"){.dispersion_matrix(array, norm, pairs, digits)}
   # Array is an ensemble; recursively row binding each matrix's dispersions
   else if(class(array) == "list"){
     if(class(pairs) == "logical"){pairs <- .unique_pairs(nrow(array[[1]]))} # Compute pairs to avoid computational waste and pass as argument
-    purrr::map_dfr(.x = array, .f = .dispersion_matrix, norm, diff_abs, components, digits, pairs)
+    purrr::map_dfr(.x = array, .f = .dispersion_matrix, norm, pairs, digits)
   }
 }
 
 # Find the eigenvalue dispersions for a given matrix
-.dispersion_matrix <- function(P, norm = T, diff_abs = F, components = T, pairs = NA, digits = 3){
-  eigenvalues <- .sort_norm(eigen(P)$values) # Get the eigenvalues of a matrix
+.dispersion_matrix <- function(P, norm = 1, pairs = NA, digits = 3){
+  #eigenvalues <- .sort_norm(eigen(P)$values) # Get the eigenvalues of a matrix
+  eigenvalues <- spectrum(P)
   N <- nrow(P) # Get matrix dimension
   # If uninitialized for the ensemble, enumerate unique pairs of N eigenvalues
   if(class(pairs) == "logical"){idx_pairs <- .unique_pairs(N)} else{idx_pairs <- pairs} # Otherwise, read in pre-computed values
-  # Sort call based on norm argument (Euclidean or custom)
-  if(class(norm) == "logical"){ # Otherwise, just use the absolute value norm
-    purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm, components, diff_abs, digits)
-  }
-  else if(class(norm) == "numeric"){ # User is requesting a beta-norm function; different than using Euclidean norm
-    norm_fn <- function(x){(abs(x))^norm} # Beta norm
-    purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, components, diff_abs, digits)
-  }
+  # Generate norm function argument (Euclidean or Beta norm)
+  norm_fn <- function(x){(abs(x))^norm} 
+  purrr::map2_dfr(idx_pairs[,1], idx_pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, digits)
 }
 
 # Read and parse a dispersion observation between eigenvalue i and j.
-.resolve_dispersion <- function(i, j, eigenvalues, norm, components, diff_abs, digits){
-  # Compute the difference
-  if(diff_abs){difference <- (abs(eigenvalues[i]) - abs(eigenvalues[j]))} 
-  else{difference <- eigenvalues[i] - eigenvalues[j]}
-  # Resolve parameters of desired dispersion metric
-  disp <- data.frame(Dispersion = norm(difference))
-  if(components){disp <- data.frame(Disp_Re = Re(difference), Disp_Im = Im(difference))}
-  else{disp <- data.frame(Dispersion = difference)}
+.resolve_dispersion <- function(i, j, eigenvalues, norm_fn, digits){
+  disp <- data.frame(i = i, j = j) # Initialize dispersion dataframe by adding order of eigenvalues compared
+  disp$eig_i <- .read_eigenvalue(i, eigenvalues); disp$eig_j <- .read_eigenvalue(j, eigenvalues) # Add the eigenvalues
+  disp$id_diff <- disp$eig_j - disp$eig_i # Get the identity difference dispersion metric
+  disp$id_diff_norm <- norm_fn(disp$id_diff) # Take the norm of the difference
+  disp$abs_diff <- norm_fn(disp$eig_j) - norm_fn(disp$eig_i) # Compute the difference of absolutes w.r.t. norm function (Euclidean or beta)
   disp <- round(disp, digits) # Round digits
-  cbind(disp, data.frame(OrderDiff = as.double(i - j))) # Add difference of order metric
+  disp$orderDiff_ji <- disp$j - disp$i
+  disp # Return resolved dispersion observation
 }
 
-# Enumerate the unique pairs given N items
+# Enumerate the unique pairs given N items; ## Add lower or upper triangle argument, need to create binary lambdas; <(x,y) and >(x,y)
 .unique_pairs <- function(N){
   is <- do.call("c",map(1:N, function(i){rep(i,N)}))
   js <- rep(1:N, N)
@@ -87,6 +81,7 @@ dispersion <- function(array, norm = 1, diff_abs = F, components = T, digits = 3
 #' @description Returns a histogram of the eigenvalue spacings of a random matrix or ensemble.
 #'
 #' @inheritParams dispersion
+#' @param metric a string denoting the eigenvalue dispersion metric (column of a dispersion object) to use
 #' @param ... any default-valued parameters taken as arguments by spectrum(array, ...)
 #' @param bins (optional) a string argument of the class of the matrix to label the plot title.
 #'
@@ -104,7 +99,7 @@ dispersion <- function(array, norm = 1, diff_abs = F, components = T, digits = 3
 #' # ensemble <- RME_norm(N = 3, size = 10)
 #' # dispersion.histogram(ensemble)
 #'
-dispersion.histogram <- function(array, ..., bins = 100){
+dispersion.histogram <- function(array, metric, ..., bins = 100){
   # Process spectrum of the matrix/ensemble
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
   else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
@@ -112,8 +107,8 @@ dispersion.histogram <- function(array, ..., bins = 100){
   # Plot parameters
   color0 <- "darkorchid4"
   # Return plot
-  ggplot(data = disps_df, mapping = aes(x = Dispersion, y = stat(count / num_entries))) +
-    geom_histogram(bins = bins) +
+  ggplot(data = disps_df, mapping = aes_string(x = metric)) +
+    geom_histogram(mapping = aes(y = stat(count / num_entries)), bins = bins) +
     labs(title = "Distribution of Eigenvalue Spacings", y = "Probability")
 }
 
@@ -122,6 +117,7 @@ dispersion.histogram <- function(array, ..., bins = 100){
 #' @description Returns a scatterplot of the eigenvalue spacings of a random matrix or ensemble.
 #'
 #' @inheritParams dispersion
+#' @param metric a string denoting the eigenvalue dispersion metric (column of a dispersion object) to use
 #' @param ... any default-valued parameters taken as arguments by spectrum(array, ...)
 #'
 #' @return A ggplot object containing a scatterplot of the matrix/matrix ensemble's eigenvalue spacings.
@@ -138,7 +134,7 @@ dispersion.histogram <- function(array, ..., bins = 100){
 #' # ensemble <- RME_norm(N = 3, size = 10)
 #' # dispersion.scatterplot(ensemble)
 #'
-dispersion.scatterplot <- function(array, ...){
+dispersion.scatterplot <- function(array, metric = "id_diff_norm", ...){
   # Process dispersion of the matrix/ensemble; if array is a dispersion data frame, copy it.
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
   else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
@@ -146,8 +142,8 @@ dispersion.scatterplot <- function(array, ...){
   color0 <- "darkorchid4"
   # Get variances by level
   disps_df %>%
-    ggplot(mapping = aes(x = Dispersion, y = OrderDiff, color = OrderDiff)) +
-    geom_point() +
+    ggplot(mapping = aes(y = OrderDiff, color = OrderDiff)) +
+    geom_point(mapping = aes_string(x = metric)) +
     scale_color_continuous(type = "viridis") +
     labs(title = "Distribution of Eigenvalue Spacings by Ranking Difference Class", y = "Ranking Difference")
 }
@@ -157,6 +153,7 @@ dispersion.scatterplot <- function(array, ...){
 #' @description Returns a variance scatterplot of classes/levels of eigenvalue spacings of a random matrix or ensemble.
 #'
 #' @inheritParams dispersion
+#' @param metric a string denoting the eigenvalue dispersion metric (column of a dispersion object) to use
 #' @param ... any default-valued parameters taken as arguments by spectrum(array, ...)
 #'
 #' @return A ggplot object containing a scatterplot of the matrix/matrix ensemble's eigenvalue spacings.
@@ -173,7 +170,7 @@ dispersion.scatterplot <- function(array, ...){
 #' # ensemble <- RME_norm(N = 3, size = 10)
 #' # .dispersion.varplot(ensemble)
 #'
-.dispersion.varplot <- function(array, ...){
+.dispersion.varplot <- function(array, metric, ...){
   # Process dispersion of the matrix/ensemble; if array is a dispersion data frame, copy it.
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
   else{disps_df <- array}

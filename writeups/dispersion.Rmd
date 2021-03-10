@@ -19,7 +19,7 @@ source("../R/header.R")
 
 <!-- Then, we define the dispersion of a matrix as follows. -->
 
-Suppose we have a random matrix $P$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid \F\}$. Then we define their dispersion as follows. 
+Suppose we have a $\mathcal{D}$-distributed random matrix $P \in \F^{N \times N}$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid \F\}$. Then we define their dispersion as follows. 
 
 \begin{definition}[Dispersion]
 The dispersion of a matrix $P \in \F^{N \times N}$ with respect to a dispersion metric $d: \Cc \times \Cc \to \F$, call it $\Delta_d(P)$, is defined as follows. Suppose $\sigma_P$ is the ordered spectrum of $P$ where $\sigma_P = \{\lambda_1, \dots, \lambda_N\}$. Then, let $\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \in \sigma_P \times \sigma_P \mid i > j\}$ be the set of unique lower-pair (<) combinations of ordered eigenvalues. Then, the dispersion of $P$ with respect to $d$ is simply the set $\Delta_d(P)=\{d(\lambda_i ,\lambda_j) \mid \pi_{ij} \in \Pi_<\}$. In the case we choose a different pairing scheme $\Pi_0$, we simply denote the dispersion as $\Delta_d(P, \Pi_0)$.

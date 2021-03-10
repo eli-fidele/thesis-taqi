@@ -5,27 +5,16 @@
 
 - Add a feature to test whether a stochastic matrix represents a recurrent markov chain computationally! (In general, a method to rule out if a matrix satsfies the ergodic conditions. Once done, condition on ergodicity and see if spectra look any different.)
 
-- Adjust spectrum plot aspect ratio to be 1.
-
 - Address the symmetric stochastic matrix absorption dilemma; randomize the diagonal-normalized value of 1's value (give the matrix a larger chance to be recurrent!!)
-
-- Add feature for spectrum to return array with unresolved eigenvalues (components = F?)
 
 - Add RM_"unif, gamma, beta" matrices, etc..
 
-- Update ensemble documentation
-
 - Make sure Github package is working!!
-
-- Beta ensemble spectra
 
 - Write functional analogues of maxim for epsilon, N, and other free parameter type simulations
 
 -Create a quick batch function so that it gives Q^n / Q^(n-1). This should 
 be a fast way to get the eigen_index for an ENSEMBLE of matrices.
-
-
-- Analyze the quantile plot of the CRS distribution. Use qqplot. Perhaps check it against a location transformed Cauchy plot?
 
 - Writeup a radial density function for spectrum analysis. Perhaps consider enumerating other spectrum statistics: (sup, diff, ...)
 
