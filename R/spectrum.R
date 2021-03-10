@@ -65,8 +65,12 @@ spectrum <- function(array, order = NA, components = T, digits = 3){ #### Add so
   evalue # Return resolved eigenvalue
 }
 
+#=================================================================================#
+#                              ORDER SORTING SCHEMES
+#=================================================================================#
+
 # Resorts the norm of an eigenvalue based on a particular metric of order; default is regular norm.
-resort_spectrum <- function(array_spectrum, scheme = "norm"){
+.resort_spectrum <- function(array_spectrum, scheme = "norm"){
   NA
   # Other schemes could be by sign; as in original "bug", we could always prioritize eigenvalues with positive sign
   # Could be called scheme = "sign"
