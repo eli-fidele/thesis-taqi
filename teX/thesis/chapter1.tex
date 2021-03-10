@@ -1,0 +1,79 @@
+\input{chapter-header.tex}
+% Theorem packages
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+% for indicator bb 1
+\usepackage{dsfont}
+\usepackage{amsthm}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\onetoM}{\{1,\dots,M\}}
+\newcommand{\R}{\mathbb{R}}
+
+\newtheorem{definition}{Definition}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+\newtheorem*{algorithm}{Algorithm}
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+\begin{document}
+
+\chapter{Random Matrices}
+\section{What are Random Matrices?}
+In this thesis, the primary object of study is the random matrix. A random matrix can be intuitively defined by first motivating a random variable. 
+
+\begin{definition}[Random Variable]
+A random variable $X: \Omega \to \mathbb{R}$ is a function from some sample space $\Omega = \{s_i\}_{i=1}^n$ to the real numbers $\mathbb{R}$. The sample space is taken to be any set of events such that the probability function corrosponding to the random variable, $p_X$ exhausts over all the events in $\Omega$. In other words, we expect $\int_\Omega p_X(s) = 1$.
+\end{definition}
+
+\begin{definition}[Random Matrix]
+A (homogenous) random matrix is any matrix $M \in \F^{n \times n}$ is a matrix whose entries are i.i.d random variables. So, if a random matrix $M = (m_{ij})$ is $\mathcal{D}$-distributed, this is equivalent to saying $m_{ij} \sim \mathcal{D}$.
+\end{definition}
+
+\section{Markov Chains}
+
+\begin{definition}[Transition Matrix] 
+Take a Markov Chain with states $\onetoM$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \onetoM: \sum_{j \in \onetoM} q_{ij} = 1$.
+\end{definition}
+
+\section{Erdos-Renyi Graphs}
+
+\begin{definition}[Erdos-Renyi Graph]
+An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \{1,\dots,M\}$ and edges $E = \mathds{1}_{i,j \in V} \sim Bern(p_{ij})$. It is homogenous if $p_{ij} = p$ is fixed for all $i, j$.
+\end{definition}
+
+Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameterized by a probability $p$ (assuming it's homogenous, which this document will unless otherwise noted). As $p \to 0$, we say that graph becomes more sparse; analogously, as $p \to 1$ the graph becomes more connected.\newline
+\indent Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable. As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(M,p)$. This is helpful to know because the process of simulating graphs becomes much simpler.
+
+\newpage
+
+\section{Simulation}
+With the Erdos-Renyi graph defined, we may now motivate the simulation of random walks on them. First, however, we need to generate their corrosponding transition matrices. An algorithm for this is outlined below.
+
+\begin{algorithm}[Transition Matrix of an Erdos-Renyi Graph] 
+	\begin{enumerate}
+		\qquad
+		\item{Fix $M \in \mathbb{N}$ and $p \in [0,1]$}.
+		\item{Generate a matrix Q such that every entry $i,j\in \onetoM$ is $x_{ij} \sim Unif(0,1)$.}
+		\item{For each $v_i$ in $\{1,\dots,M\}$, generate $deg(v_i) \sim Bin(M,p)$.}
+		\item{Randomly chose $(1-deg(v_i)$ vertices, set the entries $x_{ij}$ in the $j$ columns to 0.}
+		\item{Renormalize the matrix by dividing each row by its sum; let $(x_i) \leftarrow (x_i)/\sum_j(x_i)$}.
+	\end{enumerate}
+\end{algorithm}
+
+\begin{definition}[Evolution Sequence]
+An evolution sequence of a vector $\vec{\pi}$ and a transition matrix $Q$ is defined as the sequence $\mathcal{S}(Q,\pi) = ( \pi'_n )_{n=1}^N$ where $ \pi'_n  = \pi Q^n$
+\end{definition}
+
+Suppose we have simulated a transition matrix for an Erdos-Renyi graph called $Q$. Now, fixing some initial probability distribution $\vec{x} \in \R^M$, we may consider the evolution sequence of a random walk on this Erdos-Renyi graph by taking its evolution sequence $\mathcal{S}(Q, x)$.
+
+\chapter{Spectral Statistics}
+\section{Introduction}
+Spectral statistics, in this context, will be an umbrella term to describe the statistics found from the eigenvalues and eigenvectors of matrices. We begin with some motivating definitions.
+
+\begin{definition}[Spectrum]
+Given a matrix $A$, the spectrum of $A$ is defined as the ordered multiset of its eigenvalues, denoted by $\sigma(A) = \{\lambda_i\}_{i=1}^n$  and $\lambda_1 \leq \dots  \leq \lambda_n$.
+\end{definition}
+
+\end{document}
