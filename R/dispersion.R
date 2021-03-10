@@ -62,15 +62,39 @@ dispersion <- function(array, norm = 1, pairs = NA, digits = 3){
   disp$id_diff_norm <- norm_fn(disp$id_diff) # Take the norm of the difference
   disp$abs_diff <- norm_fn(disp$eig_j) - norm_fn(disp$eig_i) # Compute the difference of absolutes w.r.t. norm function (Euclidean or beta)
   disp <- round(disp, digits) # Round digits
-  disp$orderDiff_ji <- disp$j - disp$i
+  disp$orderDiff_ij <- disp$i - disp$j
   disp # Return resolved dispersion observation
 }
 
-# Enumerate the unique pairs given N items; ## Add lower or upper triangle argument, need to create binary lambdas; <(x,y) and >(x,y)
-.unique_pairs <- function(N){
+#=================================================================================#
+#                                 PAIR SCHEMA
+#=================================================================================#
+
+# Parse a string argument for which pairing scheme to utilize
+.parse_pairScheme <- function(scheme_str){
+  if(scheme_str == "largest"){
+    pairs_12 <- data.frame(i = 1, j = 2)
+  }
+}
+# The antisymmetric pair scheme (for assymetric dispersion metrics); essentially all the permutations  
+.all_pairs <- function(N){purrr::map_dfr(1:N, function(i, N){data.frame(i = rep(i, N), j = 1:N)}, N)}
+
+# The consecutive-value scheme (Sufficient such that no linear combiantions of the diseprsion metric exists); one apart
+.consecutive_pairs <- function(N){map_dfr(2:N, function(i){data.frame(i = i, j = i - 1)})}
+
+# The triangular pair schema (for symmetric dispersion metrics); essentially all the combinations
+# (Enumerate the pair combinations given N items with i > j)
+.unique_pairs_lower <- function(N){
   is <- do.call("c",map(1:N, function(i){rep(i,N)}))
   js <- rep(1:N, N)
   do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i > j){c(i = i, j = j)}}))
+}
+# The triangular pair schema (for symmetric dispersion metrics); essentially all the combinations
+# (Enumerate the pair combinations given N items with i < j)
+.unique_pairs_upper <- function(N){
+  is <- do.call("c",map(1:N, function(i){rep(i,N)}))
+  js <- rep(1:N, N)
+  do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i < j){c(i = i, j = j)}}))
 }
 #=================================================================================#
 #                         DISPERSION VISUALIZATION FUNCTIONS
