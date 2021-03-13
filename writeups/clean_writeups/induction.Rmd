@@ -33,7 +33,7 @@ Thus, for any $M \in \N$, a real symmetric matrix with eigenvalue $\lambda$ must
 
 Now, we will prove the main theorem.
 
-$\bf Theorem.$ Suppose we have a $M \times M$ real symmetric matrix, $S_M$. Then, we will show that there exists for some eigenvalue $\lambda$, a corrosponding **real** eigenvector $\vec{v} \in \R^M$.
+$\bf Theorem \; (Taqi).$ Suppose we have a $M \times M$ real symmetric matrix, $S_M$. Then, we will show that there exists for some eigenvalue $\lambda$, a corrosponding **real** eigenvector $\vec{v} \in \R^M$.
 
 $\bf Proof.$ For this proof we will induct on the dimension of the matrix, $M$. So let the inductive statement be
 $$f(M) : S_M\text{ has a real eigenvector } v \text{ corrosponding to an eigenvalue } \lambda$$

@@ -1,3 +1,14 @@
+Monday, Mar 15,
+
+Hello Nate, hope you're doing well!
+
+Heres a quick overview of what to look for:
+
+1) I did some order statistic simulations for various distributions. You can find the summary PDF in in hello-nate/sim_order.pdf. Pretty self-explanatory.
+
+2) I am (very) excited to show you the writeup in hello-nate/dispersion_writeup.pdf. In this document, I lay down some notation and explicit definitions of things that will allow for more effective communication about eigenvalue spacing statistics.
+
+
 Monday, Mar 1
 
 Hello Nate, Happy March!

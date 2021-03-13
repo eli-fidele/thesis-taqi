@@ -22,37 +22,51 @@ source("../R/header.R")
 Suppose we have a $\mathcal{D}$-distributed random matrix $P \in \F^{N \times N}$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}$. Then we define their dispersion as follows. 
 
 \begin{definition}[Dispersion]
-The dispersion of a matrix $P \in \F^{N \times N}$ with respect to a dispersion metric $d: \Cc \times \Cc \to \F$, call it $\Delta_d(P)$, is defined as follows. Suppose $\sigma_P$ is the ordered spectrum of $P$ where $\sigma_P = \{\lambda_1, \dots, \lambda_N\}$. Then, let $\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \in \sigma_P \times \sigma_P \mid i > j\}$ be the set of unique lower-pair (<) combinations of ordered eigenvalues. Then, the dispersion of $P$ with respect to $d$ is simply the set $\Delta_d(P)=\{d(\lambda_i ,\lambda_j) \mid \pi_{ij} \in \Pi_<\}$. In the case we choose a different pairing scheme $\Pi_0$, we simply denote the dispersion as $\Delta_d(P, \Pi_0)$.
+The dispersion of a matrix $P \in \F^{N \times N}$ with respect to a dispersion metric $d: \Cc \times \Cc \to \F$ and pairing scheme $\Pi$, call it $\Delta_d(P, \Pi)$, is defined as follows. Suppose $\sigma(P) := \S$ is the ordered spectrum of $P$ where $\sigma(P) = \{\lambda_1, \dots, \lambda_N\}$. Then, let $\Pi = \{\pi_{ij} = (\lambda_i,\lambda_j) \} \subseteq \S^2$ be a subset of eigenvalue ordered pairs. Then, the dispersion of $P$ with respect to $d$ is simply the set $\Delta_d(P)=\{\delta_{ij} = d(\lambda_i ,\lambda_j) \mid \pi_{ij} \in \Pi\}$.
 \end{definition}
 
 \begin{definition}[Ensemble Dispersion]
-If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_d(\Ens)$. To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid \F\}$, then $\Delta_d(\Ens) = \bigcup_{i=1}^N \Delta_d(P_i)$.
+If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_d(\Ens)$. To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$, then $\Delta_d(\Ens, \Pi) = \bigcup_{i=1}^K \Delta_d(P_i, \Pi)$.
 \end{definition}
+
+## Pairing Schema
+
+In our definition, we introduce a new notation for a pairing scheme denoted $\Pi$. In essence, $\Pi$ is simply a subset of the Cartesian product of a spectrum $\S = \sigma(P)$ with itself. In other words, $\Pi \subseteq \S^2$. There are a few special pairing schema to consider:
+
+1. Let $\Pi_<$ be the set of unique lower-pair (<) combinations of ordered eigenvalues
+$$\Pi_< = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
+1. Let $\Pi_>$ be the set of unique upper-pair (>) combinations of ordered eigenvalues.
+$$\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
+1. Let $\Pi_1$ be the largest pair of eigenvalues of a spectrum.
+$$\Pi_1 = \{(\lambda_2,\lambda_1)\}$$
+1. Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum.
+$$\Pi_C = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i = j + 1\}_{i = 1}^{N-1}$$
+
 
 ## A Caveat: Eigenvalue Ordering
 
-In our definition of matrix dispersion, we are given a matrix $P$ which has an "ordered" spectrum $\sigma_P$. It is paramount to know what ordering scheme $\sigma_P$ is using, because otherwise, the indices are meaningless! So, consider the two following schema:
+In our definition of matrix dispersion, we are given a matrix $P$ which has an "ordered" spectrum $\sigma_P$. It is paramount to know what ordering scheme $\sigma(P)$ is using, because otherwise, the indices are meaningless! So, consider the two following schema:
 
 Classical definitions of an ordered spectrum follow the standard ordering in the reals; denote this as the ordering by "sign" scheme. Note that because well-ordering is defined on the reals, we cannot use the sign scheme when $\sigma_P \subset \Cc^N$. We write the sign-ordered spectrum as follows:
 \begin{align*}
-\sigma_P = \{\lambda_j : \lambda_1 \geq \lambda_2 \geq \dots \geq \lambda_N\}_{j = 1}^N
+\sigma_S(P) = \{\lambda_j : \lambda_1 \geq \lambda_2 \geq \dots \geq \lambda_N\}_{j = 1}^N
 \end{align*}
 Alternatively, we can motivate a different scheme that properly handles complex eigenvalues. We could sort the spectrum by the norm of its entries; denote this as the ordering by "norm" scheme. We write the norm-ordered spectrum as follows:
 \begin{align*}
-\sigma_P = \{\lambda_j : |\lambda_1| \geq |\lambda_2| \geq \dots \geq |\lambda_N|\}_{j = 1}^N
+\sigma_N(P) = \{\lambda_j : |\lambda_1| \geq |\lambda_2| \geq \dots \geq |\lambda_N|\}_{j = 1}^N
 \end{align*}
 
 
 ## Dispersion Metrics
 
-In the definition of matrix dispersions, we see that there is a free argument $d$ called the dispersion metric. This function $d$ is a general function whose domain is always $\Cc \times \Cc$ - a pair of two eigenvalues. Its range, strangely, could be any of the two fields $\R$ or $\Cc$. Most often, the dispersion metric will be a standard distance function so its range will often be the positive reals $\R^+$. Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the last three metrics are **symmetric** operations while the first is not.
+In the definition of matrix dispersions, we see that there is a free argument $d$ called the dispersion metric. This function $d$ is a general function whose domain is always $\Cc \times \Cc$ - a pair of two eigenvalues. Its range, strangely, could be any of the two fields $\R$ or $\Cc$. Most often, the dispersion metric will be a standard distance function so its range will often be the positive reals $\R^+$. Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the second and third metrics are **symmetric** operations while the rest are not.
 
 1. The identity difference: $d(x,y) = y - x$
 1. The standard norm: $d(x,y) = |y - x|$
 1. The $\beta$-norm: $d_\beta(x,y) = |y - x|^\beta$
 1. The difference of absolutes: $d(x,y) = |y| - |x|$
 
-\newpage
+<!-- \newpage -->
 
 ## Bounds and Considerations
 

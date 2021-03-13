@@ -10,10 +10,10 @@
 #' @description Returns a tidied dataframe of the eigenvalues of a random matrix or ensemble.
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalues are to be returned
+#' @param components returns the array with resolved real and imaginary components if TRUE; otherwise returns complex-valued eigenvalues
+#' @param sortByNorm sorts the eigenvalue spectrum by its norms, otherwise sorts by sign
 #' @param order get eigenvalues with that given order (norm ranking); order 1 represents largest, order N represents smallest (where N is the number of eigenvalues).
 #'   If uninitialized, returns the entire spectrum.
-#' @param components returns the array with resolved real and imaginary components if TRUE; otherwise returns complex-valued eigenvalues
-#' @param digits number of digits to round up values to
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
 #' @examples
@@ -29,29 +29,26 @@
 #' ensemble <- RME_norm(N = 3, size = 10)
 #' ensemble_spectrum <- spectrum(ensemble)
 #' 
-spectrum <- function(array, order = NA, components = T, digits = 3){ #### Add sortBy = "norm" or "sign" feature????
+spectrum <- function(array, components = TRUE, sortByNorm = NA, order = NA){
+  digits <- 4 # Digits to round values to
   # Array is a matrix; call function returning eigenvalues for singleton matrix
-  if(class(array) == "matrix"){.spectrum_matrix(array, order, components, digits)}
+  if(class(array) == "matrix"){.spectrum_matrix(array, components, sortByNorm, order, digits)}
   # Array is an ensemble; recursively row binding each matrix's eigenvalues
-  else if(class(array) == "list"){purrr::map_dfr(array, .spectrum_matrix, order, components, digits)}
+  else if(class(array) == "list"){purrr::map_dfr(array, .spectrum_matrix, components, sortByNorm, order, digits)}
 }
 
 # Helper function returning tidied eigenvalue array for a matrix
-.spectrum_matrix <- function(P, order = NA, components = T, digits = 3){
-  eigenvalues <- .sort_norm(eigen(P)$values) # Get eigenvalues of matrix P, sorted by size
-  if(class(order) == "logical"){order <- 1:nrow(P)} # If uninitialized, get eigenvalues of all orders
-  else{order <- c(order)} # Otherwise, concatenate so single inputs become vectors
+.spectrum_matrix <- function(P, components, sortByNorm, order, digits = 4){
+  ## Get the sorted eigenvalue spectrum of the matrix ##
+  # If the sortByNorm argument is uninitialized, infer optimal case. Optimally TRUE when eigenvalues are complex. 
+  if(class(sortByNorm) == "logical"){sortByNorm <- ifelse(.isHermitian(P), F, T)} # Eigenvalues are real when the matrix is symmetric
+  eigenvalues <- eigen(P)$values # Compute the eigenvalues of P
+  if(sortByNorm){eigenvalues <- .sortByNorm(eigenvalues)} # Order the eigenvalue spectrum by norm rather than sign
+  ## Filter for orders and evaluate spectrum
+  # If uninitialized, get eigenvalues of all orders; Otherwise, concatenate so single inputs become vectors
+  if(class(order) == "logical"){order <- 1:nrow(P)} else{order <- c(order)}
   purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits) # Get the eigenvalues
 }
-
-# Parses a matrix spectrum array for the eigenvalue at a given order as cplx type (for arithmetic)
-.read_eigenvalue <- function(order, mat_spectrum){
-  if(ncol(mat_spectrum) == 3){mat_spectrum[order, 1]} # If the components are resolved, return value in the first (Eigenvalue) column
-  else{ # Components are resolved; get components and make it a complex number for arithmetic prep
-    evalue <- complex(real = mat_spectrum[order, 1], imaginary = mat_spectrum[order, 2])
-    if(Im(evalue) != 0){evalue} else{as.numeric(evalue)} # If it is real, coerce it into a numeric to remove +0i 
-    }
-  }
 
 # Read and parse an eigenvalue from an eigen(P)$value array
 .resolve_eigenvalue <- function(order, eigenvalues, components, digits){
@@ -69,18 +66,16 @@ spectrum <- function(array, order = NA, components = T, digits = 3){ #### Add so
 #                              ORDER SORTING SCHEMES
 #=================================================================================#
 
+# Sort an array of numbers by their norm (written for eigenvalue sorting)
+.sortByNorm <- function(eigenvalues){(data.frame(eigenvalue = eigenvalues, norm = abs(eigenvalues)) %>% arrange(desc(norm)))$eigenvalue}
+
 # Resorts the norm of an eigenvalue based on a particular metric of order; default is regular norm.
-.resort_spectrum <- function(array_spectrum, scheme = "norm"){
-  NA
+# .resort_spectrum <- function(array_spectrum, scheme = "norm"){
+#   NA
   # Other schemes could be by sign; as in original "bug", we could always prioritize eigenvalues with positive sign
   # Could be called scheme = "sign"
-  array_spectrum
-}
-
-# Sort an array of numbers by their norm (written for eigenvalue sorting)
-.sort_norm <- function(eigenvalues){
-  (data.frame(eigenvalue = eigenvalues, norm = abs(eigenvalues)) %>% arrange(desc(norm)))$eigenvalue
-}
+  # array_spectrum
+# }
 
 #=================================================================================#
 #                         SPECTRUM VISUALIZATION FUNCTIONS

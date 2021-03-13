@@ -126,11 +126,11 @@ RM_unif <- function(N, min, max, symm = FALSE, cplx = FALSE, herm = FALSE){
   # Create [N x N] matrix with uniformly distributed entries
   P <- matrix(runif(N^2, min, max), nrow = N)
   # Make symmetric/hermitian if prompted
-  if(symm || herm){P <- .make_hermitian(P)}
+  if(symm || herm){P <- .makeHermitian(P)}
   # Returns a matrix with complex (and hermitian) entries if prompted
   if(cplx){
     Im_P <- (1i * RM_unif(N, min, max)) # Recursively add imaginary components as 1i * instance of real-valued matrix.
-    if(herm){P <- P + .make_hermitian(Im_P)}  # Make imaginary part hermitian if prompted
+    if(herm){P <- P + .makeHermitian(Im_P)}  # Make imaginary part hermitian if prompted
     else{P <- P + Im_P}
   }
   P # Return the matrix
@@ -171,19 +171,19 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = FALSE, cplx = FALSE, herm = FALS
   # Create [N x N] matrix with normally distributed entries
   P <- matrix(rnorm(N^2, mean, sd), nrow = N)
   # Make symmetric/hermitian if prompted
-  if(symm || herm){P <- .make_hermitian(P)}
+  if(symm || herm){P <- .makeHermitian(P)}
   # Returns a matrix with complex (and hermitian) entries if prompted
   if(cplx){
     Im_P <- (1i * RM_norm(N, mean, sd)) # Recursively add imaginary components as 1i * instance of real-valued matrix.
-    if(herm){P <- P + .make_hermitian(Im_P)}  # Make imaginary part hermitian if prompted
+    if(herm){P <- P + .makeHermitian(Im_P)}  # Make imaginary part hermitian if prompted
     else{P <- P + Im_P}
   }
   P # Return the matrix
 }
 
-#' @title Generate a Gaussian/Hermite \eqn{\beta}-matrix
+#' @title Generate a Hermite \eqn{\beta}-matrix
 #'
-#' @description Gaussian-\eqn{\beta} ensemble matrices are matrices with normal entries and beta real number components.
+#' @description Hermite-\eqn{\beta} ensemble matrices are matrices with normal entries and beta real number components.
 #'   Using Dumitriu's tridiagonal model, this function is an implementation of the generalized, but not necessarily invariant,
 #'   beta ensembles for \eqn{\beta} > 0.
 #'
@@ -252,12 +252,12 @@ RM_stoch <- function(N, symm = F, sparsity = F){
   # Generate the [N x N] stochastic matrix stacking N stochastic rows (using the chosen function)
   P <- do.call("rbind", lapply(X = rep(N, N), FUN = row_fxn))
   if(symm){ # Make symmetric (if prompted)
-    P <- .make_hermitian(P) # Make lower and upper triangles equal to each other's conjugate transpose
+    P <- .makeHermitian(P) # Make lower and upper triangles equal to each other's conjugate transpose
     diag(P) <- rep(0, N) # Nullify diagonal
     for(i in 1:N){P[i, ] <- P[i, ]/sum(P[i, ])} # Normalize rows
     # Set diagonal to the diff. between 1 and the non-diagonal entry sums such that rows sum to 1
     diag <- vector("numeric", N)
-    for(i in 1:N){diag[i] <- (1 - sum(.nondiagonal_entries(row = P[i, ], row_index = i)))}
+    for(i in 1:N){diag[i] <- (1 - sum(.offdiagonalEntries(row = P[i, ], row_index = i)))}
     diag(P) <- diag
   }
   P # Return the matrix
@@ -293,7 +293,7 @@ RM_erdos <- function(N, p, stoch = T){
   if(stoch){
     # Set diagonal to ensure that rows sum to 1
     diag <- rep(0, N)
-    for(i in 1:N){diag[i] <- (1 - sum(.nondiagonal_entries(row = P[i, ], row_index = i)))}
+    for(i in 1:N){diag[i] <- (1 - sum(.offdiagonalEntries(row = P[i, ], row_index = i)))}
     diag(P) <- diag
   }
   P # Return the matrix
@@ -331,7 +331,7 @@ RM_erdos <- function(N, p, stoch = T){
 #=========================================================================#
 
 # Manually make equate the entries in the upper triangle to the conjugate of those in the lower triangle of the matrix
-.make_hermitian <- function(P){
+.makeHermitian <- function(P){
   # Run over entry of the matrix
   for(i in 1:nrow(P)){
     for(j in 1:ncol(P)){
@@ -342,6 +342,6 @@ RM_erdos <- function(N, p, stoch = T){
   P # Return Hermitian Matrix
 }
 
-# Return the non-diagonal entries of row i
-.nondiagonal_entries <- function(row, row_index){row[which(1:length(row) != row_index)]}
+# Return the off-diagonal entries of row i 
+.offdiagonalEntries <- function(row, row_index){row[which(1:length(row) != row_index)]}
 
