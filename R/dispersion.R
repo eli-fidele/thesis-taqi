@@ -35,7 +35,7 @@
 dispersion <- function(array, pairs = NA, sortByNorm = NA, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
   digits <- 4 # Digits to round values to
   ## Initialize pair scheme by parsing input ##
-  pairs <- .parse_pairs(pairs, P) # Generate pairs by parsing the string input (or default NA), passing on array for dimension and array type inference
+  pairs <- .parsePairs(pairs, P) # Generate pairs by parsing the string input (or default NA), passing on array for dimension and array type inference
   # Array is a matrix; call function returning dispersion for singleton matrix
   if(class(array) == "matrix"){.dispersion_matrix(array, pairs, sortByNorm, norm_pow, digits)}
   # Array is an ensemble; recursively row binding each matrix's dispersions
@@ -58,17 +58,19 @@ dispersion <- function(array, pairs = NA, sortByNorm = NA, norm_pow = 1){ #sortN
   disp <- data.frame(i = i, j = j) # Initialize dispersion dataframe by adding order of eigenvalues compared
   disp$eig_i <- .read_eigenvalue(i, eigenvalues); disp$eig_j <- .read_eigenvalue(j, eigenvalues) # Add the eigenvalues
   disp$id_diff <- disp$eig_j - disp$eig_i # Get the identity difference dispersion metric
+  
   disp$id_diff_norm <- norm_fn(disp$id_diff) # Take the norm of the difference
   disp$abs_diff <- norm_fn(disp$eig_j) - norm_fn(disp$eig_i) # Compute the difference of absolutes w.r.t. norm function (Euclidean or beta)
+  
   ## Prepare for return
   disp <- round(disp, digits) # Round digits
-  disp$orderDiff_ji <- disp$i - disp$j
+  disp$orderDiff_ji <- disp$j - disp$i
   disp # Return resolved dispersion observation
 }
 
 # Parses a matrix spectrum array for the eigenvalue at a given order as cplx type (for arithmetic)
 .read_eigenvalue <- function(order, mat_spectrum){
-  if(ncol(mat_spectrum) == 3){mat_spectrum[order, 1]} # If the components are resolved, return value in the first (Eigenvalue) column
+  if(ncol(mat_spectrum) == 3){mat_spectrum[order, 1]} # If the components are not resolved, return value in the first (Eigenvalue) column
   else{ # Components are resolved; get components and make it a complex number for arithmetic prep
     evalue <- complex(real = mat_spectrum[order, 1], imaginary = mat_spectrum[order, 2])
     if(Im(evalue) != 0){evalue} else{as.numeric(evalue)} # If it is real, coerce it into a numeric to remove +0i 
@@ -80,7 +82,7 @@ dispersion <- function(array, pairs = NA, sortByNorm = NA, norm_pow = 1){ #sortN
 #=================================================================================#
 
 # Parse a string argument for which pairing scheme to utilize
-.parse_pairs <- function(pairs, array){
+.parsePairs <- function(pairs, array){
   valid_schemes <- c("largest", "lower", "upper", "consecutive") # Valid schemes for printing if user is unaware of options
   # Obtain the matrix by inferring array type; if ensemble take first matrix
   if(class(array) == "list"){P <- array[[1]]} else{P <- array}

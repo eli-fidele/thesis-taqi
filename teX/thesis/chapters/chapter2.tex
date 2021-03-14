@@ -1,0 +1,138 @@
+\chapter{Ratios and Mixing Times}
+\section{Introduction}
+In this chapter, we'll talk about consecutive ratio sequence simulations.
+
+\section{Markov Chains}
+
+% \begin{definition}[Transition Matrix] 
+% Take a Markov Chain with states $\oneto[M]$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \oneto[M]: \sum_{j \in \oneto[M]} q_{ij} = 1$.
+% \end{definition}
+
+%%%%%% MARKOV.RMD %%%%%%%
+
+\begin{definition}[Markov Chain] Say a set of random variables $X_i$ each take a value in a set, called the state space, $S_M = \{1,2,\dots,M\}$. Then, a sequence of such random variables $X_0,X_1,\dots,X_n$ is called a Markov Chain if the following conditions are satisifed:
+\end{definition}
+
+\begin{itemize}
+\item $\forall X_i:$ $X_i$ has support and range $S_M = \{1,2,...,M\}$.
+\item $\textit{(Markov Property)}$ The transition probability from state $i \to j$, $\Prb(X_{n+1} = j \mid X_n = i)$ is conditionally independent from all past events in the sequence $X_{n-1} = i',X_{n-2} = i'', \dots,X_0 = i^{(n-1)}$, excluding the present/last event in the sequence. In other words, given the present, the past and the future are conditionally independent.
+$$\forall i,j \in S_M: \Prb(X_{n+1} = j \mid X_n = i) = \Prb(X_{n+1} = j \mid X_n = i, X_{n-1} = i', \dots,X_0 = i^{(n-1)})$$
+\end{itemize}
+
+\begin{definition}[Transition Matrixx]  Let $\seq[M]{X}$ be a Markov Chain with state space $S_M$. Letting $q_{ij} = \Prb(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q \in \mathcal{M}_{\R^+}[M\times M]: Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. $Q$ must satisfy the following conditions to be a valid transition matrix:
+\end{definition}
+
+\begin{definition}[Transition Matrix] 
+Take a Markov Chain with states $\oneto[M]$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \oneto[M]: \sum_{j \in \oneto[M]} q_{ij} = 1$.
+\end{definition}
+
+\begin{itemize}
+\item $Q$ is a non-negative matrix. That is, note that $Q \in \mathcal{M}_{\R^+}[M\times M]$ so every $q_{ij} \in \R^+$. This follows because probabilities are necessarily non-negative values.
+\item The entries of every row $i$ of $Q$ must sum up to 1. This may be understood as applying the law of total probability to the event of transitioning from any given state $\forall i \in S_M$. In other words, the chain has to go somewhere with probability 1.
+$$\forall i \in S_M: \sum_{j \in S_M} q_{ij} = 1$$
+\item Note, it is NOT necessary that the converse holds. The columns of our transition matrix need not sum to 1 for it to be a valid transition matrix.
+\end{itemize}
+
+\begin{definition}[n-Step Transition Probability] The $n-$step transition probability of $i \to j$ is the probability of being at $j$ exactly $n$ steps after being at $i$. We denote this value $q_{ij}^{(n)}:$
+\end{definition}
+
+$$ q_{ij}^{(n)}: \Prb(X_n = j \mid X_0 = i)$$
+Realize: 
+$$q_{ij}^{(2)} = \sum_{k \in S_M} q_{ik}\cdot q_{kj}$$
+Because by definition, a Markov Chain is closed under a support/range of $S_M$ so the event $i \to j$ may have taken any intermediate step $k \in S_M$. Realize by notational equivalence, $Q^2 = (q_{ij}^{(2)})$. Inducting over $n$, we then obtain that:
+
+$$q_{ij}^{(n)} \text{ is the } (i,j) \text{ entry of } Q^n$$
+
+\begin{definition}[Marginal Distribution of Xn] Let $\textbf{t} = (t_1,t_2,\dots,t_M)$ such that $\forall i \in S_M : t_i = \Prb(X_0 = i)$So, $\textbf{t} \in \mathcal{M}_{\R}[1,M]$. Then, the marginal distribution of $X_n$ is given by the product of the vector $\textbf{t} Q^n \in \mathcal{M}_{\R}[1,M]$. That is, the $j^{th}$ component of that vector is $P(X_n = j)$ for any $j \in S_M$. We may call $\textbf{t}$ an initial state distribution.
+\end{definition}
+
+\subsection{Classification of states}
+
+\begin{itemize}
+\item A state $i \in S_M$ is said to be $\textbf{recurrent}$ if starting from $i$, the probability is 1 that the chain will $\textit{eventually}$ return to $i$. If the chain is not recurrent, it is $\textbf{transient}$, meaning that if it starts at $i$, there is a non-zero probability that it never returns to $i$.
+
+\item Caveat: As we let $n \to \infty$, our Markov chain will gurantee that all transient states will be left forever, no matter how small the probability is. This can be proven by letting the probability be some $\epsilon$, then realizing that by the support of $\text{Geom}(\epsilon)$ is always some finite value, then the equivalence between the Markov property and independent Geometric trials gurantees the existence of some finite value such that there is a success of never returning to $i$.
+\end{itemize}
+
+\begin{definition}[Reducibility] A Markov chain is said to be $\textbf{irreducible}$ if for any $i,j \in S_M$, it is possible to go from $i \to j$ in a finite number of steps with positive probability. In other words:
+\end{definition}
+
+$$\forall i,j \in S_M: \exists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
+\begin{itemize}
+\item From our quantifier formulation of irreducible Markov chains, note that we can equivalently say that a chain is irreducible if there is integer $n \in \mathbb{N}$ such that the $(i,j)$ entry of $Q^n$ is positive for any $i,j$.
+
+\item A Markov chain is $\textbf{reducible}$ if it is not $\textbf{irreducible}$. Using our quantifier formulation, it means that it suffices to find transient states so that:
+
+$$\exists i,j \in S_M: \nexists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
+\end{itemize}
+
+%%%%%% MARKOV.RMD %%%%%%%
+
+
+\section{Erdos-Renyi Graphs}
+
+\begin{definition}[Erdos-Renyi Graph]
+An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \oneto{M}$ and edges $E = \mathds{1}_{i,j \in V} \sim \Bern(p_{ij})$. It is homogenous if $p_{ij} = p$ is fixed for all $i, j$.
+\end{definition}
+
+Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameterized by a probability $p$ (assuming it's homogenous, which this document will unless otherwise noted). As $p \to 0$, we say that graph becomes more sparse; analogously, as $p \to 1$ the graph becomes more connected.\newline
+\indent Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable. As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(M,p)$. This is helpful to know because the process of simulating graphs becomes much simpler.
+
+\section{Mixing Time Simulations}
+With the Erdos-Renyi graph defined, we may now motivate the simulation of random walks on them. First, however, we need to generate their corrosponding transition matrices. An algorithm for this is outlined below.
+
+Suppose we have simulated a transition matrix for an Erdos-Renyi graph called $Q$. Now, fixing some initial probability distribution $\vec{x} \in \R^M$, we may consider the evolution sequence of a random walk on this Erdos-Renyi graph by taking its evolution sequence $\mathcal{S}(Q, x)$.
+
+\begin{definition}[Random Batches]
+Let $\F$ be a field, and fix some $M \in \N$. Let $\B_\lambda \subset \F^M$ be a uniformly random batch of points in the $M$-hypercube of length $\lambda$. That is, 
+$$\B_\lambda = \{\vec{x} \mid x_i \sim \text{Unif}(-\lambda, \lambda) \text{ for } i = \oneto[M]\}$$
+
+$\textbf{Note:}$ If $\F = \mathbb{C}$, then take $\vec{x} \in \B_\lambda$ to mean $\vec{x} = a + bi \text{ where } a,b \sim \text{Unif}(-\lambda,\lambda)$.
+\end{definition}
+
+
+\begin{definition}[Evolution Sequence]
+An evolution sequence of a vector $\vec{\pi}$ and a transition matrix $Q$ is defined as the sequence $\mathcal{S}(Q,\pi) = ( \pi'_n )_{n=1}^N$ where $ \pi'_n  = \pi Q^n$
+\end{definition}
+
+\begin{definition}[Finite Evolution Sequences]
+Suppose we sample a random point from $\B_\lambda$, emulating a random point $\vec{v} \in \F^M$. Additionally, let $Q \in \F^{M \times M}$ be a transition matrix over $\F$. Fixing a maximum power ('time') $T \in \N$, define the evolution sequence of $\vec{v}$ as follows:
+$$\Seq(v, Q, T) = (\alpha_n)_{n=1}^T \text{ where } \alpha_k = {v}Q^k$$
+
+If we do not impose a finiteness constraint on the sequence, we consider powers for $n \in \N$ or $t = \infty$
+\end{definition}
+
+
+\begin{definition}[Consecutive Ratio Sequences]
+
+Accordingly, define the consecutive ratio sequence (CST) of $\vec{v}$ as follows:
+
+$$\Rseq(v, Q, T) = (r_n)_{n=2}^T \text{ where } (r_n)_j = \frac{(\alpha_n)_j}{(\alpha_{n-1})_j} \text{ for } j = \oneto[M]$$
+
+In other words, the consecutive ratio sequence of $v$ can be obtained by performing $\textbf{component-wise division}$ on consecutive elements of the evolution sequence of $v$.
+\end{definition}
+
+\begin{definition}[Near Convergence]
+
+Because these sequences may never truly converge to eigenvectors of the matrix, we formalize a notion of "near convergence". As a prelimenary, we first define $\varepsilon$-equivalence. Let $\F$ be a field, and fix $\varepsilon \in \R^+$. Suppose we have vectors $v, v' \in \F^M$. Then, $v \sim_\epsilon v'$ if $||v - v'|| < \epsilon$ where $|| \cdot ||$ is the norm on $\F$.
+\end{definition}
+
+Let $\varepsilon \in \R^+$, and suppose we have an evolution sequence $(a[\vec{v}])_n$. Then, $a_n$ $\varepsilon$-converges at $N \in \N$ if:
+$$\forall n \geq N \mid  a_N \sim_\epsilon a_n$$
+
+\newpage
+
+\section{Questions}
+
+\begin{enumerate}
+  \item How are the entries of the CRS distributed? Are they normal, and if so, what is its mean?
+  \item Are the entries of the CRS i.i.d as $t \to \infty$?
+  \item For an Erdos-Renyi matrix, is the mixing time $t$ dependent on the parameter $p$?
+  \item What impact does the running time parameter $T$ have on $\sigma$ (the variance of the distribution of the CRS entries)? 
+\end{enumerate}
+
+\subsection{Questions}
+
+It seems to be the case that the $\textbf{log-transformed}$ entries of the CRS are Cauchy distributed about $\log{\lambda_1}$ where $\lambda_1 = \max(\sigma(Q))$, the largest eigenvalue of $Q$. That is,
+
+$$r_i \sim \text{Cauchy}(\ln\lambda_1) \text{ for } i = \oneto[M]$$

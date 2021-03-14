@@ -1,157 +1,76 @@
-% This is the Reed College LaTeX thesis template. Most of the work 
-% for the document class was done by Sam Noble (SN), as well as this
-% template. Later comments etc. by Ben Salzberg (BTS). Additional
-% restructuring and APA support by Jess Youngberg (JY).
-% Your comments and suggestions are more than welcome; please email
-% them to cus@reed.edu
-%
-% See http://web.reed.edu/cis/help/latex.html for help. There are a 
-% great bunch of help pages there, with notes on
-% getting started, bibtex, etc. Go there and read it if you're not
-% already familiar with LaTeX.
-%
-% Any line that starts with a percent symbol is a comment. 
-% They won't show up in the document, and are useful for notes 
-% to yourself and explaining commands. 
-% Commenting also removes a line from the document; 
-% very handy for troubleshooting problems. -BTS
-
-% As far as I know, this follows the requirements laid out in 
-% the 2002-2003 Senior Handbook. Ask a librarian to check the 
-% document before binding. -SN
-
-%%
-%% Preamble
-%%
-% \documentclass{<something>} must begin each LaTeX document
+%% TeX Preamble
 \documentclass[12pt,twoside]{reedthesis}
-% Packages are extensions to the basic LaTeX functions. Whatever you
-% want to typeset, there is probably a package out there for it.
-% Chemistry (chemtex), screenplays, you name it.
-% Check out CTAN to see: http://www.ctan.org/
-%%
-\usepackage{graphicx,latexsym} 
-\usepackage{amssymb,amsthm,amsmath}
-\usepackage{longtable,booktabs,setspace} 
-\usepackage{chemarr} %% Useful for one reaction arrow, useless if you're not a chem major
-\usepackage[hyphens]{url}
-\usepackage{rotating}
-\usepackage{natbib}
-% Comment out the natbib line above and uncomment the following two lines to use the new 
-% biblatex-chicago style, for Chicago A. Also make some changes at the end where the 
-% bibliography is included. 
-%\usepackage{biblatex-chicago}
-%\bibliography{thesis}
+\input{preamble.tex} % Input supporting TeX header files
 
-% \usepackage{times} % other fonts are available like times, bookman, charter, palatino
-
-\title{Eigenanalysis of Erdos-Renyi Graphs}
+%% Thesis Preamble
+\title{Spectral Statistics of Random Matrices}
 \author{Ali Taqi}
-% The month and year that you submit your FINAL draft TO THE LIBRARY (May or December)
 \date{May 2021}
 \division{Mathematics and Natural Sciences}
 \advisor{Jonathan M. Wells}
-%If you have two advisors for some reason, you can use the following
-%\altadvisor{Your Other Advisor}
-%%% Remember to use the correct department!
 \department{Mathematics}
-% if you're writing a thesis in an interdisciplinary major,
-% uncomment the line below and change the text as appropriate.
-% check the Senior Handbook if unsure.
-%\thedivisionof{The Established Interdisciplinary Committee for}
-% if you want the approval page to say "Approved for the Committee",
-% uncomment the next line
-%\approvedforthe{Committee}
 
+% TeX Settings
 \setlength{\parskip}{0pt}
-%%
-%% End Preamble
-%%
-%% The fun begins:
-\begin{document}
+\setlength{\headheight}{15pt}
 
+% The fun begins
+\begin{document}
   \maketitle
   \frontmatter % this stuff will be roman-numbered
   \pagestyle{empty} % this removes page numbers from the frontmatter
 
-% Acknowledgements (Acceptable American spelling) are optional
-% So are Acknowledgments (proper English spelling)
-    \chapter*{Acknowledgements}
-	I want to thank a few people.
+%     \chapter*{Acknowledgements}
+% 	For my mother.
 
-% The preface is optional
-% To remove it, comment it out or delete it.
-    \chapter*{Preface}
-	This is an example of a thesis setup to use the reed thesis document class.
+%     \chapter*{Preface}
+% 	This is an example of a thesis setup to use the reed thesis document class.
 	
+%     \chapter*{List of Abbreviations}
+% 		You can always change the way your abbreviations are formatted. Play around with it yourself, use tables, or come to CUS if you'd like to change the way it looks. You can also completely remove this chapter if you have no need for a list of abbreviations. Here is an example of what this could look like:
+% 
+% 	\begin{table}[h]
+% 	\centering % You could remove this to move table to the left
+% 	\begin{tabular}{ll}
+% 		\textbf{ABC}  	&  American Broadcasting Company \\
+% 		\textbf{CBS}  	&  Columbia Broadcasting System\\
+% 		\end{tabular}
+% 	\end{table}
 	
-
-    \chapter*{List of Abbreviations}
-		You can always change the way your abbreviations are formatted. Play around with it yourself, use tables, or come to CUS if you'd like to change the way it looks. You can also completely remove this chapter if you have no need for a list of abbreviations. Here is an example of what this could look like:
-
-	\begin{table}[h]
-	\centering % You could remove this to move table to the left
-	\begin{tabular}{ll}
-		\textbf{ABC}  	&  American Broadcasting Company \\
-		\textbf{CBS}  	&  Columbia Broadcasting System\\
-		\textbf{CDC}  	&  Center for Disease Control \\
-		\textbf{CIA}  	&  Central Intelligence Agency\\
-		\textbf{CLBR} 	&  Center for Life Beyond Reed\\
-		\textbf{CUS}  	&  Computer User Services\\
-		\textbf{FBI}  	&  Federal Bureau of Investigation\\
-		\textbf{NBC}  	&  National Broadcasting Corporation\\
-	\end{tabular}
-	\end{table}
-	
-
     \tableofcontents
-% if you want a list of tables, optional
-    \listoftables
-% if you want a list of figures, also optional
-    \listoffigures
 
-% The abstract is not required if you're writing a creative thesis (but aren't they all?)
+%    \listoftables
+
+%    \listoffigures
+
 % If your abstract is longer than a page, there may be a formatting issue.
     \chapter*{Abstract}
-	The preface pretty much says it all.
+	On their own, random variables exude deterministic properties regarding their uncertainty. The same generalization can be made for random matrices, which are matrices whose entries are random variables. One particular statistic worth investigating is the distribution of a matrix ensemble's eigenvalues, or its spectrum. In this thesis, there will be an exploration of various classes of random matrices and relevant spectral statistics like their spectra and mixing times.
 	
 	\chapter*{Dedication}
-	You can have a dedication here if you wish.
+	For my mother.
 
   \mainmatter % here the regular arabic numbering starts
   \pagestyle{fancyplain} % turns page numbering back on
 
-%The \introduction command is provided as a convenience.
-%if you want special chapter formatting, you'll probably want to avoid using it altogether
+\input{special_chapters/introduction.tex}
 
-    \chapter*{Introduction}
-         \addcontentsline{toc}{chapter}{Introduction}
-	\chaptermark{Introduction}
-	\markboth{Introduction}{Introduction}
-	% The three lines above are to make sure that the headers are right, that the intro gets included in the table of contents, and that it doesn't get numbered 1 so that chapter one is 1.
-
-% Double spacing: if you want to double space, or one and a half 
-% space, uncomment one of the following lines. You can go back to 
-% single spacing with the \singlespacing command.
+% Double spacing: if you want to double space, or one and a half space, uncomment one of the following lines. 
+% You can go back to single spacing with the \singlespacing command.
 % \onehalfspacing
 % \doublespacing
-	
-	Welcome to the \LaTeX\ thesis template. If you've never used \TeX\ or \LaTeX\ before, you'll have an initial learning period to go through, but the results of a nicely formatted thesis are worth it for more than the aesthetic benefit: markup like \LaTeX\ is more consistent than the output of a word processor, much less prone to corruption or crashing and the resulting file is smaller than a Word file. While you may have never had problems using Word in the past, your thesis is going to be about twice as large and complex as anything you've written before, taxing Word's capabilities. If you're still on the fence about  using \LaTeX, read the Introduction to LaTeX on the CUS site as well as skim the following template and give it a few weeks. Pretty soon all the markup gibberish will become second nature.
 
-\section{Why use it?}
-	
-\LaTeX\ does a great job of formatting tables and paragraphs. Its line-breaking algorithm was the subject of a PhD.\thinspace thesis. It does a fine job of automatically inserting ligatures, and to top it all off it is the only way to typeset good-looking mathematics.
+% Beginning of Chapters
+\input{chapters/chapter1.tex}
+\input{chapters/chapter2.tex}
+\input{chapters/chapter3.tex}
+% End of Chapters
 
-\section{Who should use it?}
-
-Anyone who needs to use math, tables, a lot of figures, complex cross-references, IPA or who just cares about the final appearance of their document should use \LaTeX. At Reed, math majors are required to use it, most physics majors will want to use it, and many other science majors may want it also.
-	
-\input{chapter1.tex}
-
-%If you feel it necessary to include an appendix, it goes here.
+% Appendix
     \appendix
-      \chapter{The First Appendix}
-      \chapter{The Second Appendix, for Fun}
+      \input{appendix/math_appendix.tex}
+      \input{appendix/algorithms_appendix.tex}
+      \input{appendix/code_appendix.tex}
 
 
 %This is where endnotes are supposed to go, if you have them.
