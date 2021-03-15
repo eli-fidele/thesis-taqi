@@ -28,7 +28,7 @@
 #' # Eigenvalue spectra of ensemble matrices
 #' ensemble <- RME_norm(N = 3, size = 10)
 #' ensemble_spectrum <- spectrum(ensemble)
-#' 
+#'
 spectrum <- function(array, components = TRUE, sortByNorm = NA, order = NA){
   digits <- 4 # Digits to round values to
   # Array is a matrix; call function returning eigenvalues for singleton matrix
@@ -40,7 +40,7 @@ spectrum <- function(array, components = TRUE, sortByNorm = NA, order = NA){
 # Helper function returning tidied eigenvalue array for a matrix
 .spectrum_matrix <- function(P, components, sortByNorm, order, digits = 4){
   ## Get the sorted eigenvalue spectrum of the matrix ##
-  # If the sortByNorm argument is uninitialized, infer optimal case. Optimally TRUE when eigenvalues are complex. 
+  # If the sortByNorm argument is uninitialized, infer optimal case. Optimally TRUE when eigenvalues are complex.
   if(class(sortByNorm) == "logical"){sortByNorm <- ifelse(.isHermitian(P), F, T)} # Eigenvalues are real when the matrix is symmetric
   eigenvalues <- eigen(P)$values # Compute the eigenvalues of P
   if(sortByNorm){eigenvalues <- .sortByNorm(eigenvalues)} # Order the eigenvalue spectrum by norm rather than sign
@@ -164,11 +164,11 @@ spectrum.histogram <- function(array, ..., component = NA, bins = 100, mat_str =
       labs(x = component, y = "Frequency", title = paste(title_str, component_str, sep = ""))
   }
   # Get list of plots
-  plots <- map(component, component_plot)
+  plots <- purrr::map(component, component_plot)
   # If we have both components and patchwork is loaded, attach plots to each other
-  if(require(patchwork) && length(plots) == 2){plots[[1]] / plots[[2]]} else if(length(plots) == 1){plots[[1]]}
+  if(length(plots) == 2){plots[[1]] / plots[[2]]} else if(length(plots) == 1){plots[[1]]}
   # Return the list of plots
-  else{plot_list}
+  else{plots}
 }
 
 # Helper function returning appoporiate string for matrix/ensemble given a matrix type string and class of input array
