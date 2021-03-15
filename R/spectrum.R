@@ -31,6 +31,7 @@
 #'
 spectrum <- function(array, components = TRUE, sortByNorm = NA, order = NA){
   digits <- 4 # Digits to round values to
+  sortByNorm <- .parse_sortByNorm(sortByNorm, array) # Parse for default values
   # Array is a matrix; call function returning eigenvalues for singleton matrix
   if(class(array) == "matrix"){.spectrum_matrix(array, components, sortByNorm, order, digits)}
   # Array is an ensemble; recursively row binding each matrix's eigenvalues
@@ -39,9 +40,7 @@ spectrum <- function(array, components = TRUE, sortByNorm = NA, order = NA){
 
 # Helper function returning tidied eigenvalue array for a matrix
 .spectrum_matrix <- function(P, components, sortByNorm, order, digits = 4){
-  ## Get the sorted eigenvalue spectrum of the matrix ##
-  # If the sortByNorm argument is uninitialized, infer optimal case. Optimally TRUE when eigenvalues are complex.
-  if(class(sortByNorm) == "logical"){sortByNorm <- ifelse(.isHermitian(P), F, T)} # Eigenvalues are real when the matrix is symmetric
+  # Get the sorted eigenvalue spectrum of the matrix
   eigenvalues <- eigen(P)$values # Compute the eigenvalues of P
   if(sortByNorm){eigenvalues <- .sortByNorm(eigenvalues)} # Order the eigenvalue spectrum by norm rather than sign
   ## Filter for orders and evaluate spectrum
@@ -60,6 +59,13 @@ spectrum <- function(array, components = TRUE, sortByNorm = NA, order = NA){
   else{evalue <- cbind(data.frame(Eigenvalue = eigenvalue), norm_and_order)}
   evalue <- round(evalue, digits) # Round entries
   evalue # Return resolved eigenvalue
+}
+
+.parse_sortByNorm <- function(sortByNorm, array){
+  if(class(array) == "list"){P <- array[[1]]} else{P <- array} # Parse array type to sample a matrix if ensemble
+  # If the sortByNorm argument is uninitialized, infer optimal case. Optimally TRUE when eigenvalues are complex.
+  if(is.na(sortByNorm)){sortByNorm <- ifelse(.isHermitian(P), F, T)} # Eigenvalues are real when the matrix is symmetric
+  else{sortByNorm}
 }
 
 #=================================================================================#

@@ -59,7 +59,7 @@ dispersion <- function(array, pairs = NA, sortByNorm = NA, norm_pow = 1){ #sortN
   disp$abs_diff <- norm_fn(disp$eig_j) - norm_fn(disp$eig_i) # Compute the difference of absolutes w.r.t. norm function (Euclidean or beta)
   ## Prepare for return
   disp <- round(disp, digits) # Round digits
-  disp$orderDiff_ji <- disp$j - disp$i
+  disp$diff_ij <- disp$i - disp$j
   disp # Return resolved dispersion observation
 }
 
@@ -192,8 +192,8 @@ dispersion.scatterplot <- function(array, metric = "id_diff_norm", pairs = NA, .
   # Process dispersion of the matrix/ensemble; if array is a dispersion data frame, copy it.
   if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, pairs, ...)}
   else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
-  # Parse plotting aesthetics from pairs. orderDiff_ji is more useful unless pairs = "consecutive" or "largest", where j is better.
-  if(pairs %in% c("consecutive","largest")){order_stat <- "j"} else{order_stat <- "orderDiff_ji"}
+  # Parse plotting aesthetics from pairs. diff_ij is more useful unless pairs = "consecutive" or "largest", where j is better.
+  if(pairs %in% c("consecutive","largest")){order_stat <- "j"} else{order_stat <- "diff_ij"}
   # Plot parameters
   color0 <- "darkorchid4"
   # Scatterplot of dispersion metric
@@ -237,9 +237,9 @@ dispersion.scatterplot <- function(array, metric = "id_diff_norm", pairs = NA, .
   color0 <- "darkorchid4"
   # Get variances by level
   disps_df %>%
-    group_by(.data$orderDiff_ji) %>% # Use j for consecutive or largest?
+    group_by(.data$diff_ij) %>% # Use j for consecutive or largest?
     summarize(Var_Disp = var(.data$Dispersion), size = n()) %>%
-    ggplot(mapping = aes(x = .data$orderDiff_ji, y = .data$Var_Disp, color = .data$Var_Disp, size = .data$size)) +
+    ggplot(mapping = aes(x = .data$diff_ij, y = .data$Var_Disp, color = .data$Var_Disp, size = .data$size)) +
     geom_point() +
     scale_color_continuous(type = "viridis") +
     #scale_size_manual(values = c(1,2)) +
