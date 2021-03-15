@@ -1,38 +1,47 @@
-\chapter{Spectral Statistics}
-\section{Introduction}
-Spectral statistics, in this context, will be an umbrella term to describe the statistics found from the eigenvalues and eigenvectors of matrices. We begin with some motivating definitions.
 
-With a *random matrix* intialized, we can study its features by studying a very core type of number that "summarizes" it - the eigenvalue. The study of eigenvalues and eigenvectors are primarily in the scope of Linear Algebra. They are quite important for many reasons. In statistical physics, many processors are represented by operators or matrices, and as such, their behaviours can be described by the eigenvalues of their corrosponding matrices! So, what are *eigenvalues* exactly?
+\chapter{Spectral Statistics}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+So, what are \textit{spectral statistics}? Do they have to do with rainbows? Sceptres? No, they don’t, but they’re almost as colorful and regal. The word spectral is borrowed from the spectral-like patterns observed in statistical physics - whether it may be atomic spectra or other quantum mechanical phenomena. The borrowing is loose and not literal, but still somewhat well founded. In fact, the field of Random Matrix Theory was extensively developed in the 1930s by the nuclear physicist Eugene Wigner. He found connections between the deterministic properties of atomic nuclei and their random and stochastic behaviors. The link? Random matrices.
+
+So in the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors. That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix. The study of eigenvalues and eigenvectors primarily falls in the scope of Linear Algebra. They are quite important for many reasons. In statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corrosponding matrices. So, what are \textit{eigenvalues} exactly?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{The Quintessential Spectral Statistic: the Eigenvalue}
+Given any standard square matrix $P \in \F^{N \times N}$, its \textit{eigenvalues} are simply the roots of the characteristic polynomial $\text{char}_P{(\lambda)}$ = $\det(P - \lambda I)$. By the Fundamental Theorem of Algebra, we know that there is always have as many complex eigenvalues $\lambda \in \Cc$ as the dimension of the matrix. 
 
-Given any standard square matrix $P \in \F^{N \times N}$, the *eigenvalue* is given by the roots of the characteristic polynomial $\text{char}_P{(\lambda)}$ = $\det(P - \lambda I)$. By the Fundamental Theorem of Algebra, we always have as many complex eigenvalues $\lambda \in \Cc$ as there are dimensions to the square matrix ($n$). When the matrix is distributed a certain way, we can see patterns in the eigenvalue distributions! So, an eigenvalue is a **spectral statistic** of a random matrix!
+That being said, when our random matrix has a specified distribution (say, standard normal), we can see patterns in the eigenvalue distributions. So, an eigenvalue is a \textbf{spectral statistic} of a random matrix! To talk about a matrix's eigenvalues in a more formal and concise manner, we motivate what is the \text{eigenvalue spectrum}.
 
-Now that we have defined eigenvalues, we need to talk about them in a concise manner. Since we know an $N \times N$ matrix has exactly $N$ eigenvalues (counting repeated values), we motivate the *eigenvalue spectrum*.
+\newpage
 
 \begin{definition}[Spectrum]
-Given a matrix $P$, the spectrum of $P$ is defined as the multiset of its eigenvalues, denoted by $\sigma(P) = \{\lambda_i  \in \Cc\}_{i=1}^N$. Note that we say multiset since eigenvalues could be repeated (through algebraic multiplicity). 
+Suppose $P \in \F^{N \times N}$ is a square matrix of size $N$ over $\F$. The (eigenvalue) spectrum of $P$ is defined as the multiset of its eigenvalues and it is denoted $\sigma(P) = \{\lambda_i  \in \Cc\}_{i=1}^N$. Note that it is important to specify that a spectrum is a multiset and not just a set; eigenvalues could be repeated due to algebraic multiplicity and we opt to always have $N$ eigenvalues. 
 \end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Interlude: Ensembles}
-
-While the spectrum of a matrix provides a good summary of the matrix, in random matrix theory, a matrix is considered a single point or observation. Additionally, simulating large matrices becomes harder and harder as $N \to \infty$. As such, to obtain more eigenvalue statistics efficiently, another dimension is introduced by motiving the *random matrix ensemble*.
+While the spectrum of a matrix provides a good summary of the matrix, in random matrix theory, a matrix is considered a single point or observation. Additionally, simulating large matrices becomes harder and harder as $N \to \infty$. As such, to obtain more eigenvalue statistics efficiently, another dimension is introduced by motiving the \textit{random matrix ensemble}.
 
 \begin{definition}[Random Matrix Ensemble]
-A $\D$-distributed random matrix ensemble $\Ens$ over $\F^{N \times N}$ of size $K$ is defined as a set of $\D$-distributed random matrices $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$. In simple words, it is simply a collection of iterations of a specified class of random matrix.
+A $\D$-distributed random matrix ensemble $\Ens$ over $\F^{N \times N}$ of size $K$ is defined as a set of $\D$-distributed random matrices $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$. In simple words, it is simply a collection of iterations of some specified class of random matrix.
 \end{definition}
 
-Now that ensembles are well defined, we can motivate a very core object in random matrix theory - the spectrum of a random matrix ensemble. From its name, it is indeed what one might expect it to be.
+Now that matrix ensembles are well defined, we can motivate a core object of our study - the spectrum of a random matrix ensemble. From its name, it is indeed what one might expect it to be.
 
 \begin{definition}[Ensemble Spectrum]
 If we have an ensemble $\Ens$, then we can naturally extend the definition of $\sigma(\Ens)$. To take the spectrum of an ensemble, simply take the union of the spectra of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$, then $\sigma(\Ens) = \bigcup_{i=1}^K \sigma(P_i)$.
 \end{definition}
 
-A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. As such, ensemble statistics are in a way the engine of our research.
+A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. So in a way, ensemble statistics are the engine of this research.
 
-\section{Eigenvalue Dispersions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Another important spectral statistic is the spacings between the eigenvalues.
+\section{Eigenvalue Spectra}
 
 \subsection{A Caveat: Eigenvalue Ordering}
 
@@ -47,6 +56,8 @@ Alternatively, we can motivate a different scheme that properly handles complex 
 \sigma_N(P) = \{\lambda_j : |\lambda_1| \geq |\lambda_2| \geq \dots \geq |\lambda_N|\}_{j = 1}^N
 \end{align*}
 
+\subsection{Order Statistics}
+
 Furthermore, we introduce a new eqivalence class, the integer difference of the sorted eigenvalue ranks.
 
 \begin{definition}[Ranking Delta]
@@ -56,6 +67,13 @@ The ranking delta is a function $\delta: \N \times \N \to \N$ which takes the in
 With the function $\delta$, we may take the set of unique eigenvalue pairs $(i > j)$ and partition it into equivalence classes. To achieve this, we define the equivalence relation $\sim_\delta$ which says $(\lambda_m,\lambda_n) \sim_\delta (\lambda_p,\lambda_q) \iff (m -n) = (p-q)$. These equivalence classes then naturally corrospond to pairs a set distance $\rho = i - j$ apart. So, for a $N \times N$ matrix, $\delta$ assumes a range $\rho \in \{ 1,\dots,N-1\}$.
 
 In summary, $\sim_\delta$ takes the set $\{(\lambda_i, \lambda_j) \mid \lambda_i, \lambda_j \in \sigma(P) \text{ and } i > j \}$ and surjectively partitions it onto the equivalence classes $[(\lambda_i, \lambda_j)]_\rho$ for $\rho \in \{ 1,\dots,N-1\}$. Note that the sizes of each equivalence class are $\textbf{never equal}$. With this partition in mind, we consider the eigenvalue dispersions under each of those equivalence classes.
+
+
+\subsection{Analytical Results from Random Matrix Theory}
+
+\section{Eigenvalue Dispersions}
+
+Another important spectral statistic is the spacings between the eigenvalues.
 
 %\newpage
 
@@ -79,12 +97,14 @@ When we define the dispersion of a matrix, we will see that there is a free argu
 d: \Cc \times \Cc \to \{\R^+, \Cc\}
 \end{align*}
 
-Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the second and third metrics are **symmetric** operations while the rest are not.
+Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the second and third metrics are **symmetric** operations while the rest are not. The $\beta$-norm is only a symmetric operation when $\beta$ is even.
 
-1. The identity difference: $d_{id}(z,z') = z' - z$
-1. The standard norm: $d_{n}(z,z') = |z' - z|$
-1. The $\beta$-norm: $d_\beta(z,z') = |z' - z|^\beta$
-1. The difference of absolutes: $d_{ad}(z,z') = |z'| - |z|$
+\begin{enumerate}
+\item The identity difference: $d_{id}(z,z') = z' - z$
+\item The standard norm: $d_{n}(z,z') = |z' - z|$
+\item The $\beta$-norm: $d_\beta(z,z') = |z' - z|^\beta$
+\item The difference of absolutes: $d_{ad}(z,z') = |z'| - |z|$
+\end{enumerate}
 
 Finally, we are able to motivate the definition of a matrix dispersion! Suppose we have a $\mathcal{D}$-distributed random matrix $P \in \F^{N \times N}$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}$. Then we define their dispersion as follows. 
 
@@ -97,3 +117,5 @@ The dispersion of a matrix $P \in \F^{N \times N}$ with respect to a dispersion 
 \begin{definition}[Ensemble Dispersion]
 If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_d(\Ens, \Pi)$. To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$, then $\Delta_d(\Ens, \Pi) = \bigcup_{i=1}^K \Delta_d(P_i, \Pi)$.
 \end{definition}
+
+\subsection{Analytical Results from Random Matrix Theory}

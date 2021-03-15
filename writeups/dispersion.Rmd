@@ -13,62 +13,80 @@ source("../R/header.R")
 .src(1)
 ```
 
+## Goal
+
+In this document, we seek to motivate a precise notion for "eigenvalue spacings" in order to study them meaningfully. To do so, we will carefully lay out notation and definitions along the way as our "toolkit". Furthermore, there are small caveats that will be discussed - mostly, those are free parameters we need to be aware of so that we precisely know what we are talking about when we say "eigenvalue spacings".
+
+
+### Eigenvalue Ordering
+
+When we motivate the idea of matrix dispersion, we will consider order statistics of that matrix's eigenvalues in tandem with its dispersion. However, to do so presupposes that we have a sense of what "ordered" eigenvalues means. Suppose are given a matrix $P$ which has an "unordered" spectrum $\sigma(P) = \{\lambda_j\}$. It is paramount to know what ordering scheme $\sigma(P)$ is using, because otherwise, the indices are meaningless! So, to delineate this, we add an index to $\sigma$. Often, the ordering context will be clear and the indexing will be omitted. Consider the two following *ordering schema*:
+
+Classical definitions of an *ordered spectrum* follow the standard ordering in the reals; denote this as the ordering by "sign" scheme. Note that because well-ordering is defined on the reals, we cannot use the sign scheme when $\sigma_P \subset \Cc^N$. Additionally, if we have a symmetric matrix (of real or complex entries), we have real eigenvalues. In that case, we could either this metric of the other. Without further ado, we write the *sign-ordered spectrum* as follows:
+\begin{align*}
+\sigma_S(P) = \{\lambda_j : \lambda_1 \geq \lambda_2 \geq \dots \geq \lambda_N\}_{j = 1}^N
+\end{align*}
+Alternatively, we can motivate a different scheme that properly handles complex eigenvalues. We could sort the spectrum by the norm of its entries; denote this as the ordering by "norm" scheme. Note that when we take the norms of the eigenvalues, we essentially ignore "rotational" features of the eigenvalues. Signs of eigenvalues indicate reflection or rotation, so when we take the norm, we essentially become more concerned with scaling. Without further ado, we write the *norm-ordered spectrum* as follows:
+\begin{align*}
+\sigma_N(P) = \{\lambda_j : |\lambda_1| \geq |\lambda_2| \geq \dots \geq |\lambda_N|\}_{j = 1}^N
+\end{align*}
+
+\newpage
+
+## Pairing Schema
+
+Next up, we introduce a new notation for a pairing scheme denoted $\Pi$. What are pairing schemes and why do they matter? Recall that our goal is to study the spacings between eigenvalues. If we are studying spacing, then a priori, we are concerned with pairs of eigenvalues! Spacing, after all, is a binary relationship. So, with the definitions of spectra well motiviated, a natural definition of pairing schema follows. Essentially, $\Pi$ is just a subset of the Cartesian product of a spectrum with itself. In other words, if we denote $\S := \sigma(P)$, then we say that a pairing scheme is simply a subset $\Pi \subseteq \S^2$. There are a few special pairing schema to consider:
+
+1. Let $\Pi_>$ be the set of unique upper-pair (>) combinations of ordered eigenvalues. This will be the standard ordered pair scheme used in lieu of our dispersion metric argument orders (more later).
+$$\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
+1. Let $\Pi_<$ be the set of unique lower-pair (<) combinations of ordered eigenvalues.
+$$\Pi_< = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
+1. Let $\Pi_1$ be the largest pair of eigenvalues of a spectrum. Nice and sweet.
+$$\Pi_1 = \{(\lambda_2,\lambda_1)\}$$
+1. Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum. This pairing scheme gives us the minimal information needed to express important bounds and spacings in terms of its elements.
+$$\Pi_C = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i = j + 1\}_{i = 1}^{N-1}$$
+
+## Dispersion Metrics
+
+When we define the dispersion of a matrix, we will see that there is a free argument $d$ called the dispersion metric. This function $d$ is a general function whose domain is always two eigenvalues. In set notation, this is the set $\Cc \times \Cc$ - a pair of two complex numbers. Its range will often be the positive reals $\R^+$; this is because the dispersion metric often will be substitutable with distance metric. Sometimes, the range will be $\Cc$. So, the dispersion metric will take the following form:
+\begin{align*}
+d: \Cc \times \Cc \to \{\R^+, \Cc\}
+\end{align*}
+
+Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the second and third metrics are **symmetric** operations while the rest are not. The $\beta$-norm is only a symmetric operation when $\beta$ is even.
+
+1. The identity difference: $d_{id}(z,z') = z' - z$
+1. The standard norm: $d_{n}(z,z') = |z' - z|$
+1. The $\beta$-norm: $d_\beta(z,z') = |z' - z|^\beta$
+1. The difference of absolutes: $d_{ad}(z,z') = |z'| - |z|$
+
+### Order of Arguments and the Lower-Pairing Scheme
+
+One of the common pairing schemes we consider is $\Pi_o \in \{\Pi_>, \Pi_<\}$We can use either the upper or the lower pairing scheme; there is no distinction since combinations are order-invariant. However, if we specify one of the other, the way our dispersion metrics will behave is impacted. For this reason, we choose to simeltanously: (i) choose upper-pair schema $\Pi_>$ and (ii) use the above argument order. 
+
+To motivate intuitive mathematical notation, we read $d(z,z')$ as the dispersion of $z$ with respect to (or in reference to) $z'$. Since we use the upper-pair scheme $\Pi_>$, the smaller eigenvalue is to the left and the larger to the right. This way, we take the dispersion of $\pi_{21}$ for example, we'd read $d(\pi_{21})$ as saying we're taking the dispersion of $\lambda_2$ with respect to $\lambda_1$. If this were the norm metric, we'd evaluate $\delta_{21} = |\lambda_1| - |\lambda_2|$.
+
 ## Matrix & Ensemble Dispersion
 
 <!-- Suppose we have a random matrix $P$ or a random matrix ensemble $\Ens = \{P_i \sim \Normal(0,1) \mid \Cc^*\}_{i = 1}^n$ of complex Hermitian standard normal matrices. Suppose we have the ordered spectrum of $P$, $\sigma_P$ at hand. -->
 
 <!-- Then, we define the dispersion of a matrix as follows. -->
 
-Suppose we have a $\mathcal{D}$-distributed random matrix $P \in \F^{N \times N}$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}$. Then we define their dispersion as follows. 
+Finally, we are able to motivate the definition of a matrix dispersion! Suppose we have a $\mathcal{D}$-distributed random matrix $P \in \F^{N \times N}$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}$. Then we define their dispersion as follows. 
 
 \begin{definition}[Dispersion]
-The dispersion of a matrix $P \in \F^{N \times N}$ with respect to a dispersion metric $d: \Cc \times \Cc \to \F$ and pairing scheme $\Pi$, call it $\Delta_d(P, \Pi)$, is defined as follows. Suppose $\sigma(P) := \S$ is the ordered spectrum of $P$ where $\sigma(P) = \{\lambda_1, \dots, \lambda_N\}$. Then, let $\Pi = \{\pi_{ij} = (\lambda_i,\lambda_j) \} \subseteq \S^2$ be a subset of eigenvalue ordered pairs. Then, the dispersion of $P$ with respect to $d$ is simply the set $\Delta_d(P)=\{\delta_{ij} = d(\lambda_i ,\lambda_j) \mid \pi_{ij} \in \Pi\}$.
+The dispersion of a matrix $P \in \F^{N \times N}$ with respect to a dispersion metric $d: \Cc \times \Cc \to \F$ and pairing scheme $\Pi$, call it $\Delta_d(P, \Pi)$, is defined as follows. Suppose $\sigma(P) := \S$ is the ordered spectrum of $P$ where $\sigma(P) = \{\lambda_1, \dots, \lambda_N\}$. Then, let $\Pi = \{\pi_{ij} = (\lambda_i,\lambda_j) \} \subseteq \S^2$ be a subset of eigenvalue ordered pairs. Then, the dispersion of $P$ with respect to $d$ is simply the set $\Delta_d(P, \Pi)=\{\delta_{ij} = d(\pi_{ij}) \mid \pi_{ij} = (\lambda_i,\lambda_j) \in \Pi\}$.
 \end{definition}
 
 \begin{definition}[Ensemble Dispersion]
-If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_d(\Ens)$. To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$, then $\Delta_d(\Ens, \Pi) = \bigcup_{i=1}^K \Delta_d(P_i, \Pi)$.
+If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_d(\Ens, \Pi)$. To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$, then $\Delta_d(\Ens, \Pi) = \bigcup_{i=1}^K \Delta_d(P_i, \Pi)$.
 \end{definition}
-
-## Pairing Schema
-
-In our definition, we introduce a new notation for a pairing scheme denoted $\Pi$. In essence, $\Pi$ is simply a subset of the Cartesian product of a spectrum $\S = \sigma(P)$ with itself. In other words, $\Pi \subseteq \S^2$. There are a few special pairing schema to consider:
-
-1. Let $\Pi_<$ be the set of unique lower-pair (<) combinations of ordered eigenvalues
-$$\Pi_< = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
-1. Let $\Pi_>$ be the set of unique upper-pair (>) combinations of ordered eigenvalues.
-$$\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
-1. Let $\Pi_1$ be the largest pair of eigenvalues of a spectrum.
-$$\Pi_1 = \{(\lambda_2,\lambda_1)\}$$
-1. Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum.
-$$\Pi_C = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i = j + 1\}_{i = 1}^{N-1}$$
-
-
-## A Caveat: Eigenvalue Ordering
-
-In our definition of matrix dispersion, we are given a matrix $P$ which has an "ordered" spectrum $\sigma_P$. It is paramount to know what ordering scheme $\sigma(P)$ is using, because otherwise, the indices are meaningless! So, consider the two following schema:
-
-Classical definitions of an ordered spectrum follow the standard ordering in the reals; denote this as the ordering by "sign" scheme. Note that because well-ordering is defined on the reals, we cannot use the sign scheme when $\sigma_P \subset \Cc^N$. We write the sign-ordered spectrum as follows:
-\begin{align*}
-\sigma_S(P) = \{\lambda_j : \lambda_1 \geq \lambda_2 \geq \dots \geq \lambda_N\}_{j = 1}^N
-\end{align*}
-Alternatively, we can motivate a different scheme that properly handles complex eigenvalues. We could sort the spectrum by the norm of its entries; denote this as the ordering by "norm" scheme. We write the norm-ordered spectrum as follows:
-\begin{align*}
-\sigma_N(P) = \{\lambda_j : |\lambda_1| \geq |\lambda_2| \geq \dots \geq |\lambda_N|\}_{j = 1}^N
-\end{align*}
-
-
-## Dispersion Metrics
-
-In the definition of matrix dispersions, we see that there is a free argument $d$ called the dispersion metric. This function $d$ is a general function whose domain is always $\Cc \times \Cc$ - a pair of two eigenvalues. Its range, strangely, could be any of the two fields $\R$ or $\Cc$. Most often, the dispersion metric will be a standard distance function so its range will often be the positive reals $\R^+$. Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the second and third metrics are **symmetric** operations while the rest are not.
-
-1. The identity difference: $d(x,y) = y - x$
-1. The standard norm: $d(x,y) = |y - x|$
-1. The $\beta$-norm: $d_\beta(x,y) = |y - x|^\beta$
-1. The difference of absolutes: $d(x,y) = |y| - |x|$
 
 <!-- \newpage -->
 
-## Bounds and Considerations
+## Pairing Schema Continued: A Commentary
+
+### Bounds and Considerations
 
 One thing to consider from this dispersion set is what we could learn from it. The dispersion of a matrix $P$, $\Delta_d(P)$ could tell us quite a few things. One thing it could tell us is the distribution of the dispersion of eigenvalues given that we uniformly and randomly select a pair of eigenvalues; this works when $d$ is a symmetric function. However, if we are considered about spacings, then we must taking into consideration a few facts.
 
@@ -96,4 +114,5 @@ d_1(\pi_{ij}) \leq d_2(\pi_{ij}) \given \pi_{ij} \in \Pi_>
 Recall from previously that with respect to the identity difference, some elements of the dispersion $\Delta_d(P)$ can be expressed as a linear combination of other elements. Note that using those linear combinations and the triangle inequality, we could derive the analogous bounds. It is quite useful to impose a condition that none of the values are a linear combination of the other. 
 
 So, we motivate a more restrictive definition of matrix dispersion: the consecutive-values dispersion $\Delta_d(P, \Pi_c)$. This dispersion is essentially a special case of the regular dispersion, but with a particular pairing scheme $\Pi_c$. To avoid this issue of linear combinations, we simply take the pairs of consecutive eigenvalues. In other words, $\Pi_c = \{(\lambda_i, \lambda_j) \in \sigma_P \times \sigma_P  \mid j = i+1\}_{i=1}^{N-1}$. This pairing scheme enumerates the pairs such that the dispersion metric has a natural mapping - it is simply the "distance" between an eigenvalue and the one that is one rank smaller than it.
+
 

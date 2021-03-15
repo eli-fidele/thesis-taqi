@@ -15,7 +15,7 @@ source("../R/header.R")
 
 # Goal
 
-In this document, we seek to motivate a precise notion for "eigenvalue spacings" in order to study them meaningfully. To do so, we will carefully lay out notation and definitions along the way as our "toolkit". Furthermore, there are small caveats that will be discussed - mostly, those are free parameters that are enumerated in order to gain maximal information for variations on our techniques and methods.
+In this document, we seek to motivate a precise notion for "eigenvalue spacings" in order to study them meaningfully. To do so, we will carefully lay out notation and definitions along the way as our "toolkit". Furthermore, there are small caveats that will be discussed - mostly, those are free parameters we need to be aware of so that we precisely know what we are talking about when we say "eigenvalue spacings".
 
 ## Spectral Statistics and Random Matrices: What are they?
 
@@ -94,18 +94,20 @@ When we define the dispersion of a matrix, we will see that there is a free argu
 d: \Cc \times \Cc \to \{\R^+, \Cc\}
 \end{align*}
 
-Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the second and third metrics are **symmetric** operations while the rest are not.
+Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the second and third metrics are **symmetric** operations while the rest are not. The $\beta$-norm is only a symmetric operation when $\beta$ is even.
 
-1. The identity difference: $d_{id}(z,z') = z' - z$
-1. The standard norm: $d_{n}(z,z') = |z' - z|$
-1. The $\beta$-norm: $d_\beta(z,z') = |z' - z|^\beta$
-1. The difference of absolutes: $d_{ad}(z,z') = |z'| - |z|$
+\begin{enumerate}
+\item The identity difference: $d_{id}(z,z') = z' - z$
+\item The standard norm: $d_{n}(z,z') = |z' - z|$
+\item The $\beta$-norm: $d_\beta(z,z') = |z' - z|^\beta$
+\item The difference of absolutes: $d_{ad}(z,z') = |z'| - |z|$
+\end{enumerate}
 
 ### Order of Arguments and the Lower-Pairing Scheme
 
 One of the common pairing schemes we consider is $\Pi_o \in \{\Pi_>, \Pi_<\}$We can use either the upper or the lower pairing scheme; there is no distinction since combinations are order-invariant. However, if we specify one of the other, the way our dispersion metrics will behave is impacted. For this reason, we choose to simeltanously: (i) choose upper-pair schema $\Pi_>$ and (ii) use the above argument order. 
 
-To motivate intuitive mathematical notation, we read $d(z,z')$ as the dispersion of $z$ with respect to (or in reference to) $z'$. Since we use the upper-pair scheme $\Pi_>$, the smaller eigenvalue is to the left and the larger to the right. This way, we take the dispersion of $\pi_{12}$ for example, we'd read $d(\pi_{21})$ as saying we're taking the dispersion of $\lambda_2$ with respect to $\lambda_1$. If this were the norm metric, we'd evaluate $\delta_{21} = |\lambda_1| - |\lambda_2|$.
+To motivate intuitive mathematical notation, we read $d(z,z')$ as the dispersion of $z$ with respect to (or in reference to) $z'$. Since we use the upper-pair scheme $\Pi_>$, the smaller eigenvalue is to the left and the larger to the right. This way, we take the dispersion of $\pi_{21}$ for example, we'd read $d(\pi_{21})$ as saying we're taking the dispersion of $\lambda_2$ with respect to $\lambda_1$. If this were the norm metric, we'd evaluate $\delta_{21} = |\lambda_1| - |\lambda_2|$.
 
 ## Matrix & Ensemble Dispersion
 

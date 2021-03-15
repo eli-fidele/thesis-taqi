@@ -65,7 +65,8 @@ spectrum <- function(array, components = TRUE, sortByNorm = NA, order = NA){
   if(class(array) == "list"){P <- array[[1]]} else{P <- array} # Parse array type to sample a matrix if ensemble
   # If the sortByNorm argument is uninitialized, infer optimal case. Optimally TRUE when eigenvalues are complex.
   if(is.na(sortByNorm)){sortByNorm <- ifelse(.isHermitian(P), F, T)} # Eigenvalues are real when the matrix is symmetric
-  else{sortByNorm}
+  else{sortByNorm <- sortByNorm}
+  sortByNorm # Return parsed value
 }
 
 #=================================================================================#
