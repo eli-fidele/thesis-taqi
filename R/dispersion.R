@@ -118,6 +118,7 @@ dispersion <- function(array, pairs = NA, sortByNorm = NA, norm_pow = 1){ #sortN
   js <- rep(1:N, N)
   do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i < j){c(i = i, j = j)}}))
 }
+
 #=================================================================================#
 #                         DISPERSION VISUALIZATION FUNCTIONS
 #=================================================================================#
@@ -152,7 +153,7 @@ dispersion.histogram <- function(array, metric = NA, ..., bins = 100){
   valid_schemes <- c("id_diff","id_diff_norm","abs_diff") # Valid schemes for printing if user is unaware of options
   if(class(metric) == "logical"){stop("Please input a valid dispersion metric. Try one of the following: ",paste(valid_schemes, collapse = ", "),".", sep = "")}
   # Process spectrum of the matrix/ensemble
-  if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, ...)}
+  if(class(array) == "list" || class(array) == "matrix"){ disps_df <- dispersion(array, ...) }
   else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
   num_entries <- nrow(disps_df) # Get number of entries
   # Plot parameters

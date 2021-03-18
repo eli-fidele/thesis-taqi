@@ -36,7 +36,7 @@ spectral_plots(P, disp_metric = "abs_diff")
 ```{r}
 # Simulate P and look at statistics
 P <- RME_beta(25, beta = 4, size = 100)
-P %>% dispersion()
+P %>% dispersion.histogram(metric = "sd")
 P %>% spectrum.histogram()
 # Get plots
 spectral_plots(P, disp_metric = "abs_diff")
