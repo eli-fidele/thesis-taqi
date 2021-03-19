@@ -1,12 +1,22 @@
 \chapter{Random Matrices}
 
+\section{Introduction}
 As promised, here is what a random matrix is.
 
 \begin{definition}[Random Matrix]
 A (homogenous) random matrix is any matrix $M \in \F^{N \times N}$ is a matrix whose entries are i.i.d random variables. So, if a random matrix $M = (m_{ij})$ is $\mathcal{D}$-distributed, this is equivalent to saying $m_{ij} \sim \mathcal{D}$. In the scope of this thesis, we will only work with homogenous random matrices. From thereonafter, assume every random matrix to be homogenously distributed. 
 \end{definition}
 
-\section{Matrix Ensembles}
+\begin{example}
+Let $\mathcal{D} = \Normal(0,1)$. 
+\end{example}
+
+\section{Random Matrix Ensembles}
+
+\begin{definition}[Random Matrix Ensemble]
+A $\D$-distributed random matrix ensemble $\Ens$ over $\F^{N \times N}$ of size $K$ is defined as a set of $\D$-distributed random matrices $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$. In simple words, it is simply a collection of iterations of some specified class of random matrix.
+\end{definition}
+
 \subsection{Hermite Beta-Ensembles}
 
 \begin{definition}[Hermite-Gaussian $\beta$-ensemble]
@@ -21,62 +31,10 @@ c_H^\beta = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \beta/2)}{\Gamma(1 + 
 They represent a matrix whose entries have $\beta$ real number components.
 \end{definition}
 
+Reference the person's work here and refer to the algorithm appendix on how to simualate general beta matrices.
+
 \section{Analytical Results}
-\subsection{Real Symmetric Matrices have Real Eigenvectors}
 
-$\bf Notation.$ For notational convenience, for any $N \in \N$, let $\widetilde{N} = \{1,\dots,N\}$.
-
-In this document, we prove that for any $M \times M$ real symmetric matrix, $S_M$, there exists for some eigenvalue $\lambda$, a corrosponding **real** eigenvector $\vec{v} \in \R^M$. Prior to starting the main proof, we begin with a lemma.
-
-$\bf Lemma.$ Suppose we have a $M \times M$ real symmetric matrix with a some eigenvalue $\lambda$. If there we have a corrosponding eigenvector $v \in \Cc^M$, then every entry of $v$, say $v_i$ is equal to a **real** linear combination of the other entries $v_j \mid j \neq i$. 
-
-So, we will show that:
-$$\forall i \in \widetilde{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
-
-$\bf Proof \,\,of\,\, Lemma.$ Begin by taking a real symmetric matrix $S_M$ for some $M \in \N$. Suppose we have an eigenvalue $\lambda$. Then, if we have some eigenvector $v$, we know that:
-$$(1): \forall i \in \widetilde{M} : a_1v_1 + \dots + d_iv_i + \dots + a_{m-1}v_m = \lambda v_i \quad ( a_j \in \R)$$
-We obtain $(1)$ by expanding the equality $Av = \lambda v$ and noticing that every row of $Av$ is expressible as the sum of the non-diagonal entries multiplied by $v_j \mid j \neq i$ plus $d_i v_i$. Note that since our matrix is symmetric, for some rows, some of the constants $a_j$ are not distinct but this should not raise any issues. Next, we collect the terms:
-$$\forall i \in \widetilde{M} : a_1v_1 + \dots + a_{m-1}v_m =  v_i(\lambda - d_i)$$
-Since $S_M$ is a real symmetric matrix, the $a_j$ terms are real so we can say:
-
-$$\forall i \in \widetilde{M} :  v_i(\lambda - d_i) = \sum_{j \neq i} a_jv_j \quad (a_j \in \R)$$
-Finally, divide both sides by $(\lambda - d_i)$. Since $S_M$ is a real symmetric matrix, we know $\lambda \in \R$ then also $(\lambda - d_i) \in \R$. On the right hand side, the coefficients of the $v_j$ become $\frac{a_j}{(\lambda - d_i)}$. Since $a_j \in \R$, then also $\frac{a_j}{(\lambda - d_i)} \in \R$. Letting $c_j = \frac{a_j}{(\lambda - d_i)}$, we obtain:
-$$\forall i \in \widetilde{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (\forall j: c_j \in \R)$$
-Thus, for any $M \in \N$, a real symmetric matrix with eigenvalue $\lambda$ must have a corrosponding eigenvector $v$ such that each of its entries is expressible as a real linear combination of the other entries. $\square$
-
-Now, we will prove the main theorem.
-
-$\bf Theorem \; (Taqi).$ Suppose we have a $M \times M$ real symmetric matrix, $S_M$. Then, we will show that there exists for some eigenvalue $\lambda$, a corrosponding **real** eigenvector $\vec{v} \in \R^M$.
-
-$\bf Proof.$ For this proof we will induct on the dimension of the matrix, $M$. So let the inductive statement be
-$$f(M) : S_M\text{ has a real eigenvector } v \text{ corrosponding to an eigenvalue } \lambda$$
-$\bf Base \,\, Case.$ Take the base case $M = 2$. Then by $\bf Zoom \,\,Meeting\,\, 11.12$, we know $f(2)$ is true.
-
-$\bf Inductive \,\, Step.$ For our inductive step, we need to show that $f(M) \Rightarrow f(M+1)$. So, let us assume $f(M)$. This means that we can assume any real symmetric matrix $S_M$ has a real eigenvector $v \in \R^M$ corrosponding to $\lambda$.
-
-Next, we will write $S_{M+1}$ as the matrix $S_M$ augmented by some $u \in \R^M$ as follows:
-
-$$ S_{M+1} =
-\left[
-  \begin{array}{c|c}
-  S_M & u\\ 
-  \hline
-  u^T & d_{M+1} 
-\end{array} \right]$$
-
-From our lemma, we use the fact that $S_{M+1}$ is symmetric and our assumption of $f(M)$ to obtain:
-$$(1): \forall i \in \{1,\dots,m+1\}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
-$$(2): \forall i \in \tilde{M} : v_i \in \R$$
-In particular for $(2)$, we know that $v_i = \left({\sum_{j \neq i} \frac{a_j}{d_i-\lambda} v_j}\right)$.
-
-
-From (1), we know that for row $i = m+1$:
-$v_{m+1} =  {\sum_{j \neq {m+1}} c_j v_j} \quad (c_j \in \R)$
-By (2), this is a linear combination of real entries $v_i$. Since $v_{m+1} \in \R$, it follows that:
-$$\forall i \in \{1,\dots,m+1\}: v_i \in \R$$
-So, we have established that $f(m) \Rightarrow f(M+1)$.
-
-By the induction, the theorem is proved. $\square$.
 
 
 
