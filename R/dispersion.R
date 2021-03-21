@@ -11,7 +11,7 @@
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalue spacings are to be returned
 #' @param pairs a string argument representing the pairing scheme to use
-#' @param sortByNorm sorts the eigenvalue spectrum by its norms when TRUE; otherwise, sorts eigenvalue by sign
+#' @param sort_norms sorts the eigenvalue spectrum by its norms when TRUE; otherwise, sorts eigenvalue by sign
 #' @param norm_pow power to raise norm to - defaults to 1 (the standard absolute value); otherwise raises norm to the power of argument (beta norm)
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
@@ -32,18 +32,22 @@
 #' # Alternatively, use the pipe
 #' #disp_ensemble <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
-dispersion <- function(array, pairs = NA, sortByNorm = NA, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
+dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
   digits <- 4 # Digits to round values to
   pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
   # Array is a matrix; call function returning dispersion for singleton matrix
-  if(class(array) == "matrix"){.dispersion_matrix(array, pairs, sortByNorm, norm_pow, digits)}
+  if(class(array) == "matrix"){
+    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
+  }
   # Array is an ensemble; recursively row binding each matrix's dispersions
-  else if(class(array) == "list"){purrr::map_dfr(array, .dispersion_matrix, pairs, sortByNorm, norm_pow, digits)}
+  else if(class(array) == "list"){
+    purrr::map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
+  }
 }
 
 # Find the eigenvalue dispersions for a given matrix
-.dispersion_matrix <- function(P, pairs, sortByNorm, norm_pow, digits = 4){
-  eigenvalues <- spectrum(P, sortByNorm = sortByNorm) # Get the sorted eigenvalues of the matrix
+.dispersion_matrix <- function(P, pairs, sort_norms, singular, norm_pow, digits = 4){
+  eigenvalues <- spectrum(P, sort_norms = sort_norms, singular = singular) # Get the sorted eigenvalues of the matrix
   norm_fn <- function(x){(abs(x))^norm_pow} # Generate norm function to pass along as argument (Euclidean or Beta norm)
   purrr::map2_dfr(pairs[,1], pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, digits) # Evaluate the matrix dispersion
 }
@@ -78,7 +82,7 @@ dispersion <- function(array, pairs = NA, sortByNorm = NA, norm_pow = 1){ #sortN
 
 # Parse a string argument for which pairing scheme to utilize
 .parsePairs <- function(pairs, array){
-  valid_schemes <- c("largest", "lower", "upper", "consecutive") # Valid schemes for printing if user is unaware of options
+  valid_schemes <- c("largest", "lower", "upper", "consecutive", "all") # Valid schemes for printing if user is unaware of options
   # Obtain the matrix by inferring array type; if ensemble take first matrix
   if(class(array) == "list"){P <- array[[1]]} else{P <- array}
   if(class(pairs) == "logical"){pairs <- "consecutive"} # Set default value to be the consecutive pair scheme
@@ -91,6 +95,7 @@ dispersion <- function(array, pairs = NA, sortByNorm = NA, norm_pow = 1){ #sortN
   else if(pairs == "consecutive"){pair_scheme <- .consecutive_pairs(N)}
   else if(pairs == "lower"){pair_scheme <- .unique_pairs_lower(N)}
   else if(pairs == "upper"){pair_scheme <- .unique_pairs_upper(N)}
+  else if(pairs == "all"){pair_scheme <- .all_pairs(N)}
   pair_scheme # Return pair scheme
 }
 

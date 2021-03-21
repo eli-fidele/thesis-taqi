@@ -1,0 +1,107 @@
+---
+title: "Developer"
+author: "Taqi"
+date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# Beta ensemble
+ens <- RME_beta(N = 25, beta = 4, size = 1000)
+```
+
+```{r}
+spec_ens <- spectrum(ens, sort_norms = FALSE)
+spec_ens_sg <- spectrum(ens, singular = TRUE)
+```
+
+```{r}
+#pec_ens %>% spectrum.scatterplot()
+#spec_ens_sg %>% spectrum.scatterplot()
+```
+
+```{r}
+order.scatterplot <- function(spectrum, component){
+  spectrum %>% 
+    ggplot(aes(x = Order, y = {{ component }}, color = Order)) +
+    geom_point() +
+    scale_color_viridis_c()
+}
+
+order.density <- function(spectrum, component){
+  spectrum %>%
+    ggplot(mapping = aes(group = Order, x = {{ component }}, color = Order)) + 
+      geom_density() +
+      scale_color_viridis_c()
+}
+order.summary <- function(spectrum, component){
+  spectrum %>%
+    group_by(Order) %>%
+    summarize(
+      Mean_Re = mean(Re), Mean_Im = mean(Im), Mean_Norm = mean(Norm),
+      Variance_Re = var(Re), Variance_Im = var(Im), Variance_Norm = var(Norm)) %>%
+    ggplot(mapping = aes(y = {{ component }}, x = Order, color = Order)) + 
+      geom_point() +
+      geom_line() +
+      scale_color_viridis_c()
+}
+```
+
+## Sign-sorted eigenvalues
+
+```{r}
+spec_ens %>% order.scatterplot(component = Re)
+spec_ens %>% order.density(component = Re)
+spec_ens %>% order.scatterplot(component = Norm)
+spec_ens %>% order.density(component = Norm)
+```
+
+```{r}
+spec_ens %>% order.summary(component = Mean_Re)
+spec_ens %>% order.summary(component = Variance_Re)
+spec_ens %>% order.summary(component = Mean_Norm)
+spec_ens %>% order.summary(component = Variance_Norm)
+```
+
+## Beta - Singular Values
+
+```{r}
+spec_ens_sg %>% order.scatterplot(component = Re)
+spec_ens_sg %>% order.density(component = Re)
+spec_ens_sg %>% order.scatterplot(component = Norm)
+spec_ens_sg %>% order.density(component = Norm)
+```
+
+```{r}
+spec_ens_sg %>% order.summary(component = Mean_Re)
+spec_ens_sg %>% order.summary(component = Variance_Re)
+spec_ens_sg %>% order.summary(component = Mean_Norm)
+spec_ens_sg %>% order.summary(component = Variance_Norm) # Just like sorting the spectrum by norm
+```
+
+## Stochastic Matrices
+
+```{r}
+spec_ens_stoch <- RME_stoch(N = 11, size = 1000, symm = T) %>% spectrum(sort_norms = F)
+spec_ens_stoch %>% spectrum.scatterplot()
+spec_ens_stoch %>% order.scatterplot(component = Norm)
+spec_ens_stoch %>% order.density(component = Norm)
+```
+
+```{r}
+spec_ens_stoch %>% order.summary(component = Mean_Re)
+spec_ens_stoch %>% order.summary(component = Variance_Re)
+spec_ens_stoch %>% order.summary(component = Mean_Norm)
+spec_ens_stoch %>% order.summary(component = Variance_Norm)
+```
+
+```{r}
+
+```
+
