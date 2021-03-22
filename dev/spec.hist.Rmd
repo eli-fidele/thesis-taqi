@@ -58,7 +58,7 @@ erdossss <- erdos_stack(args, size = 1000)
 
 
 ```{r}
-eval_hist <- ggplot(data = stack) + 
+eval_hist <- ggplot(data = erdossss) + 
   geom_histogram(mapping = aes(x = Re, fill = as.factor(p_sparsity))) +
   labs(fill = "Sparsity", title = "Real Component of Eigenvalues of ER Matrices")
 eval_hist

@@ -1,0 +1,52 @@
+---
+title: "Polished"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# Labels a generic array with a value column
+.label_array <- function(array, value, label, size){
+  label_column <- data.frame(x = rep(value, size))
+  colnames(label_column) <- label
+  cbind(array, label_column)
+}
+# Creates a tidy, labelled p-Erdos ensemble spectrum
+erdos_spectrum <- function(p, N, size){
+  ensemble_spectrum <- RME_erdos(N = N, p = p, size = size) %>% spectrum(order = 2)
+  ensemble_spectrum %>% .label_array(value = p, label = "p", size = nrow(ensemble_spectrum))
+}
+```
+
+## Simulations
+
+```{r, echo = T}
+# Global parameters
+N <- 50
+size <- 1000
+ps <- seq(0.005, 0.9995, 0.005)
+# Generate the p-ensembles
+erdos_ensemble <- purrr::map_dfr(ps, erdos_spectrum, N, size)
+```
+
+\newpage
+
+## Plot
+
+\bigskip
+
+```{r, fig.width = 9, fig.height = 7}
+erdos_ensemble %>%
+  ggplot(mapping = aes(x = Re, y = Im, color = p)) +
+  geom_point() +
+  scale_color_viridis_c() +
+  labs(title = "2nd Largest Eigenvalue of p-Erdos Ensembles by p")
+```
+
