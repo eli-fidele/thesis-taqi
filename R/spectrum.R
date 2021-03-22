@@ -49,6 +49,7 @@ spectrum <- function(array, components = TRUE, sort_norms = TRUE, singular = FAL
   eigenvalues <- eigen(P)$values # Compute the eigenvalues of P
   if(singular){eigenvalues <- sqrt(eigenvalues)} # Take the square root of the eigenvalues
   if(sort_norms){eigenvalues <- .sortByNorm(eigenvalues)} # Order the eigenvalue spectrum by norm rather than sign
+  else{eigenvalues <- sort(eigenvalues)} # Else, sort by sign.
   # If uninitialized, get eigenvalues of all orders; Otherwise, concatenate so single inputs become vectors
   if(class(order) == "logical"){order <- 1:nrow(P)} else{order <- c(order)}
   purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits) # Get the eigenvalues

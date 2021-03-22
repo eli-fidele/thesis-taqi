@@ -11,15 +11,15 @@ A (homogenous) random matrix is any matrix $M \in \F^{N \times N}$ is a matrix w
 Let $\mathcal{D} = \Normal(0,1)$. 
 \end{example}
 
-\section{Random Matrix Ensembles}
+\section{The Crew}
 
 \begin{definition}[Random Matrix Ensemble]
 A $\D$-distributed random matrix ensemble $\Ens$ over $\F^{N \times N}$ of size $K$ is defined as a set of $\D$-distributed random matrices $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$. In simple words, it is simply a collection of iterations of some specified class of random matrix.
 \end{definition}
 
-\subsection{Hermite Beta-Ensembles}
+\subsection{Hermitian $\beta$-Ensembles}
 
-\begin{definition}[Hermite-Gaussian $\beta$-ensemble]
+\begin{definition}[Hermitian-Gaussian $\beta$-ensemble]
 The Hermite $\beta$-ensemble is the ensemble of random matrices whose eigenvalues have the joint probability density function:
 \begin{align*}
 f_\beta(\lambda) = c_H^\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta e^{-1/2\sum_i \lambda_i^2}
@@ -32,6 +32,8 @@ They represent a matrix whose entries have $\beta$ real number components.
 \end{definition}
 
 Reference the person's work here and refer to the algorithm appendix on how to simualate general beta matrices.
+
+\subsection{Erdos-Renyi $p$-Ensembles}
 
 \section{Analytical Results}
 
