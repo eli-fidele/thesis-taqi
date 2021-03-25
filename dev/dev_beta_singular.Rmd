@@ -14,7 +14,7 @@ library(patchwork)
 
 ```{r}
 order.scatterplot <- function(spectrum, component){
-  spectrum %>% 
+  spectrum %>%
     ggplot(aes(x = Order, y = {{ component }}, color = Order)) +
     geom_point() +
     scale_color_viridis_c() +
@@ -47,7 +47,10 @@ order.summary <- function(spectrum, component){
 # Beta ensemble
 ens <- RME_beta(N = 25, beta = 2, size = 1000)
 #ens <- RME_norm(N = 25, herm = T, size = 1000)
+start <- Sys.time()
 spec_ens <- spectrum(ens, sort_norms = FALSE)
+end <- Sys.time()
+end - start
 spec_ens_sg <- spectrum(ens, singular = TRUE)
 ```
 

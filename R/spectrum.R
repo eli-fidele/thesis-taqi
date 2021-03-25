@@ -2,7 +2,40 @@
 # This script includes functions that help extract and plot eigenvalues of matrices.
 
 #=================================================================================#
-#                              SPECTRUM FUNCTIONS
+#                           EIGENVALUE DISPERSION (PARALLEL)
+#=================================================================================#
+
+# Setup parallel compuations 
+future::plan(multisession)
+print("Future plan has been set to multisession by default.")
+
+#' @title Obtain the eigenvalue spectrum of a matrix or ensemble of matrices.
+#'
+#' @description Returns a tidied dataframe of the eigenvalues of a random matrix or ensemble.
+#'
+#' @inheritParams spectrum
+#'
+#' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
+#' @examples
+#' 
+#' # Eigenvalue spectrum computed in parallel
+#' P <- RM_norm(N = 10000)
+#' #spectrum_P <- spectrum_parallel(P)
+#' 
+spectrum_parallel <- function(array, components = TRUE, sort_norms = TRUE, singular = FALSE, order = NA){
+  digits <- 4 # Digits to round values to
+  # Array is a matrix; call function returning eigenvalues for singleton matrix
+  if(class(array) == "matrix"){
+    .spectrum_matrix(array, components, sort_norms, singular, order, digits)
+  }
+  # Array is an ensemble; recursively row binding each matrix's eigenvalues
+  else if(class(array) == "list"){
+    furrr::future_map_dfr(array, .spectrum_matrix, components, sort_norms, singular, order, digits)
+  }
+}
+
+#=================================================================================#
+#                              EIGENVALUE SPECTRUM 
 #=================================================================================#
 
 #' @title Obtain the eigenvalue spectrum of a matrix or ensemble of matrices.

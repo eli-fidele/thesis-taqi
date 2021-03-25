@@ -2,6 +2,23 @@
 # This script includes functions that help extract and plot eigenvalues of matrices.
 
 #=================================================================================#
+#                           EIGENVALUE DISPERSION (PARALLEL)
+#=================================================================================#
+
+dispersion_parallel <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
+  digits <- 4 # Digits to round values to
+  pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
+  # Array is a matrix; call function returning dispersion for singleton matrix
+  if(class(array) == "matrix"){
+    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
+  }
+  # Array is an ensemble; recursively row binding each matrix's dispersions
+  else if(class(array) == "list"){
+    furrr::future_map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
+  }
+}
+
+#=================================================================================#
 #                              EIGENVALUE DISPERSION
 #=================================================================================#
 

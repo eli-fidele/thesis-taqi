@@ -20,7 +20,7 @@ source("../R/header.R")
 }
 # Creates a tidy, labelled p-Erdos ensemble spectrum
 erdos_spectrum <- function(p, N, size){
-  ensemble_spectrum <- RME_erdos(N = N, p = p, size = size) %>% spectrum(order = 2)
+  ensemble_spectrum <- RME_erdos(N = N, p = p, size = size) %>% spectrum_parallel(order = 2)
   ensemble_spectrum %>% .label_array(value = p, label = "p", size = nrow(ensemble_spectrum))
 }
 ```
@@ -30,7 +30,7 @@ erdos_spectrum <- function(p, N, size){
 ```{r, echo = T}
 # Global parameters
 N <- 50
-size <- 1000
+size <- 50
 ps <- seq(0.005, 0.9995, 0.005)
 # Generate the p-ensembles
 erdos_ensemble <- purrr::map_dfr(ps, erdos_spectrum, N, size)
