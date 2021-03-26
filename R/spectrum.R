@@ -1,14 +1,14 @@
 
 # This script includes functions that help extract and plot eigenvalues of matrices.
 
-#=================================================================================#
-#                           EIGENVALUE DISPERSION (PARALLEL)
-#=================================================================================#
-
 # Setup parallel compuations 
 future::plan(multisession)
 print("Future plan has been set to multisession by default.")
 
+#=================================================================================#
+#                           EIGENVALUE SPECTRUM (PARALLEL)
+#=================================================================================#
+#' 
 #' @title Obtain the eigenvalue spectrum of a matrix or ensemble of matrices.
 #'
 #' @description Returns a tidied dataframe of the eigenvalues of a random matrix or ensemble.
@@ -19,7 +19,7 @@ print("Future plan has been set to multisession by default.")
 #' @examples
 #' 
 #' # Eigenvalue spectrum computed in parallel
-#' P <- RM_norm(N = 10000)
+#' P <- RME_norm(N = 100, size = 500)
 #' #spectrum_P <- spectrum_parallel(P)
 #' 
 spectrum_parallel <- function(array, components = TRUE, sort_norms = TRUE, singular = FALSE, order = NA){
@@ -234,4 +234,35 @@ spectrum.histogram <- function(array, ..., component = NA, bins = 100, mat_str =
   else if(array_class == "list"){plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
   else{plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
   paste(prefix," of a",plot_str, sep = "")
+}
+
+#=================================================================================#
+#                             SPECTRUM ORDER PLOTS
+#=================================================================================#
+
+order.scatterplot <- function(spectrum, component){
+  spectrum %>%
+    ggplot(aes(x = Order, y = {{ component }}, color = Order)) +
+    geom_point() +
+    scale_color_viridis_c() +
+    theme(legend.position = "bottom")
+}
+order.density <- function(spectrum, component){
+  spectrum %>%
+    ggplot(mapping = aes(group = Order, x = {{ component }}, color = Order)) + 
+    geom_density() +
+    scale_color_viridis_c() +
+    theme(legend.position = "bottom")
+}
+order.summary <- function(spectrum, component){
+  spectrum %>%
+    group_by(Order) %>%
+    summarize(
+      Mean_Re = mean(Re), Mean_Im = mean(Im), Mean_Norm = mean(Norm),
+      Variance_Re = var(Re), Variance_Im = var(Im), Variance_Norm = var(Norm)) %>%
+    ggplot(mapping = aes(y = {{ component }}, x = Order, color = Order)) + 
+    geom_point() +
+    geom_line() +
+    scale_color_viridis_c() +
+    theme(legend.position = "bottom")
 }

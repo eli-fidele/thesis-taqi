@@ -5,6 +5,18 @@
 #                           EIGENVALUE DISPERSION (PARALLEL)
 #=================================================================================#
 
+#' @title Obtain the eigenvalue spacings of a matrix or ensemble of matrices.
+#'
+#' @description Returns a vector of the eigenvalue spacings of a random matrix or ensemble.
+#'
+#' @inheritParams dispersion
+#'
+#' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
+#' @examples
+#' 
+#' # Eigenvalue dispersion in parallel
+#' P <- RM_norm(N = 100, size = 500)
+#' #disp_P <- dispersion_parallel(P)
 dispersion_parallel <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
   digits <- 4 # Digits to round values to
   pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
@@ -108,7 +120,7 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
   # Obtain the dimension of the matrix
   N <- nrow(P)
   # Parse the pair string and evaluate the pair scheme
-  if(pairs == "largest"){pair_scheme <- data.frame(i = 1, j = 2)}
+  if(pairs == "largest"){pair_scheme <- data.frame(i = 2, j = 1)}
   else if(pairs == "consecutive"){pair_scheme <- .consecutive_pairs(N)}
   else if(pairs == "lower"){pair_scheme <- .unique_pairs_lower(N)}
   else if(pairs == "upper"){pair_scheme <- .unique_pairs_upper(N)}
@@ -217,15 +229,25 @@ dispersion.scatterplot <- function(array, metric = "id_diff_norm", pairs = NA, .
   else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
   # Parse plotting aesthetics from pairs. diff_ij is more useful unless pairs = "consecutive" or "largest", where j is better.
   if(pairs %in% c("consecutive","largest")){order_stat <- "j"} else{order_stat <- "diff_ij"}
+  
   # Plot parameters
   color0 <- "darkorchid4"
+  real_valued <- T
   # Scatterplot of dispersion metric
-  disps_df %>%
-    ggplot(mapping = aes_string(x = metric, y = order_stat, color = order_stat)) +
-    geom_point() +
-    scale_color_continuous(type = "viridis") +
-    labs(title = "Distribution of Eigenvalue Spacings by Ranking Difference Class", y = "Ranking Difference")
+  if(real_valued){  
+    disps_df %>%
+      ggplot(mapping = aes_string(x = metric, y = order_stat, color = order_stat)) +
+      geom_point() +
+      scale_color_continuous(type = "viridis") +
+      labs(title = "Distribution of Eigenvalue Spacings by Order Statistic")
+  } else{
+      resolved <- .resolve_eigenvalues(disps_df)
+      resolved %>%
+        ggplot() +
+        geom_point()
+    }
 }
+
 
 #' @title Visualize a plot of the variances of the eigenvalue dispersions by order difference level given a matrix or an ensemble.
 #'

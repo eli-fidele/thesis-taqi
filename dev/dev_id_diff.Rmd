@@ -1,0 +1,44 @@
+---
+title: "Developer"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# Random matrices and ensembles
+ens <- RME_beta(20, beta = 4, size = 1000)
+```
+
+```{r}
+disp <- dispersion_parallel(ens, pairs = "lower", singular = TRUE)
+#disp_4 <- dispersion_parallel(ens, norm_pow = 4)
+```
+
+```{r}
+#disp %>% dispersion.histogram(metric = "abs_diff")
+disp %>% dispersion.scatterplot(metric = "id_diff_norm")
+disp %>% dispersion.scatterplot(metric = "abs_diff")
+disp %>% dispersion.scatterplot(metric = "abs_diff")
+```
+
+## Normal Ensemble Dipsersions
+
+```{r}
+ens <- RME_norm(100, size = 100)
+disp <- dispersion_parallel(ens, pairs = "consecutive", singular = TRUE)
+disp %>% dispersion.scatterplot(metric = "abs_diff", pairs = "consecutive")
+```
+
+
+```{r}
+ens <- RME_norm(100, symm = T, size = 500)
+disp <- dispersion_parallel(ens, pairs = "lower", singular = TRUE)
+disp %>% dispersion.scatterplot(metric = "abs_diff")
+```
