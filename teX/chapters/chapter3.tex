@@ -4,9 +4,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-So, what are \textit{eigenvalue dispersions}? 
 
-In this section, we define the final spectral statistic studied in this chapter: eigenvalue dispersion. As the name suggests, these statistics concern the distirbution of the spacings between the eigenvalues. Funnily enough, this is almost as literal as it gets when we use the word "spectral". In physics and chemistry, atomic spectra are essentially differences between energy levels or quanta, so the translation is close. 
+In this section, we define the final spectral statistic studied in this chapter: eigenvalue dispersions. As the name suggests, these statistics are concerned with the distirbution of the spacings between the eigenvalues. 
+
+Oddly enough, this is almost as literal as it gets when we use the word "spectral". In physics and chemistry, atomic spectra are essentially differences between energy levels or quanta, so the translation is close. 
 
 In any case, we motivate a few definitions and formalisms in this section, then motivate the definition of a matrix's eigenvalue dispersion. To start off, we define an object useful for pairing our eigenvalues together, the pairing scheme.
 
@@ -19,10 +20,10 @@ Next up, we introduce a new notation for a pairing scheme denoted $\Pi$. What ar
 So, with the definitions of spectra well motiviated, a natural definition of pairing schema follows. Essentially, $\Pi$ is just a subset of the Cartesian product of a spectrum with itself. In other words, if we denote $\S := \sigma(P)$, then we say that a pairing scheme is simply a subset $\Pi \subseteq \S^2$. Here are some pairing schema that we will consider:
 
 \begin{enumerate}
-  \item \begin{enumerate}
-    \item Let $\Pi_>$ be the set of unique combinations of ordered eigenvalues. This will be the standard ordered pair scheme used in lieu of our dispersion metric argument orders (more later).
+  \item The unique pair combinations are two related pair schema. By specifying $i > j$ or $i < j$, we are able to obtain all unique pairs of unique indices. The reason we call them upper and lower pair combinations is in reference to the indices of the upper and lower triangular matrices. \begin{enumerate}
+    \item Let $\Pi_>$ be the set of unique (lower-pair) combinations of ordered eigenvalues. This will be the standard ordered pair scheme used in lieu of our dispersion metric argument orders (more later). In this pairing scheme, the eigenvalue with the lower rank is always listed first, and the higher rank second.
     $$\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
-    \item Let $\Pi_<$ be the set of unique combinations of ordered eigenvalues. This will be the standard ordered pair scheme used in lieu of our dispersion metric argument orders (more later).
+    \item For completeness, we will also define $\Pi_<$. This is the set of (upper-pair) unique combinations of ordered eigenvalues. 
     $$\Pi_< = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
   \end{enumerate}
 \item Let $\Pi_1$ be the largest pair of eigenvalues of a spectrum. Nice and simple.
