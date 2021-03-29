@@ -9,8 +9,13 @@
 \usepackage{rotating}
 \usepackage{natbib}
 \usepackage{dsfont} % Boldface 1 for indicator function
-\usepackage{array} % For the analytical eigenvector proof
+\usepackage{array} % For the analytical eigenvector proof (block matrices)
 % \usepackage{times} % other fonts are available like times, bookman, charter, palatino
+
+% For code snippet environments
+\usepackage{listings} 
+\usepackage[svgnames]{xcolor}
+
 
 %=====================
 %     ENVIRONMENTS
@@ -25,11 +30,27 @@
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 
+% Examples
+\newtheorem{code}{Code Example}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
 % Algorithms
 \newtheorem{algorithm}{Algorithm}[section]
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 %\newtheorem*{algorithm}{Algorithm}%[section]
+
+% R Code Chunks
+\lstset{language=R,
+    basicstyle=\small\ttfamily,
+    stringstyle=\color{DarkGreen},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+    morekeywords={TRUE,FALSE},
+    deletekeywords={data,frame,length,as,character},
+    keywordstyle=\color{blue},
+    commentstyle=\color{DarkGreen},
+}
 
 %==================
 %     COMMANDS

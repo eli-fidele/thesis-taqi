@@ -51,7 +51,7 @@ $$\forall n \geq N \mid  a_N \sim_\epsilon a_n$$
 \section{Erdos-Renyi Ensemble Simulations}
 
 \begin{definition}[Erdos-Renyi Graph]
-An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \oneto{M}$ and edges $E = \mathds{1}_{i,j \in V} \sim \Bern(p_{ij})$. It is homogenous if $p_{ij} = p$ is fixed for all $i, j$.
+An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \oneto[M]$ and edges $E = \mathds{1}_{i,j \in V} \sim \Bern(p_{ij})$. It is homogenous if $p_{ij} = p$ is fixed for all $i, j$.
 \end{definition}
 
 Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameterized by a probability $p$ (assuming it's homogenous, which this document will unless otherwise noted). As $p \to 0$, we say that graph becomes more sparse; analogously, as $p \to 1$ the graph becomes more connected.\newline
