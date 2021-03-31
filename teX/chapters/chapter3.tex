@@ -13,37 +13,16 @@ In any case, we motivate a few definitions and formalisms in this section, then 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Pairing Schema}
-
-Next up, we introduce a new notation for a pairing scheme denoted $\Pi$. What are pairing schemes and why do they matter? Recall that our goal is to study the spacings between eigenvalues. If we are studying spacing, then a priori, we are concerned with pairs of eigenvalues! Spacing, after all, is a binary relationship. 
-
-So, with the definitions of spectra well motiviated, a natural definition of pairing schema follows. Essentially, $\Pi$ is just a subset of the Cartesian product of a spectrum with itself. In other words, if we denote $\S := \sigma(P)$, then we say that a pairing scheme is simply a subset $\Pi \subseteq \S^2$. Here are some pairing schema that we will consider:
-
-\begin{enumerate}
-  \item The unique pair combinations are two related pair schema. By specifying $i > j$ or $i < j$, we are able to obtain all unique pairs of unique indices. The reason we call them upper and lower pair combinations is in reference to the indices of the upper and lower triangular matrices. \begin{enumerate}
-    \item Let $\Pi_>$ be the set of unique (lower-pair) combinations of ordered eigenvalues. This will be the standard ordered pair scheme used in lieu of our dispersion metric argument orders (more later). In this pairing scheme, the eigenvalue with the lower rank is always listed first, and the higher rank second.
-    $$\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
-    \item For completeness, we will also define $\Pi_<$. This is the set of (upper-pair) unique combinations of ordered eigenvalues. 
-    $$\Pi_< = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
-  \end{enumerate}
-\item Let $\Pi_1$ be the largest pair of eigenvalues of a spectrum. Nice and simple.
-$$\Pi_1 = \{(\lambda_2,\lambda_1)\}$$
-\item Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum. This pairing scheme gives us the minimal information needed to express important bounds and spacings in terms of its elements.
-$$\Pi_C = \{\pi_{j} = (\lambda_{j + 1},\lambda_j)\}_{j = 1}^{N-1}$$
-% \item Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum. This pairing scheme gives us the minimal information needed to express important bounds and spacings in terms of its elements.
-% $$\Pi_C = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i = j + 1\}_{i = 1}^{N-1}$$
-\end{enumerate}
-
-[Plot showing difference when using different graphs]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \subsection{Dispersion Metrics}
 
-When we define the dispersion of a matrix, we will see that there is a free argument $d$ called the dispersion metric. This function $d$ is a general function whose domain is always two eigenvalues. In set notation, this is the set $\Cc \times \Cc$ - a pair of two complex numbers. Its range will often be the positive reals $\R^+$; this is because the dispersion metric often will be substitutable with distance metric. Sometimes, the range will be $\Cc$. So, the dispersion metric will take the following form:
-\begin{align*}
-d: \Cc \times \Cc \to \{\R^+, \Cc\}
-\end{align*}
+% When we define the dispersion of a matrix, we will see that there is a free argument $d$ called the dispersion metric. This function $d$ is a general function whose domain is always two eigenvalues. In set notation, this is the set $\Cc \times \Cc$ - a pair of two complex numbers. Its range will often be the positive reals $\R^+$; this is because the dispersion metric often will be substitutable with distance metric. Sometimes, the range will be $\Cc$. So, the dispersion metric will take the following form:
+Before we may even start to consider studying dispersions of eigenvalues, we must first formalize and make clear what version of spacing we are using. To do so, we motivate the dispersion metric.
+
+\begin{definition}[Dispersion Metric]
+A dispersion metric $\delta: \Cc \times \Cc \to \R^+$ is defined as a function from the space of pairs of complex numbers to the positive reals. In simple terms, it is a way of measuring "space" between two complex numbers - our eigenvalues.
+\end{definition}
+
+Note, there is one special case where the domain of $\delta$ is not $\R^+$, that is when we are taking the simple difference of two complex numbers. In this case, the range of $\delta$ is also $\Cc$. We will denote this as the "identity difference" metric and call it $\delta_{\text{id}}$. 
 
 Consider the following dispersion metrics below. Out of those 4 dispersion metrics, only the first one has a range of $\Cc$. The rest have a range of $\R^+$. Additionally, the second and third metrics are $\textit{symmetric}$ operations while the rest are not. The $\beta$-norm is only a symmetric operation when $\beta$ is even.
 
@@ -54,11 +33,53 @@ Consider the following dispersion metrics below. Out of those 4 dispersion metri
 \item The difference of absolutes: $d_{ad}(z,z') = |z'| - |z|$
 \end{enumerate}
 
-Finally, we are able to motivate the definition of a matrix dispersion! Suppose we have a $\mathcal{D}$-distributed random matrix $P \in \F^{N \times N}$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}$. Then we define their dispersion as follows. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Pairing Schema}
+
+% Next up, we introduce a new notation for a pairing scheme denoted $\Pi$. What are pairing schemes and why do they matter? Recall that our goal is to study the spacings between eigenvalues. If we are studying spacing, then a priori, we are concerned with pairs of eigenvalues! Spacing, after all, is a binary relationship. 
+
+You are a studious student, earnest to learn about eigenvalue spacings, for some reason. So you begin, and the first question pops into your head.
+
+$\textbf{Student:}$ For which eigenvalue pairs will we observe their dispersion? \hfill \newline
+$\textbf{Wigner's Ghost:}$ The ones specified by the pairing scheme.
+
+Unphased by the fact you are meeting a ghost from the 1990s - a wild spirit you are - you find it a good idea to interrogate the ghost physicist.
+
+The student, irritated about having to learn yet another snippet of loaded notation complains and asks:
+
+$\textbf{Student:}$ Aha! Why don't we just look at all the eigenvalue pairs? Isn't more information always better? \hfill \newline
+$\textbf{Wigner's Ghost:}$ Actually, no. We will later find out a few reason taking all pairs isn't best. For instance, some spacings are linear combination of others. Or if we have a dispersion metric that is symmetric, half of the information is going to be repeated! 
+
+% So, with the definitions of spectra well motiviated, a natural definition of pairing schema follows. Essentially, $\Pi$ is just a subset of the Cartesian product of a spectrum with itself. In other words, if we denote $\S := \sigma(P)$, then we say that a pairing scheme is simply a subset $\Pi \subseteq \S^2$. Here are some pairing schema that we will consider:
+
+\begin{enumerate}
+  \item The unique pair combinations are two related pair schema. By specifying $i > j$ or $i < j$, we are able to obtain all unique pairs of unique indices. The reason we call them upper and lower pair combinations is in reference to the indices of the upper and lower triangular matrices. \begin{enumerate}
+    \item Let $\Pi_>$ be the set of unique (lower-pair) combinations of ordered eigenvalues. This will be the standard ordered pair scheme used in lieu of our dispersion metric argument orders (more later). In this pairing scheme, the eigenvalue with the lower rank is always listed first, and the higher rank second.
+    $$\Pi_> = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
+    \item For completeness, we will also define $\Pi_<$. This is the set of (upper-pair) unique combinations of ordered eigenvalues. Wont be used because we want bigger - smaller to make positive definite.
+    $$\Pi_< = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
+  \end{enumerate} 
+  \textbf{Benefits:} Solves the issue of repeated pairs for symmetric metrics.  
+\item Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum. This pairing scheme gives us the minimal information needed to express important bounds and spacings in terms of its elements.
+$$\Pi_C = \{\pi_{j} = (\lambda_{j + 1},\lambda_j)\}_{j = 1}^{N-1}$$
+% \item Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum. This pairing scheme gives us the minimal information needed to express important bounds and spacings in terms of its elements.
+% $$\Pi_C = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i = j + 1\}_{i = 1}^{N-1}$$
+\end{enumerate}
+
+$\textbf{Special pairs:}$
+\begin{enumerate}
+  \item Let $\Pi_1$ be the largest pair of eigenvalues of a spectrum. Nice and simple.
+  $$\Pi_1 = \{(\lambda_2,\lambda_1)\}$$
+\end{enumerate}
+[Plot showing difference when using different graphs]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Spectral Dispersions}
+\subsection{Dispersions!}
+
+
+Finally, we are able to motivate the definition of a matrix dispersion! Suppose we have a $\mathcal{D}$-distributed random matrix $P \in \F^{N \times N}$ or a random matrix ensemble $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}$. Then we define their dispersion as follows. 
 
 \begin{definition}[Dispersion]
 The dispersion of a matrix $P \in \F^{N \times N}$ with respect to a dispersion metric $d: \Cc \times \Cc \to \F$ and pairing scheme $\Pi$, call it $\Delta_d(P, \Pi)$, is defined as follows. Suppose $\sigma(P) := \S$ is the ordered spectrum of $P$ where $\sigma(P) = \{\lambda_1, \dots, \lambda_N\}$. Then, let $\Pi = \{\pi_{ij} = (\lambda_i,\lambda_j) \} \subseteq \S^2$ be a subset of eigenvalue ordered pairs. Then, the dispersion of $P$ with respect to $d$ is simply the set $\Delta_d(P, \Pi)=\{\delta_{ij} = d(\pi_{ij}) \mid \pi_{ij} = (\lambda_i,\lambda_j) \in \Pi\}$.
