@@ -2,33 +2,50 @@
 
 As discussed in the introduction, this thesis will be an exploration of spectral statistics of random matrices. This means that we must first be able to understand what random matrices are. At a fundamental level, random matrices are simply matrices whose entries are randomly distributed in accordance to some distribution or method. To formalize all these notions, we will define what random matrices are and what it means for them to be $\D$-distributed.
 
+Prior to beginning the discussion on $\D$-distributions, the reader should be familiar or at least accquainted with the notion of random variables and what they are. A summary is available in the appendix in A.x. 
+
 \section{Introduction}
 When it comes to random simulation, there must always be a rule to which our randomness must conform, regardless of complexity. For example, sampling a vector from a distribution is a rudimentary example of this. For random matrices, there will be a few methods of generating their entries that are not just sampling from theoretical distributions. As such, we motivate the $\D$-distribution.
 
+\section{$\D$-Distributions}
+
+Now, we motivate the $D$-distribution. A formalization on how to initialize a random matrix. 
+
 \begin{definition}[$\D$-distribution]
-When we define a random matrix that is $\D$-distributed, we say that $P \sim \D$. In the simplest of terms, $\D$ is essentially the algorithm that generates the random matrix $P$. There are two primary types of algorithms that will be covered: explicit distribution and implicit distribution. If $\D$ is an explicit distribution, then we simply sample every entry of $P$ to be from that distribution. Otherwise, if it is implicit, we utilize an algorithm that enforces an implicit distribution of the entries. 
+When we define a random matrix that is $\D$-distributed, we say that $P \sim \D$. In the simplest of terms, $\D$ is essentially the algorithm that generates the random matrix $P$. We define two primary methods of distribution: explicit distribution and implicit distribution. If $\D$ is an explicit distribution, then every entry of $P$ is homogenously sampled from that distribution. Otherwise, if it is implicit, we utilize an algorithm that imposes an implicit distribution on the entries. 
 \end{definition}
 
+\subsection{Explicit Distributions}
 
-$\textbf{Explicit Distributions}$ \hfill
+The simplest case is homogenous, explicitly distributed random matrices. If $\D$ is an expxlicit distribution, then we overload the notation $\D$ to mean a probability distribution in the classical sense (see Appendix A.x). So, if $\D$ is a probability distribution, the matrix $P \sim \D$ when $p_{ij} \sim \D$. In otherwords, we simply perform entry-wise sampling from that distribution.
 
-The simplest case is explicitly distributed random matrices. If $\D$ is an expxlicit distribution, then we overload the notation $\D$ to mean a probability distribution in the classical sense (see Appendix A.1). So, if $\D$ is a probability distribution, the matrix $P \sim \D$ when $p_{ij} \sim \D$. In otherwords, we simply perform entry-wise sampling from that distribution.
+Take for example the following explicit distributions which we cover in this thesis.
 
 \begin{enumerate}
 \item  If $\D = \Normal(0,1)$, then $p_{ij} \sim \Normal(0,1)$.
 \item  If $\D = \Unif(0,1)$, then $p_{ij} \sim \Unif(0,1)$.
 \end{enumerate}
 
-\newpage
+\begin{remark}[Formalization]
+Explicit distributions can be formalized in scope of the standard notation in probability theory. At the heart of the formalization is the usage of index hacking to collapse the array's indices from two dimensions to one. This way, our random matrix has a representation as a random vector, which we commonly encounter in probability theory as a (i.i.d) sequence of random variables! Generally, an $N \times N$ random matrix that is explicity and homogenously $\D$-distributed is essentially a sequence of $N^2$ i.i.d random variables sampled from $\D$.
+\end{remark}
 
-$\textbf{Implicit Distributions}$ \hfill
+\begin{example}[Formalization]
+For example, suppose $P$ is a $2 \times 2$ random matrix with $\D = \Normal(0,1)$. Then, we have four random variables to initialize. In the random matrix representation, we need to initialize $P_{11}, P_{12}, P_{21}, \and P_{22}$ by sampling them from $\D$. In the vector representation, we just say we are sampling four i.i.d random variables from $\D$. The matrix indexing is intrinsic and preservable by using index hacking with some modular math.
+\end{example}
+
+\subsection{Implicit Distributions}
 
 In the latter case, we are concerned less about the distribution of the matrix entries and moreso about its holisitic properties.
 
+Consider for example, the following implicit distributions.
+
 \begin{enumerate}
-\item If $\D = \text{Stochastic}$, then the matrix is a row of random stochastic rows. (See Algorithm B.1.)
-\item If $\D$ is any distribution (implicit or explicit), then $\D^{\dagger}$ is the Symmetric/Hermitian version of $\D$. (See Algorithm B.2.)
+\item If $\D = \text{Stochastic}$, then the matrix is a row of random stochastic rows. (See Algorithm B.x)
+\item If $\D$ is any distribution (implicit or explicit), then $\D^{\dagger}$ is the Symmetric/Hermitian version of $\D$. (See Algorithm B.x)
 \end{enumerate}
+
+\subsection{Random Matrices}
 
 \begin{definition}[Random Matrix]
 Assuming $\D$ is an explicit distribution, a random matrix is any matrix over the field $\F$ is a matrix $M \in \F^{N \times N}$ is a matrix whose entries are i.i.d random variables. So, if a random matrix $M = (m_{ij})$ is $\mathcal{D}$-distributed, then we say $m_{ij} \sim \mathcal{D}$. In the scope of this thesis, assume every random matrix to be homogenously distributed. Otherwise, if $\D$ is an implicit distribution, then $P$ is a matrix whose entries are determined by the algorithm imposed by $\D$.
@@ -52,6 +69,28 @@ P
 [3,]  1.3002145  0.1254992 -0.5214005 -0.61516174
 [4,] -1.0398587  0.1975445 -0.8511950  0.86366082
 \end{lstlisting}
+
+\newpage
+
+\begin{center}
+$\textbf{Common Matrix $\D$-Distributions}$
+\end{center}
+
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Country List} \\
+ \hline
+ Country Name     or Area Name& ISO ALPHA 2 Code &ISO ALPHA 3 Code&ISO numeric Code\\
+ \hline
+ Hermite-$\beta$   & $\mathcal{H}(\beta)$    & $\b \in \N$ &   004\\
+ Aland Islands&   AX  & ALA   &248\\
+ Albania &AL & ALB&  008\\
+ Algeria    &DZ & DZA&  012\\
+ American Samoa&   AS  & ASM&016\\
+ Andorra& AD  & AND   &020\\
+ Angola& AO  & AGO&024\\
+ \hline
+\end{tabular}
 
 \newpage
 
@@ -86,8 +125,6 @@ ensemble
 [3,]  1.3002145  0.1254992 -0.5214005 -0.61516174
 [4,] -1.0398587  0.1975445 -0.8511950  0.86366082
 \end{lstlisting}
-
-\section{Special Ensembles}
 
 With this in mind, we will gloss over, characterize, and briefly discuss a few special recurring ensembles in this thesis.
 
@@ -140,7 +177,7 @@ With this in mind, we will gloss over, characterize, and briefly discuss a few s
 
 The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in this thesis. This ensemble will be characterized, motivated, and defined more thoroughly in $\textbf{Chapter 4}$. However, we will give a brief introduction to the ensemble.
 
-At a practical level, all one would need to know is that the matrices are generated in accordance to an algorithm found in the appendix (B.1.4) and in Chapter 4. 
+At a practical level, all one would need to know is that the matrices are generated in accordance to an algorithm found in the appendix (Algorithm B.x) and in Chapter 4. 
 
 \subsection{Erdos-Renyi $p$-Ensembles}
 

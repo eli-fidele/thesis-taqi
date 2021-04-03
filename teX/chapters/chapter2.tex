@@ -21,6 +21,17 @@ That being said, when our random matrix has a specified distribution (say, stand
 Suppose $P \in \F^{N \times N}$ is a square matrix of size $N$ over $\F$. Then, the (eigenvalue) spectrum of $P$ is defined as the multiset of its eigenvalues and it is denoted $\sigma(P) = \{\lambda_i  \in \Cc\}_{i=1}^N$. Note that it is important to specify that a spectrum is a multiset and not just a set; eigenvalues could be repeated due to algebraic multiplicity and we opt to always have $N$ eigenvalues. 
 \end{definition}
 
+While our definition for spectrum is nice and clean, there are a few caveats that we must take care of. First, how are spectra statistics? So we can even call them statistics, so there needs to be some formalization as to why we consider eigenvalues statistics. In this dialogue, we will call back on the same sort of formalization dialogue in the Random Matrices section. Before beginning, the reader is encouraged to review what a statistic is in the review appendix (A.x).
+
+Recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices, we always had one thing - a vector representation of random variables. Using this framework, the formalization is trivial.
+
+\begin{remark}[Formalization]
+Suppose $P \sim \D$ is an $N \times N$ random matrix. Then, $P$ has a representation as a sequence of $N^2$ random variables, denote it $\vec{X} = \{X_i \mid i = 1,2,\dots,N^2 - 1,N^2\}$. Then, the spectrum of the matrix $P$ is simply a function of the vector $\vec{X}$. We can denote this $\sigma(\vec{X})$, where the operator $\sigma$ is overloaded to mean the spectrum of a matrix $\textbf{with respect to the vector representation}$. The actual process for $\sigma$ is not necessary to explicitly write out, since characterizing it will be sufficient for now. Essentially, $\sigma$ is a function that would parse the random variables into the array form by index hacking. Then, it must compute the determinant of the matrix $P - \lambda I$, and solve for its roots. To summarize this, consider the flow chart below.
+\end{remark}
+
+To simplify the process, here is how we formalize the spectrum as a statistic. Suppose we sample $P \sim \D$. Then, we take its spectrum formally using $\sigma$ as such:\hfill
+$$P_{[]} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \lambda I) \ra \sigma(P_{[]})$$
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Interlude: Ensembles}
@@ -61,6 +72,12 @@ Note that when we take the norms of the eigenvalues, we essentially ignore "rota
 \subsection{Singular Values}
 
 An aternative to using the norm ordering scheme is using the singular values of the matrix. If a matrix is symmetric, the singular values are simply the norm of the eigenvalues. We ignore rotational features and focus solely on scale when we do so.
+
+Suppose $P$ is a random matrix. Then, we can take it singular values as such.
+
+\begin{definition}[Singular Values]
+The singular values of a matrix $P$ are given by the square root of the eigenvalues of the corrosponding product of that matrix and its transpose. That is, $\sigma_+(P) = \sqrt{\sigma(P \cdot P^T)}$.
+\end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
