@@ -45,6 +45,8 @@ Now that matrix ensembles are well defined, we can motivate a core object of our
 If we have an ensemble $\Ens$, then we can naturally extend the definition of $\sigma(\Ens)$. To take the spectrum of an ensemble, simply take the union of the spectra of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$, then $\sigma(\Ens) = \bigcup_{i=1}^K \sigma(P_i)$.
 \end{definition}
 
+[Plot showing the difference between matrix ensemble and matrix spectrum]
+
 A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. So in a way, ensemble statistics are the engine of this research.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,11 +81,31 @@ Suppose $P$ is a random matrix. Then, we can take it singular values as such.
 The singular values of a matrix $P$ are given by the square root of the eigenvalues of the corrosponding product of that matrix and its transpose. That is, $\sigma_+(P) = \sqrt{\sigma(P \cdot P^T)}$.
 \end{definition}
 
+\newpage
+
+\begin{center}
+$\textbf{Common Matrix $\D$-Distributions}$
+\end{center}
+
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Table of Spectrum Schema} \\
+ \hline
+ Distribution & Notation ($\D$) & Parameters & Class\\
+ \hline
+ Normal & $\Normal(\mu,\sigma)$ & $\mu \in \R, \sigma \in \R^+$  &  Explicit\\
+ Uniform  & $\Unif(a,b)$ & $a,b \in \R$ & Explicit\\
+ Hermite-$\beta$   & $\mathcal{H}(\beta)$  &  $\b \in \N$  & Implicit\\
+ Erdos-$p$   &   $\text{ER}(p)$  & $p \in [0,1]$   & Implicit\\
+ %Angola & AO & AGO & 024\\
+ \hline
+\end{tabular}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Order Statistics}
 
-With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics. In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (See A.2.2)
+With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics. In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (See A.x)
 
 
 
@@ -113,7 +135,7 @@ Distribution of the normalized largest eigenvalue. Let $\lambda_1$ denote the la
 
 \subsection{Introduction}
 
-A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (See A.1.2). Simply put, those are matrices which are equal to their conjugate transpose. 
+A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (See A.x). Simply put, those are matrices which are equal to their conjugate transpose. 
 
 $\textbf{Note:}$ Since real numbers are their own conjugate transpose, every Symmetric matrix is Hermitian. However, we will still delineate the two terms to avoid confusion.
 

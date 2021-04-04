@@ -4,8 +4,26 @@ As discussed in the introduction, this thesis will be an exploration of spectral
 
 Prior to beginning the discussion on $\D$-distributions, the reader should be familiar or at least accquainted with the notion of random variables and what they are. A summary is available in the appendix in A.x. 
 
-\section{Introduction}
+%\section{Introduction}
 When it comes to random simulation, there must always be a rule to which our randomness must conform, regardless of complexity. For example, sampling a vector from a distribution is a rudimentary example of this. For random matrices, there will be a few methods of generating their entries that are not just sampling from theoretical distributions. As such, we motivate the $\D$-distribution.
+
+\begin{center}
+$\textbf{Common Matrix $\D$-Distributions}$
+\end{center}
+
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Table of Random Matrix Distributions} \\
+ \hline
+ Distribution & Notation ($\D$) & Parameters & Class\\
+ \hline
+ Normal & $\Normal(\mu,\sigma)$ & $\mu \in \R, \sigma \in \R^+$  &  Explicit\\
+ Uniform  & $\Unif(a,b)$ & $a,b \in \R$ & Explicit\\
+ Hermite-$\beta$   & $\mathcal{H}(\beta)$  &  $\b \in \N$  & Implicit\\
+ Erdos-$p$   &   $\text{ER}(p)$  & $p \in [0,1]$   & Implicit\\
+ %Angola & AO & AGO & 024\\
+ \hline
+\end{tabular}
 
 \section{$\D$-Distributions}
 
@@ -51,6 +69,12 @@ Consider for example, the following implicit distributions.
 Assuming $\D$ is an explicit distribution, a random matrix is any matrix over the field $\F$ is a matrix $M \in \F^{N \times N}$ is a matrix whose entries are i.i.d random variables. So, if a random matrix $M = (m_{ij})$ is $\mathcal{D}$-distributed, then we say $m_{ij} \sim \mathcal{D}$. In the scope of this thesis, assume every random matrix to be homogenously distributed. Otherwise, if $\D$ is an implicit distribution, then $P$ is a matrix whose entries are determined by the algorithm imposed by $\D$.
 \end{definition}
 
+\begin{remark}[Complex Entries]
+To say that a random matrix is explicitly $\D$-distributed over $\Cc$ would mean that its entries take the form $a + bi$ where $a,b \sim \D$ are random variables. In other words, if we allow the matrix to have complex entries by setting $\F = \Cc$, then we must sample the real and imaginary component as $\D$-distributed i.i.d. random variables.
+\end{remark}
+
+Below, we can see code on how to generate a standard normal random matrix using the $\textbf{RMAT}$ package.
+
 \begin{code}[Standard Normal Matrix]
 Let $\mathcal{D} = \Normal(0,1)$. We can generate $P \sim \D$, a $4 \times 4$ standard normal matrix, as such:
 \end{code}
@@ -70,27 +94,7 @@ P
 [4,] -1.0398587  0.1975445 -0.8511950  0.86366082
 \end{lstlisting}
 
-\newpage
-
-\begin{center}
-$\textbf{Common Matrix $\D$-Distributions}$
-\end{center}
-
-\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
- \hline
- \multicolumn{4}{|c|}{Country List} \\
- \hline
- Country Name     or Area Name& ISO ALPHA 2 Code &ISO ALPHA 3 Code&ISO numeric Code\\
- \hline
- Hermite-$\beta$   & $\mathcal{H}(\beta)$    & $\b \in \N$ &   004\\
- Aland Islands&   AX  & ALA   &248\\
- Albania &AL & ALB&  008\\
- Algeria    &DZ & DZA&  012\\
- American Samoa&   AS  & ASM&016\\
- Andorra& AD  & AND   &020\\
- Angola& AO  & AGO&024\\
- \hline
-\end{tabular}
+%\newpage
 
 \newpage
 
@@ -181,7 +185,7 @@ At a practical level, all one would need to know is that the matrices are genera
 
 \subsection{Erdos-Renyi $p$-Ensembles}
 
-The Hermite $\beta$-ensembles are a normal-like class of random matrices. Now, we will veer away from the normal distribution as a whole and switch to a different class of matrices: stochastic matrices. Stochastic matrices, in short, are matrices that represent Markov Chains (see A.3.1). We can also think of them as the matrix representation of a specific setup of a walk on a random graph. 
+The Hermite $\beta$-ensembles are a normal-like class of random matrices. Now, we will veer away from the normal distribution as a whole and switch to a different class of matrices: stochastic matrices. Stochastic matrices, in short, are matrices that represent Markov Chains (see A.x). We can also think of them as the matrix representation of a specific setup of a walk on a random graph. 
 
 A particular class of random graphs that we will consider are the Erdos-Renyi random graphs. Essentially, these are graphs whose vertices are connected with a uniform probability $p$. We can interpret this as saying an Erdos-Renyi graph is a simple random walk on a graph with parameterized sparsity (given by $p$). Without further ado, we motivate the Erdos-Renyi graph:
 
