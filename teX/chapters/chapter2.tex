@@ -4,9 +4,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-So, what are \textit{spectral statistics}? Do they have to do with rainbows? Sceptres? No, they don’t, but they’re almost as colorful and regal. The word spectral is borrowed from the spectral-like patterns observed in statistical physics - whether it may be atomic spectra or other quantum mechanical phenomena. The borrowing is loose and not literal, but still somewhat well founded. In fact, the field of Random Matrix Theory was extensively developed in the 1930s by the nuclear physicist Eugene Wigner. He found connections between the deterministic properties of atomic nuclei and their random and stochastic behaviors. The link? Random matrices.
+So, what are $\textit{spectral statistics}$? Do they have to do with rainbows? Sceptres? No, they don’t, but they’re almost as colorful and regal. The word spectral is borrowed from the spectral-like patterns observed in statistical physics - whether it may be atomic spectra or other quantum mechanical phenomena. The borrowing is loose and not literal, but still somewhat well founded. In fact, the field of Random Matrix Theory was extensively developed in the 1930s by the nuclear physicist Eugene Wigner. He found connections between the deterministic properties of atomic nuclei and their random and stochastic behaviors. The link? Random matrices.
 
-So in the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors. That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix. They are quite important for many reasons. For instance in statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corrosponding matrices. The study of eigenvalues and eigenvectors primarily falls in the scope of Linear Algebra, but their utility is far-reaching. So, what exactly are \textit{eigenvalues} exactly?
+So in the context of this thesis, $\textit{spectral statistics}$ will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors. That being said, if we fix a $\textit{random matrix}$, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix. They are quite important for many reasons. For instance in statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corrosponding matrices. The study of eigenvalues and eigenvectors primarily falls in the scope of Linear Algebra, but their utility is far-reaching. So, what exactly are $\textit{eigenvalues}$ exactly?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -87,7 +87,7 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 $\textbf{Common Spectrum Schema}$
 \end{center}
 
-\begin{tabular}{ |p{3cm}|p{2cm}|p{3cm}|p{5cm}|  }
+\begin{tabular}{ |p{3cm}|p{2cm}|p{3cm}|p{4cm}|  }
  \hline
  \multicolumn{4}{|c|}{Table of Spectrum Schema} \\
  \hline
@@ -105,8 +105,6 @@ $\textbf{Common Spectrum Schema}$
 
 With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics. In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (See A.x)
 
-
-
 In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution. They tell us how the eigenvalues space themselves and give us useful upper and lower bounds. 
 
 For example, the maximum of a sample is an order statistic concerned with the highest ranked element. In our case, this could corrospond the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined. 
@@ -122,9 +120,30 @@ So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ a
 
 \subsection{Case Study: Tracy-Widom Distribution}
 
-Distribution of the normalized largest eigenvalue. Let $\lambda_1$ denote the largest eigenvalue. Then, let $<\lambda_j - \lambda_i>$ be the mean eigenvalue spacing (of consecutive eigenvalues). The Tracy-Widom distribution is the distribution of $\frac{(\lambda_1 - 2\sqrt{N})n^{1/6}}{<\lambda_j - \lambda_i>}$.
+The Tracy-Widom distribution tells us the distribution of the largest (normalized) eigenvalue. Our normalization is given by with three things. Suppose that $P$ is an $N \times N$ matrix. Normalizing its largest eigenvalue entails the following:
+\begin{enumerate}
+  \item Shifting the eigenvalue to the left by $2\sqrt(N)$
+  \item Multiplying by $N^{\frac{1}{6}}$
+  \item Dividing by the mean eigenvalue spacing $\langle \lambda_j - \lambda_i \rangle$
+\end{enumerate}
+\hfill
 
+With regards to the third item, we introduce a new value called the mean spacing. Essentially, this is the average distance between two consecutive eigenvalues. However, we will discuss this in more depth in $\textbf{Chapter 3}$. So, bringing it all together, we define the normalized largest eigenvalue $\widetilde{\lambda_1}$ below.
+
+\begin{definition}[Normalized Largest Eigenvalue]
+Suppose $P$ is an $N \times N$ matrix. Its normalized largest eigenvalue $\widetilde{\lambda_1}$ is given by the following formula:
+$$\widetilde{\lambda_1} = \frac{(\lambda_1 - 2\sqrt{N})\cdot N^{\frac{1}{6}}}{\langle \lambda_j - \lambda_i \rangle}$$
+\end{definition}
+
+Now, we may define the Tracy-Widom distribution for a given matrix ensemble.
+
+\begin{definition}[Tracy-Widom Distribution]
+Suppose $\E$ is an ensemble of $\D$-distributed $N \times N$ matrices of size $K$. The Tracy-Widom distribution of $\E$ is given by taking the set of the largest normalized eigenvalues for every matrix ensemble. That is, the Tracy-Widom distribution is the set $\{ \widetilde{\lambda_{1,i}}\}_{i=1}^K$.
+\end{definition}
+
+\begin{center}
 [Plot]
+\end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -145,6 +164,17 @@ Having a complete set of real eigenvalues yields many great properties. For inst
 
 \subsection{Case Study: Wigner's Semicircle Distribution}
 
+The eigenvalues of Hermitian matrices obey Wigner's Semicircle distribution. Since Hermitian matrices have real eigenvalues, then we can be more precise and generally say that the real component of the eigenvalues follow the semicircle distribution.
+
+\begin{definition}[Semicircle Distribtion]
+If a random variable $X$ is semicircle distributed with radius $R \in \R^+$, then we say $X \sim \text{SC}(R)$. $X$ has the following probability density function:
+$$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
+\end{definition}
+
+
+\begin{remark}[Radius and Matrix Dimension]
+The dimension of the matrix determines the radius of the eigenvalues. Namely, if a Hermitian matrix $P$ is $N \times N$, then its eigenvalues are semicircle distributed with radius $R = 2\sqrt{N}$. That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(2\sqrt{R})$.
+\end{remark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

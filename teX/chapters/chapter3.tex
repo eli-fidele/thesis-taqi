@@ -273,9 +273,26 @@ We will considering the conditional statistics $\E(\delta_{ij} \mid \rho)$ and $
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Case Study: Wigmer's Surmise}
+\subsection{Case Study: Wigner's Surmise}
 
-Limiting distribution of the eigenvalue spacings of symmetric matrices.
+Wigner's surmise is a result found by Richard Wigner regarding the limiting distribution of eigenvalue spacings of for symmetric matrices. To start talking about this, we must talk about normalized spacings, which are the precise items considered in the distribution. Before, we can talk about the normalized spacing, we define the mean spacing. Recall that the mean spacing showed up in the normalization of the largest eigenvalue in the $\textit{Tracy-Widom distribution}$. This is precisely the same notion.
+
+\begin{definition}[Mean Spacing]
+Suppose $P$ is an $N \times N$ symmetric matrix. Then, the mean (eigenvalue) spacing, denoted $\langle s \rangle = \langle \lambda_j - \lambda_i \rangle$ is given by taking the consecutive pairs of the sign-ordered spectrum of $P$ and taking the mean of their difference. That is, $\langle s \rangle = \E(\lambda_j - \lambda_{j-1}) \for j = 1,\dots,N-1)$.
+\end{definition}
+
+So, with the mean spacing defined, we now define the normalized spacing between a pair of consecutive eigenvalues below.
+
+\begin{definition}[Normalized Spacing]
+Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues. Then, the normalized spacing of the $j^{th}$ pair of eigenvalues, denoted $s_j$ is given by the following formula. Note that in the alternate notation $\d = \d_{\text{id}}$.
+$$s_j = \frac{(\lambda_j - \lambda_{j+1})}{\langle s \rangle} = \frac{\d(\pi_{j})}{\E[\d(\pi_{j})]}$$
+\end{definition}
+
+The analytical results for the Hermite $\beta$-ensembles for $\beta = 1, 2, 4$, denoted by $w_\beta$, are stated below.
+
+$$w_1(s) = \frac{\pi}{2} \exp(-\frac{\pi}{4}s^2)$$
+$$w_2(s) = \frac{32}{\pi^2} s^2 \exp(-\frac{4}{\pi}s^2)$$
+$$w_4(s) = \frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2)$$
 
 [Plot]
 
