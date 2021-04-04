@@ -84,20 +84,18 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 \newpage
 
 \begin{center}
-$\textbf{Common Matrix $\D$-Distributions}$
+$\textbf{Common Spectrum Schema}$
 \end{center}
 
-\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+\begin{tabular}{ |p{3cm}|p{2cm}|p{3cm}|p{5cm}|  }
  \hline
  \multicolumn{4}{|c|}{Table of Spectrum Schema} \\
  \hline
- Distribution & Notation ($\D$) & Parameters & Class\\
+ Scheme & Matrix & Notation & Ordering \\
  \hline
- Normal & $\Normal(\mu,\sigma)$ & $\mu \in \R, \sigma \in \R^+$  &  Explicit\\
- Uniform  & $\Unif(a,b)$ & $a,b \in \R$ & Explicit\\
- Hermite-$\beta$   & $\mathcal{H}(\beta)$  &  $\b \in \N$  & Implicit\\
- Erdos-$p$   &   $\text{ER}(p)$  & $p \in [0,1]$   & Implicit\\
- %Angola & AO & AGO & 024\\
+ Sign-Ordered & $P$ & $\sigma_{\pm}(P)$ & $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_N$ \\
+ Norm-Ordered & $P$ & $\sigma_{|\cdot|}(P)$ & $|\lambda_1| \geq |\lambda_2| \geq ... \geq |\lambda_N|$ \\
+ Singular & $P \cdot P^T$ & $\sigma_{\sqrt{}}(P)$ & $\sqrt{\lambda_1} \geq \sqrt{\lambda_2} \geq ... \geq \sqrt{\lambda_N}$ \\
  \hline
 \end{tabular}
 

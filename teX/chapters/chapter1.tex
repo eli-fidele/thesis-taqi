@@ -7,24 +7,6 @@ Prior to beginning the discussion on $\D$-distributions, the reader should be fa
 %\section{Introduction}
 When it comes to random simulation, there must always be a rule to which our randomness must conform, regardless of complexity. For example, sampling a vector from a distribution is a rudimentary example of this. For random matrices, there will be a few methods of generating their entries that are not just sampling from theoretical distributions. As such, we motivate the $\D$-distribution.
 
-\begin{center}
-$\textbf{Common Matrix $\D$-Distributions}$
-\end{center}
-
-\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
- \hline
- \multicolumn{4}{|c|}{Table of Random Matrix Distributions} \\
- \hline
- Distribution & Notation ($\D$) & Parameters & Class\\
- \hline
- Normal & $\Normal(\mu,\sigma)$ & $\mu \in \R, \sigma \in \R^+$  &  Explicit\\
- Uniform  & $\Unif(a,b)$ & $a,b \in \R$ & Explicit\\
- Hermite-$\beta$   & $\mathcal{H}(\beta)$  &  $\b \in \N$  & Implicit\\
- Erdos-$p$   &   $\text{ER}(p)$  & $p \in [0,1]$   & Implicit\\
- %Angola & AO & AGO & 024\\
- \hline
-\end{tabular}
-
 \section{$\D$-Distributions}
 
 Now, we motivate the $D$-distribution. A formalization on how to initialize a random matrix. 
@@ -69,6 +51,8 @@ Consider for example, the following implicit distributions.
 Assuming $\D$ is an explicit distribution, a random matrix is any matrix over the field $\F$ is a matrix $M \in \F^{N \times N}$ is a matrix whose entries are i.i.d random variables. So, if a random matrix $M = (m_{ij})$ is $\mathcal{D}$-distributed, then we say $m_{ij} \sim \mathcal{D}$. In the scope of this thesis, assume every random matrix to be homogenously distributed. Otherwise, if $\D$ is an implicit distribution, then $P$ is a matrix whose entries are determined by the algorithm imposed by $\D$.
 \end{definition}
 
+Sometimes, we want our matrix to have complex entries. We notate this by specifying $\F = \Cc$.
+
 \begin{remark}[Complex Entries]
 To say that a random matrix is explicitly $\D$-distributed over $\Cc$ would mean that its entries take the form $a + bi$ where $a,b \sim \D$ are random variables. In other words, if we allow the matrix to have complex entries by setting $\F = \Cc$, then we must sample the real and imaginary component as $\D$-distributed i.i.d. random variables.
 \end{remark}
@@ -95,6 +79,23 @@ P
 \end{lstlisting}
 
 %\newpage
+
+\begin{center}
+$\textbf{Common Matrix $\D$-Distributions}$
+\end{center}
+
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Table of Random Matrix Distributions} \\
+ \hline
+ Distribution & Notation ($\D$) & Parameters & Class\\
+ \hline
+ Normal & $\Normal(\mu,\sigma)$ & $\mu \in \R, \sigma \in \R^+$  &  Explicit\\
+ Uniform  & $\Unif(a,b)$ & $a,b \in \R$ & Explicit\\
+ Hermite-$\beta$   & $\mathcal{H}(\beta)$  &  $\b \in \N$  & Implicit\\
+ Erdos-$p$   &   $\text{ER}(p)$  & $p \in [0,1]$   & Implicit\\
+ \hline
+\end{tabular}
 
 \newpage
 

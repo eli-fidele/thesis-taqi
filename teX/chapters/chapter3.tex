@@ -38,25 +38,31 @@ While we have defined disperison metrics to be functions from $\Cc^2$, there is 
 Suppose we take the arithmetic difference of two complex numbers. Then, the range of $\delta$ is $\Cc$. For this reason, we won't consider the arithmetic difference a formal dispersion metric, but we will honor it as a dispersion huerestic. As such, we will denote this as the ``identity difference'' huerestic and call it $\delta_{\text{id}}$. So, we define $\delta_{\text{id}}: (z, z') \mapsto z' - z$
 \end{remark}
 
-\newpage
-
 \begin{center}
 $\textbf{Common Dispersion Metrics}$
 \end{center}
 
-\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+For the formula, assume the order of arguments is $\d(z, z')$. \newline
+
+\begin{tabular}{ |p{4.5cm}||p{2cm}|p{2cm}|p{2cm}|p{2cm}|  }
  \hline
- \multicolumn{4}{|c|}{Table of Random Matrix Distributions} \\
+ \multicolumn{5}{|c|}{Table of Dispersion Metrics} \\
  \hline
- Distribution & Notation ($\D$) & Parameters & Class\\
+ Metric* & Notation & Formula & Symmetric & Parameters\\
  \hline
- Normal & $\Normal(\mu,\sigma)$ & $\mu \in \R, \sigma \in \R^+$  &  Explicit\\
- Uniform  & $\Unif(a,b)$ & $a,b \in \R$ & Explicit\\
- Hermite-$\beta$   & $\mathcal{H}(\beta)$  &  $\b \in \N$  & Implicit\\
- Erdos-$p$   &   $\text{ER}(p)$  & $p \in [0,1]$   & Implicit\\
+ Standard Norm & $\d$ & $|z' - z|$ &  True & - \\
+ $\beta$-Norm & $\d_\b$ & $|z' - z|^\b$ & $\b$ Even & $\b \in \N$ \\
+ Difference of Absolutes & $\d_{\text{abs}}$ & $|z'| - |z|$ &  False  &  - \\
+ Identity Difference &  $\d_{\text{id}}$ & $z' - z$ & False &  - \\
  %Angola & AO & AGO & 024\\
  \hline
 \end{tabular}
+
+\vspace{1em}
+
+*Note that the identity difference is a heurestic, and not a formal metric.
+
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -143,6 +149,25 @@ Another way we can define the pairing scheme is defining an auxilliary object: t
 Suppose $P$ is an $N \times N$ square matrix. Then, the eigenvalue matrix of $P$, given by $\Lambda(P)$ is the matrix with entries $\pi_{ij} = (\lambda_i, \lambda_j)$. It is assumed that the eigenvalues, $\lambda_i$ come from some $\textbf{ordered}$ spectrum $\sigma(P)$.
 \end{definition}
 
+\begin{center}
+$\textbf{Common Pairing Schema}$
+\end{center}
+
+Suppose $P$ is an $N \times N$ matrix. \newline
+
+\begin{tabular}{ |p{2.5cm}||p{1.75cm}|p{5.5cm}|  }
+ \hline
+ \multicolumn{3}{|c|}{Table of Pairing Schema} \\
+ \hline
+ Scheme & Notation & Formula \\
+ \hline
+ Lower & $\Pi_<$ & $\{(i,j) \mid i < j \for i,j \in \N_N \}$ \\
+ Upper  & $\Pi_>$ & $\{(i,j) \mid i > j \for i,j \in \N_N \}$ \\
+ Consecutive  & $\Pi_C$ & $\{(i,j) \mid i = j + 1 \for i,j \in \N_N \}$ \\
+ All & $\Pi_0$ & $\{(i,j) \mid i,j \in \N_N \}$ \\
+ \hline
+\end{tabular}
+
 \newpage
 
 \begin{center}
@@ -198,24 +223,6 @@ O & - & - & - & -\\
 $$
 
 \newpage
-
-\begin{center}
-$\textbf{Common Matrix $\D$-Distributions}$
-\end{center}
-
-\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
- \hline
- \multicolumn{4}{|c|}{Table of Common Pairing Schemes} \\
- \hline
- Distribution & Notation ($\D$) & Parameters & Class\\
- \hline
- Normal & $\Normal(\mu,\sigma)$ & $\mu \in \R, \sigma \in \R^+$  &  Explicit\\
- Uniform  & $\Unif(a,b)$ & $a,b \in \R$ & Explicit\\
- Hermite-$\beta$   & $\mathcal{H}(\beta)$  &  $\b \in \N$  & Implicit\\
- Erdos-$p$   &   $\text{ER}(p)$  & $p \in [0,1]$   & Implicit\\
- %Angola & AO & AGO & 024\\
- \hline
-\end{tabular}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
