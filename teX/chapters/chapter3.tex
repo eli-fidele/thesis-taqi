@@ -139,8 +139,11 @@ $\textbf{Special pairs}$
 There are a few pairs that are so special, it may be worth highlighting them explicity.
 
 \begin{enumerate}
-  \item Let $\pi_1$ be the pair of the two largest eigenvalues in an ordered spectrum. 
-  $$\pi_1 = \{(\lambda_2,\lambda_1)\}$$
+  \item Let $\pi_j$ be the pair of consecutive eigenvalues, the largest of the two being the $j^{th}$ largest eigenvalue.
+  $${\pi}_j = (\lambda_j,\lambda_{j+1})$$
+  Since the consecutive pair scheme can be sufficiently indexed by one index ($j$), we will use the convention of omitting the index of the smaller eigenvalue to be more concise and idiomatic. So, whenever one sees the notation $\pi_j$, think the $j^{th}$ largest eigenvalue and its smaller neighbour.
+  \item So, for example, let $\pi_1$ be the pair of the two largest eigenvalues in an ordered spectrum. 
+  $$\pi_1 = (\lambda_2,\lambda_1)$$
 \end{enumerate}
 
 Another way we can define the pairing scheme is defining an auxilliary object: the eigenvalue (pair) matrix.
@@ -246,7 +249,7 @@ With our spectral statistics defined, we are prepared to discuss prominent resul
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Order Statistics}
+\section{More Order Statistics}
 \subsection{Introduction}
 With eigenvalue dispersions and eigenvalue orderings well-defined, we may proceed to start talking about their order statistics. 
 
