@@ -21,9 +21,14 @@ That being said, when our random matrix has a specified distribution (say, stand
 Suppose $P \in \F^{N \times N}$ is a square matrix of size $N$ over $\F$. Then, the (eigenvalue) spectrum of $P$ is defined as the multiset of its eigenvalues and it is denoted $\sigma(P) = \{\lambda_i  \in \Cc\}_{i=1}^N$. Note that it is important to specify that a spectrum is a multiset and not just a set; eigenvalues could be repeated due to algebraic multiplicity and we opt to always have $N$ eigenvalues. 
 \end{definition}
 
+For example, consider the following code example from the RMAT package.
+\begin{center}
+[Code Chunk]
+\end{center}
+
 While our definition for spectrum is nice and clean, there are a few caveats that we must take care of. First, how are spectra statistics? So we can even call them statistics, so there needs to be some formalization as to why we consider eigenvalues statistics. In this dialogue, we will call back on the same sort of formalization dialogue in the Random Matrices section. Before beginning, the reader is encouraged to review what a statistic is in the review appendix (A.x).
 
-Recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices, we always had one thing - a vector representation of random variables. Using this framework, the formalization is trivial.
+Recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices,we always had one thing - a vector representation of random variables. Using this framework, the formalization is trivial.
 
 \begin{remark}[Formalization]
 Suppose $P \sim \D$ is an $N \times N$ random matrix. Then, $P$ has a representation as a sequence of $N^2$ random variables, denote it $\vec{X} = \{X_i \mid i = 1,2,\dots,N^2 - 1,N^2\}$. Then, the spectrum of the matrix $P$ is simply a function of the vector $\vec{X}$. We can denote this $\sigma(\vec{X})$, where the operator $\sigma$ is overloaded to mean the spectrum of a matrix $\textbf{with respect to the vector representation}$. The actual process for $\sigma$ is not necessary to explicitly write out, since characterizing it will be sufficient for now. Essentially, $\sigma$ is a function that would parse the random variables into the array form by index hacking. Then, it must compute the determinant of the matrix $P - \lambda I$, and solve for its roots. To summarize this, consider the flow chart below.
@@ -35,17 +40,17 @@ $$P_{[]} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \la
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Interlude: Ensembles}
-While the spectrum of a matrix provides a good summary of the matrix, a matrix is only considered a single point/observation in random matrix theory. Additionally, simulating large matrices and computing their eigenvalues becomes harder and more computationally expensive as $N \to \infty$. As such, to obtain more eigenvalue statistics efficiently, another dimension is introduced by motiving the \textit{random matrix ensemble}.
-
-[Definition was here]
-
-Now that matrix ensembles are well defined, we can motivate a core object of our study - the spectrum of a random matrix ensemble. From its name, it is indeed what one might expect it to be.
+While the spectrum of a matrix provides a good summary of the matrix, a matrix is only considered a single point/observation in random matrix theory. Additionally, simulating large matrices and computing their eigenvalues becomes harder and more computationally expensive as $N \to \infty$. As such, to obtain more eigenvalue statistics efficiently, another dimension is introduced by motiving the \textit{spectrum of a random matrix ensemble}.
 
 \begin{definition}[Ensemble Spectrum]
 If we have an ensemble $\Ens$, then we can naturally extend the definition of $\sigma(\Ens)$. To take the spectrum of an ensemble, simply take the union of the spectra of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$, then $\sigma(\Ens) = \bigcup_{i=1}^K \sigma(P_i)$.
 \end{definition}
 
+For example, consider the following code example from the RMAT package.
+\begin{center}
+[Code Chunk]
 [Plot showing the difference between matrix ensemble and matrix spectrum]
+\end{center}
 
 A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. So in a way, ensemble statistics are the engine of this research.
 
@@ -69,6 +74,11 @@ Alternatively, we can motivate a different scheme that properly handles complex 
 \end{align*}
 Note that when we take the norms of the eigenvalues, we essentially ignore "rotational" features of the eigenvalues. Signs of eigenvalues indicate reflection or rotation, so when we take the norm, we essentially become more concerned with scaling. 
 
+For example, consider the following example.
+\begin{center}
+[Example showing the difference between the two schemes]
+\end{center}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Singular Values}
@@ -81,7 +91,7 @@ Suppose $P$ is a random matrix. Then, we can take it singular values as such.
 The singular values of a matrix $P$ are given by the square root of the eigenvalues of the corrosponding product of that matrix and its transpose. That is, $\sigma_+(P) = \sqrt{\sigma(P \cdot P^T)}$.
 \end{definition}
 
-\newpage
+%\newpage
 
 \begin{center}
 $\textbf{Common Spectrum Schema}$
@@ -118,32 +128,32 @@ So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Case Study: Tracy-Widom Distribution}
-
-The Tracy-Widom distribution tells us the distribution of the largest (normalized) eigenvalue. Our normalization is given by with three things. Suppose that $P$ is an $N \times N$ matrix. Normalizing its largest eigenvalue entails the following:
-\begin{enumerate}
-  \item Shifting the eigenvalue to the left by $2\sqrt{N}$
-  \item Multiplying by $N^{\frac{1}{6}}$
-  \item Dividing by the mean eigenvalue spacing $\langle \lambda_j - \lambda_i \rangle$
-\end{enumerate}
-\hfill
-
-With regards to the third item, we introduce a new value called the mean spacing. Essentially, this is the average distance between two consecutive eigenvalues. However, we will discuss this in more depth in $\textbf{Chapter 3}$. So, bringing it all together, we define the normalized largest eigenvalue $\widetilde{\lambda_1}$ below.
-
-\begin{definition}[Normalized Largest Eigenvalue]
-Suppose $P$ is an $N \times N$ matrix. Its normalized largest eigenvalue $\widetilde{\lambda_1}$ is given by the following formula:
-$$\widetilde{\lambda_1} = \frac{(\lambda_1 - 2\sqrt{N})\cdot N^{\frac{1}{6}}}{\langle \lambda_j - \lambda_i \rangle}$$
-\end{definition}
-
-Now, we may define the Tracy-Widom distribution for a given matrix ensemble.
-
-\begin{definition}[Tracy-Widom Distribution]
-Suppose $\Ens$ is an ensemble of $\D$-distributed $N \times N$ matrices of size $K$. The Tracy-Widom distribution of $\Ens$ is given by taking the set of the largest normalized eigenvalues for every matrix ensemble. That is, the Tracy-Widom distribution is the set $\{ \widetilde{\lambda_{1,i}}\}_{i=1}^K$.
-\end{definition}
-
-\begin{center}
-[Plot]
-\end{center}
+% \subsection{Case Study: Tracy-Widom Distribution}
+% 
+% The Tracy-Widom distribution tells us the distribution of the largest (normalized) eigenvalue. Our normalization is given by with three things. Suppose that $P$ is an $N \times N$ matrix. Normalizing its largest eigenvalue entails the following:
+% \begin{enumerate}
+%   \item Shifting the eigenvalue to the left by $2\sqrt{N}$
+%   \item Multiplying by $N^{\frac{1}{6}}$
+%   \item Dividing by the mean eigenvalue spacing $\langle \lambda_j - \lambda_i \rangle$
+% \end{enumerate}
+% \hfill
+% 
+% With regards to the third item, we introduce a new value called the mean spacing. Essentially, this is the average distance between two consecutive eigenvalues. However, we will discuss this in more depth in $\textbf{Chapter 3}$. So, bringing it all together, we define the normalized largest eigenvalue $\widetilde{\lambda_1}$ below.
+% 
+% \begin{definition}[Normalized Largest Eigenvalue]
+% Suppose $P$ is an $N \times N$ matrix. Its normalized largest eigenvalue $\widetilde{\lambda_1}$ is given by the following formula:
+% $$\widetilde{\lambda_1} = \frac{(\lambda_1 - 2\sqrt{N})\cdot N^{\frac{1}{6}}}{\langle \lambda_j - \lambda_i \rangle}$$
+% \end{definition}
+% 
+% Now, we may define the Tracy-Widom distribution for a given matrix ensemble.
+% 
+% \begin{definition}[Tracy-Widom Distribution]
+% Suppose $\Ens$ is an ensemble of $\D$-distributed $N \times N$ matrices of size $K$. The Tracy-Widom distribution of $\Ens$ is given by taking the set of the largest normalized eigenvalues for every matrix ensemble. That is, the Tracy-Widom distribution is the set $\{ \widetilde{\lambda_{1,i}}\}_{i=1}^K$.
+% \end{definition}
+% 
+% \begin{center}
+% [Plot]
+% \end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
