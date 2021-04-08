@@ -1,0 +1,165 @@
+\chapter{Math Review}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Linear Algebra}
+\subsection{Introduction}
+\begin{definition}[Eigenvalue]
+\end{definition}
+
+\begin{definition}[Eigenvector]
+\end{definition}
+
+\begin{definition}[Transpose Matrix]
+\end{definition}
+
+\begin{definition}[Symmetric Matrix]
+\end{definition}
+
+\begin{definition}[Hermitian Matrix]
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\subsection{Proof: Real Symmetric Matrices have Real Eigenvectors}
+
+$\bf Notation.$ For notational convenience, for any $N \in \N$, let $\widetilde{N} = \{1,\dots,N\}$.
+
+In this document, we prove that for any $M \times M$ real symmetric matrix, $S_M$, there exists for some eigenvalue $\lambda$, a corrosponding **real** eigenvector $\vec{v} \in \R^M$. Prior to starting the main proof, we begin with a lemma.
+
+$\bf Lemma.$ Suppose we have a $M \times M$ real symmetric matrix with a some eigenvalue $\lambda$. If there we have a corrosponding eigenvector $v \in \Cc^M$, then every entry of $v$, say $v_i$ is equal to a **real** linear combination of the other entries $v_j \mid j \neq i$. 
+
+So, we will show that:
+$$\forall i \in \widetilde{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
+
+$\bf Proof \,\,of\,\, Lemma.$ Begin by taking a real symmetric matrix $S_M$ for some $M \in \N$. Suppose we have an eigenvalue $\lambda$. Then, if we have some eigenvector $v$, we know that:
+$$(1): \forall i \in \widetilde{M} : a_1v_1 + \dots + d_iv_i + \dots + a_{m-1}v_m = \lambda v_i \quad ( a_j \in \R)$$
+We obtain $(1)$ by expanding the equality $Av = \lambda v$ and noticing that every row of $Av$ is expressible as the sum of the non-diagonal entries multiplied by $v_j \mid j \neq i$ plus $d_i v_i$. Note that since our matrix is symmetric, for some rows, some of the constants $a_j$ are not distinct but this should not raise any issues. Next, we collect the terms:
+$$\forall i \in \widetilde{M} : a_1v_1 + \dots + a_{m-1}v_m =  v_i(\lambda - d_i)$$
+Since $S_M$ is a real symmetric matrix, the $a_j$ terms are real so we can say:
+
+$$\forall i \in \widetilde{M} :  v_i(\lambda - d_i) = \sum_{j \neq i} a_jv_j \quad (a_j \in \R)$$
+Finally, divide both sides by $(\lambda - d_i)$. Since $S_M$ is a real symmetric matrix, we know $\lambda \in \R$ then also $(\lambda - d_i) \in \R$. On the right hand side, the coefficients of the $v_j$ become $\frac{a_j}{(\lambda - d_i)}$. Since $a_j \in \R$, then also $\frac{a_j}{(\lambda - d_i)} \in \R$. Letting $c_j = \frac{a_j}{(\lambda - d_i)}$, we obtain:
+$$\forall i \in \widetilde{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (\forall j: c_j \in \R)$$
+Thus, for any $M \in \N$, a real symmetric matrix with eigenvalue $\lambda$ must have a corrosponding eigenvector $v$ such that each of its entries is expressible as a real linear combination of the other entries. $\square$
+
+Now, we will prove the main theorem.
+
+$\bf Theorem \; (Taqi).$ Suppose we have a $M \times M$ real symmetric matrix, $S_M$. Then, we will show that there exists for some eigenvalue $\lambda$, a corrosponding **real** eigenvector $\vec{v} \in \R^M$.
+
+$\bf Proof.$ For this proof we will induct on the dimension of the matrix, $M$. So let the inductive statement be
+$$f(M) : S_M\text{ has a real eigenvector } v \text{ corrosponding to an eigenvalue } \lambda$$
+$\bf Base \,\, Case.$ Take the base case $M = 2$. Then by $\bf Zoom \,\,Meeting\,\, 11.12$, we know $f(2)$ is true.
+
+$\bf Inductive \,\, Step.$ For our inductive step, we need to show that $f(M) \Rightarrow f(M+1)$. So, let us assume $f(M)$. This means that we can assume any real symmetric matrix $S_M$ has a real eigenvector $v \in \R^M$ corrosponding to $\lambda$.
+
+Next, we will write $S_{M+1}$ as the matrix $S_M$ augmented by some $u \in \R^M$ as follows:
+
+$$ S_{M+1} =
+\left[
+  \begin{array}{c|c}
+  S_M & u\\ 
+  \hline
+  u^T & d_{M+1} 
+\end{array} \right]$$
+
+From our lemma, we use the fact that $S_{M+1}$ is symmetric and our assumption of $f(M)$ to obtain:
+$$(1): \forall i \in \{1,\dots,m+1\}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
+$$(2): \forall i \in \tilde{M} : v_i \in \R$$
+In particular for $(2)$, we know that $v_i = \left({\sum_{j \neq i} \frac{a_j}{d_i-\lambda} v_j}\right)$.
+
+
+From (1), we know that for row $i = m+1$:
+$v_{m+1} =  {\sum_{j \neq {m+1}} c_j v_j} \quad (c_j \in \R)$
+By (2), this is a linear combination of real entries $v_i$. Since $v_{m+1} \in \R$, it follows that:
+$$\forall i \in \{1,\dots,m+1\}: v_i \in \R$$
+So, we have established that $f(m) \Rightarrow f(M+1)$.
+
+By the induction, the theorem is proved. $\square$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Probability Theory}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Introduction}
+\begin{definition}[Random Variable]
+A random variable $X: \Omega \to \R$ is a function from some sample space $\Omega = \{s_i\}_{i=1}^n$ to the real numbers $\R$. The sample space is taken to be any set of events such that the probability function corrosponding to the random variable, $p_X$ exhausts over all the events in $\Omega$. In other words, we expect $\int_\Omega p_X(s) = 1$.
+\end{definition}
+\begin{definition}[Order Statistic]
+The ith order statistic
+\end{definition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Markov Chains}
+
+% \begin{definition}[Transition Matrix] 
+% Take a Markov Chain with states $\oneto[M]$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \oneto[M]: \sum_{j \in \oneto[M]} q_{ij} = 1$.
+% \end{definition}
+
+%%%%%% MARKOV.RMD %%%%%%%
+
+\begin{definition}[Markov Chain] Say a set of random variables $X_i$ each take a value in a set, called the state space, $S_M = \{1,2,\dots,M\}$. Then, a sequence of such random variables $X_0,X_1,\dots,X_n$ is called a Markov Chain if the following conditions are satisifed:
+\end{definition}
+
+\begin{itemize}
+\item $\forall X_i:$ $X_i$ has support and range $S_M = \{1,2,...,M\}$.
+\item $\textit{(Markov Property)}$ The transition probability from state $i \to j$, $\Prb(X_{n+1} = j \mid X_n = i)$ is conditionally independent from all past events in the sequence $X_{n-1} = i',X_{n-2} = i'', \dots,X_0 = i^{(n-1)}$, excluding the present/last event in the sequence. In other words, given the present, the past and the future are conditionally independent.
+$$\forall i,j \in S_M: \Prb(X_{n+1} = j \mid X_n = i) = \Prb(X_{n+1} = j \mid X_n = i, X_{n-1} = i', \dots,X_0 = i^{(n-1)})$$
+\end{itemize}
+
+\begin{definition}[Transition Matrixx]  Let $\seq[M]{X}$ be a Markov Chain with state space $S_M$. Letting $q_{ij} = \Prb(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q \in \mathcal{M}_{\R^+}[M\times M]: Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. $Q$ must satisfy the following conditions to be a valid transition matrix:
+\end{definition}
+
+\begin{definition}[Transition Matrix] 
+Take a Markov Chain with states $\oneto[M]$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \oneto[M]: \sum_{j \in \oneto[M]} q_{ij} = 1$.
+\end{definition}
+
+\begin{itemize}
+\item $Q$ is a non-negative matrix. That is, note that $Q \in \mathcal{M}_{\R^+}[M\times M]$ so every $q_{ij} \in \R^+$. This follows because probabilities are necessarily non-negative values.
+\item The entries of every row $i$ of $Q$ must sum up to 1. This may be understood as applying the law of total probability to the event of transitioning from any given state $\forall i \in S_M$. In other words, the chain has to go somewhere with probability 1.
+$$\forall i \in S_M: \sum_{j \in S_M} q_{ij} = 1$$
+\item Note, it is NOT necessary that the converse holds. The columns of our transition matrix need not sum to 1 for it to be a valid transition matrix.
+\end{itemize}
+
+\begin{definition}[n-Step Transition Probability] The $n-$step transition probability of $i \to j$ is the probability of being at $j$ exactly $n$ steps after being at $i$. We denote this value $q_{ij}^{(n)}:$
+\end{definition}
+
+$$ q_{ij}^{(n)}: \Prb(X_n = j \mid X_0 = i)$$
+Realize: 
+$$q_{ij}^{(2)} = \sum_{k \in S_M} q_{ik}\cdot q_{kj}$$
+Because by definition, a Markov Chain is closed under a support/range of $S_M$ so the event $i \to j$ may have taken any intermediate step $k \in S_M$. Realize by notational equivalence, $Q^2 = (q_{ij}^{(2)})$. Inducting over $n$, we then obtain that:
+
+$$q_{ij}^{(n)} \text{ is the } (i,j) \text{ entry of } Q^n$$
+
+\begin{definition}[Marginal Distribution of Xn] Let $\textbf{t} = (t_1,t_2,\dots,t_M)$ such that $\forall i \in S_M : t_i = \Prb(X_0 = i)$So, $\textbf{t} \in \mathcal{M}_{\R}[1,M]$. Then, the marginal distribution of $X_n$ is given by the product of the vector $\textbf{t} Q^n \in \mathcal{M}_{\R}[1,M]$. That is, the $j^{th}$ component of that vector is $P(X_n = j)$ for any $j \in S_M$. We may call $\textbf{t}$ an initial state distribution.
+\end{definition}
+
+\subsection{Classification of states}
+
+\begin{itemize}
+\item A state $i \in S_M$ is said to be $\textbf{recurrent}$ if starting from $i$, the probability is 1 that the chain will $\textit{eventually}$ return to $i$. If the chain is not recurrent, it is $\textbf{transient}$, meaning that if it starts at $i$, there is a non-zero probability that it never returns to $i$.
+
+\item Caveat: As we let $n \to \infty$, our Markov chain will gurantee that all transient states will be left forever, no matter how small the probability is. This can be proven by letting the probability be some $\epsilon$, then realizing that by the support of $\text{Geom}(\epsilon)$ is always some finite value, then the equivalence between the Markov property and independent Geometric trials gurantees the existence of some finite value such that there is a success of never returning to $i$.
+\end{itemize}
+
+\begin{definition}[Reducibility] A Markov chain is said to be $\textbf{irreducible}$ if for any $i,j \in S_M$, it is possible to go from $i \to j$ in a finite number of steps with positive probability. In other words:
+\end{definition}
+
+$$\forall i,j \in S_M: \exists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
+\begin{itemize}
+\item From our quantifier formulation of irreducible Markov chains, note that we can equivalently say that a chain is irreducible if there is integer $n \in \mathbb{N}$ such that the $(i,j)$ entry of $Q^n$ is positive for any $i,j$.
+
+\item A Markov chain is $\textbf{reducible}$ if it is not $\textbf{irreducible}$. Using our quantifier formulation, it means that it suffices to find transient states so that:
+
+$$\exists i,j \in S_M: \nexists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

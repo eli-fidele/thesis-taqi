@@ -1,0 +1,99 @@
+%% TeX Preamble
+\documentclass[12pt,twoside]{reedthesis}
+\input{preamble.tex} % Input supporting TeX header files
+
+%% Thesis Preamble
+\title{Spectral Statistics of Random Matrices}
+\author{Ali Taqi}
+\date{May 2021}
+\division{Mathematics and Natural Sciences}
+\advisor{Jonathan M. Wells}
+\department{Mathematics}
+
+% TeX Settings
+\setlength{\parskip}{0pt}
+\setlength{\headheight}{15pt}
+
+% The fun begins
+\begin{document}
+  \maketitle
+  \frontmatter % this stuff will be roman-numbered
+  \pagestyle{empty} % this removes page numbers from the frontmatter
+
+%     \chapter*{Acknowledgements}
+% 	For my mother.
+
+%     \chapter*{Preface}
+% 	This is an example of a thesis setup to use the reed thesis document class.
+	
+%     \chapter*{List of Abbreviations}
+% 		You can always change the way your abbreviations are formatted. Play around with it yourself, use tables, or come to CUS if you'd like to change the way it looks. You can also completely remove this chapter if you have no need for a list of abbreviations. Here is an example of what this could look like:
+% 
+% 	\begin{table}[h]
+% 	\centering % You could remove this to move table to the left
+% 	\begin{tabular}{ll}
+% 		\textbf{ABC}  	&  American Broadcasting Company \\
+% 		\textbf{CBS}  	&  Columbia Broadcasting System\\
+% 		\end{tabular}
+% 	\end{table}
+	
+    \tableofcontents
+
+%    \listoftables
+
+%    \listoffigures
+
+% If your abstract is longer than a page, there may be a formatting issue.
+    \chapter*{Abstract}
+	On their own, random variables exude deterministic properties regarding their uncertainty. The same generalization can be made for random matrices, which are matrices whose entries are random variables. One particular statistic worth investigating is the distribution of a matrix ensemble's eigenvalues, or its spectrum. In this thesis, there will be an exploration of various classes of random matrices and relevant spectral statistics like their spectra and mixing times.
+	
+	\chapter*{Dedication}
+	For my mother.
+
+  \mainmatter % here the regular arabic numbering starts
+  \pagestyle{fancyplain} % turns page numbering back on
+
+\input{special_chapters/introduction.tex}
+
+% Double spacing: if you want to double space, or one and a half space, uncomment one of the following lines. 
+% You can go back to single spacing with the \singlespacing command.
+% \onehalfspacing
+% \doublespacing
+
+% Beginning of Chapters
+\input{chapters/chapter1.tex}
+\input{chapters/chapter2.tex}
+\input{chapters/chapter3.tex}
+\input{chapters/chapter4.tex}
+% End of Chapters
+
+% Appendix
+    \appendix
+      \input{appendix/math_appendix.tex}
+      \input{appendix/algorithms_appendix.tex}
+      \input{appendix/code_appendix.tex}
+      \input{appendix/ratios.tex}
+
+%This is where endnotes are supposed to go, if you have them.
+%I have no idea how endnotes work with LaTeX.
+
+  \backmatter % backmatter makes the index and bibliography appear properly in the t.o.c...
+
+% if you're using bibtex, the next line forces every entry in the bibtex file to be included
+% in your bibliography, regardless of whether or not you've cited it in the thesis.
+    \nocite{*}
+
+% Rename my bibliography to be called "Works Cited" and not "References" or ``Bibliography''
+% \renewcommand{\bibname}{Works Cited}
+
+%\bibliographystyle{bsts/mla-good} % there are a variety of styles available; 
+%\bibliographystyle{plainnat}
+% replace ``plainnat'' with the style of choice. You can refer to files in the bsts or APA 
+% subfolder, e.g. 
+ \bibliographystyle{APA/apa-good}  % or
+ \bibliography{thesis}
+ % Comment the above two lines and uncomment the next line to use biblatex-chicago.
+ %\printbibliography[heading=bibintoc]
+
+% Finally, an index would go here... but it is also optional.
+\end{document}

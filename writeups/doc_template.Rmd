@@ -1,0 +1,73 @@
+---
+title: "Definition Revision"
+author: "Taqi"
+# date: "4/7/2021"
+output: 
+  pdf_document:
+    includes: 
+      in_header: "preamble.tex"
+---
+
+Before we may begin talking about pairing scheme, we define an auxilliary object - the spectral pairs of a matrix, which we denote $\spair$. Since we are now talking about eigenvalue pairs, it is helpful to define this object before proceeding.
+
+\medskip 
+
+\begin{definition}[Spectral Pairs]
+Suppose $P$ is an $N \times N$ random matrix. Then, taking the spectral pair of $P$, denoted $\spair(P)$ is equivalent to taking the Cartesian product of its ordered spectrum $\sigma(P)$. That is, $\spair(P) = \sigma(P) \times \sigma(P) = \{(\lambda_i, \lambda_j) \mid i,j \in \N_N\}$.
+\end{definition}
+
+\medskip 
+
+Now, to select eigenvalue pairs, we motivate the pairing scheme - this is what tells us which indices to select.
+
+\medskip 
+
+\begin{definition}[Pairing Scheme]
+Suppose $P$ is any $N \times N$ matrix and $\spair(P)$ are its spectral pairs. A pairing scheme for the matrix $P$ is a subset of $\N_N \times \N_N$ - a subset of pairs of numbers from $\N_N = \{1, \dots, N\}$. In other words, it is a subset of pair indices for $N$ objects - in our case, eigenvalues. We denote a pairing scheme as a set $\Pi = \{(\alpha, \beta) \mid \alpha, \beta \in \N_N\} \subseteq \N_N \times \N_N$. To take a matrix's spectral pairs with respect to $\Pi$, we simply take the set of eigenvalue pairs with the matching indices, $\spair(P \mid \Pi) = \{(\lambda_{\alpha},\lambda_{\beta}) \mid ({\alpha},{\beta}) \in \Pi\}$.
+\end{definition}
+
+\medskip 
+
+\begin{center}
+$\textbf{Common Pairing Schema}$
+\end{center}
+
+\medskip 
+
+Suppose $P$ in an $N \times N$ square matrix, and $\spair(P)$ are its spectral pairs.
+
+\medskip 
+
+\begin{enumerate}
+  \item The unique pair combinations schema are two complementary pair schema. By specifying $\textbf{either}$ $i > j$ or $i < j$, we characterize this scheme to entail all unique pair combinations of eigenvalues without repeats. The reason we call them upper and lower pair combinations is an allusion to the indices of the upper and lower triangular matrices. \begin{enumerate}
+    \item Let $\Pi_>$ be the lower-pair combinations of ordered eigenvalues. This will be the standard unique pair combination scheme used in lieu of the argument orders of our dispersion metrics (more later). In this pairing scheme, the eigenvalue with the lower rank is always listed first, and the higher rank second.
+    $$\spair(P \mid \Pi_>) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
+    \item $\vdots$
+    \end{enumerate}
+\end{enumerate}
+
+\medskip 
+
+Alas, with dispersion metrics and pairing schemes defined, we are finally able to motivate the definition of a matrix dispersion for both singleton matrices and their ensemble counterparts. 
+
+\medskip 
+
+\begin{definition}[Dispersion]
+Suppose $P$ is an $N \times N$ matrix, and $\spair(P)$ are its spectral pairs. The dispersion of $P$ with respect to the pairing scheme $\Pi$ and dispersion metric $\delta$ is denoted by $\disp_\d(P \mid \Pi)$ and it is given by the following:
+$$\disp_\d(P \mid \Pi) = \{\d(\piij) \mid \piij \in \spair(P \mid \Pi)\}$$
+\end{definition}
+
+\medskip 
+
+We extend the definition of dispersion for an ensemble as we usually do.
+
+\medskip 
+
+\begin{definition}[Ensemble Dispersion]
+If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_\d(\Ens \mid \Pi)$. To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D}\}_{i = 1}^K$, then its dispersion is given by:
+$$\Delta_d(\Ens \mid \Pi) = \bigcup_{i=1}^K \Delta_\d(P_i \mid \Pi)$$
+\end{definition}
+
+\medskip 
+
+With our spectral statistics defined, we are prepared to discuss prominent results in Random Matrix Theory alongside our new findings from the simulations. 
