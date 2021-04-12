@@ -13,14 +13,15 @@ library(knitr)
 library(patchwork)
 library(gridExtra)
 library(matrixcalc)
-library(sjPlot)
+#library(sjPlot)
 # Load files
 source(file = "../../R/header.R")
-.srcp(depth = 2, preset = 1)
+.src(depth = 2)
 # global parameters
 bool_plot <- T
 bool_loud <- T
 bool_animate <- F
+
 ```
 
 # Stochastic Matrix Ensemble
@@ -29,7 +30,7 @@ bool_animate <- F
 N <- 100
 ensemble <- RME_stoch(N, symm = T, size = 250)
 # Returns largest eigenvalues of the matrix
-spectrum.scatterplot(ensemble, "Symmetric Stochastic")
+spectrum.scatterplot(ensemble, mat_str = "Symmetric Stochastic")
 ```
 
 

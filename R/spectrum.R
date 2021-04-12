@@ -1,10 +1,6 @@
 
 # This script includes functions that help extract and plot eigenvalues of matrices.
 
-# Setup parallel compuations 
-future::plan(multisession)
-print("Future plan has been set to multisession by default.")
-
 #=================================================================================#
 #                           EIGENVALUE SPECTRUM (PARALLEL)
 #=================================================================================#
@@ -215,7 +211,7 @@ spectrum.histogram <- function(array, ..., component = NA, bins = 100, mat_str =
     # Plot
     array_spectrum %>%
       ggplot() +
-      geom_histogram(mapping = aes_string(x = component), fill = color0) +
+      geom_histogram(mapping = aes_string(x = component), fill = color0, bins = bins) +
       labs(x = component, y = "Frequency", title = paste(title_str, component_str, sep = ""))
   }
   # Get list of plots
