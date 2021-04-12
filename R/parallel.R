@@ -23,7 +23,7 @@ spectrum_parallel <- function(array, components = TRUE, sort_norms = TRUE, singu
   }
   # Array is an ensemble; recursively row binding each matrix's eigenvalues
   else if(class(array) == "list"){
-    purrr::map_dfr(array, .spectrum_matrix, components, sort_norms, singular, order, digits)
+    furrr::future_map_dfr(array, .spectrum_matrix, components, sort_norms, singular, order, digits)
   }
 }
 
