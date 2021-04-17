@@ -2,21 +2,49 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Linear Algebra}
-\subsection{Introduction}
+\subsection{Matrices}
 \begin{definition}[Eigenvalue]
+Suppose $P \in \F^{n \times n}$ is a square matrix. Then, the eigenvalues of the matrix $P$ are precisely the roots of the characteristic polynomial of $P$, given by $\text{char}_P(\lambda) = \det(P - \lambda I)$. The polynomial $\text{char}_P(\lambda)$ has degree $n$. So by the Fundamental Theorem of Algebra, $P$ has a multiset of $n$ eigenvalues.
 \end{definition}
 
-\begin{definition}[Eigenvector]
+% \begin{definition}[Eigenvector]
+% \end{definition}
+
+\begin{definition}[Transpose]
+Suppose $P = (p_{ij}) \in \F^{m\times n}$. Then, its transpose, $P^{T} = (q_{ij}) = (p_{ji}) \in \F^{n\times m}$ matrix whose columns are the rows of the original matrix.
 \end{definition}
 
-\begin{definition}[Transpose Matrix]
+\begin{definition}[Conjugate Transpose]
+Suppose $P = (p_{ij}) \in \C^{m\times n}$. Then, its transpose, $P^{\dagger} = (q_{ij}) = (\overline{p_{ji}}) \in \F^{n\times m}$ is a matrix whose columns are the rows of the original matrix.
 \end{definition}
 
 \begin{definition}[Symmetric Matrix]
+A matrix $P$ is symmetric iff it is equal to its transpose:
+$$ P = P^{T}$$
 \end{definition}
 
 \begin{definition}[Hermitian Matrix]
+A matrix $P$ is Hermitian iff it is equal to its conjugate transpose:
+$$ P = P^{\dagger}$$
 \end{definition}
+
+\begin{definition}[Orthogonal Matrix]
+A matrix $P$ is called orthogonal iff its transpose is its inverse:
+$$ P^{T}=P^{-1}. $$
+\end{definition}
+
+\begin{theorem}[Orthogonal Group]
+The set of {\em all} unitary matrices in $\F^{n\times n}$ is a matrix group. (It is called the {orthogonal group}.)
+\end{theorem}
+
+\begin{definition}[Unitary Matrix]
+A matrix $P$ is called unitary iff its conjugate transpose is its inverse:
+$$ P^{\dagger}=P^{-1}. $$
+\end{definition}
+
+\begin{theorem}[Unitary Group]
+The set of {\em all} unitary matrices in $\C^{n\times n}$ is a matrix group. (It is called the {unitary group}.)
+\end{theorem}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -78,25 +106,40 @@ So, we have established that $f(m) \Rightarrow f(M+1)$.
 
 By the induction, the theorem is proved. $\square$.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \section{Probability Theory}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Introduction}
+%\subsection{Introduction}
 \begin{definition}[Random Variable]
 A random variable $X: \Omega \to \R$ is a function from some sample space $\Omega = \{s_i\}_{i=1}^n$ to the real numbers $\R$. The sample space is taken to be any set of events such that the probability function corrosponding to the random variable, $p_X$ exhausts over all the events in $\Omega$. In other words, we expect $\int_\Omega p_X(s) = 1$.
 \end{definition}
-\begin{definition}[Order Statistic]
-The ith order statistic
+
+\begin{definition}[Statistic]
+A statistic is formally defined as a function of a vector of random variables. So, for instance $f$ is a statistic of a vector of random variables $\bar{X}$. Its observed value is given by $f(\vec{X})$.
 \end{definition}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{example}[Mean Statistic]
+For instance, the mean of a random sample $\vec{X}$ is a statistic. Formally, we would define the statistic $f : \vec{X} \to \frac{\sum_i x_i}{N}$. So the mean of the random sample is defined as $\bar{x} = f(\vec{X})$.
+\end{example}
+
+\begin{definition}[Order Statistic]
+Suppose $\vec{X} = \{X_i\}_{i = 1}^N$ is an ordered vector of random variables. Then, the $i^{th}$ order statistic of $X$ is given by $X_i$.
+\end{definition}
+
+\begin{example}[Order Statistic]
+Suppose $X = (20,7,2,1)$. The smallest (fourth) order statistic is $1$. The second order statistic is $7$. The largest (first) order statistic is $20$.
+\end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Markov Chains}
 
 % \begin{definition}[Transition Matrix] 

@@ -1,0 +1,37 @@
+---
+title: "Polished"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../../R/header.R")
+.src(2)
+```
+
+```{r}
+# Some random matrices and ensembles
+ens <- RME_beta(N = 100, beta = 4, size = 300)
+# Specturm by order scheme
+spec_sign <- ens %>% spectrum_parallel(sort_norms = F)
+spec_norm <- ens %>% spectrum_parallel(sort_norms = T)
+```
+
+```{r}
+sign_plot <- 
+  spec_sign %>% 
+  order.scatterplot(component = Re) +
+  labs(title = "Sign-ordered Spectrum")
+norm_plot <- 
+  spec_norm %>% 
+  order.scatterplot(component = Re) +
+  labs(title = "Norm-ordered Spectrum")
+```
+
+
+```{r}
+sign_plot + norm_plot
+ggsave("2-2-1_orderscheme.pdf")
+```

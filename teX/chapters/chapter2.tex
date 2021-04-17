@@ -22,9 +22,26 @@ Suppose $P \in \F^{N \times N}$ is a square matrix of size $N$ over $\F$. Then, 
 \end{definition}
 
 For example, consider the following code example from the RMAT package.
-\begin{center}
-[Code Chunk]
-\end{center}
+\begin{code}[Spectrum of a Standard Normal Matrix]
+Let $P \sim \Normal(0,1)$ be a $4 \times 4$ standard normal random matrix. We can generate the spectrum of $P$, $\sigma(P)$ as follows:
+\end{code}
+
+\begin{lstlisting}[language=R]
+library(RMAT)
+P <- RM_norm(N = 5, mean = 0, sd = 1)
+spectrum_P <- spectrum(P)
+# Outputs the following
+spectrum_P
+...
+        Re      Im   Norm Order
+ 1 -0.5434  1.3539 1.4589     1
+ 2 -0.5434 -1.3539 1.4589     2
+ 3  0.2255  1.4250 1.4427     3
+ 4  0.2255 -1.4250 1.4427     4
+ 5 -0.8678  0.0000 0.8678     5
+\end{lstlisting}
+
+
 
 While our definition for spectrum is nice and clean, there are a few caveats that we must take care of. First, how are spectra statistics? So we can even call them statistics, so there needs to be some formalization as to why we consider eigenvalues statistics. In this dialogue, we will call back on the same sort of formalization dialogue in the Random Matrices section. Before beginning, the reader is encouraged to review what a statistic is in the review appendix (A.x).
 
@@ -35,7 +52,7 @@ Suppose $P \sim \D$ is an $N \times N$ random matrix. Then, $P$ has a representa
 \end{remark}
 
 To simplify the process, here is how we formalize the spectrum as a statistic. Suppose we sample $P \sim \D$. Then, we take its spectrum formally using $\sigma$ as such:\hfill
-$$P_{[]} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \lambda I) \ra \sigma(P_{[]})$$
+$$P_{\text{array}} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \lambda I) \ra \sigma(P_{\text{array}})$$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -47,12 +64,50 @@ If we have an ensemble $\Ens$, then we can naturally extend the definition of $\
 \end{definition}
 
 For example, consider the following code example from the RMAT package.
-\begin{center}
-[Code Chunk]
-[Plot showing the difference between matrix ensemble and matrix spectrum]
-\end{center}
+\begin{code}[Spectrum of a Standard Normal Matrix Ensemble]
+Let $\Ens \sim \Normal(0,1)$ be an ensemble of $3 \times 3$ standard normal random matrices of size $3$. We can generate the spectrum of $\Ens$, $\sigma(\Ens)$ as follows:
+\end{code}
+
+\begin{lstlisting}[language=R]
+library(RMAT)
+ens <- RME_norm(N = 3, mean = 0, sd = 1, size = 3)
+spectrum_ens <- spectrum(ens)
+# Outputs the following
+spectrum_ens
+...
+        Re      Im   Norm Order
+ 1  1.7581  0.0000 1.7581     1
+ 2 -0.2614  1.0012 1.0347     2
+ 3 -0.2614 -1.0012 1.0347     3
+ 4  1.2327  0.4227 1.3032     1
+ 5  1.2327 -0.4227 1.3032     2
+ 6 -0.8504  0.0000 0.8504     3
+ 7 -0.5296  1.0508 1.1767     1
+ 8 -0.5296 -1.0508 1.1767     2
+ 9  0.7357  0.0000 0.7357     3
+\end{lstlisting}
+
+%****************************************************************************************
+\begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale = 0.7]{../graphics/chap2/2-1-2_comparison}
+  \caption{Spectrum of a Beta Ensemble with the Sign-Ordered Scheme (Left) and Norm-Ordered Scheme (Right)}
+ \end{center}
+ \label{ensemble_comparison_plot}
+\end{figure}
+%****************************************************************************************
 
 A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. So in a way, ensemble statistics are the engine of this research.
+
+%****************************************************************************************
+\begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale = 0.7]{../graphics/chap2/2-1-2_normal_spec}
+  \caption{Spectrum of a Standard Normal Matrix ensemble}
+ \end{center}
+ \label{spectrum_normal_ensemble_plot}
+\end{figure}
+%****************************************************************************************
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,6 +134,16 @@ For example, consider the following example.
 [Example showing the difference between the two schemes]
 \end{center}
 
+%****************************************************************************************
+\begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale = 0.7]{../graphics/chap2/2-2-1_orderscheme}
+  \caption{Spectrum of a Beta Ensemble with the Sign-Ordered Scheme (Left) and Norm-Ordered Scheme (Right)}
+ \end{center}
+ \label{orderscheme_plot}
+\end{figure}
+%****************************************************************************************
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Singular Values}
@@ -91,8 +156,6 @@ Suppose $P$ is a random matrix. Then, we can take it singular values as such.
 The singular values of a matrix $P$ are given by the square root of the eigenvalues of the corrosponding product of that matrix and its transpose. That is, $\sigma_+(P) = \sqrt{\sigma(P \cdot P^T)}$.
 \end{definition}
 
-%\newpage
-
 \begin{center}
 $\textbf{Common Spectrum Schema}$
 \end{center}
@@ -103,9 +166,9 @@ $\textbf{Common Spectrum Schema}$
  \hline
  Scheme & Matrix & Notation & Ordering \\
  \hline
- Sign-Ordered & $P$ & $\sigma_{\pm}(P)$ & $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_N$ \\
- Norm-Ordered & $P$ & $\sigma_{|\cdot|}(P)$ & $|\lambda_1| \geq |\lambda_2| \geq ... \geq |\lambda_N|$ \\
- Singular & $P \cdot P^T$ & $\sigma_{\sqrt{}}(P)$ & $\sqrt{\lambda_1} \geq \sqrt{\lambda_2} \geq ... \geq \sqrt{\lambda_N}$ \\
+ Sign-Ordered & $P$ & $\sigma_{S}(P)$ & $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_N$ \\
+ Norm-Ordered & $P$ & $\sigma_{N}(P)$ & $|\lambda_1| \geq |\lambda_2| \geq ... \geq |\lambda_N|$ \\
+ Singular & $P \cdot P^T$ & $\sigma_{+}(P)$ & $\sqrt{\lambda_1} \geq \sqrt{\lambda_2} \geq ... \geq \sqrt{\lambda_N}$ \\
  \hline
 \end{tabular}
 
@@ -124,36 +187,6 @@ Suppose we have seek the largest eigenvalue distribution for a ensemble distribu
 \end{example}
 
 So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \subsection{Case Study: Tracy-Widom Distribution}
-% 
-% The Tracy-Widom distribution tells us the distribution of the largest (normalized) eigenvalue. Our normalization is given by with three things. Suppose that $P$ is an $N \times N$ matrix. Normalizing its largest eigenvalue entails the following:
-% \begin{enumerate}
-%   \item Shifting the eigenvalue to the left by $2\sqrt{N}$
-%   \item Multiplying by $N^{\frac{1}{6}}$
-%   \item Dividing by the mean eigenvalue spacing $\langle \lambda_j - \lambda_i \rangle$
-% \end{enumerate}
-% \hfill
-% 
-% With regards to the third item, we introduce a new value called the mean spacing. Essentially, this is the average distance between two consecutive eigenvalues. However, we will discuss this in more depth in $\textbf{Chapter 3}$. So, bringing it all together, we define the normalized largest eigenvalue $\widetilde{\lambda_1}$ below.
-% 
-% \begin{definition}[Normalized Largest Eigenvalue]
-% Suppose $P$ is an $N \times N$ matrix. Its normalized largest eigenvalue $\widetilde{\lambda_1}$ is given by the following formula:
-% $$\widetilde{\lambda_1} = \frac{(\lambda_1 - 2\sqrt{N})\cdot N^{\frac{1}{6}}}{\langle \lambda_j - \lambda_i \rangle}$$
-% \end{definition}
-% 
-% Now, we may define the Tracy-Widom distribution for a given matrix ensemble.
-% 
-% \begin{definition}[Tracy-Widom Distribution]
-% Suppose $\Ens$ is an ensemble of $\D$-distributed $N \times N$ matrices of size $K$. The Tracy-Widom distribution of $\Ens$ is given by taking the set of the largest normalized eigenvalues for every matrix ensemble. That is, the Tracy-Widom distribution is the set $\{ \widetilde{\lambda_{1,i}}\}_{i=1}^K$.
-% \end{definition}
-% 
-% \begin{center}
-% [Plot]
-% \end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -182,6 +215,16 @@ $$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
 \end{definition}
 
 
+%****************************************************************************************
+\begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale = 0.7]{../graphics/chap2/2-3-2_semicircle}
+  \caption{Dispersions of a $\beta = 4$ matrix with respect to ranking difference}
+ \end{center}
+ \label{semicircleplot}
+\end{figure}
+%****************************************************************************************
+
 \begin{remark}[Radius and Matrix Dimension]
 The dimension of the matrix determines the radius of the eigenvalues. Namely, if a Hermitian matrix $P$ is $N \times N$, then its eigenvalues are semicircle distributed with radius $R = 2\sqrt{N}$. That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(2\sqrt{R})$.
 \end{remark}
@@ -189,4 +232,4 @@ The dimension of the matrix determines the radius of the eigenvalues. Namely, if
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Findings}
+%\section{Findings}

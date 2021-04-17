@@ -38,20 +38,17 @@ Let $\mathcal{D} = \mathcal{H}(\beta = 2)$. We can generate $\Ens \sim \D$, an e
 \end{code}
 
 \begin{lstlisting}[language=R]
-# Using the RMAT package
 library(RMAT)
 ensemble <- RME_beta(N = 4, beta = 2, size = 10)
-
 # Outputs the following
 ensemble
-
 ...
 [[10]]
-          [,1]     [,2]      [,3]       [,4]
-[1,] 0.3812855 2.592124 0.0000000  0.0000000
-[2,] 2.5921244 1.362211 1.4197438  0.0000000
-[3,] 0.0000000 1.419744 0.8220259  0.3917667
-[4,] 0.0000000 0.000000 0.3917667 -0.9740052
+          [,1]      [,2]        [,3]     [,4]
+[1,] 0.7246302 1.8893868  0.00000000 0.000000
+[2,] 1.8893868 1.5278221  0.68840045 0.000000
+[3,] 0.0000000 0.6884004 -0.03876104 1.944495
+[4,] 0.0000000 0.0000000  1.94449533 1.042741
 \end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,7 +59,7 @@ To generate Hermite $\beta$ matrices, we consider the result of Dimitriu's paper
 
 \begin{algorithm}[Dimitriu's Beta Matrix] \hfill
   \begin{enumerate}
-    \item Fix $N \in \N$.
+    \item To simulate an $N \times N$ beta matrix, fix $N \in \N$.
     \item Start by taking a diagonal of $\Normal(0,2)$ variables.
     \item Set both of the nearest off-diagonals to the row that samples from a $\chi(df = df_i) \where df_i = \beta * i$ for columns going from $i = 1$ to $i = n-1$.
   \end{enumerate}

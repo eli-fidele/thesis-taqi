@@ -13,11 +13,10 @@ source("../R/header.R")
 
 ```{r}
 # Some random matrices and ensembles
-P <- RM_norm(5, symm = T)
-ens <- RME_unif(3, min = 0, max = 1, size = 5)
+ens <- RME_beta(N = 100, beta = 4, size = 300)
 ```
 
 ```{r}
-# Do stuff here
-
+ens_spec_plot <- ens %>% spectrum_parallel() %>% spectrum.histogram(component = "Re", bins = 100)
+ggsave("2-3-2_semicircle.pdf", width = , height = ,units = "cm")
 ```

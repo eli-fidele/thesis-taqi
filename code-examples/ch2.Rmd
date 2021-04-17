@@ -1,0 +1,87 @@
+---
+title: "Code Examples"
+author: "Taqi"
+date: "4/14/2021"
+output: pdf_document
+---
+
+```{r, include = F}
+source("../R/header.R")
+.src(d = 1)
+```
+
+# Chapter 2
+
+## Section 1
+
+```{r}
+set.seed(23)
+P <- RM_norm(N = 5, mean = 0, sd = 1)
+spectrum_P <- spectrum(P)
+# Outputs the following
+spectrum_P
+```
+
+```{r, eval = F}
+\begin{lstlisting}[language=R]
+library(RMAT)
+P <- RM_norm(N = 5, mean = 0, sd = 1)
+spectrum_P <- spectrum(P)
+# Outputs the following
+spectrum_P
+...
+        Re      Im   Norm Order
+ 1 -0.5434  1.3539 1.4589     1
+ 2 -0.5434 -1.3539 1.4589     2
+ 3  0.2255  1.4250 1.4427     3
+ 4  0.2255 -1.4250 1.4427     4
+ 5 -0.8678  0.0000 0.8678     5
+\end{lstlisting}
+```
+
+\begin{center}
+\begin{tabular}{ |p{2cm}|p{2cm}|p{2cm}|p{2cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Spectrum Dataframe} \\
+ \hline
+ Re & Im & Norm & Order\\
+ \hline
+ -0.5434 & 1.3539	& 1.4589	& 1 \\	
+ -0.5434 &-1.3539	& 1.4589	& 2	\\
+ 0.2255	 & 1.4250	& 1.4427	& 3 \\	 
+ 0.2255	 &-1.4250	& 1.4427	& 4 \\	
+ -0.8678 & 0.0000	& 0.8678	& 5	\\
+ \hline
+\end{tabular}
+\end{center}
+
+## Section 2
+
+```{r}
+set.seed(23)
+ens <- RME_norm(N = 3, mean = 0, sd = 1, size = 3)
+spectrum_ens <- spectrum(ens)
+# Outputs the following
+spectrum_ens
+```
+
+```{r, eval = F}
+\begin{lstlisting}[language=R]
+library(RMAT)
+ens <- RME_norm(N = 3, mean = 0, sd = 1, size = 3)
+spectrum_ens <- spectrum(ens)
+# Outputs the following
+spectrum_ens
+...
+        Re      Im   Norm Order
+ 1  1.7581  0.0000 1.7581     1
+ 2 -0.2614  1.0012 1.0347     2
+ 3 -0.2614 -1.0012 1.0347     3
+ 4  1.2327  0.4227 1.3032     1
+ 5  1.2327 -0.4227 1.3032     2
+ 6 -0.8504  0.0000 0.8504     3
+ 7 -0.5296  1.0508 1.1767     1
+ 8 -0.5296 -1.0508 1.1767     2
+ 9  0.7357  0.0000 0.7357     3
+\end{lstlisting}
+```

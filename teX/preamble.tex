@@ -16,19 +16,19 @@
 \usepackage{listings} 
 \usepackage[svgnames]{xcolor}
 
-%  For code snippet environments V2
-% \usepackage[T1]{fontenc}
-% \usepackage[american]{babel}
-% 
-% \usepackage{graphicx}
-% \usepackage{fancyvrb}
-% \usepackage{listings}
-% \usepackage{bm}
-% \usepackage{xcolor}
+% For stitching the code appendix
+\usepackage{pdfpages}
+%\usepackage{markdown} % For using `script.R` md in code appendix
+%\usepackage[hashEnumerators,smartEllipses]{markdown}
 
 %=====================
 %     ENVIRONMENTS
 %=====================
+% Theorems
+\newtheorem{theorem}{Theorem}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
 % Defintions
 \newtheorem{definition}{Definition}[section]
 \setlength{\parskip}{0pt}
@@ -75,31 +75,6 @@
 
 \xdefinecolor{gray}{rgb}{0.4,0.4,0.4}
 \xdefinecolor{blue}{RGB}{58,95,205}% R's royalblue3; #3A5FCD
-
-%code snippet environments V2
-
-% \lstset{% setup listings
-% 	language=R,% set programming language
-% 	basicstyle=\ttfamily\small,% basic font style
-% 	keywordstyle=\color{blue},% keyword style
-%         commentstyle=\color{gray},% comment style
-% 	numbers=left,% display line numbers on the left side
-% 	numberstyle=\scriptsize,% use small line numbers
-% 	numbersep=10pt,% space between line numbers and code
-% 	tabsize=3,% sizes of tabs
-% 	showstringspaces=false,% do not replace spaces in strings by a certain character
-% 	captionpos=b,% positioning of the caption below
-%         breaklines=true,% automatic line breaking
-%         escapeinside={(*}{*)},% escaping to LaTeX
-%         fancyvrb=true,% verbatim code is typset by listings
-%         extendedchars=false,% prohibit extended chars (chars of codes 128--255)
-%         literate={"}{{\texttt{"}}}1{<-}{{$\bm\leftarrow$}}1{<<-}{{$\bm\twoheadleftarrow$}}1
-%         {~}{{$\bm\sim$}}1{<=}{{$\bm\le$}}1{>=}{{$\bm\ge$}}1{!=}{{$\bm\neq$}}1{^}{{$^{\bm\wedge}$}}1,% item to replace, text, length of chars
-%         alsoletter={.<-},% becomes a letter
-%         alsoother={$},% becomes other
-%         otherkeywords={!=, ~, $, \&, \%/\%, \%*\%, \%\%, <-, <<-, /},% other keywords
-%         deletekeywords={c}% remove keywords
-% }
 
 %==================
 %     COMMANDS

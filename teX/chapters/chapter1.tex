@@ -7,6 +7,9 @@ Prior to beginning the discussion on $\D$-distributions, the reader should be fa
 %\section{Introduction}
 When it comes to random simulation, there must always be a rule to which our randomness must conform, regardless of complexity. For example, sampling a vector from a distribution is a rudimentary example of this. For random matrices, there will be a few methods of generating their entries that are not just sampling from theoretical distributions. As such, we motivate the $\D$-distribution.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{$\D$-Distributions}
 
 Now, we motivate the $D$-distribution. A formalization on how to initialize a random matrix. 
@@ -14,6 +17,8 @@ Now, we motivate the $D$-distribution. A formalization on how to initialize a ra
 \begin{definition}[$\D$-distribution]
 When we define a random matrix that is $\D$-distributed, we say that $P \sim \D$. In the simplest of terms, $\D$ is essentially the algorithm that generates the random matrix $P$. We define two primary methods of distribution: explicit distribution and implicit distribution. If $\D$ is an explicit distribution, then every entry of $P$ is homogenously sampled from that distribution. Otherwise, if it is implicit, we utilize an algorithm that imposes an implicit distribution on the entries. 
 \end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Explicit Distributions}
 
@@ -34,6 +39,8 @@ Explicit distributions can be formalized in scope of the standard notation in pr
 For example, suppose $P$ is a $2 \times 2$ random matrix with $\D = \Normal(0,1)$. Then, we have four random variables to initialize. In the random matrix representation, we need to initialize $P_{11}, P_{12}, P_{21}, \and P_{22}$ by sampling them from $\D$. In the vector representation, we just say we are sampling four i.i.d random variables from $\D$. The matrix indexing is intrinsic and preservable by using index hacking with some modular math.
 \end{example}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Implicit Distributions}
 
 In the latter case, we are concerned less about the distribution of the matrix entries and moreso about its holisitic properties.
@@ -44,6 +51,8 @@ Consider for example, the following implicit distributions.
 \item If $\D = \text{Stochastic}$, then the matrix is a row of random stochastic rows. (See Algorithm B.x)
 \item If $\D$ is any distribution (implicit or explicit), then $\D^{\dagger}$ is the Symmetric/Hermitian version of $\D$. (See Algorithm B.x)
 \end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Random Matrices}
 
@@ -64,21 +73,16 @@ Let $\mathcal{D} = \Normal(0,1)$. We can generate $P \sim \D$, a $4 \times 4$ st
 \end{code}
 
 \begin{lstlisting}[language=R]
-# Using the RMAT package
 library(RMAT)
 P <- RM_norm(N = 4, mean = 0, sd = 1)
-
 # Outputs the following
 P
-
            [,1]       [,2]       [,3]        [,4]
 [1,]  0.1058257 -1.0835598 -0.7031727  1.01608625
 [2,] -0.2170453  1.8206070 -0.4539230  0.06828296
 [3,]  1.3002145  0.1254992 -0.5214005 -0.61516174
 [4,] -1.0398587  0.1975445 -0.8511950  0.86366082
 \end{lstlisting}
-
-%\newpage
 
 \begin{center}
 $\textbf{Common Matrix $\D$-Distributions}$
@@ -99,6 +103,9 @@ $\textbf{Common Matrix $\D$-Distributions}$
 
 \newpage
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{The Crew: Ensembles}
 
 With a random matrix well defined, we may now motivate one of the most important ideas - the random matrix ensemble. One common theme in this thesis will be that random matrices on their own provide little information. When we consider them at the ensemble level, we start to obtain more fruitful results. Without further ado, we motivate the random matrix ensemble.
@@ -114,75 +121,30 @@ Let $\mathcal{D} = \Normal(0,1)^{\dagger}$. We can generate $\Ens \sim \D$ over 
 \end{code}
 
 \begin{lstlisting}[language=R]
-# Using the RMAT package
 library(RMAT)
-# Note that RM_norm takes mean = 0 and sd = 1 as default values.
+# By default, mean = 0 and sd = 1.
 ensemble <- RME_norm(N = 4, cplx = TRUE, herm = TRUE, size = 10)
-
 # Outputs the following
 ensemble
-
-...
+... 
 [[10]]
-           [,1]       [,2]       [,3]        [,4]
-[1,]  0.1058257 -1.0835598 -0.7031727  1.01608625
-[2,] -0.2170453  1.8206070 -0.4539230  0.06828296
-[3,]  1.3002145  0.1254992 -0.5214005 -0.61516174
-[4,] -1.0398587  0.1975445 -0.8511950  0.86366082
+                  [,1]              [,2]              [,3]
+[1,] -0.59931+1.24286i  1.29457+0.66058i  0.83539-0.16662i
+[2,]  1.29457-0.66058i  0.78841+0.09818i -1.16592+1.14666i
+[3,]  0.83539+0.16662i -1.16592-1.14666i -0.51256+0.17750i
 \end{lstlisting}
 
 With this in mind, we will gloss over, characterize, and briefly discuss a few special recurring ensembles in this thesis.
 
-% \subsection{Hermite $\beta$-Ensembles}
-% 
-% The Hermite $\beta$-ensembles, also called the Gaussian ensembles, are an important class of random matrix ensembles studied in engineering, statistical physics, and probability theory. Parameterized by $\beta \in \N$ through the Dyson index, this ensemble is charecterized by a few things.
-% 
-% \begin{itemize}
-%   \item The Dyson index $\beta$ corrosponds to the number of real number of components the subject matrices have.
-%   \item The subject matrices are classically defined for $\beta = 1,2,4$ and they corrospond to matrices with real, complex, and quaternionic entries. The corrosponding fields are $\R$, $\Cc$, and $\mathbb{H}$.
-%   \item The matrices in this ensemble, most importantly, have a feature called conjugation invariance. With respect to the conjugation by the respective group of matrices.
-%   \item Most importantly, the eigenvalues are determined by the joint probability density function given below.
-% \end{itemize}
-% 
-% \begin{definition}[Hermite $\beta$-ensembles]
-% The Hermite $\beta$-ensembles, commonly known as the Gaussian ensembles, are an ensemble of random matrices parameterized by $\beta$, and their eigenvalues have the joint probability density function:
-% \begin{align*}
-% f_\beta(\Lambda) = c_H^\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta e^{-1/2\sum_i \lambda_i^2}
-% \end{align*}
-% where the normalization constant $c_H^\beta$ is given by:
-% \begin{align*}
-% c_H^\beta = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \beta/2)}{\Gamma(1 + \beta j/2)}
-% \end{align*}
-% \end{definition}
-% 
-% To simulate matrices from the $\beta$-ensemble, we will be using a recent result published in ``Matrix Models for Beta Ensembles'' \cite{dimitriu:2018}. This makes the $\beta$-ensemble a canonical example of an implicity distributed matrix; we do not care about the actual distribution of the entries, but rather the effect they have on the eigenvalues (trace) of the matrices. The algorithm used is directly cited from the results of Dumitriu's paper, and can be found in Algorithms B.1.3.
-% 
-% \begin{code}[Hermite Beta = 2 Ensemble]
-% Let $\mathcal{D} = \mathcal{H}(\beta = 2)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Hermite matrices ($\beta = 2$) of size 10 as such:
-% \end{code}
-% 
-% \begin{lstlisting}[language=R]
-% # Using the RMAT package
-% library(RMAT)
-% ensemble <- RME_beta(N = 4, beta = 2, size = 10)
-% 
-% # Outputs the following
-% ensemble
-% 
-% ...
-% [[10]]
-%           [,1]     [,2]      [,3]       [,4]
-% [1,] 0.3812855 2.592124 0.0000000  0.0000000
-% [2,] 2.5921244 1.362211 1.4197438  0.0000000
-% [3,] 0.0000000 1.419744 0.8220259  0.3917667
-% [4,] 0.0000000 0.000000 0.3917667 -0.9740052
-% \end{lstlisting}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Hermite $\beta$-Ensembles}
 
 The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in this thesis. This ensemble will be characterized, motivated, and defined more thoroughly in $\textbf{Chapter 4}$. However, we will give a brief introduction to the ensemble.
 
 At a practical level, all one would need to know is that the matrices are generated in accordance to an algorithm found in the appendix (Algorithm B.x) and in Chapter 4. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Erdos-Renyi $p$-Ensembles}
 
@@ -198,27 +160,26 @@ Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameteri
 \indent Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable. As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices. This makes simulating the graphs much easier.
 
 \begin{code}[Erdos-Renyi p = 0.5 Ensemble]
-Let $\mathcal{D} = \text{Erdos}(p = 0.5)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Erdos-Renyi matrices ($p = 0.5$) of size 10 as such:
+Let $\mathcal{D} = \text{ER}(p = 0.5)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Erdos-Renyi matrices ($p = 0.5$) of size 10 as such:
 \end{code}
 
 \begin{lstlisting}[language=R]
-# Using the RMAT package
 library(RMAT)
 ensemble <- RME_erdos(N = 4, p = 0.5, size = 10)
-
 # Outputs the following
 ensemble
-
 ...
 [[10]]
-          [,1]       [,2]      [,3]      [,4]
-[1,] 0.0000000 0.37154735 0.6284527 0.0000000
-[2,] 0.0000000 0.08954572 0.3362090 0.5742453
-[3,] 0.6058502 0.00000000 0.3941498 0.0000000
-[4,] 0.0000000 0.64146116 0.0000000 0.3585388
+          [,1]      [,2]      [,3]     [,4]
+[1,] 0.0000000 0.1729581 0.8270419 0.000000
+[2,] 0.0000000 0.0000000 1.0000000 0.000000
+[3,] 0.2557890 0.3766740 0.0000000 0.367537
+[4,] 0.2151029 0.3929580 0.3919391 0.000000
 \end{lstlisting}
 
-\section{Analytical Results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\section{Analytical Results}
 
 
 

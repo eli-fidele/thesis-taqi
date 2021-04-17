@@ -1,0 +1,37 @@
+---
+title: "Code Examples"
+author: "Taqi"
+date: "4/14/2021"
+output: pdf_document
+---
+
+```{r, include = F}
+source("../R/header.R")
+.src(d = 1)
+```
+
+# Chapter 4
+
+## Section 1
+
+```{r}
+set.seed(23)
+RME_beta(N = 4, beta = 2, size = 10)
+```
+
+```{r, eval = F}
+\begin{lstlisting}[language=R]
+library(RMAT)
+ensemble <- RME_beta(N = 4, beta = 2, size = 10)
+# Outputs the following
+ensemble
+
+...
+[[10]]
+          [,1]      [,2]        [,3]     [,4]
+[1,] 0.7246302 1.8893868  0.00000000 0.000000
+[2,] 1.8893868 1.5278221  0.68840045 0.000000
+[3,] 0.0000000 0.6884004 -0.03876104 1.944495
+[4,] 0.0000000 0.0000000  1.94449533 1.042741
+\end{lstlisting}
+```
