@@ -1,7 +1,7 @@
 %=================
 %     PACKAGES
 %=================
-\usepackage{graphicx,latexsym} 
+\usepackage{graphicx,latexsym}
 \usepackage{amssymb,amsthm,amsmath}
 \usepackage{physics}
 \usepackage{longtable,booktabs,setspace}
@@ -13,7 +13,7 @@
 % \usepackage{times} % other fonts are available like times, bookman, charter, palatino
 
 % For code snippet environments
-\usepackage{listings} 
+\usepackage{listings}
 \usepackage[svgnames]{xcolor}
 
 % For stitching the code appendix
@@ -35,17 +35,20 @@
 \setlength\parindent{24pt}
 
 % Examples
-\newtheorem{example}{Example}[section]
+\newtheorem*{example}{Example}
+%\newtheorem{example}{Example}[section]
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 
 % Code Examples
-\newtheorem{code}{Code Example}[section]
+\newtheorem*{code}{Code Example}
+%\newtheorem{code}{Code Example}[section]
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 
 % Notes
-\newtheorem{note}{Note}[section]
+\newtheorem*{note}{Note}
+%\newtheorem{note}{Note}[section]
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 
@@ -56,7 +59,8 @@
 %\newtheorem*{algorithm}{Algorithm}%[section]
 
 % Remarks
-\newtheorem{remark}{Remark}[section]
+\newtheorem*{remark}{Remark}
+%\newtheorem{remark}{Remark}[section]
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 
@@ -76,7 +80,18 @@
 \xdefinecolor{gray}{rgb}{0.4,0.4,0.4}
 \xdefinecolor{blue}{RGB}{58,95,205}% R's royalblue3; #3A5FCD
 
+% Mini title document environment
+\newcommand{\minititle}[1]{
+  \begin{center}
+    \textbf{#1}
+  \end{center}
+}
 %==================
 %     COMMANDS
 %==================
 \input{commands.tex}
+
+%==================
+%     TABLES
+%==================
+\input{tables.tex}

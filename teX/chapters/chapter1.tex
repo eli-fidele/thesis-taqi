@@ -2,7 +2,7 @@
 
 As discussed in the introduction, this thesis will be an exploration of spectral statistics of random matrices. This means that we must first be able to understand what random matrices are. At a fundamental level, random matrices are simply matrices whose entries are randomly distributed in accordance to some distribution or method. To formalize all these notions, we will define what random matrices are and what it means for them to be $\D$-distributed.
 
-Prior to beginning the discussion on $\D$-distributions, the reader should be familiar or at least accquainted with the notion of random variables and what they are. A summary is available in the appendix in A.x. 
+Prior to beginning the discussion on $\D$-distributions, the reader should be familiar or at least accquainted with the notion of random variables and what they are. A summary is available in the appendix in A.x.
 
 %\section{Introduction}
 When it comes to random simulation, there must always be a rule to which our randomness must conform, regardless of complexity. For example, sampling a vector from a distribution is a rudimentary example of this. For random matrices, there will be a few methods of generating their entries that are not just sampling from theoretical distributions. As such, we motivate the $\D$-distribution.
@@ -12,10 +12,10 @@ When it comes to random simulation, there must always be a rule to which our ran
 
 \section{$\D$-Distributions}
 
-Now, we motivate the $D$-distribution. A formalization on how to initialize a random matrix. 
+Now, we motivate the $D$-distribution. A formalization on how to initialize a random matrix.
 
 \begin{definition}[$\D$-distribution]
-When we define a random matrix that is $\D$-distributed, we say that $P \sim \D$. In the simplest of terms, $\D$ is essentially the algorithm that generates the random matrix $P$. We define two primary methods of distribution: explicit distribution and implicit distribution. If $\D$ is an explicit distribution, then every entry of $P$ is homogenously sampled from that distribution. Otherwise, if it is implicit, we utilize an algorithm that imposes an implicit distribution on the entries. 
+When we define a random matrix that is $\D$-distributed, we say that $P \sim \D$. In the simplest of terms, $\D$ is essentially the algorithm that generates the random matrix $P$. We define two primary methods of distribution: explicit distribution and implicit distribution. If $\D$ is an explicit distribution, then every entry of $P$ is homogenously sampled from that distribution. Otherwise, if it is implicit, we utilize an algorithm that imposes an implicit distribution on the entries.
 \end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,18 +88,7 @@ P
 $\textbf{Common Matrix $\D$-Distributions}$
 \end{center}
 
-\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
- \hline
- \multicolumn{4}{|c|}{Table of Random Matrix Distributions} \\
- \hline
- Distribution & Notation ($\D$) & Parameters & Class\\
- \hline
- Normal & $\Normal(\mu,\sigma)$ & $\mu \in \R, \sigma \in \R^+$  &  Explicit\\
- Uniform  & $\Unif(a,b)$ & $a,b \in \R$ & Explicit\\
- Hermite-$\beta$   & $\mathcal{H}(\beta)$  &  $\b \in \N$  & Implicit\\
- Erdos-$p$   &   $\text{ER}(p)$  & $p \in [0,1]$   & Implicit\\
- \hline
-\end{tabular}
+\Ddisttable
 
 \newpage
 
@@ -126,7 +115,7 @@ library(RMAT)
 ensemble <- RME_norm(N = 4, cplx = TRUE, herm = TRUE, size = 10)
 # Outputs the following
 ensemble
-... 
+...
 [[10]]
                   [,1]              [,2]              [,3]
 [1,] -0.59931+1.24286i  1.29457+0.66058i  0.83539-0.16662i
@@ -142,13 +131,13 @@ With this in mind, we will gloss over, characterize, and briefly discuss a few s
 
 The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in this thesis. This ensemble will be characterized, motivated, and defined more thoroughly in $\textbf{Chapter 4}$. However, we will give a brief introduction to the ensemble.
 
-At a practical level, all one would need to know is that the matrices are generated in accordance to an algorithm found in the appendix (Algorithm B.x) and in Chapter 4. 
+At a practical level, all one would need to know is that the matrices are generated in accordance to an algorithm found in the appendix (Algorithm B.x) and in Chapter 4.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Erdos-Renyi $p$-Ensembles}
 
-The Hermite $\beta$-ensembles are a normal-like class of random matrices. Now, we will veer away from the normal distribution as a whole and switch to a different class of matrices: stochastic matrices. Stochastic matrices, in short, are matrices that represent Markov Chains (see A.x). We can also think of them as the matrix representation of a specific setup of a walk on a random graph. 
+The Hermite $\beta$-ensembles are a normal-like class of random matrices. Now, we will veer away from the normal distribution as a whole and switch to a different class of matrices: stochastic matrices. Stochastic matrices, in short, are matrices that represent Markov Chains (see A.x). We can also think of them as the matrix representation of a specific setup of a walk on a random graph.
 
 A particular class of random graphs that we will consider are the Erdos-Renyi random graphs. Essentially, these are graphs whose vertices are connected with a uniform probability $p$. We can interpret this as saying an Erdos-Renyi graph is a simple random walk on a graph with parameterized sparsity (given by $p$). Without further ado, we motivate the Erdos-Renyi graph:
 
@@ -180,7 +169,3 @@ ensemble
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\section{Analytical Results}
-
-
-
-

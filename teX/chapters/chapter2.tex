@@ -11,14 +11,14 @@ So in the context of this thesis, $\textit{spectral statistics}$ will be an umbr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{The Quintessential Spectral Statistic: the Eigenvalue}
-Given any standard square matrix $P \in \F^{N \times N}$, its \textit{eigenvalues} are simply the roots of the characteristic polynomial $\text{char}_P{(\lambda)}$ = $\det(P - \lambda I)$. By the Fundamental Theorem of Algebra, we know that there is always have as many complex eigenvalues $\lambda \in \Cc$ as the dimension of the matrix. 
+Given any standard square matrix $P \in \F^{N \times N}$, its \textit{eigenvalues} are simply the roots of the characteristic polynomial $\text{char}_P{(\lambda)}$ = $\det(P - \lambda I)$. By the Fundamental Theorem of Algebra, we know that there is always have as many complex eigenvalues $\lambda \in \Cc$ as the dimension of the matrix.
 
 That being said, when our random matrix has a specified distribution (say, standard normal), we can see patterns in the eigenvalue distributions. So, an eigenvalue is a \textbf{spectral statistic} of a random matrix! To talk about a matrix's eigenvalues in a more formal and concise manner, we motivate what is the \text{eigenvalue spectrum}.
 
 \newpage
 
 \begin{definition}[Spectrum]
-Suppose $P \in \F^{N \times N}$ is a square matrix of size $N$ over $\F$. Then, the (eigenvalue) spectrum of $P$ is defined as the multiset of its eigenvalues and it is denoted $\sigma(P) = \{\lambda_i  \in \Cc\}_{i=1}^N$. Note that it is important to specify that a spectrum is a multiset and not just a set; eigenvalues could be repeated due to algebraic multiplicity and we opt to always have $N$ eigenvalues. 
+Suppose $P \in \F^{N \times N}$ is a square matrix of size $N$ over $\F$. Then, the (eigenvalue) spectrum of $P$ is defined as the multiset of its eigenvalues and it is denoted $\sigma(P) = \{\lambda_i  \in \Cc\}_{i=1}^N$. Note that it is important to specify that a spectrum is a multiset and not just a set; eigenvalues could be repeated due to algebraic multiplicity and we opt to always have $N$ eigenvalues.
 \end{definition}
 
 For example, consider the following code example from the RMAT package.
@@ -127,7 +127,7 @@ Alternatively, we can motivate a different scheme that properly handles complex 
 \begin{align*}
 \sigma_N(P) = \{\lambda_j : |\lambda_1| \geq |\lambda_2| \geq \dots \geq |\lambda_N|\}_{j = 1}^N
 \end{align*}
-Note that when we take the norms of the eigenvalues, we essentially ignore "rotational" features of the eigenvalues. Signs of eigenvalues indicate reflection or rotation, so when we take the norm, we essentially become more concerned with scaling. 
+Note that when we take the norms of the eigenvalues, we essentially ignore "rotational" features of the eigenvalues. Signs of eigenvalues indicate reflection or rotation, so when we take the norm, we essentially become more concerned with scaling.
 
 For example, consider the following example.
 \begin{center}
@@ -145,7 +145,7 @@ For example, consider the following example.
 %****************************************************************************************
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \subsection{Singular Values}
 
 An aternative to using the norm ordering scheme is using the singular values of the matrix. If a matrix is symmetric, the singular values are simply the norm of the eigenvalues. We ignore rotational features and focus solely on scale when we do so.
@@ -156,21 +156,12 @@ Suppose $P$ is a random matrix. Then, we can take it singular values as such.
 The singular values of a matrix $P$ are given by the square root of the eigenvalues of the corrosponding product of that matrix and its transpose. That is, $\sigma_+(P) = \sqrt{\sigma(P \cdot P^T)}$.
 \end{definition}
 
+\newpage
 \begin{center}
 $\textbf{Common Spectrum Schema}$
 \end{center}
 
-\begin{tabular}{ |p{3cm}|p{2cm}|p{3cm}|p{5cm}|  }
- \hline
- \multicolumn{4}{|c|}{Table of Spectrum Schema} \\
- \hline
- Scheme & Matrix & Notation & Ordering \\
- \hline
- Sign-Ordered & $P$ & $\sigma_{S}(P)$ & $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_N$ \\
- Norm-Ordered & $P$ & $\sigma_{N}(P)$ & $|\lambda_1| \geq |\lambda_2| \geq ... \geq |\lambda_N|$ \\
- Singular & $P \cdot P^T$ & $\sigma_{+}(P)$ & $\sqrt{\lambda_1} \geq \sqrt{\lambda_2} \geq ... \geq \sqrt{\lambda_N}$ \\
- \hline
-\end{tabular}
+\spectrumschemetable
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -178,12 +169,12 @@ $\textbf{Common Spectrum Schema}$
 
 With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics. In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (See A.x)
 
-In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution. They tell us how the eigenvalues space themselves and give us useful upper and lower bounds. 
+In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution. They tell us how the eigenvalues space themselves and give us useful upper and lower bounds.
 
-For example, the maximum of a sample is an order statistic concerned with the highest ranked element. In our case, this could corrospond the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined. 
+For example, the maximum of a sample is an order statistic concerned with the highest ranked element. In our case, this could corrospond the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined.
 
 \begin{example}[The Largest Eigenvalue]
-Suppose we have seek the largest eigenvalue distribution for a ensemble distribution $\D$, we would simulate an ensemble $\Ens$ and observe $\lambda_1$ for each of its matrices. Then, we can set the distribution of the largest eigenvalue for $\D$ by observing the distribution of $\lambda_1$. 
+Suppose we have seek the largest eigenvalue distribution for a ensemble distribution $\D$, we would simulate an ensemble $\Ens$ and observe $\lambda_1$ for each of its matrices. Then, we can set the distribution of the largest eigenvalue for $\D$ by observing the distribution of $\lambda_1$.
 \end{example}
 
 So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
@@ -195,7 +186,7 @@ So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ a
 
 \subsection{Introduction}
 
-A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (See A.x). Simply put, those are matrices which are equal to their conjugate transpose. 
+A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (See A.x). Simply put, those are matrices which are equal to their conjugate transpose.
 
 $\textbf{Note:}$ Since real numbers are their own conjugate transpose, every Symmetric matrix is Hermitian. However, we will still delineate the two terms to avoid confusion.
 
