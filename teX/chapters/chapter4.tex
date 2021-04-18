@@ -61,7 +61,7 @@ To generate Hermite $\beta$ matrices, we consider the result of Dimitriu's paper
   \begin{enumerate}
     \item To simulate an $N \times N$ beta matrix, fix $N \in \N$.
     \item Start by taking a diagonal of $\Normal(0,2)$ variables.
-    \item Set both of the nearest off-diagonals to the row that samples from a $\chi(df = df_i) \where df_i = \beta * i$ for columns going from $i = 1$ to $i = n-1$.
+    \item Set both of the nearest off-diagonals to the row that samples from a $\chi(df = c_j) \where c_j = \beta \cdot j$ for columns spanning $j = 1,\dots,n-1$.
   \end{enumerate}
 \end{algorithm}
 
@@ -94,12 +94,10 @@ Consider the following plot of the sign-sorted eigenvalue dispersions below.
 	% you can add an exclamation mark to make it try harder, and multiple
 	% options if you have an order of preference, e.g.
 	% \begin{figure}[h!tbp]
-	   
+
 	       \centering
 	    % DO NOT ADD A FILENAME EXTENSION TO THE GRAPHIC FILE
 	    \includegraphics[scale = 0.6]{chapters/graphics/c2_order_sign}
 	     \caption{Dispersions of a $\beta = 4$ matrix with respect to ranking difference}
 	 \label{subd}
 	\end{figure}
-
-

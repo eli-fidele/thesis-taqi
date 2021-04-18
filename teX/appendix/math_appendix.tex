@@ -10,12 +10,17 @@ Suppose $P \in \F^{n \times n}$ is a square matrix. Then, the eigenvalues of the
 % \begin{definition}[Eigenvector]
 % \end{definition}
 
-\begin{definition}[Transpose]
-Suppose $P = (p_{ij}) \in \F^{m\times n}$. Then, its transpose, $P^{T} = (q_{ij}) = (p_{ji}) \in \F^{n\times m}$ matrix whose columns are the rows of the original matrix.
+\begin{definition}[Inverse Matrix]
+Suppose there is a matrix $P \in \F^{m\times n}$ is a . Then, $P^{-1}$ is its inverse matrix iff multiplying it by $P$ returns the identity matrix. That is, the inverse matrix must satisfy:
+$$ P^{-1} P = I$$ 
 \end{definition}
 
-\begin{definition}[Conjugate Transpose]
-Suppose $P = (p_{ij}) \in \C^{m\times n}$. Then, its transpose, $P^{\dagger} = (q_{ij}) = (\overline{p_{ji}}) \in \F^{n\times m}$ is a matrix whose columns are the rows of the original matrix.
+\begin{definition}[Transpose Matrix]
+Suppose there is a matrix $P = (p_{ij}) \in \F^{m\times n}$. Then, its transpose matrix, $P^{T} = (q_{ij}) = (p_{ji}) \in \F^{n\times m}$ matrix whose columns are the rows of the original matrix.
+\end{definition}
+
+\begin{definition}[Conjugate Transpose Matrix]
+Suppose there is a matrix $P = (p_{ij}) \in \C^{m\times n}$. Then, its conjugate transpose matrix, $P^{\dagger} = (q_{ij}) = (\overline{p_{ji}}) \in \F^{n\times m}$ is a matrix whose columns are the rows of the original matrix.
 \end{definition}
 
 \begin{definition}[Symmetric Matrix]
@@ -56,7 +61,7 @@ $\bf Notation.$ For notational convenience, for any $N \in \N$, let $\widetilde{
 
 In this document, we prove that for any $M \times M$ real symmetric matrix, $S_M$, there exists for some eigenvalue $\lambda$, a corrosponding **real** eigenvector $\vec{v} \in \R^M$. Prior to starting the main proof, we begin with a lemma.
 
-$\bf Lemma.$ Suppose we have a $M \times M$ real symmetric matrix with a some eigenvalue $\lambda$. If there we have a corrosponding eigenvector $v \in \Cc^M$, then every entry of $v$, say $v_i$ is equal to a **real** linear combination of the other entries $v_j \mid j \neq i$. 
+$\bf Lemma.$ Suppose we have a $M \times M$ real symmetric matrix with a some eigenvalue $\lambda$. If there we have a corrosponding eigenvector $v \in \Cc^M$, then every entry of $v$, say $v_i$ is equal to a **real** linear combination of the other entries $v_j \mid j \neq i$.
 
 So, we will show that:
 $$\forall i \in \widetilde{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
@@ -87,9 +92,9 @@ Next, we will write $S_{M+1}$ as the matrix $S_M$ augmented by some $u \in \R^M$
 $$ S_{M+1} =
 \left[
   \begin{array}{c|c}
-  S_M & u\\ 
+  S_M & u\\
   \hline
-  u^T & d_{M+1} 
+  u^T & d_{M+1}
 \end{array} \right]$$
 
 From our lemma, we use the fact that $S_{M+1}$ is symmetric and our assumption of $f(M)$ to obtain:
@@ -142,7 +147,7 @@ Suppose $X = (20,7,2,1)$. The smallest (fourth) order statistic is $1$. The seco
 \newpage
 \section{Markov Chains}
 
-% \begin{definition}[Transition Matrix] 
+% \begin{definition}[Transition Matrix]
 % Take a Markov Chain with states $\oneto[M]$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \oneto[M]: \sum_{j \in \oneto[M]} q_{ij} = 1$.
 % \end{definition}
 
@@ -160,7 +165,7 @@ $$\forall i,j \in S_M: \Prb(X_{n+1} = j \mid X_n = i) = \Prb(X_{n+1} = j \mid X_
 \begin{definition}[Transition Matrixx]  Let $\seq[M]{X}$ be a Markov Chain with state space $S_M$. Letting $q_{ij} = \Prb(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q \in \mathcal{M}_{\R^+}[M\times M]: Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. $Q$ must satisfy the following conditions to be a valid transition matrix:
 \end{definition}
 
-\begin{definition}[Transition Matrix] 
+\begin{definition}[Transition Matrix]
 Take a Markov Chain with states $\oneto[M]$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \oneto[M]: \sum_{j \in \oneto[M]} q_{ij} = 1$.
 \end{definition}
 
@@ -175,7 +180,7 @@ $$\forall i \in S_M: \sum_{j \in S_M} q_{ij} = 1$$
 \end{definition}
 
 $$ q_{ij}^{(n)}: \Prb(X_n = j \mid X_0 = i)$$
-Realize: 
+Realize:
 $$q_{ij}^{(2)} = \sum_{k \in S_M} q_{ik}\cdot q_{kj}$$
 Because by definition, a Markov Chain is closed under a support/range of $S_M$ so the event $i \to j$ may have taken any intermediate step $k \in S_M$. Realize by notational equivalence, $Q^2 = (q_{ij}^{(2)})$. Inducting over $n$, we then obtain that:
 

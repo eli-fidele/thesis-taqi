@@ -7,7 +7,7 @@
 
 \begin{algorithm}[Stochastic Row] \hfill
 \begin{enumerate}
-	\item To sample a row of size $N$, fix $N \in \N$. 
+	\item To sample a row of size $N$, fix $N \in \N$.
 	\item Sample a vector $X$ with $N$ entries between $[0,1]$. So, generate $X = (x_i)_{i = 1}^N \where x_i \sim \Unif(0,1)$.
 	\item Normalize the rows by diving each entry by the row sum; so assign $x_i \la x_i \cdot \frac{1}{\sum{x_i}}$
 	\item Return the stochastic row $X$.
@@ -60,7 +60,7 @@
   \begin{enumerate}
     \item To simulate an $N \times N$ beta matrix, fix $N \in \N$.
     \item Start by taking a diagonal of $\Normal(0,2)$ variables.
-    \item Set both of the nearest off-diagonals to the row that samples from a $\chi(df = df_i) \where df_i = \beta * i$ for columns going from $i = 1$ to $i = n-1$.
+    \item Set both of the nearest off-diagonals to the row that samples from a $\chi(df = c_j) \where c_j = \beta \cdot j$ for columns spanning $j = 1,\dots,n-1$.
   \end{enumerate}
 \end{algorithm}
 
