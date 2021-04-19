@@ -31,9 +31,9 @@ Take for example the following explicit distributions which we cover in this the
 \item  If $\D = \Unif(0,1)$, then $p_{ij} \sim \Unif(0,1)$.
 \end{enumerate}
 
-\begin{remark}[Formalization]
+\begin{formalization}
 Explicit distributions can be formalized in scope of the standard notation in probability theory. At the heart of the formalization is the usage of index hacking to collapse the array's indices from two dimensions to one. This way, our random matrix has a representation as a random vector, which we commonly encounter in probability theory as a (i.i.d) sequence of random variables! Generally, an $N \times N$ random matrix that is explicity and homogenously $\D$-distributed is essentially a sequence of $N^2$ i.i.d random variables sampled from $\D$.
-\end{remark}
+\end{formalization}
 
 \begin{example}[Formalization]
 For example, suppose $P$ is a $2 \times 2$ random matrix with $\D = \Normal(0,1)$. Then, we have four random variables to initialize. In the random matrix representation, we need to initialize $P_{11}, P_{12}, P_{21}, \and P_{22}$ by sampling them from $\D$. In the vector representation, we just say we are sampling four i.i.d random variables from $\D$. The matrix indexing is intrinsic and preservable by using index hacking with some modular math.
@@ -56,18 +56,20 @@ Consider for example, the following implicit distributions.
 
 \subsection{Random Matrices}
 
+With $\D$-distributions defined, we may finally define a random matrix.
+
 \begin{definition}[Random Matrix]
 Assuming $\D$ is an explicit distribution, a random matrix is any matrix over the field $\F$ is a matrix $M \in \F^{N \times N}$ is a matrix whose entries are i.i.d random variables. So, if a random matrix $M = (m_{ij})$ is $\mathcal{D}$-distributed, then we say $m_{ij} \sim \mathcal{D}$. In the scope of this thesis, assume every random matrix to be homogenously distributed. Otherwise, if $\D$ is an implicit distribution, then $P$ is a matrix whose entries are determined by the algorithm imposed by $\D$.
 \end{definition}
 
-Sometimes, we want our matrix to have complex entries. We notate this by specifying $\F = \Cc$.
+\noindent Sometimes, we want our matrix to have complex entries. We notate this by specifying $\F = \Cc$.
 
 \begin{remark}[Complex Entries]
 To say that a random matrix is explicitly $\D$-distributed over $\Cc$ would mean that its entries take the form $a + bi$ where $a,b \sim \D$ are random variables. In other words, if we allow the matrix to have complex entries by setting $\F = \Cc$, then we must sample the real and imaginary component as $\D$-distributed i.i.d. random variables.
 \end{remark}
 
-Below, we can see code on how to generate a standard normal random matrix using the $\textbf{RMAT}$ package.
-
+\medskip
+\noindent Below, we can see code on how to generate a standard normal random matrix using the $\textbf{RMAT}$ package.
 \begin{code}[Standard Normal Matrix]
 Let $\mathcal{D} = \Normal(0,1)$. We can generate $P \sim \D$, a $4 \times 4$ standard normal matrix, as such:
 \end{code}
@@ -103,8 +105,8 @@ With a random matrix well defined, we may now motivate one of the most important
 A $\D$-distributed random matrix ensemble $\Ens$ over $\F^{N \times N}$ of size $K$ is defined as a set of $\D$-distributed random matrices $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$. In simple words, it is simply a collection of $K$ iterations of a specified class of random matrix.
 \end{definition}
 
-So, for example, we could compute a simple ensemble of matrices as follows.
-
+\medskip
+\noindent So, for example, we could compute a simple ensemble of matrices as follows.
 \begin{code}[Standard Normal Hermitian Ensemble]
 Let $\mathcal{D} = \Normal(0,1)^{\dagger}$. We can generate $\Ens \sim \D$ over $\Cc$, an ensemble of $4 \times 4$ complex Hermitian standard normal matrices of size 10 as such:
 \end{code}
@@ -124,14 +126,6 @@ ensemble
 \end{lstlisting}
 
 With this in mind, we will gloss over, characterize, and briefly discuss a few special recurring ensembles in this thesis.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Hermite $\beta$-Ensembles}
-
-The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in this thesis. This ensemble will be characterized, motivated, and defined more thoroughly in $\textbf{Chapter 4}$. However, we will give a brief introduction to the ensemble.
-
-At a practical level, all one would need to know is that the matrices are generated in accordance to an algorithm found in the appendix (Algorithm B.x) and in Chapter 4.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -165,6 +159,14 @@ ensemble
 [3,] 0.2557890 0.3766740 0.0000000 0.367537
 [4,] 0.2151029 0.3929580 0.3919391 0.000000
 \end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Hermite $\beta$-Ensembles}
+
+The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in this thesis. This ensemble will be characterized, motivated, and defined more thoroughly in $\textbf{Chapter 4}$. However, we will give a brief introduction to the ensemble.
+
+At a practical level, all one would need to know is that the matrices are generated in accordance to an algorithm found in the appendix (Algorithm B.x) and in Chapter 4.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
