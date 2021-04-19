@@ -202,6 +202,355 @@ RME_erdos <- RME_extender(RM_erdos)
 
 # Spectral Statistics
 
-## Spectra
+## Spectrum
+
+```{r}
+spectrum <- function(array, components = TRUE, sort_norms = TRUE, singular = FALSE, order = NA){
+  digits <- 4 # Digits to round values to
+  # Array is a matrix; call function returning eigenvalues for singleton matrix
+  if(class(array) == "matrix"){
+    .spectrum_matrix(array, components, sort_norms, singular, order, digits)
+  }
+  # Array is an ensemble; recursively row binding each matrix's eigenvalues
+  else if(class(array) == "list"){
+    purrr::map_dfr(array, .spectrum_matrix, components, sort_norms, singular, order, digits)
+  }
+}
+```
+
+```{r}
+# Helper function returning tidied eigenvalue array for a matrix
+.spectrum_matrix <- function(P, components, sort_norms, singular, order, digits = 4){
+  # If prompted for singular values, then take the product of the matrix and its tranpose instead
+  if(singular){P <- P %*% t(P)}
+  # Get the sorted eigenvalue spectrum of the matrix
+  eigenvalues <- eigen(P)$values # Compute the eigenvalues of P
+  if(singular){eigenvalues <- sqrt(eigenvalues)} # Take the square root of the eigenvalues
+  if(sort_norms){eigenvalues <- .sort_by_norm(eigenvalues)} # Order the eigenvalue spectrum by norm rather than sign
+  else{eigenvalues <- sort(eigenvalues, decreasing = TRUE)} # Else, sort by sign.
+  # If uninitialized, get eigenvalues of all orders; Otherwise, concatenate so single inputs become vectors
+  if(class(order) == "logical"){order <- 1:nrow(P)} else{order <- c(order)}
+  purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits) # Get the eigenvalues
+}
+```
+
+```{r}
+# Read and parse an eigenvalue from an eigen(P)$value array
+.resolve_eigenvalue <- function(order, eigenvalues, components, digits){
+  eigenvalue <- eigenvalues[order] # Read from eigen(P)$values
+  # Get norm and order columns (will unconditionally be returned)
+  norm_and_order <- data.frame(Norm = abs(eigenvalue), Order = order)
+  # If components are requested, resolve parts into seperate columns and cbind to norm and order
+  if(components){evalue <- cbind(data.frame(Re = Re(eigenvalue), Im = Im(eigenvalue)), norm_and_order)}
+  else{evalue <- cbind(data.frame(Eigenvalue = eigenvalue), norm_and_order)}
+  evalue <- round(evalue, digits) # Round entries
+  evalue # Return resolved eigenvalue
+}
+```
+
+### Helper Functions
+
+```{r}
+# Sort an array of numbers by their norm (written for eigenvalue sorting)
+.sort_by_norm <- function(eigenvalues){
+  (data.frame(eigenvalue = eigenvalues, norm = abs(eigenvalues)) %>% arrange(desc(norm)))$eigenvalue
+  }
+```
+
+
+\newpage
 
 ## Dispersions
+
+```{r}
+dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
+  digits <- 2 # Digits to round values to
+  pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
+  # Array is a matrix; call function returning dispersion for singleton matrix
+  if(class(array) == "matrix"){
+    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
+  }
+  # Array is an ensemble; recursively row binding each matrix's dispersions
+  else if(class(array) == "list"){
+    purrr::map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
+  }
+}
+```
+
+```{r}
+# Find the eigenvalue dispersions for a given matrix
+.dispersion_matrix <- function(P, pairs, sort_norms, singular, norm_pow, digits = 4){
+  eigenvalues <- spectrum(P, sort_norms = sort_norms, singular = singular) # Get the sorted eigenvalues of the matrix
+  norm_fn <- function(x){(abs(x))^norm_pow} # Generate norm function to pass along as argument (Euclidean or Beta norm)
+  purrr::map2_dfr(pairs[,1], pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, digits) # Evaluate the matrix dispersion
+}
+```
+
+```{r}
+# Read and parse a dispersion observation between eigenvalue i and j.
+.resolve_dispersion <- function(i, j, eigenvalues, norm_fn, digits){
+  ## Copmute dispersion metrics
+  disp <- data.frame(i = i, j = j) # Initialize dispersion dataframe by adding order of eigenvalues compared
+  disp$eig_i <- .read_eigenvalue(i, eigenvalues); disp$eig_j <- .read_eigenvalue(j, eigenvalues) # Add the eigenvalues
+  disp$id_diff <- disp$eig_j - disp$eig_i # Get the identity difference dispersion metric
+  ## Compute norm metrics
+  disp$id_diff_norm <- norm_fn(disp$id_diff) # Take the norm of the difference
+  disp$abs_diff <- norm_fn(disp$eig_j) - norm_fn(disp$eig_i) # Compute the difference of absolutes w.r.t. norm function (Euclidean or beta)
+  ## Prepare for return
+  disp <- round(disp, digits) # Round digits
+  disp$diff_ij <- disp$i - disp$j
+  disp # Return resolved dispersion observation
+}
+```
+
+### Helper Functions
+
+$\textbf{Warning}$ There is a bug in this code chunk regarding coercion of complex numbers into numericals.
+
+```{r}
+# Parses a matrix spectrum array for the eigenvalue at a given order as cplx type (for arithmetic)
+.read_eigenvalue <- function(order, mat_spectrum){
+  if(ncol(mat_spectrum) == 3){mat_spectrum[order, 1]} # If the components are not resolved, return value in the first (Eigenvalue) column
+  else{ # Components are resolved; get components and make it a complex number for arithmetic prep
+    evalue <- complex(real = mat_spectrum[order, 1], imaginary = mat_spectrum[order, 2])
+    #if(Im(evalue) != 0){evalue} else{as.numeric(evalue)} # If it is real, coerce it into a numeric to remove +0i
+  }
+}
+```
+
+\newpage
+
+### Pairing Schema
+
+```{r}
+# Parse a string argument for which pairing scheme to utilize
+.parsePairs <- function(pairs, array){
+  valid_schemes <- c("largest", "lower", "upper", "consecutive", "all") # Valid schemes for printing if user is unaware of options
+  # Obtain the matrix by inferring array type; if ensemble take first matrix
+  if(class(array) == "list"){P <- array[[1]]} else{P <- array}
+  if(class(pairs) == "logical"){pairs <- "consecutive"} # Set default value to be the consecutive pair scheme
+  # Stop function call if the argument is invalid
+  if(!(pairs %in% valid_schemes)){stop(paste("Invalid pair scheme. Try one of the following: ",paste(valid_schemes, collapse = ", "),".", sep = ""))}
+  # Obtain the dimension of the matrix
+  N <- nrow(P)
+  # Parse the pair string and evaluate the pair scheme
+  if(pairs == "largest"){pair_scheme <- data.frame(i = 2, j = 1)}
+  else if(pairs == "consecutive"){pair_scheme <- .consecutive_pairs(N)}
+  else if(pairs == "lower"){pair_scheme <- .unique_pairs_lower(N)}
+  else if(pairs == "upper"){pair_scheme <- .unique_pairs_upper(N)}
+  else if(pairs == "all"){pair_scheme <- .all_pairs(N)}
+  pair_scheme # Return pair scheme
+}
+```
+
+```{r}
+# The antisymmetric pair scheme (for assymetric dispersion metrics); essentially all the permutations
+.all_pairs <- function(N){
+  purrr::map_dfr(1:N, function(i, N){data.frame(i = rep(i, N), j = 1:N)}, N)
+}
+
+# The consecutive-value scheme (Sufficient such that no linear combiantions of the diseprsion metric exists); one apart
+.consecutive_pairs <- function(N){
+  purrr::map_dfr(2:N, function(i){data.frame(i = i, j = i - 1)})
+}
+
+# The triangular pair schema (for symmetric dispersion metrics); essentially all the combinations
+# (Enumerate the pair combinations given N items with i > j)
+.unique_pairs_lower <- function(N){
+  is <- do.call("c", purrr::map(1:N, function(i){rep(i,N)}))
+  js <- rep(1:N, N)
+  do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i > j){c(i = i, j = j)}}))
+}
+# The triangular pair schema (for symmetric dispersion metrics); essentially all the combinations
+# (Enumerate the pair combinations given N items with i < j)
+.unique_pairs_upper <- function(N){
+  is <- do.call("c", purrr::map(1:N, function(i){rep(i,N)}))
+  js <- rep(1:N, N)
+  do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i < j){c(i = i, j = j)}}))
+}
+
+```
+
+\newpage
+
+## Parallel Extensions
+
+### Spectrum 
+
+```{r}
+spectrum_parallel <- function(array, components = TRUE, sort_norms = TRUE, singular = FALSE, order = NA){
+  digits <- 4 # Digits to round values to
+  # Array is a matrix; call function returning eigenvalues for singleton matrix
+  if(class(array) == "matrix"){
+    .spectrum_matrix(array, components, sort_norms, singular, order, digits)
+  }
+  # Array is an ensemble; recursively row binding each matrix's eigenvalues
+  else if(class(array) == "list"){
+    furrr::future_map_dfr(array, .spectrum_matrix, components, sort_norms, singular, order, digits)
+  }
+}
+```
+
+### Dispersion
+
+```{r}
+dispersion_parallel <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
+  digits <- 4 # Digits to round values to
+  pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
+  # Array is a matrix; call function returning dispersion for singleton matrix
+  if(class(array) == "matrix"){
+    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
+  }
+  # Array is an ensemble; recursively row binding each matrix's dispersions
+  else if(class(array) == "list"){
+    furrr::future_map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
+  }
+}
+```
+
+
+\newpage
+
+## Visualization Functions
+
+### Spectrum Visualization
+
+```{r}
+spectrum.scatterplot <- function(array, ..., mat_str = ""){
+  # Process spectrum of the matrix/ensemble
+  if(class(array) == "list" || class(array) == "matrix"){
+    array_spectrum <- spectrum(array, ...)
+  }
+  # Else, the array is a precomputed spectrum (avoid computational waste for multiple visualizations)
+  else{
+    array_spectrum <- array
+  }
+  # Infer plot title string from which type of array (matrix/ensemble)
+  title_str <- .plot_title(class(array), prefix = "Spectrum", mat_str)
+  # Plot parameters
+  order <- array_spectrum[["Order"]]
+  # Plot
+  array_spectrum %>%
+    ggplot() +
+    geom_point(mapping = aes(x = Re, y = Im, color = order), alpha = 0.75) +
+    scale_color_continuous(type = "viridis") +
+    labs(x = "Re", y = "Im", title = paste(title_str,sep = "")) +
+    coord_fixed()
+}
+spectrum.histogram <- function(array, ..., component = NA, bins = 100, mat_str = ""){
+  # Process spectrum of the matrix/ensemble
+  if(class(array) == "list" || class(array) == "matrix"){array_spectrum <- spectrum(array, ...)}
+  else{array_spectrum <- array} # Else, the array is a precomputed spectrum (avoid computational waste for multiple visualizations)
+  # Infer plot title string from which type of array (matrix/ensemble)
+  title_str <- .plot_title(class(array), prefix = "Spectrum", mat_str)
+  # Plot parameters
+  color0 <- "mediumpurple3"
+  num_entries <- nrow(array) # Get number of entries to normalize
+  if(class(component) == "logical"){component <- c("Re", "Im")} # Set default to both components
+  # Plot lambda function
+  component_plot <- function(component){
+    # Plot parameters
+    component_str <- paste(" (",component,")",collapse = "")
+    # Plot
+    array_spectrum %>%
+      ggplot() +
+      geom_histogram(mapping = aes_string(x = component), fill = color0, bins = bins) +
+      labs(x = component, y = "Frequency", title = paste(title_str, component_str, sep = ""))
+  }
+  # Get list of plots
+  plots <- purrr::map(component, component_plot)
+  # If we have both components and patchwork is loaded, attach plots to each other
+  if(length(plots) == 2){plots[[1]] / plots[[2]]} else if(length(plots) == 1){plots[[1]]}
+  # Return the list of plots
+  else{plots}
+}
+
+# Helper function returning appoporiate string for matrix/ensemble given a matrix type string and class of input array
+.plot_title <- function(array_class, prefix, mat_str){
+  if(mat_str != ""){pre_space <- " "} else{pre_space <- ""} # Format without given name
+  # Infer plot title string from which type of array (matrix/ensemble)
+  if(array_class == "matrix"){plot_str <- paste(pre_space, mat_str," Matrix", sep = "", collapse = "")}
+  else if(array_class == "list"){plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
+  else{plot_str <- paste(pre_space, mat_str," Matrix Ensemble", sep = "", collapse = "")}
+  paste(prefix," of a",plot_str, sep = "")
+}
+```
+
+
+```{r}
+order.scatterplot <- function(spectrum, component){
+  spectrum %>%
+    ggplot(aes(x = Order, y = {{ component }}, color = Order)) +
+    geom_point() +
+    scale_color_viridis_c() +
+    theme(legend.position = "bottom")
+}
+order.density <- function(spectrum, component){
+  spectrum %>%
+    ggplot(mapping = aes(group = Order, x = {{ component }}, color = Order)) + 
+    geom_density() +
+    scale_color_viridis_c() +
+    theme(legend.position = "bottom")
+}
+order.summary <- function(spectrum, component){
+  spectrum %>%
+    group_by(Order) %>%
+    summarize(
+      Mean_Re = mean(Re), Mean_Im = mean(Im), Mean_Norm = mean(Norm),
+      Variance_Re = var(Re), Variance_Im = var(Im), Variance_Norm = var(Norm)) %>%
+    ggplot(mapping = aes(y = {{ component }}, x = Order, color = Order)) + 
+    geom_point() +
+    geom_line() +
+    scale_color_viridis_c() +
+    theme(legend.position = "bottom")
+}
+```
+
+\newpage
+
+### Dispersion Visualization
+
+```{r}
+dispersion.histogram <- function(array, metric = NA, ..., bins = 100){
+  valid_schemes <- c("id_diff","id_diff_norm","abs_diff") # Valid schemes for printing if user is unaware of options
+  if(class(metric) == "logical"){stop("Please input a valid dispersion metric. Try one of the following: ",paste(valid_schemes, collapse = ", "),".", sep = "")}
+  # Process spectrum of the matrix/ensemble
+  if(class(array) == "list" || class(array) == "matrix"){ disps_df <- dispersion(array, ...) }
+  else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
+  num_entries <- nrow(disps_df) # Get number of entries
+  # Plot parameters
+  color0 <- "darkorchid4"
+  # Return plot
+  ggplot(data = disps_df, mapping = aes_string(x = metric)) +
+    geom_histogram(mapping = aes(y = stat(count / num_entries)), bins = bins) +
+    labs(title = "Distribution of Eigenvalue Spacings", y = "Probability")
+}
+```
+
+```{r}
+dispersion.scatterplot <- function(array, metric = "id_diff_norm", pairs = NA, ...){
+  # Process dispersion of the matrix/ensemble; if array is a dispersion data frame, copy it.
+  if(class(array) == "list" || class(array) == "matrix"){disps_df <- dispersion(array, pairs, ...)}
+  else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
+  # Parse plotting aesthetics from pairs. diff_ij is more useful unless pairs = "consecutive" or "largest", where j is better.
+  if(pairs %in% c("consecutive","largest")){order_stat <- "j"} else{order_stat <- "diff_ij"}
+  
+  # Plot parameters
+  color0 <- "darkorchid4"
+  real_valued <- T
+  # Scatterplot of dispersion metric
+  if(real_valued){  
+    disps_df %>%
+      ggplot(mapping = aes_string(x = metric, y = order_stat, color = order_stat)) +
+      geom_point() +
+      scale_color_continuous(type = "viridis") +
+      labs(title = "Distribution of Eigenvalue Spacings by Order Statistic")
+  } else{
+      resolved <- .resolve_eigenvalues(disps_df)
+      resolved %>%
+        ggplot() +
+        geom_point()
+    }
+}
+```
+

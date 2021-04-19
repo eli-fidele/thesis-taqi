@@ -19,7 +19,7 @@
 %      SPECTRUM SCHEMES
 %============================
 \newcommand{\spectrumschemetable}{
-  \begin{tabular}{ |p{3cm}|p{2cm}|p{3cm}|p{5cm}|  }
+  \begin{tabular}{ |p{3cm}||p{2cm}|p{2.5cm}|p{4.5cm}|  }
    \hline
    \multicolumn{4}{|c|}{Table of Spectrum Schema} \\
    \hline
@@ -35,7 +35,8 @@
 %     DISPERSION METRICS
 %============================
 \newcommand{\dispersiontable}{
-  \begin{tabular}{ |p{4.5cm}||p{2cm}|p{2cm}|p{2cm}|p{2cm}|  }
+  %\begin{tabular}{ |p{5cm}||p{2cm}|p{2cm}|p{2cm}|p{2cm}|  }
+  \begin{tabular}{ |p{4.4cm}||p{1.9cm}|p{1.9cm}|p{1.9cm}|p{1.9cm}|  }
    \hline
    \multicolumn{5}{|c|}{Table of Dispersion Metrics} \\
    \hline
@@ -53,16 +54,19 @@
 %      PAIRING SCHEMES
 %============================
 \newcommand{\pairingschemetable}{
-  \begin{tabular}{ |p{2.5cm}||p{1.75cm}|p{5.5cm}|  }
-   \hline
-   \multicolumn{3}{|c|}{Table of Pairing Schema} \\
-   \hline
-   Scheme & Notation & Formula \\
-   \hline
-   Lower & $\Pi_<$ & $\{(i,j) \mid i < j \for i,j \in \N_N \}$ \\
-   Upper  & $\Pi_>$ & $\{(i,j) \mid i > j \for i,j \in \N_N \}$ \\
-   Consecutive  & $\Pi_C$ & $\{(i,j) \mid i = j + 1 \for i,j \in \N_N \}$ \\
-   All & $\Pi_0$ & $\{(i,j) \mid i,j \in \N_N \}$ \\
-   \hline
-  \end{tabular}
+  %\begin{tabular}{ |p{2.5cm}||p{1.75cm}|p{5.5cm}|  }
+  %\begin{center}
+    \begin{tabular}{ |p{3cm}||p{3cm}|p{6cm}|  }
+     \hline
+     \multicolumn{3}{|c|}{Table of Pairing Schema} \\
+     \hline
+     Scheme & Notation & Formula \\
+     \hline
+     Lower & $\Pi_<$ & $\{(i,j) \mid i < j \for i,j \in \N_N \}$ \\
+     Upper  & $\Pi_>$ & $\{(i,j) \mid i > j \for i,j \in \N_N \}$ \\
+     Consecutive  & $\Pi_C$ & $\{(i,j) \mid i = j + 1 \for i,j \in \N_N \}$ \\
+     All & $\Pi_0$ & $\{(i,j) \mid i,j \in \N_N \}$ \\
+     \hline
+    \end{tabular}
+  %\end{center}
 }

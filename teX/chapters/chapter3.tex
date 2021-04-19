@@ -7,11 +7,13 @@
 
 In this section, we define the final spectral statistic studied in this chapter: eigenvalue dispersions. As the name suggests, these statistics are concerned with the distirbution of the spacings between the eigenvalues. Interestingly, this is almost as literal as it gets when we use the word "spectral". In physics and chemistry, atomic spectra are essentially differences between energy levels or quanta, so the translation is close.
 
-In any case, we will begin this chapter by first motivating a few definitions and formalisms in this section. Then, once our setup is ready, we will motivate the definition of a matrix's eigenvalue dispersion and formalize it as a statistic. To outline the section, we will first define two things: the dispersion metric and the pairing scheme. In simple terms, we formalize $\textbf{what}$ ``eigenvalue spacings'' are and $\textbf{which}$ eigenvalue pairs' spacings to consider. Without further ado, we motivate the dispersion metric.
+In any case, we will begin this chapter by first motivating a few definitions and formalisms in this section. Then, once our setup is ready, we will motivate the definition of a matrix's eigenvalue dispersion and formalize it as a statistic. To outline the section, we will first define two things: the dispersion metric and the pairing scheme. In simple terms, we formalize $\textbf{what}$ ``eigenvalue spacings'' are and $\textbf{which}$ eigenvalue pairs' spacings to consider. So, to begin, we first formally define an eigenvalue pair.
 
 \begin{definition}[Eigenvalue Pair]
   Suppose $P$ is a matrix and $\spec(P)$ is its ordered spectrum. Then, an eigenvalue pair with respect to this ordered spectrum is denoted $\piij$. It is defined as the ordered pair $\piij = (\lambda_i, \lambda_j)$.
 \end{definition}
+
+\noindent Without further ado, we now motivate the dispersion metric.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -20,8 +22,12 @@ In any case, we will begin this chapter by first motivating a few definitions an
 Before we may even start to consider studying dispersions of eigenvalues, we must first formalize and make clear what ``metric'' of spacing we are using. To do so, we motivate the dispersion metric. In simple words, a dispersion metric is a function that takes in a pair of eigenvalues and returns a positive real number that represents some metric of dispersion or spacing.
 
 \begin{definition}[Dispersion Metric]
-A dispersion metric $\delta: \Cc \times \Cc \to \R^+$ is defined as a function from the space of pairs of complex numbers to the positive reals. In simple terms, it is a way of measuring "space" between two complex numbers - our eigenvalues.
+A dispersion metric $\delta: \Cc \times \Cc \to \R^+$ is defined as a function from the space of pairs of complex numbers to the positive reals. In simple terms, it is a way of measuring ``space'' between two complex numbers - our eigenvalues.
 \end{definition}
+
+%PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+\newpage
+%PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
 
 In the scope of this thesis, we consider the following dispersion metrics below.
 
@@ -41,17 +47,18 @@ While we have defined disperison metrics to be functions from $\Cc^2$, there is 
 Suppose we take the arithmetic difference of two complex numbers. Then, the range of $\delta$ is $\Cc$. For this reason, we won't consider the arithmetic difference a formal dispersion metric, but we will honor it as a dispersion huerestic. As such, we will denote this as the ``identity difference'' huerestic and call it $\delta_{\text{id}}$. So, we define $\delta_{\text{id}}: (z, z') \mapsto z' - z$
 \end{remark}
 
-\minititle{Common Dispersion Metrics}
-For the formula, assume the order of arguments is $\d(z, z')$. \newline
-\dispersiontable
+\minititle{Summary Table of Dispersion Metrics}
+For every dispersion metric, assume the functions' order of arguments is $\d(z, z')$. \newline
+%\hfill \newline
+\begin{center}
+\dispersiontable %\hfill
+\end{center}
 \vspace{1em}
 
-*Note that the identity difference is a heurestic, and not a formal metric.
-
-\newpage
+\noindent *Note that the identity difference is a heurestic, and not a formal metric.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \subsection{Pairing Schema}
 
 The next thing we need to motivate before talking about eigenvalue dispersions are pairing schema. In simple terms, pairing schema are templates (for some $N \in \N$) for which eigenvalue pairs to pick. There are many subtle reasons why this is important, which will be covered in detail later. Without further ado, we motivate the pairing schema.
@@ -73,13 +80,12 @@ The reader might find this definition slightly obscure, and rightfully so. The d
 \begin{remark}[Proper Subset] If $\spair(P)$ is the spectral pairs of the matrix $P$, then for any pairing scheme $\Pi$, we will find that $\spair(P \mid \Pi) \subseteq \spair(P)$. By definition, taking a spectral pair with respect to some pairing scheme constricts which pairs to select - meaning it is a proper subset of the general spectral pairs.
 \end{remark}
 
+%****************************************************************************************%
 \newpage
+\minititle{Common Pairing Schema}
+%****************************************************************************************%
 
-\begin{center}
-$\textbf{Common Pairing Schema}$
-\end{center}
-
-Suppose $P$ in an $N \times N$ square matrix, and $\spair(P)$ are its spectral pairs.
+\noindent Suppose $P$ in an $N \times N$ square matrix, and $\spair(P)$ are its spectral pairs. For every pairing scheme, assume $i,j \in \N_N$.
 
 \begin{enumerate}
   \item The unique pair combinations schema are two complementary pair schema. By specifying $\textbf{either}$ $i > j$ or $i < j$, we characterize this scheme to entail all unique pair combinations of eigenvalues without repeats. The reason we call them upper and lower pair combinations is an allusion to the indices of the upper and lower triangular matrices. \begin{enumerate}
@@ -95,10 +101,11 @@ Suppose $P$ in an $N \times N$ square matrix, and $\spair(P)$ are its spectral p
   \item Let $\Pi_0$ be all the pairs in a spectrum. For completeness, we define this pairing scheme as the implicit pairing scheme for the spectral pairs of a matrix.
   $$\spair(P \mid \Pi_0) = \spair(P) = \{\pi_{ij} = (\lambda_{i},\lambda_j) \mid i,j \in \N_N\}$$
 \end{enumerate}
-
-\newpage
+%****************************************************************************************%
+%****************************************************************************************%
 
 %****************************************************************************************%
+\newpage
 \minititle{Consecutive Pairs}
 %****************************************************************************************%
 
@@ -119,20 +126,26 @@ $$\pit_1 = (\lambda_2,\lambda_1)$$
 Since the pairing scheme assumes the eigenvalues are given in an ordered spectrum, our analysis will be mostly leveraging this fact by using the indices. However, as notated above, some pairing schemes are indexed with $i$ and $j$, and some like the consecutive pairs only with $j$. These indices are interchangable with ``order statistic'', so in the next section, we will devise a synthetic order statistic that uses two indices.
 \end{remark}
 
+%****************************************************************************************%
+%****************************************************************************************%
 
+%****************************************************************************************%
+\minititle{Summary Table of Pairing Schema}
+%****************************************************************************************%
+Suppose $P$ is an $N \times N$ matrix. Then, its spectral pairs $\spair(P)$ may take on the following pairing schemes. \newline
+%\hfill \newline
 \begin{center}
-$\textbf{Common Pairing Schema}$
+\pairingschemetable %\hfill
 \end{center}
+\vspace{1em}
 
-Suppose $P$ is an $N \times N$ matrix. \newline
+\noindent Another way we can define the pairing scheme is defining an auxilliary object: the eigenvalue (pair) matrix.
+%****************************************************************************************%
 
-\pairingschemetable
-
-Another way we can define the pairing scheme is defining an auxilliary object: the eigenvalue (pair) matrix.
 
 %****************************************************************************************%
 \newpage
-\minititle{An Alternative Reperesetation: Eigenvalue Matrix}
+\minititle{An Alternative Represetation: Eigenvalue Matrix}
 %****************************************************************************************%
 \begin{definition}[Eigenvalue Matrix]
 Suppose $P$ is an $N \times N$ square matrix and $\spair(P)$ are its spectral pairs. Then, the eigenvalue matrix of $P$, given by $\Lambda(P)$ is the matrix with entries $\pi_{ij} = (\lambda_i, \lambda_j)$ for $\piij \in \spair(P)$. Again, it is given that the eigenvalues $\lambda_i$ come from some $\textbf{ordered}$ spectrum $\sigma(P)$ as per the definition of spectral pairs.
@@ -152,6 +165,7 @@ $$
 \pi_{51} & \pi_{52} & \pi_{53} & \pit_{4} & -        \\
 \end{bmatrix}
 $$
+\newline
 
 With the matrix analogy, describing the pairing schemes can be much simpler. For instance, the $\textbf{lower pairs}$ are given by the indices of the entries in the lower triangle of the matrix. Analogously, the $\textbf{upper pairs}$ by those of the upper triangle of the matrix. The $\textbf{consecutive pairs}$, given our default lower pair scheme, are given by the lower main off-diagonal band of the matrix.
 

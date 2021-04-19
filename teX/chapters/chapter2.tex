@@ -86,27 +86,13 @@ spectrum_ens
  9  0.7357  0.0000 0.7357     3
 \end{lstlisting}
 
-%****************************************************************************************
-\begin{figure}[h]
- \begin{center}
-  \includegraphics[scale = 0.7]{../graphics/chap2/2-1-2_comparison}
-  \caption{Spectrum of a Beta Ensemble with the Sign-Ordered Scheme (Left) and Norm-Ordered Scheme (Right)}
- \end{center}
- \label{ensemble_comparison_plot}
-\end{figure}
-%****************************************************************************************
-
 A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. So in a way, ensemble statistics are the engine of this research.
 
-%****************************************************************************************
-\begin{figure}[h]
- \begin{center}
-  \includegraphics[scale = 0.7]{../graphics/chap2/2-1-2_normal_spec}
-  \caption{Spectrum of a Standard Normal Matrix ensemble}
- \end{center}
- \label{spectrum_normal_ensemble_plot}
-\end{figure}
-%****************************************************************************************
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREspectrumcomparison{h}{0.5}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -128,24 +114,18 @@ Alternatively, we can motivate a different scheme that properly handles complex 
 \end{align*}
 Note that when we take the norms of the eigenvalues, we essentially ignore "rotational" features of the eigenvalues. Signs of eigenvalues indicate reflection or rotation, so when we take the norm, we essentially become more concerned with scaling.
 
-For example, consider the following example.
-\begin{center}
-[Example showing the difference between the two schemes]
-\end{center}
+For example, consider the following plots, showing the difference in using the sign and norm ordering schemes for the same spectrum.
 
-%****************************************************************************************
-\begin{figure}[h]
- \begin{center}
-  \includegraphics[scale = 0.7]{../graphics/chap2/2-2-1_orderscheme}
-  \caption{Spectrum of a Beta Ensemble with the Sign-Ordered Scheme (Left) and Norm-Ordered Scheme (Right)}
- \end{center}
- \label{orderscheme_plot}
-\end{figure}
-%****************************************************************************************
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREorderscheme{h}{0.7}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{Singular Values}
+\minititle{Singular Values}
 
 An aternative to using the norm ordering scheme is using the singular values of the matrix. If a matrix is symmetric, the singular values are simply the norm of the eigenvalues. We ignore rotational features and focus solely on scale when we do so.
 
@@ -156,9 +136,9 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 \end{definition}
 
 
-\newpage
+%\newpage
 %****************************************************************************************%
-\minititle{Common Spectrum Schema}
+\minititle{Summary Table of Spectrum Schema}
 \spectrumschemetable
 %****************************************************************************************%
 
@@ -180,7 +160,7 @@ So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ a
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \section{Symmetric and Hermitian Matrices}
 
 \subsection{Introduction}
@@ -195,7 +175,8 @@ P = \overline{P^{T}} \iff \sigma(P) = \{\lambda_i \mid \lambda_i \in \R\}
 \end{align*}
 Having a complete set of real eigenvalues yields many great properties. For instance, if all eigenvalues are real, we have the option of observing either the sign-ordered spectrum or the norm-ordered spectrum. This way, we can preserve negative signs and we would not lose the rotational aspect of the eigenvalue when we study its statistics. That is just one reason out of many more why having real eigenvalues is quite nice.
 
-\subsection{Case Study: Wigner's Semicircle Distribution}
+\newpage
+\subsection{Wigner's Semicircle Distribution}
 
 The eigenvalues of Hermitian matrices obey Wigner's Semicircle distribution. Since Hermitian matrices have real eigenvalues, then we can be more precise and generally say that the real component of the eigenvalues follow the semicircle distribution.
 
@@ -204,21 +185,25 @@ If a random variable $X$ is semicircle distributed with radius $R \in \R^+$, the
 $$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
 \end{definition}
 
-%****************************************************************************************
-\begin{figure}[h]
- \begin{center}
-  \includegraphics[scale = 0.7]{../graphics/chap2/2-3-2_semicircle}
-  \caption{Dispersions of a $\beta = 4$ matrix with respect to ranking difference}
- \end{center}
- \label{semicircleplot}
-\end{figure}
-%****************************************************************************************
-
 \begin{remark}[Radius and Matrix Dimension]
 The dimension of the matrix determines the radius of the eigenvalues. Namely, if a Hermitian matrix $P$ is $N \times N$, then its eigenvalues are semicircle distributed with radius $R = 2\sqrt{N}$. That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(2\sqrt{R})$.
 \end{remark}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREsemicircle{h}{0.5}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-%\section{Findings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Findings}
+
+Normal matrices tend to have eigenvalues distributed about the complex disk.
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREnormalspectrum{h}{0.75}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
