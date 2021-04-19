@@ -17,7 +17,6 @@ In any case, we will begin this chapter by first motivating a few definitions an
 
 \subsection{Dispersion Metrics}
 
-% When we define the dispersion of a matrix, we will see that there is a free argument $d$ called the dispersion metric. This function $d$ is a general function whose domain is always two eigenvalues. In set notation, this is the set $\Cc \times \Cc$ - a pair of two complex numbers. Its range will often be the positive reals $\R^+$; this is because the dispersion metric often will be substitutable with distance metric. Sometimes, the range will be $\Cc$. So, the dispersion metric will take the following form:
 Before we may even start to consider studying dispersions of eigenvalues, we must first formalize and make clear what ``metric'' of spacing we are using. To do so, we motivate the dispersion metric. In simple words, a dispersion metric is a function that takes in a pair of eigenvalues and returns a positive real number that represents some metric of dispersion or spacing.
 
 \begin{definition}[Dispersion Metric]
@@ -42,10 +41,7 @@ While we have defined disperison metrics to be functions from $\Cc^2$, there is 
 Suppose we take the arithmetic difference of two complex numbers. Then, the range of $\delta$ is $\Cc$. For this reason, we won't consider the arithmetic difference a formal dispersion metric, but we will honor it as a dispersion huerestic. As such, we will denote this as the ``identity difference'' huerestic and call it $\delta_{\text{id}}$. So, we define $\delta_{\text{id}}: (z, z') \mapsto z' - z$
 \end{remark}
 
-\begin{center}
-$\textbf{Common Dispersion Metrics}$
-\end{center}
-
+\minititle{Common Dispersion Metrics}
 For the formula, assume the order of arguments is $\d(z, z')$. \newline
 \dispersiontable
 \vspace{1em}
@@ -57,26 +53,6 @@ For the formula, assume the order of arguments is $\d(z, z')$. \newline
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Pairing Schema}
-
-% Next up, we introduce a new notation for a pairing scheme denoted $\Pi$. What are pairing schemes and why do they matter? Recall that our goal is to study the spacings between eigenvalues. If we are studying spacing, then a priori, we are concerned with pairs of eigenvalues! Spacing, after all, is a binary relationship.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% You are a studious student, earnest to learn about eigenvalue spacings, for some reason. So you begin, and the first question pops into your head.
-%
-% $\textbf{Student:}$ For which eigenvalue pairs will we observe their dispersion? \hfill \newline
-% $\textbf{Wigner's Ghost:}$ The ones specified by the pairing scheme.
-%
-% Unphased by the fact you are meeting a ghost from the 1990s - a wild spirit you are - you find it a good idea to interrogate the ghost physicist.
-%
-% The student, irritated about having to learn yet another snippet of loaded notation complains and asks:
-%
-% $\textbf{Student:}$ Aha! Why don't we just look at all the eigenvalue pairs? Isn't more information always better? \hfill \newline
-% $\textbf{Wigner's Ghost:}$ Actually, no. We will later find out a few reason taking all pairs isn't best. For instance, some spacings are linear combination of others. Or if we have a dispersion metric that is symmetric, half of the information is going to be repeated!
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% So, with the definitions of spectra well motiviated, a natural definition of pairing schema follows. Essentially, $\Pi$ is just a subset of the Cartesian product of a spectrum with itself. In other words, if we denote $\S := \sigma(P)$, then we say that a pairing scheme is simply a subset $\Pi \subseteq \S^2$. Here are some pairing schema that we will consider:
 
 The next thing we need to motivate before talking about eigenvalue dispersions are pairing schema. In simple terms, pairing schema are templates (for some $N \in \N$) for which eigenvalue pairs to pick. There are many subtle reasons why this is important, which will be covered in detail later. Without further ado, we motivate the pairing schema.
 
@@ -96,8 +72,6 @@ The reader might find this definition slightly obscure, and rightfully so. The d
 
 \begin{remark}[Proper Subset] If $\spair(P)$ is the spectral pairs of the matrix $P$, then for any pairing scheme $\Pi$, we will find that $\spair(P \mid \Pi) \subseteq \spair(P)$. By definition, taking a spectral pair with respect to some pairing scheme constricts which pairs to select - meaning it is a proper subset of the general spectral pairs.
 \end{remark}
-
-%Consider the following common pairing schema below.
 
 \newpage
 
@@ -119,12 +93,8 @@ Suppose $P$ in an $N \times N$ square matrix, and $\spair(P)$ are its spectral p
   $$\spair(P \mid \Pi_C) = \{\pit_{j} = (\lambda_{j + 1},\lambda_j)\}_{j = 1}^{N-1}$$
   \textbf{Benefits:} This pairing scheme gives us the minimal information needed to express important bounds and spacings in terms of its elements.
   \item Let $\Pi_0$ be all the pairs in a spectrum. For completeness, we define this pairing scheme as the implicit pairing scheme for the spectral pairs of a matrix.
-  $$\spair(P \mid \Pi_0) = \spair(P) = \{\pi_{ij} = (\lambda_{i},\lambda_j) \mid i,j \in \N_N\}$$s
+  $$\spair(P \mid \Pi_0) = \spair(P) = \{\pi_{ij} = (\lambda_{i},\lambda_j) \mid i,j \in \N_N\}$$
 \end{enumerate}
-
-\begin{remark}[Order Statistics]
-Since the pairing scheme assumes the eigenvalues are given in an ordered spectrum, our analysis will be mostly leveraging this fact by using the indices. However, as notated above, some pairing schemes are indexed with $i$ and $j$, and some like the consecutive pairs only with $j$. These indices are interchangable with ``order statistic'', so in the next section, we will devise a synthetic order statistic that uses two indices.
-\end{remark}
 
 \newpage
 
@@ -145,6 +115,11 @@ With this notation at hand, we say that $\pit_1$ represents the pair of the two 
 $$\pit_1 = (\lambda_2,\lambda_1)$$
 \end{example}
 
+\begin{remark}[Order Statistics]
+Since the pairing scheme assumes the eigenvalues are given in an ordered spectrum, our analysis will be mostly leveraging this fact by using the indices. However, as notated above, some pairing schemes are indexed with $i$ and $j$, and some like the consecutive pairs only with $j$. These indices are interchangable with ``order statistic'', so in the next section, we will devise a synthetic order statistic that uses two indices.
+\end{remark}
+
+
 \begin{center}
 $\textbf{Common Pairing Schema}$
 \end{center}
@@ -155,8 +130,10 @@ Suppose $P$ is an $N \times N$ matrix. \newline
 
 Another way we can define the pairing scheme is defining an auxilliary object: the eigenvalue (pair) matrix.
 
+%****************************************************************************************%
+\newpage
 \minititle{An Alternative Reperesetation: Eigenvalue Matrix}
-
+%****************************************************************************************%
 \begin{definition}[Eigenvalue Matrix]
 Suppose $P$ is an $N \times N$ square matrix and $\spair(P)$ are its spectral pairs. Then, the eigenvalue matrix of $P$, given by $\Lambda(P)$ is the matrix with entries $\pi_{ij} = (\lambda_i, \lambda_j)$ for $\piij \in \spair(P)$. Again, it is given that the eigenvalues $\lambda_i$ come from some $\textbf{ordered}$ spectrum $\sigma(P)$ as per the definition of spectral pairs.
 \end{definition}
@@ -172,71 +149,14 @@ $$
 \pit_{1} & -      & \pi_{23}   & \pi_{24} & \pi_{25} \\
 \pi_{31} & \pit_{2} & -        & \pi_{34} & \pi_{35} \\
 \pi_{41} & \pi_{42} & \pit_{3} & -        & \pi_{45} \\
-\pi_{51} & \pi_{52} & \pi_{53} & \pit_{4} & - \\
-%\pi_{} & \pi_{} & \pi_{} & \pi_{} & \pi_{} \\
+\pi_{51} & \pi_{52} & \pi_{53} & \pit_{4} & -        \\
 \end{bmatrix}
 $$
 
 With the matrix analogy, describing the pairing schemes can be much simpler. For instance, the $\textbf{lower pairs}$ are given by the indices of the entries in the lower triangle of the matrix. Analogously, the $\textbf{upper pairs}$ by those of the upper triangle of the matrix. The $\textbf{consecutive pairs}$, given our default lower pair scheme, are given by the lower main off-diagonal band of the matrix.
 
-% \newpage
-%
-% \begin{center}
-% $\textbf{Pairing Scheme Diagrams for a $5 \times 5$ Matrix}$
-% \end{center}
-%
-% All Pairs
-%
-% $$
-% \begin{bmatrix}
-% O & O & O & O & O\\
-% O & O & O & O & O\\
-% O & O & O & O & O\\
-% O & O & O & O & O\\
-% O & O & O & O & O\\
-% \end{bmatrix}
-% $$
-%
-% The Lower Pair Combinations
-%
-% $$
-% \begin{bmatrix}
-% - & - & - & - & -\\
-% O & - & - & - & -\\
-% O & O & - & - & -\\
-% O & O & O & - & -\\
-% O & O & O & O & -\\
-% \end{bmatrix}
-% $$
-%
-% The Upper Pair Combinations
-%
-% $$
-% \begin{bmatrix}
-% - & O & O & O & O\\
-% - & - & O & O & O\\
-% - & - & - & O & O\\
-% - & - & - & - & O\\
-% - & - & - & - & -\\
-% \end{bmatrix}
-% $$
-%
-% The Consecutive Pairs
-%
-% $$
-% \begin{bmatrix}
-% - & - & - & - & -\\
-% O & - & - & - & -\\
-% - & O & - & - & -\\
-% - & - & O & - & -\\
-% - & - & - & O & -\\
-% \end{bmatrix}
-% $$
-
-\newpage
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \subsection{Dispersions}
 
 Alas, with dispersion metrics and pairing schemes defined, we are finally able to motivate the definition of a matrix dispersion for both singleton matrices and their ensemble counterparts.
@@ -296,8 +216,6 @@ i j eig_i    eig_j    id_diff iddf_norm abs_diff diff_ij
 4 3 -0.67+0i 1.35+0i  2.02+0i 2.02      0.68     1
 \end{lstlisting}
 
-%With our spectral statistics defined, we are prepared to discuss prominent results in Random Matrix Theory alongside our new findings from the simulations.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -307,11 +225,12 @@ With dispersions well defined, we provide a few guidelines for analyzing a dispe
 
 \minititle{Conjugate Pairs}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Often, we find that our eigenvalues come in conjuagte pairs. This is a result of the conjugate pair root theorem, which states that polynomials tend to have roots that come in conjugate pairs. This follows because the characteristic polynomial is just like any other. That being said, we can notice conjugate pairs in our dispersion table in a few ways.
 
-\section{More Order Statistics}
-\subsection{Introduction}
+First, we can directly see them by comparing (eig-i) and (eig-j). A better way of spotting conjugate pairs is by looking at either the abs-diff column or the id-diff column. The absolute difference of two eigenvalues which are conjugate pairs is zero since they have the same size. Alternatively, we can characterize conjugate pairs by their purely imaginary identity difference. Although these measures do not ensure that the eigenvalues at hand are conjugate pairs, they almost always do.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Order Statistics}
 With eigenvalue dispersions and eigenvalue orderings well-defined, we may proceed to start talking about their order statistics.
 
 In $\textbf{Chapter 2}$, we observed simple order statistics regarding the eigenvalues. This time around, we have two eigenvalues being compared at once, so there needs to be further setup with regards to dispersion order statistics.
@@ -354,9 +273,12 @@ Suppose $P$ is a $4 \times 4$ random matrix. Then, if we take the spectral pairs
 \end{enumerate}
 \end{example}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Conditional Statistics}
 
 We will considering the conditional statistics $\E(\rankdiff_{ij} \mid \rho)$ and $\Var(\rankdiff_{ij} \mid \rho)$.
+
+[Plots]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -391,4 +313,4 @@ $$w_4(s) = \frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2)$$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Findings}
+%\section{Findings}

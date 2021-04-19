@@ -62,7 +62,7 @@ dispersion_parallel <- function(array, pairs = NA, sort_norms = TRUE, singular =
 #' #disp_ensemble <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
 dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
-  digits <- 4 # Digits to round values to
+  digits <- 2 # Digits to round values to
   pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
   # Array is a matrix; call function returning dispersion for singleton matrix
   if(class(array) == "matrix"){
@@ -101,7 +101,7 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
   if(ncol(mat_spectrum) == 3){mat_spectrum[order, 1]} # If the components are not resolved, return value in the first (Eigenvalue) column
   else{ # Components are resolved; get components and make it a complex number for arithmetic prep
     evalue <- complex(real = mat_spectrum[order, 1], imaginary = mat_spectrum[order, 2])
-    if(Im(evalue) != 0){evalue} else{as.numeric(evalue)} # If it is real, coerce it into a numeric to remove +0i
+    #if(Im(evalue) != 0){evalue} else{as.numeric(evalue)} # If it is real, coerce it into a numeric to remove +0i
   }
 }
 
