@@ -1,5 +1,9 @@
 \chapter{Math Review}
 
+\minititle{Preamble}
+
+Add a short paragraph. Cite sources. Indicate how much the reader needs to skim. Think about the audience of this paper. Guide them to the resources as we are listing the definitions accordingly. Mention the importance and rank each definition (1,2,3 stars). 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Linear Algebra}
 \subsection{Matrices}
@@ -56,6 +60,14 @@ The set of {\em all} unitary matrices in $\C^{n\times n}$ is a matrix group. (It
 \newpage
 
 \subsection{Proof: Real Symmetric Matrices have Real Eigenvectors}
+
+\minititle{How does this relate to the rest of the thesis?}
+
+Tie back the relevance of this proof to the rest of this thesis.
+
+%\vspace{1em}
+
+\minititle{Proof}
 
 $\bf Notation.$ For notational convenience, for any $N \in \N$, let $\widetilde{N} = \{1,\dots,N\}$.
 
@@ -117,11 +129,33 @@ By the induction, the theorem is proved. $\square$.
 \newpage
 \section{Probability Theory}
 
+Please refer to \cite{blitz} as a resource; the definitions were sourced from there.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Introduction}
+\subsection{Random Variables}
+
 \begin{definition}[Random Variable]
 A random variable $X: \Omega \to \R$ is a function from some sample space $\Omega = \{s_i\}_{i=1}^n$ to the real numbers $\R$. The sample space is taken to be any set of events such that the probability function corrosponding to the random variable, $p_X$ exhausts over all the events in $\Omega$. In other words, we expect $\int_\Omega p_X(s) = 1$.
 \end{definition}
+
+\begin{definition}[Independence]
+blabla
+\end{definition}
+
+\begin{definition}[i.i.d]
+blabla
+\end{definition}
+
+\begin{definition}[Probability Density Function]
+blabla
+\end{definition}
+
+\begin{definition}[Cumulative Density Function]
+blabla
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Statistics}
 
 \begin{definition}[Statistic]
 A statistic is formally defined as a function of a vector of random variables. So, for instance $f$ is a statistic of a vector of random variables $\bar{X}$. Its observed value is given by $f(\vec{X})$.
@@ -131,6 +165,8 @@ A statistic is formally defined as a function of a vector of random variables. S
 For instance, the mean of a random sample $\vec{X}$ is a statistic. Formally, we would define the statistic $f : \vec{X} \to \frac{\sum_i x_i}{N}$. So the mean of the random sample is defined as $\bar{x} = f(\vec{X})$.
 \end{example}
 
+\minititle{Order Statistics}
+
 \begin{definition}[Order Statistic]
 Suppose $\vec{X} = \{X_i\}_{i = 1}^N$ is an ordered vector of random variables. Then, the $i^{th}$ order statistic of $X$ is given by $X_i$.
 \end{definition}
@@ -139,13 +175,21 @@ Suppose $\vec{X} = \{X_i\}_{i = 1}^N$ is an ordered vector of random variables. 
 Suppose $X = (20,7,2,1)$. The smallest (fourth) order statistic is $1$. The second order statistic is $7$. The largest (first) order statistic is $20$.
 \end{example}
 
+\minititle{Theoretical Results: Order Statistics}
+
+Here, talk about the results in Chapter 8 of Blitzstein with the following pairs: (Uniform, Beta) and (Exponential, Gamma). Add the simulations. Beef up this sub-subsection.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Markov Chains}
+
+\minititle{How does this relate to the rest of the thesis?}
+
+Tie back the relevance of this proof to the rest of this thesis. This will come up in Appendix D. It is also important because transition matrices are representations of markov chains.
 
 % \begin{definition}[Transition Matrix]
 % Take a Markov Chain with states $\oneto[M]$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \oneto[M]: \sum_{j \in \oneto[M]} q_{ij} = 1$.

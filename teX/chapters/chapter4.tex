@@ -31,7 +31,7 @@ c_H^\beta = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \beta/2)}{\Gamma(1 + 
 \end{align*}
 \end{definition}
 
-To simulate matrices from the $\beta$-ensemble, we will be using a recent result published in ``Matrix Models for Beta Ensembles'' \cite{dimitriu:2018}. This makes the $\beta$-ensemble a canonical example of an implicity distributed matrix; we do not care about the actual distribution of the entries, but rather the effect they have on the eigenvalues (trace) of the matrices. The algorithm used is directly cited from the results of Dumitriu's paper, and can be found in Algorithms B.1.3.
+To simulate matrices from the $\beta$-ensemble, we will be using a recent result published in ``Matrix Models for Beta Ensembles'' \cite{dumitriu}. This makes the $\beta$-ensemble a canonical example of an implicity distributed matrix; we do not care about the actual distribution of the entries, but rather the effect they have on the eigenvalues (trace) of the matrices. The algorithm used is directly cited from the results of Dumitriu's paper, and can be found in Algorithms B.1.3.
 
 \begin{code}[Hermite Beta = 2 Ensemble]
 Let $\mathcal{D} = \mathcal{H}(\beta = 2)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Hermite matrices ($\beta = 2$) of size 10 as such:
@@ -53,11 +53,11 @@ ensemble
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Dimitriu's Matrix Model}
+\subsection{Dumitriu's Matrix Model}
 
-To generate Hermite $\beta$ matrices, we consider the result of Dimitriu's paper. We obtain the following algorithm.
+To generate Hermite $\beta$ matrices, we consider the result of Dumitriu's paper. We obtain the following algorithm.
 
-\dimitriuALGORITHM
+\dumitriuALGORITHM
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,7 +68,7 @@ To generate Hermite $\beta$ matrices, we consider the result of Dimitriu's paper
 We know that $\beta$-matrices must be symmetric. So, their eigenvalues must be real. Any imaginary component we observe is simply computational error, and we may safely ignore it. It is good to see that the error is uniform and small.
 
 \begin{remark}[Implicit Distribution]
-Note that the beta ensemble is an ensemble characterized by some joint density function on its eigenvalues. So, this is a specific instance of an implcitly distributed matrix. There are many things to consider about $\textbf{identifiability}$ that are subtle, but important. Recall that in our formalization of a specturm as a formal statistic, we vectorized the matrix then tooks the determinant of the characteristic polynomial that came about it. For this reason, we can see that while Dimitriu's model provides an explicit formula, there is an issue of identifiability. That is, given some eigenvalues, there is no injective function to the characteristic polynomial that produced it. Rather, there are infinitly many equivalence classes of characteristic polynomials (and such, random matrices) that surjectively produce a given multiset of eigenvalues.
+Note that the beta ensemble is an ensemble characterized by some joint density function on its eigenvalues. So, this is a specific instance of an implcitly distributed matrix. There are many things to consider about $\textbf{identifiability}$ that are subtle, but important. Recall that in our formalization of a specturm as a formal statistic, we vectorized the matrix then tooks the determinant of the characteristic polynomial that came about it. For this reason, we can see that while Dumitriu's model provides an explicit formula, there is an issue of identifiability. That is, given some eigenvalues, there is no injective function to the characteristic polynomial that produced it. Rather, there are infinitly many equivalence classes of characteristic polynomials (and such, random matrices) that surjectively produce a given multiset of eigenvalues.
 \end{remark}
 
 \begin{remark}[Floating Point Errors]
