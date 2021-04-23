@@ -129,7 +129,9 @@ By the induction, the theorem is proved. $\square$.
 \newpage
 \section{Probability Theory}
 
-Please refer to \cite{blitz} as a resource; the definitions were sourced from there.
+Please refer to \cite{blitz} as a resource; the definitions were sourced from there. For the definitions and theorems covered in Section A.1, consider checking out Chapter 3: Random Variables and their distributions. For Order Statistics, consider Chapter 8, Section 6: Order Statistics.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Random Variables}
@@ -138,20 +140,55 @@ Please refer to \cite{blitz} as a resource; the definitions were sourced from th
 A random variable $X: \Omega \to \R$ is a function from some sample space $\Omega = \{s_i\}_{i=1}^n$ to the real numbers $\R$. The sample space is taken to be any set of events such that the probability function corrosponding to the random variable, $p_X$ exhausts over all the events in $\Omega$. In other words, we expect $\int_\Omega p_X(s) = 1$.
 \end{definition}
 
+\minititle{PDFs}
+
+\begin{definition}[Probability Density Function]
+For a continuous r.v. $X$ with CDF $F$, the probability density function (PDF) of $X$ is the derivative $f$ of the CDF, given by $f(x) = F'(x)$. The support of $X$, and of its distribution, is the set of all $x$ where $f(x) > 0$.
+\end{definition}
+
+\begin{theorem}[Characterizing the PDF]
+A probability density function is characterized by a few properties that are necessary for it to be valid. They are as follows:
+  \begin{enumerate}
+    \item Non-negativity: the PDF must be a non-negative valued function everywhere.
+      $$ f(x) \geq 0  $$
+    \item Integrates to 1: the PDF must integrate to 1 when integrated over its entire support.
+    $$ \int_{-\infty}^{\infty} f(x) dx = 1 $$
+    \end{enumerate}
+\end{theorem}
+
+\begin{example}[Normal PDF]
+For example, consider the probability density function for a r.v. $X \sim \Normal(\mu, \sigma)$.
+$$\P(X = x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp (-\frac{1}{2} \left(\frac{x - \mu}{\sigma}\right)^2 )$$
+\end{example}
+
+\minititle{CDFs}
+
+\begin{definition}[Cumulative Distribution Function]
+The cumulative distribution function (CDF) of an r.v. $X$ is the function $F_X$ given by $F_X(x) = \P (X \leq x)$. When there is no risk of ambiguity, we sometimes drop the subscript and just write $F$ (or some other letter) for a CDF.
+\end{definition}
+
+\begin{theorem}[Characterizing the CDF]
+A cumulative distribution function is characterized by a few properties that are necessary for it to be valid. They are as follows:
+  \begin{enumerate}
+    \item Monotonic function: the CDF must always be a monotonic function. That is:
+      $$ x_0 \leq x_1 \implies F(x_0) \leq F(x_1) $$
+    \item Right-continuous: The CDF is continuous except possibly for having some jumps. Wherever there is a jump, the CDF is continuous from the right. That is, for any $a$, we have:
+    $$ F(a) = \lim_{x \to a^+} F(x) $$
+    \item Converges to 0 and 1 in its limits: since the CDF represents a cumulative probability, its limits must reflect that aspect of probability spaces. So, the CDF must satisfy:
+    $$ \lim_{x \to -\infty} F(x) = 0 \and \lim_{x \to \infty} F(x) = 1 $$
+  \end{enumerate}
+\end{theorem}
+
 \begin{definition}[Independence]
-blabla
+Random variables X and Y are said to be independent if $\forall x,y \in \R$:
+$$ \P(X \leq x, Y \leq y) = \P(X \leq x) \P(Y \leq y)$$
+If the variables are discrete, then this is equivalent to the condition:
+$$ \P(X = x, Y = y) = \P(X = x) \P(Y = y) $$
+
 \end{definition}
 
 \begin{definition}[i.i.d]
-blabla
-\end{definition}
-
-\begin{definition}[Probability Density Function]
-blabla
-\end{definition}
-
-\begin{definition}[Cumulative Density Function]
-blabla
+A vector of random variables $\vec{X} = (X_i)_{i = 1}^N$ is said to be i.i.d (independent and identially distributed) is each of its entries $X_i$ are exactly so. 
 \end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -189,7 +226,7 @@ Here, talk about the results in Chapter 8 of Blitzstein with the following pairs
 
 \minititle{How does this relate to the rest of the thesis?}
 
-Tie back the relevance of this proof to the rest of this thesis. This will come up in Appendix D. It is also important because transition matrices are representations of markov chains.
+Tie back the relevance of this proof to the rest of this thesis. This will come up in Appendix D. It is also important because transition matrices are representations of markov chains. Please refer to \cite{blitz}, Chapter 11 for all this information.
 
 % \begin{definition}[Transition Matrix]
 % Take a Markov Chain with states $\oneto[M]$. Letting $q_{ij} = P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. For this transiton matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1; $\forall i \in \oneto[M]: \sum_{j \in \oneto[M]} q_{ij} = 1$.

@@ -1,0 +1,13 @@
+- Code Appendix
+Fix the issue with page numbering. Either use /includegraphics or figure out a way (using watermarks) ; background package.
+
+As is, \includepdf does not work. The best solution might be to crop the graphics from the code appendix and add the text in tex!
+
+Also, fix runoff comments.
+
+-Appendices (General)
+Go through appendices and add paragraphs/expositions.
+
+Fix base case in A.1.2
+
+=======================================================
