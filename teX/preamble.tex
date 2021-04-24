@@ -86,12 +86,18 @@
 \xdefinecolor{gray}{rgb}{0.4,0.4,0.4}
 \xdefinecolor{blue}{RGB}{58,95,205}% R's royalblue3; #3A5FCD
 
+%==================
+%     FORMAT
+%==================
 % Mini title document environment
 \newcommand{\minititle}[1]{
   \begin{center}
     \textbf{#1}
   \end{center}
 }
+
+\newcommand{\blocktitle}[1]{ \noindent \textbf{#1.}}
+
 %==================
 %     COMMANDS
 %==================
@@ -106,6 +112,11 @@
 %     GRAPHICS
 %==================
 \input{graphics.tex}
+
+%==================
+%     PROOFS
+%==================
+\input{proofs.tex}
 
 %==================
 %     OTHER
