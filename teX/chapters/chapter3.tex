@@ -235,11 +235,11 @@ i j eig_i    eig_j    id_diff iddf_norm abs_diff diff_ij
 
 With dispersions well defined, we provide a few guidelines for analyzing a dispersion of a matrix. We will synthesize all the techniques, notations, and remarks in the previous section to provide a comprehensive manual on how to analyze the dispersion of a matrix.
 
-\minititle{Conjugate Pairs}
-
-Often, we find that our eigenvalues come in conjuagte pairs. This is a result of the conjugate pair root theorem, which states that polynomials tend to have roots that come in conjugate pairs. This follows because the characteristic polynomial is just like any other. That being said, we can notice conjugate pairs in our dispersion table in a few ways.
-
-First, we can directly see them by comparing (eig-i) and (eig-j). A better way of spotting conjugate pairs is by looking at either the abs-diff column or the id-diff column. The absolute difference of two eigenvalues which are conjugate pairs is zero since they have the same size. Alternatively, we can characterize conjugate pairs by their purely imaginary identity difference. Although these measures do not ensure that the eigenvalues at hand are conjugate pairs, they almost always do.
+% \minititle{Conjugate Pairs}
+%
+% Often, we find that our eigenvalues come in conjuagte pairs. This is a result of the conjugate pair root theorem, which states that polynomials tend to have roots that come in conjugate pairs. This follows because the characteristic polynomial is just like any other. That being said, we can notice conjugate pairs in our dispersion table in a few ways.
+%
+% First, we can directly see them by comparing (eig-i) and (eig-j). A better way of spotting conjugate pairs is by looking at either the abs-diff column or the id-diff column. The absolute difference of two eigenvalues which are conjugate pairs is zero since they have the same size. Alternatively, we can characterize conjugate pairs by their purely imaginary identity difference. Although these measures do not ensure that the eigenvalues at hand are conjugate pairs, they almost always do.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Order Statistics}
@@ -254,6 +254,8 @@ When we consider the dispersion with repsect to the consecutive pairs, things ar
 \end{remark}
 
 Otherwise, we synthesize a new order statistic that takes in two indices (from a given pair) called the $\textbf{ranking difference class}$. Since we are no longer observing a single eigenvalue at a given rank, we will need a way to standardize observing a pair of eigenvalues at a time. To do so, we introduce a new $\textbf{eqivalence relation}$ (see A.x) called the \textbf{ranking difference}. As the name suggests, it is precisely the integer difference of the eigenvalue orders.
+
+\minititle{Ranking Difference}
 
 \begin{definition}[Ranking Difference]
 The ranking difference is a function $\rankdiff: \N \times \N \to \N$ which takes the index of two ordered eigenvalues and returns their difference. In other words, it is the function $\rankdiff: (\lambda_i,\lambda_j) \mapsto (i - j)$.
@@ -304,7 +306,7 @@ We will considering the conditional statistics $\E(\rankdiff_{ij} \mid \rho)$ an
 Wigner's surmise is a result found by Richard Wigner regarding the limiting distribution of eigenvalue spacings of for symmetric matrices. To start talking about this, we must talk about normalized spacings, which are the precise items considered in the distribution. Before, we can talk about the normalized spacing, we define the mean spacing.
 
 \begin{definition}[Mean Spacing]
-Suppose $P$ is an $N \times N$ symmetric matrix. Then, the mean (eigenvalue) spacing, denoted $\langle s \rangle$ is the average distance between two consecutive eigenvalues. That is,
+Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues. Then, the mean (eigenvalue) spacing, denoted $\langle s \rangle$ is the average distance between two consecutive eigenvalues. That is,
 $$\langle s \rangle = \E[\disp_\d(P \mid \Pi_C)] = \E[\d(\pit_{j})]_{j = 1}^{N - 1}$$
 \end{definition}
 
@@ -313,6 +315,10 @@ $$\langle s \rangle = \E[\disp_\d(P \mid \Pi_C)] = \E[\d(\pit_{j})]_{j = 1}^{N -
 \begin{definition}[Normalized Spacing]
 Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues. Then, the normalized spacing of the $j^{th}$ pair of eigenvalues, denoted $s_j$ is given by the following formula.
 $$s_j = \frac{(\lambda_j - \lambda_{j+1})}{\langle s \rangle} = \frac{\d(\pit_{j})}{\langle s \rangle}$$
+\end{definition}
+
+\begin{definition}[Wigner's Surmise]
+Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues. 
 \end{definition}
 
 \newpage
@@ -340,6 +346,56 @@ beta increases.
 \FIGUREwignerbetaextended{h}{0.8}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Checkpoint}
+
+Here's what we've done so far.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\minititle{Chapter 1}
+
+
+\begin{enumerate}
+  \item Formalized the following items
+    \begin{enumerate}
+      \item Random Matrices using $\D$-distributions.
+      \item Random Matrix Ensembles
+    \end{enumerate}
+  \item Some item
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\minititle{Chapter 2}
+
+\begin{enumerate}
+    \item Formalized the following items
+      \begin{enumerate}
+        \item Spectrum of a Random Matrix (Ensemble)
+      \end{enumerate}
+    \item Some item
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\minititle{Chapter 3}
+
+\begin{enumerate}
+    \item Formalized the following items
+      \begin{enumerate}
+        \item Spectral Pairs: the set of eigenvalue pair combinations
+        \item Pair schemes: which eigenvalue pairs to choose
+        \item Dispersion metrics: what distance metric to use on the pairs
+        \item Dispersion of a Random Matrix (Ensemble)
+      \end{enumerate}
+    \item Some item
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\minititle{Segway to Chapter 4}
+
+Here's how we'll segway to Chapter 4, which doesn't flow without this segway.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -1,8 +1,7 @@
 \chapter{Math Review}
 
-\minititle{Preamble}
-
-Add a short paragraph. Cite sources. Indicate how much the reader needs to skim. Think about the audience of this paper. Guide them to the resources as we are listing the definitions accordingly. Mention the importance and rank each definition (1,2,3 stars). 
+%\minititle{Preamble}
+\noindent Add a short paragraph. Cite sources. Indicate how much the reader needs to skim. Think about the audience of this paper. Guide them to the resources as we are listing the definitions accordingly. Mention the importance and rank each definition (1,2,3 stars).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Linear Algebra}
@@ -63,7 +62,7 @@ The set of {\em all} unitary matrices in $\C^{n\times n}$ is a matrix group. (It
 
 \minititle{How does this relate to the rest of the thesis?}
 
-Eigenvectors have a wide range of applications in various fields. As such, a result guranteeing the existence of real-valued eigenvalue is strong. For instance, the stationary distribution of a Markov chain is an eigenvector of its transition matrix. In other scenarios, right-eigenvectors represent the conditional expectation of a transition matrix, and so on! Additionally, this proof showcases techniques and tools used in this related domains of study. \newline
+Eigenvectors have a wide range of applications in various fields. As such, a result \textbf{guranteeing} the existence of real-valued eigenvectors is a strong, non-trivial one. For instance, the stationary distribution of a Markov chain is an eigenvector of its transition matrix of eigenvalue 1. In other scenarios, right-eigenvectors represent the conditional expectation of a transition matrix, and so forth. Altogether, this proof showcases techniques and tools used in this related domains of study. \newline
 
 %\vspace{1em}
 
@@ -78,7 +77,7 @@ $$\forall i \in \N_{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
 
 \lemmaproof \newline
 
-%\newpage 
+%\newpage
 
 \noindent Now, leveraging the result of this lemma, we will prove the main theorem.
 
@@ -152,7 +151,7 @@ $$ \P(X = x, Y = y) = \P(X = x) \P(Y = y) $$
 \end{definition}
 
 \begin{definition}[i.i.d]
-A vector of random variables $\vec{X} = (X_i)_{i = 1}^N$ is said to be i.i.d (independent and identially distributed) is each of its entries $X_i$ are exactly so. 
+A vector of random variables $\vec{X} = (X_i)_{i = 1}^N$ is said to be i.i.d (independent and identially distributed) is each of its entries $X_i$ are exactly so.
 \end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -177,9 +176,15 @@ Suppose $\vec{X} = \{X_i\}_{i = 1}^N$ is an ordered vector of random variables. 
 Suppose $X = (20,7,2,1)$. The smallest (fourth) order statistic is $1$. The second order statistic is $7$. The largest (first) order statistic is $20$.
 \end{example}
 
-% \minititle{Theoretical Results}
-% 
+\minititle{Theoretical Results}
 % Here, talk about the results in Chapter 8 of Blitzstein with the following pairs: (Uniform, Beta) and (Exponential, Gamma). Add the simulations. Beef up this sub-subsection.
+
+\begin{theorem}[Order Statistics of Uniform i.i.d Variables]
+Let $\seq[n]{U}$ be i.i.d. $\Unif(0, 1)$. Then, $U_{(j)} \sim \Beta(j, n-j+1)$.
+%Then, for $0 \leq x \leq 1$, $f(x)=1$ and $F(x)=x$, so the PDF of $U_{(j)}$ is
+%$$ f_j(x) = n \binom{n - 1}{j - 1} x^{j-1} (1-x)^{n-j}$$
+\end{theorem}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -202,7 +207,7 @@ $$ \Prb(X_{n+1} = j \mid X_n = i) = \Prb(X_{n+1} = j \mid X_n = i, X_{n-1} = i',
 \minititle{Transition Matrices}
 
 \begin{definition}[Transition Matrix]
-Take a Markov Chain with states $\{\oneto[M]\}$. Letting $q_{ij} = \P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain. 
+Take a Markov Chain with states $\{\oneto[M]\}$. Letting $q_{ij} = \P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain.
 \end{definition}
 
 \begin{itemize}
