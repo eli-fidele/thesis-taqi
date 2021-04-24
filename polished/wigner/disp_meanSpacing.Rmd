@@ -18,7 +18,6 @@ future::plan(strategy = multisession)
 print("Future plan has been set to multisession by default.")
 ```
 
-
 ```{r}
 norm_ens <- RME_norm(N = 20, herm = T, size = 100)
 spectrum(norm_ens)
