@@ -1,0 +1,22 @@
+---
+title: "Polished"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# Some random matrices and ensembles
+ens <- RME_beta(N = 100, beta = 4, size = 300)
+```
+
+```{r}
+ens_spec_plot <- ens %>% spectrum_parallel() %>% spectrum.histogram(component = "Re", bins = 100)
+ggsave("2-3-2_semicircle.pdf", width = , height = ,units = "cm")
+```

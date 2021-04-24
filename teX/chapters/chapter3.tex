@@ -317,9 +317,9 @@ Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, s
 $$s_j = \frac{(\lambda_j - \lambda_{j+1})}{\langle s \rangle} = \frac{\d(\pit_{j})}{\langle s \rangle}$$
 \end{definition}
 
-\begin{definition}[Wigner's Surmise]
-Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues. 
-\end{definition}
+%\begin{definition}[Wigner's Surmise]
+%Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
+%\end{definition}
 
 \newpage
 
@@ -327,13 +327,35 @@ Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, s
 
 The analytical results for the Hermite $\beta$-ensembles for $\beta = 1, 2, 4$, denoted by $w_\beta$, are stated below.
 
-$$w_1(s) = \frac{\pi}{2} \exp(-\frac{\pi}{4}s^2)$$
-$$w_2(s) = \frac{32}{\pi^2} s^2 \exp(-\frac{4}{\pi}s^2)$$
-$$w_4(s) = \frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2)$$
+\begin{align*}
+  w_1(s) &= \frac{\pi}{2} \exp(-\frac{\pi}{4}s^2) \\
+  w_2(s) &= \frac{32}{\pi^2} s^2 \exp(-\frac{4}{\pi}s^2) \\
+  w_4(s) &= \frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2) \\
+\end{align*}
+
+Additionally, their simulated densities are given in the plot below.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREwignerbeta{h}{0.6}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+% \begin{tabular}{ |p{3cm}||p{6cm}|  }
+%  \hline
+%  \multicolumn{2}{|c|}{Normalized Dispersion Densities for Beta Ensembles} \\
+%  \hline
+%  $\b$ & $w_{\b}(s)$ \\
+%  \hline
+%  \rule{0pt}{25pt} 1 & $\frac{\pi}{2} \exp(-\frac{\pi}{4}s^2)$ \\
+%  \hline
+%  2 & $\frac{32}{\pi^2} s^2 \exp(-\frac{4}{\pi}s^2)$ \\
+%  \hline
+%  4 & $\frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2)$ \\
+%  \hline
+% \end{tabular}
+
+% $$w_1(s) = \frac{\pi}{2} \exp(-\frac{\pi}{4}s^2)$$
+% $$w_2(s) = \frac{32}{\pi^2} s^2 \exp(-\frac{4}{\pi}s^2)$$
+% $$w_4(s) = \frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2)$$
 
 \newpage
 
@@ -343,7 +365,7 @@ Below, we extended the simulations beyond the standard values of $\beta = 1,2,4$
 beta increases.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREwignerbetaextended{h}{0.8}
+\FIGUREwignerbetaextended{h}{0.6}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 

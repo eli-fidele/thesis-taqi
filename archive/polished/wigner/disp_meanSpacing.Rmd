@@ -1,0 +1,110 @@
+---
+title: "Polished"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(future)
+source("../../R/header.R")
+.src(2)
+```
+
+```{r}
+# Setup parallel compuations 
+future::plan(strategy = multisession)
+print("Future plan has been set to multisession by default.")
+```
+
+```{r}
+norm_ens <- RME_norm(N = 20, herm = T, size = 100)
+spectrum(norm_ens)
+```
+
+```{r}
+disp_ens <- dispersion(norm_ens)
+mean(disp_ens$id_diff)
+```
+
+```{r}
+# Find the eigenvalue dispersions for a given matrix
+.dispersion_matrix2 <- function(P, pairs, sort_norms, norm_pow, digits = 4){
+  eigenvalues <- spectrum(P, sort_norms = sort_norms) # Get the sorted eigenvalues of the matrix
+  norm_fn <- function(x){(abs(x))^norm_pow} # Generate norm function to pass along as argument (Euclidean or Beta norm)
+  disp <- purrr::map2_dfr(pairs[,1], pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, digits) # Evaluate the matrix dispersion
+  disp$normalized <- disp$id_diff / mean(disp$id_diff)
+  disp
+}
+
+dispersion2 <- function(array, pairs = NA, sort_norms = T, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
+  digits <- 4 # Digits to round values to
+  pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
+  # Array is a matrix; call function returning dispersion for singleton matrix
+  if(class(array) == "matrix"){.dispersion_matrix2(array, pairs, sort_norms, norm_pow, digits)}
+  # Array is an ensemble; recursively row binding each matrix's dispersions
+  else if(class(array) == "list"){furrr::future_map_dfr(array, .dispersion_matrix2, pairs, sort_norms, norm_pow, digits)}
+}
+```
+
+
+```{r}
+#disp <- norm_ens %>% dispersion2(pairs = "consecutive")
+#disp %>% dispersion.histogram("normalized", bins = 75)
+```
+
+```{r}
+# Currently impleneted with real eigenvalues in mind (symmetric real matrices)
+normalized_dispersion <- function(array){
+  disp <- array %>% dispersion2(pairs = "consecutive")
+  disp %>% dispersion.histogram("normalized", bins = 75)
+}
+```
+
+```{r}
+t0 <- Sys.time()
+RME_beta(N = 100, beta = 2, size = 100) %>% spectrum_parallel()
+t1 <- Sys.time()
+t1 - t0
+```
+
+```{r}
+t0 <- Sys.time()
+spectrum_beta <- RME_beta(N = 100, beta = 2, size = 30) %>% spectrum()
+t1 <- Sys.time()
+t1 - t0
+```
+
+```{r}
+spectrum_beta %>% spectrum.histogram(component = "Re", bins = 150)
+```
+
+
+```{r}
+spectral_radius <- function(spectrum_){max(abs(spectrum_$Re))}
+spectral_radius(spectrum_beta)
+((spectral_radius(RME_beta(N = 10, beta = 2, size = 40) %>% spectrum()))^2)
+```
+
+
+```{r}
+spectrum_beta %>%
+  ggplot(aes(x = Re)) + 
+  geom_density(stat = "density")
+```
+
+
+```{r}
+N <- 30
+size <- 10
+RME_norm(N = N, sd = 0.01, symm = T, size = size) %>% normalized_dispersion()
+RME_norm(N = N, sd = 0.1, symm = T, size = size) %>% normalized_dispersion()
+RME_norm(N = N, sd = 5, symm = T, size = size) %>% normalized_dispersion()
+RME_norm(N = N, sd = 10, symm = T, size = size) %>% normalized_dispersion()
+RME_norm(N = N, sd = 20, symm = T, size = size) %>% normalized_dispersion()
+RME_norm(N = N, sd = 50, symm = T, size = size) %>% normalized_dispersion()
+RME_norm(N = N, sd = 100, symm = T, size = size) %>% normalized_dispersion()
+
+```
+

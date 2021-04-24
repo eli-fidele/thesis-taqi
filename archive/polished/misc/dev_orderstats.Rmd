@@ -1,0 +1,127 @@
+---
+title: "Order Statistics Simulations"
+author: "Taqi"
+date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+source("../R/header.R")
+.src(1)
+```
+
+## Order Statistics Simulations
+
+```{r}
+# Simulating function
+sim_orders <- function(N, iter, sample_fn, ...){
+  order_stats <- function(N, ...){
+    x <- sample_fn(N, ...)
+    data.frame(value = sort(x), order = (1:length(x))) # Get order statistics
+  }
+  map_dfr(rep(N, iter), order_stats, ...)
+}
+# Simulating function for complex versions
+sim_orders_cplx <- function(N, iter, sample_fn, ...){
+  order_stats <- function(N, ...){
+    x <- abs(sample_fn(N, ...) + 1i * sample_fn(N, ...)) # Norm of complex version
+    data.frame(value = sort(x), order = (1:length(x))) # Get order statistics
+  }
+  map_dfr(rep(N, iter), order_stats, ...)
+}
+# Plot a dataframe of order data statistics
+orders_plot <- function(orders, N){
+  # Plotting parameters
+  #order_cols <- scales::seq_gradient_pal("blue", "red", "Lab")(seq(0, 1, length.out = N))
+  # Plot
+  orders %>%
+    ggplot(aes(value, order, color = order)) + 
+    geom_point(show.legend = FALSE) +
+    #scale_y_continuous(breaks = 1:N) +
+    scale_color_gradient(low = "deepskyblue3", high = "firebrick3")
+}
+```
+
+```{r}
+# Simulation parameters
+iter <- 500
+N <- 100
+```
+
+
+## Uniform Distribution Order Statistics
+
+```{r}
+# Simulate uniformly distributed order statistics
+sim_orders(N, iter, sample_fn = runif, min = -1, max = 1) %>% orders_plot(N)
+```
+
+### Norm Version
+
+```{r}
+# Define norm of random uniform distribution function
+NORM_runif <- function(n, min, max){abs(runif(n, min, max))}
+# Simulate uniformly distributed order statistics
+sim_orders(N, iter, sample_fn = NORM_runif, min = -1, max = 1) %>% orders_plot(N)
+```
+
+## Normal Distribution Order Statistics
+
+```{r}
+# Simulate normally distributed order statistics
+sim_orders(N, iter, sample_fn = rnorm) %>% orders_plot(N)
+```
+
+### Norm Version
+
+```{r}
+# Define norm of random uniform distribution function
+NORM_rnorm <- function(n, ...){abs(rnorm(n, ...))}
+# Simulate normally distributed order statistics
+sim_orders(N, iter, sample_fn = NORM_rnorm) %>% orders_plot(N)
+```
+
+
+## Norm of Uniformly Distributed Complex Number Order Statistics
+
+```{r}
+# Simulate
+sim_orders_cplx(N, iter, runif, min = -1, max = 1) %>% orders_plot(N)
+```
+
+## Norm of Normally Distributed Complex Number Order Statistics
+
+```{r}
+# Simulate
+sim_orders_cplx(N, iter, rnorm, mean = 0, sd = 1) %>% orders_plot(N)
+```
+
+```{r}
+# Source code for simulating from the semicircle distribution
+source("semicircle.R")
+```
+
+## The Semicircle Distribution
+
+```{r}
+sample <- data.frame(value = sample_semicircle(n = 500000, R = 1))
+sample %>%
+  ggplot() +
+  geom_histogram(aes(x = value), bins = 300)
+```
+
+## Semicircle Distribution Order Statistics
+
+```{r}
+# Simulate
+sim_orders(N, iter, sample_semicircle, R = 1) %>% orders_plot(N)
+```
+
+## Norm of Semi-Circle Distributed Complex Number Order Statistics
+
+```{r}
+# Simulate
+sim_orders_cplx(N, iter, sample_semicircle, R = 1) %>% orders_plot(N)
+```
+

@@ -6,14 +6,14 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-source("../R/header.R")
-.src(d = 1)
+source("../../../R/header.R")
+.src(d = 3)
 ```
 
 ## Ensemble of 25x25 Complex Hermitian Matrices
 
 ```{r}
-P <- RME_norm(N = 25, cplx = T, herm = T, size = 10000) 
+P <- RME_norm(N = 25, cplx = T, herm = T, size = 100) 
 #P %>% dispersion(components = T)
 spec_P <- P %>% spectrum
 order_1 <- spec_P %>% filter(Order == 1)

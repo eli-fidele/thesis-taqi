@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 pdflatex thesis.tex
 bibtex thesis
 pdflatex thesis.tex

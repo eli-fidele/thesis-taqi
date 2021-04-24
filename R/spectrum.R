@@ -61,13 +61,13 @@ spectrum_parallel <- function(array, components = TRUE, sort_norms = TRUE, singu
 #'
 spectrum <- function(array, components = TRUE, sort_norms = TRUE, singular = FALSE, order = NA){
   digits <- 4 # Digits to round values to
-  # Array is a matrix; call function returning eigenvalues for singleton matrix
-  if(class(array) == "matrix"){
-    .spectrum_matrix(array, components, sort_norms, singular, order, digits)
-  }
   # Array is an ensemble; recursively row binding each matrix's eigenvalues
-  else if(class(array) == "list"){
+  if(class(array) == "list"){
     purrr::map_dfr(array, .spectrum_matrix, components, sort_norms, singular, order, digits)
+  }
+  # Array is a matrix; call function returning eigenvalues for singleton matrix
+  else{
+    .spectrum_matrix(array, components, sort_norms, singular, order, digits)
   }
 }
 

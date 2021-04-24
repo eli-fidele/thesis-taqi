@@ -7,9 +7,9 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-source("../R/header.R")
-library(gglm)
-.src(d = 1)
+source("../../R/header.R")
+#library(gglm)
+.src(d = 2)
 ```
 
 ```{r}
@@ -54,8 +54,8 @@ spec_ens %>% spectrum.scatterplot()
 # spec_ens %>% spectrum.histogram(imaginary = F, bins = 50)
 
 # Dispersion plots
-disp_ens <- ens %>% dispersion
-disp_ens %>% dispersion.scatterplot()
+disp_ens <- ens %>% dispersion(pairs = "lower")
+disp_ens %>% dispersion.scatterplot(metric = "abs_diff")
 ```
 
 ## Linear Model

@@ -1,0 +1,36 @@
+---
+title: "Developer"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# Random matrices and ensembles
+RM_GUE <- function(N){
+  P <- RM_norm(N = N, mean = 0, sd = 1, cplx = T, herm = T)
+  diag(P) <- rnorm(n = N)
+  P
+}
+RME_GUE <- function(N, size){ lapply(X = rep(N, size), FUN = RM_GUE) }
+```
+
+```{r}
+# Set parameters
+N <- 20; size = 1000;
+# Get ensembles
+s1 <- RME_GUE(N, size) %>% spectrum_parallel() #%>% spectrum.scatterplot()
+s2 <- RME_beta(N, beta = 2, size) %>% spectrum_parallel() #%>% spectrum.scatterplot()
+```
+
+```{r}
+s1 %>% spectrum.histogram(component = "Re")
+s2 %>% spectrum.histogram(component = "Re")
+```
+

@@ -1,0 +1,103 @@
+---
+title: "Polished"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(future)
+library(viridis)
+library(tidyverse)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# ===================================================
+#             Wigner's Surmise: Setup
+# ===================================================
+# Find the eigenvalue dispersions for a given matrix; overrided for Wigner's surmise
+.dispersion_matrix_W <- function(P, pairs, sort_norms, norm_pow, digits = 4){
+  # Evaluate the regular dispersion
+  disp <- .dispersion_matrix(P, pairs, sort_norms, singular = F, norm_pow = 1, digits = 4)
+  # Add the normalized eigenvalue spacing
+  disp$normalized <- disp$id_diff_norm / mean(disp$id_diff_norm)
+  return(disp)
+}
+# Find the dispersion of a matrix; overrided for Wigner's surmise
+dispersion_W <- function(array, pairs = NA, sort_norms = T, norm_pow = 1){
+  digits <- 4 # Digits to round values to
+  pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
+  # Array is a matrix; call function returning dispersion for singleton matrix
+  if(class(array) == "matrix"){.dispersion_matrix_W(array, pairs, sort_norms, norm_pow, digits)}
+  # Array is an ensemble; recursively row binding each matrix's dispersions
+  else if(class(array) == "list"){furrr::future_map_dfr(array, .dispersion_matrix_W, pairs, sort_norms, norm_pow, digits)}
+}
+# Labels a generic array with a value column
+.label_array <- function(array, value, label, size){
+  label_column <- data.frame(x = rep(value, size))
+  colnames(label_column) <- as.factor(label)
+  cbind(array, label_column)
+}
+# Creates a tidy, labelled p-Erdos ensemble spectrum
+beta_wigner_dispersion <- function(beta, N, size){
+  beta_disp <- RME_beta(N, beta, size) %>% dispersion_W(pairs = "consecutive", sort_norms = F)
+  beta_disp %>% .label_array(value = beta, label = "beta", size = nrow(beta_disp))
+}
+# ===================================================
+#             Simulation: Beta Ensembles
+# ===================================================
+set.seed(23)
+# Global parameters
+N <- 100
+size <- 1000
+betas <- c(1,2,4)
+# Generate the beta ensemble dispersions
+if(F){
+  beta_wigner <- purrr::map_dfr(betas, beta_wigner_dispersion, N, size)
+  if(F){write.csv(beta_wigner, "data/beta-wigner.csv", row.names = F)}
+} else{
+  beta_wigner <- read.csv("data/beta-wigner.csv")
+}
+# Make beta a factor
+beta_wigner$beta <- as.factor(beta_wigner$beta)
+# ===================================================
+# Create plot
+beta_wigner %>% 
+  ggplot(aes(x = normalized, group = beta, color = beta)) + 
+  geom_density() +
+  scale_color_brewer(type = "qual", palette = "Set2")  +
+  labs(title = "Wigner's Surmise for the Beta Ensembles")
+# Save plot
+save <- T
+if(save){ggsave(filename = "3-3_wigner_beta.pdf", path = "chap3", width = 10.5, height = 7)}
+# ===================================================
+#        Simulation: Beta Ensembles, Extended
+# ===================================================
+set.seed(23)
+# Global parameters
+N <- 100
+size <- 500
+betas <- c(1,2,3,4,5,6,7,8,9,10)
+# Generate the beta ensemble dispersions
+if(F){
+  beta_wigner <- purrr::map_dfr(betas, beta_wigner_dispersion, N, size)
+  if(F){write.csv(beta_wigner, "data/beta-wigner-extended.csv", row.names = F)}
+} else{
+  beta_wigner <- read.csv("data/beta-wigner-extended.csv")
+}
+# Make beta a factor
+beta_wigner$beta <- as.factor(beta_wigner$beta)
+# ===================================================
+# Create plot
+beta_wigner %>% 
+  ggplot(aes(x = normalized, group = beta, color = beta)) + 
+  geom_density() +
+  scale_color_brewer(type = "qual", palette = "Spectral")  +
+  labs(title = "Wigner's Surmise for the Beta Ensembles")
+# Save plot
+save <- T
+if(save){ggsave(filename = "3-3_wigner_beta_extended.pdf", path = "chap3", width = 10.5, height = 7)}
+```

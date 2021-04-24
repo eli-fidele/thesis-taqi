@@ -1,0 +1,23 @@
+---
+title: "Polished"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# Some random matrices and ensembles
+P <- RM_norm(5, symm = T)
+ens <- RME_unif(3, min = 0, max = 1, size = 5)
+```
+
+```{r}
+# Do stuff here
+
+```

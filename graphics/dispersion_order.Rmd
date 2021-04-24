@@ -1,0 +1,67 @@
+---
+title: "Dispersion of Eigenvalues & Order Statistics"
+author: "Taqi"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(d = 1)
+```
+
+```{r}
+RME_norm(5, size = 5) %>% spectrum()
+```
+
+
+## Ensemble of 25x25 Complex Hermitian Matrices
+
+```{r}
+ens <- RME_norm(N = 200, cplx = T, herm = T, size = 20)
+```
+
+```{r}
+spec_P <- ens %>% spectrum_parallel()
+spec_P %>% spectrum.scatterplot()
+spec_P %>% spectrum.histogram(component = "Re")
+```
+
+```{r}
+disp_P <- ens %>% dispersion(pairs = "consecutive")
+```
+
+```{r}
+diff_12 <- disp_P %>% filter(i == 2)
+```
+
+## Distribution of Eigenvalue Norms
+
+```{r}
+diff_12 %>%
+  ggplot(mapping = aes(x = id_diff_norm)) +
+  geom_histogram(bins = 50)
+```
+
+## Distribution of the Eigenvalue Norm by Ranking
+
+```{r}
+ggplot() +
+  geom_histogram(data = order_1, mapping = aes(x = Norm, fill = "1"), bins = 50) +
+  geom_histogram(data = order_2, mapping = aes(x = Norm, fill = "2"), bins = 50)
+```
+
+## Eigenvalue Norm Distribution by Ranking
+
+```{r}
+spec_P %>%
+  ggplot(mapping = aes(x = Norm, group = Order, color = Order)) +
+  geom_density(kernel = "gaussian") +
+  scale_color_gradient(low = "red", high = "blue")
+```
+
+```{r}
+order.summary(spec_P, Variance_Re)
+```
+
+

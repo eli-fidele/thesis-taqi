@@ -1,0 +1,54 @@
+---
+title: "Developer"
+author: "Taqi"
+#date: "3/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../../R/header.R")
+.src(2)
+```
+
+```{r}
+# Random matrices and ensembles
+P <- RM_norm(50, symm = T)
+```
+
+```{r}
+dispersion.table <- function(dispersion, component){
+  # Plot parameters
+  jitt <- 0.4
+  # Plot
+  disp_ens %>%
+    ggplot(mapping = aes(x = j, y = i, color = {{ component }})) +
+    geom_jitter(width = jitt, height = jitt) +
+    scale_color_viridis_c() +
+    scale_y_reverse() #+
+    #geom_abline(intercept = 0, slope = 1)
+}
+```
+
+```{r}
+ens <- RME_beta(50, beta = 4, size = 50)
+disp_ens <- ens %>% dispersion(pairs = "lower")
+(disp_ens %>% dispersion.table(component = abs_diff)) + labs(title = "Eigenvalue Pair Difference of Norms for Beta = 4")
+```
+
+```{r}
+ens <- RME_unif(50, min = 0, max = 1, size = 50)
+disp_ens <- ens %>% dispersion(pairs = "lower")
+#(disp_ens %>% dispersion.table(component = abs_diff)) + labs(title = "Eigenvalue Pair Difference of Norms for Beta = 4")
+```
+
+```{r}
+ens %>% spectrum.scatterplot()
+disp_ens %>% dispersion.scatterplot(metric = "id_diff_norm")
+```
+
+
+```{r}
+#(disp_ens %>% dispersion.table(component = id_diff_norm)) + labs(title = "Eigenvalue Pair Difference of Norms for Beta = 4")
+```
+

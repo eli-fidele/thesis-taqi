@@ -1,7 +1,8 @@
 \chapter{Math Review}
 
 %\minititle{Preamble}
-\noindent Add a short paragraph. Cite sources. Indicate how much the reader needs to skim. Think about the audience of this paper. Guide them to the resources as we are listing the definitions accordingly. Mention the importance and rank each definition (1,2,3 stars).
+%\noindent Add a short paragraph. Cite sources. Indicate how much the reader needs to skim. Think about the audience of this paper. Guide them to the resources as we are listing the definitions accordingly. Mention the importance and rank each definition (1,2,3 stars).
+\noindent In the first section of this appendix, we list a few items in Linear Algebra worth reviewing to make sure there are no gaps in knowledge necessary to understand concepts in this thesis. Additionally, there is another subsection including a proof that was written in the research process of this thesis. Albeit this proof has no direct relation to the primary topic, spectral statistics, it is loosely relevant and displays the tools and techniques relevant to the material.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Linear Algebra}
@@ -68,7 +69,7 @@ Eigenvectors have a wide range of applications in various fields. As such, a res
 
 \blocktitle{Notation} For notational convenience, for any $N \in \N$, let $\N_{N} = \{1,\dots,N\}$.
 
-\minititle{Proof}
+\minititle{The Proof}
 
 In this section, we will prove that for any $M \times M$ real symmetric matrix, $S_M \in \R^{M \times M}$, there exists for some eigenvalue $\lambda$, a corrosponding \textbf{real} eigenvector $\vec{v} \in \R^M$. Prior to starting the main proof, we begin by proving a auxilliary lemma. \newline
 
@@ -176,11 +177,11 @@ Suppose $\vec{X} = \{X_i\}_{i = 1}^N$ is an ordered vector of random variables. 
 Suppose $X = (20,7,2,1)$. The smallest (fourth) order statistic is $1$. The second order statistic is $7$. The largest (first) order statistic is $20$.
 \end{example}
 
-\minititle{Theoretical Results}
+%\minititle{Theoretical Results}
 % Here, talk about the results in Chapter 8 of Blitzstein with the following pairs: (Uniform, Beta) and (Exponential, Gamma). Add the simulations. Beef up this sub-subsection.
 
 \begin{theorem}[Order Statistics of Uniform i.i.d Variables]
-Let $\seq[n]{U}$ be i.i.d. $\Unif(0, 1)$. Then, $U_{(j)} \sim \Beta(j, n-j+1)$.
+Let $\seq[n]{U}$ be i.i.d. $\Unif(0, 1)$. Then, the $j^{th}$ order statistic $U_{(j)}$, is distributed as $U_{(j)} \sim \Beta(j, n-j+1)$.
 %Then, for $0 \leq x \leq 1$, $f(x)=1$ and $F(x)=x$, so the PDF of $U_{(j)}$ is
 %$$ f_j(x) = n \binom{n - 1}{j - 1} x^{j-1} (1-x)^{n-j}$$
 \end{theorem}
@@ -214,10 +215,10 @@ Take a Markov Chain with states $\{\oneto[M]\}$. Letting $q_{ij} = \P(X_{n+1} = 
 \item $Q$ is a non-negative matrix. So every entry $q_{ij} \in \R^+$ is non-negative. This follows because probabilities are necessarily non-negative values.
 \item For this transition matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1. This may be understood as applying the law of total probability to the event of transitioning from any given state $i \in S_M$. In other words, the chain has to go somewhere with probability 1.
 $$\forall i \in \N_M: \sum_{j \in \N_M} q_{ij} = 1$$
-\item Note, it is NOT necessary that the converse holds. The columns of our transition matrix need not sum to 1 for it to be a valid transition matrix.
+\item Note, it is \textbf{not} necessary that the converse holds. The columns of our transition matrix need not sum to 1 for it to be a valid transition matrix.
 \end{itemize}
 
-\begin{definition}[n-Step Transition Probability] The $n-$step transition probability of $i \to j$ is the probability of being at $j$ exactly $n$ steps after being at $i$. We denote this value $q_{ij}^{(n)}:$
+\begin{definition}[$n$-step Transition Probability] The $n$-step transition probability of $i \to j$ is the probability of being at $j$ exactly $n$ steps after being at $i$. We denote this value $q_{ij}^{(n)}:$
 \end{definition}
 
 $$ q_{ij}^{(n)}: \Prb(X_n = j \mid X_0 = i)$$

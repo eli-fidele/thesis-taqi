@@ -63,14 +63,17 @@ dispersion_parallel <- function(array, pairs = NA, sort_norms = TRUE, singular =
 #'
 dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
   digits <- 2 # Digits to round values to
-  pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
-  # Array is a matrix; call function returning dispersion for singleton matrix
-  if(class(array) == "matrix"){
-    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
-  }
   # Array is an ensemble; recursively row binding each matrix's dispersions
-  else if(class(array) == "list"){
+  if(class(array) == "list"){
+    # Parse input and generate pair scheme (default NA), passing on array for dimension
+    pairs <- .parsePairs(pairs, array = array[[1]])
     purrr::map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
+  }
+  # Array is a matrix; call function returning dispersion for singleton matrix
+  else{
+    # Parse input and generate pair scheme (default NA), passing on array for dimension
+    pairs <- .parsePairs(pairs, array)
+    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
   }
 }
 
@@ -113,7 +116,8 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
 .parsePairs <- function(pairs, array){
   valid_schemes <- c("largest", "lower", "upper", "consecutive", "all") # Valid schemes for printing if user is unaware of options
   # Obtain the matrix by inferring array type; if ensemble take first matrix
-  if(class(array) == "list"){P <- array[[1]]} else{P <- array}
+  #if(class(array) == "list"){P <- array[[1]]} else{P <- array}
+  P <- array
   if(class(pairs) == "logical"){pairs <- "consecutive"} # Set default value to be the consecutive pair scheme
   # Stop function call if the argument is invalid
   if(!(pairs %in% valid_schemes)){stop(paste("Invalid pair scheme. Try one of the following: ",paste(valid_schemes, collapse = ", "),".", sep = ""))}

@@ -101,11 +101,6 @@ if(save){ggsave(filename = "2-3-1_symmetric_spectrum.pdf", path = "chap2", width
 }
 ```
 
-```{r}
-
-```
-
-
 ## Semicircle Distribution
 
 ```{r}
@@ -155,6 +150,21 @@ if(save){ggsave(filename = "2-4_normal_spec.pdf", path = "chap2", width = 10.5, 
 }
 ```
 
+## Normal Complex Hermitian Ensemble Spectrum
+
+```{r}
+set.seed(23)
+run <- T
+if(run)
+{
+# Obtain the normal spectrum plot
+normal_spectrum <- RME_norm(N = 50, cplx = T, herm = T, size = 1000) %>% spectrum.scatterplot
+# Save
+save <- T
+if(save){ggsave(filename = "2-4_cplxherm_normal_spec.pdf", path = "chap2", width = 10.5, height = 7)}
+}
+```
+
 ## Stochastic Ensemble Spectrum
 
 ```{r}
@@ -167,6 +177,21 @@ stoch_spectrum <- RME_stoch(N = 50, size = 50) %>% spectrum.scatterplot
 # Save
 save <- T
 if(save){ggsave(filename = "2-4_stoch_spec.pdf", path = "chap2", width = 10.5, height = 7)}
+}
+```
+
+## Symmetric Stochastic Ensemble Spectrum
+
+```{r}
+set.seed(23)
+run <- T
+if(run)
+{
+# Obtain the normal spectrum plot
+stoch_spectrum <- RME_stoch(N = 50, symm = T, size = 50) %>% spectrum.scatterplot
+# Save
+save <- T
+if(save){ggsave(filename = "2-4_symmstoch_spec.pdf", path = "chap2", width = 10.5, height = 7)}
 }
 ```
 
