@@ -13,6 +13,23 @@ In any case, we will begin this chapter by first motivating a few definitions an
   Suppose $P$ is a matrix and $\spec(P)$ is its ordered spectrum. Then, an eigenvalue pair with respect to this ordered spectrum is denoted $\piij$. It is defined as the ordered pair $\piij = (\lambda_i, \lambda_j)$.
 \end{definition}
 
+%****************************************************************************************%
+\minititle{Consecutive Pairs}
+%****************************************************************************************%
+
+In the future section where we define pairing schemes, we will introduce new notation of eigenvalue pair with one index is introduced when defining the consecutive pairing scheme $\Pi_C$, and it takes the form $\pit_j$. This notation is used to denote the consecutive eigenvalue pair for a given matrix. The consecutive eigenvalue pairs are so special that we denote them with a unique notation for convenience. It also makes the discussion regarding order statistics more intrinisic.
+
+\begin{definition}[Consecutive Pairs]
+Suppose $P$ is a matrix and $\spec(P)$ is its ordered spectrum. Then, let $\pit_j$ denote a pair of consecutive eigenvalues, the largest of the two being the $j^{th}$ largest eigenvalue. So, $\pit_j = (\lambda_{j-1},\lambda_{j})$.
+\end{definition}
+
+Since the consecutive pair scheme can be sufficiently indexed by one index ($j$), we will use the convention of omitting the index of the smaller eigenvalue to be more concise and idiomatic. So, whenever one sees the notation $\pit_j$, think the $j^{th}$ largest eigenvalue and its smaller neighbour.
+
+\begin{example}[The Largest Eigenvalues]
+With this notation at hand, we say that $\pit_1$ represents the pair of the two largest eigenvalues in an ordered spectrum.
+$$\pit_1 = (\lambda_2,\lambda_1)$$
+\end{example}
+
 \noindent Without further ado, we now motivate the dispersion metric.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,7 +43,7 @@ A dispersion metric $\delta: \Cc \times \Cc \to \R^+$ is defined as a function f
 \end{definition}
 
 %PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
-\newpage
+%\newpage
 %PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
 
 In the scope of this thesis, we consider the following dispersion metrics below.
@@ -58,7 +75,7 @@ For every dispersion metric, assume the functions' order of arguments is $\d(z, 
 \noindent *Note that the identity difference is a heurestic, and not a formal metric.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
+%\newpage
 \subsection{Pairing Schema}
 
 The next thing we need to motivate before talking about eigenvalue dispersions are pairing schema. In simple terms, pairing schema are templates (for some $N \in \N$) for which eigenvalue pairs to pick. There are many subtle reasons why this is important, which will be covered in detail later. Without further ado, we motivate the pairing schema.
@@ -81,7 +98,7 @@ The reader might find this definition slightly obscure, and rightfully so. The d
 \end{remark}
 
 %****************************************************************************************%
-\newpage
+%\newpage
 \minititle{Common Pairing Schema}
 %****************************************************************************************%
 
@@ -103,7 +120,9 @@ The reader might find this definition slightly obscure, and rightfully so. The d
 \end{enumerate}
 %****************************************************************************************%
 
-\newpage
+%PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+%\newpage
+%PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
 
 \noindent Consider some examples of generating pairing schemes in R. These methods are
 not exported in the \RMAT package.
@@ -116,37 +135,22 @@ not exported in the \RMAT package.
   bla bla
 \end{code}
 
-Think of the pairing schemes as a conditional argument when considering dispersions. You ask yourself: which pairs do I want to look at? There will be a discussion in 3.2 about why we have to formalize the notions of dispersion metrics and pairing schemes when we eventually talk about dispersions.
+Think of the pairing schemes as a conditional argument when considering dispersions. You ask yourself: which pairs do I want to look at? There will be a discussion in \textbf{Section 3.2} about why we have to formalize the notions of dispersion metrics and pairing schemes when we eventually talk about dispersions.
 
-Additionally, making the pairing schemes independent from the matrices (taking only their dimension, $N \in \N$) was a difficult decision. It may cloud understanding initally but the payoff comes if you consider the implementation of the functions in \RMAT. As a whole, you should not be bothered by the details of formalizing the pairing schemes but you should definitely understand what they do. In fact, it's totally fair that you do. The \RMAT implementation abstracts this all away in the dispersion function. The user would input a string denoting which pairing scheme and the function would handle it. Similarly, you should do the same!
+Additionally, making the pairing schemes independent from the matrices (taking only their dimension, $N \in \N$) was a difficult decision. It may cloud understanding initally but the payoff comes if you consider the implementation of the functions in \RMAT. As a whole, you should not be bothered by the details of formalizing the pairing schemes but you should definitely understand what they do. In fact, it's totally fair that you do. The \RMAT \; implementation abstracts this all away in the dispersion function. The user would input a string denoting which pairing scheme and the function would handle it. Similarly, you should do the same!
 
-
-%****************************************************************************************%
-\newpage
-\minititle{Consecutive Pairs}
-%****************************************************************************************%
-
-In the definition of the consecutive pairing scheme $\Pi_C$, a new notation of eigenvalue pair with one index is introduced; it takes the form $\pit_j$. This notation is used to denote the consecutive eigenvalue pair for a given matrix. The consecutive eigenvalue pairs are so special that we denote them with a unique notation for convenience. It also makes the discussion regarding order statistics more intrinisic.
-
-\begin{definition}[Consecutive Pairs]
-Suppose $P$ is a matrix and $\spec(P)$ is its ordered spectrum. Then, let $\pit_j$ denote a pair of consecutive eigenvalues, the largest of the two being the $j^{th}$ largest eigenvalue.
-\end{definition}
-
-Since the consecutive pair scheme can be sufficiently indexed by one index ($j$), we will use the convention of omitting the index of the smaller eigenvalue to be more concise and idiomatic. So, whenever one sees the notation $\pit_j$, think the $j^{th}$ largest eigenvalue and its smaller neighbour.
-
-\begin{example}[The Largest Eigenvalues]
-With this notation at hand, we say that $\pit_1$ represents the pair of the two largest eigenvalues in an ordered spectrum.
-$$\pit_1 = (\lambda_2,\lambda_1)$$
-\end{example}
-
-\begin{remark}[Order Statistics]
-Since the pairing scheme assumes the eigenvalues are given in an ordered spectrum, our analysis will be mostly leveraging this fact by using the indices. However, as notated above, some pairing schemes are indexed with $i$ and $j$, and some like the consecutive pairs only with $j$. These indices are interchangable with ``order statistic'', so in the next section, we will devise a synthetic order statistic that uses two indices.
-\end{remark}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
+%
+% \begin{remark}[Order Statistics]
+% Since the pairing scheme assumes the eigenvalues are given in an ordered spectrum, our analysis will be mostly leveraging this fact by using the indices. However, as notated above, some pairing schemes are indexed with $i$ and $j$, and some like the consecutive pairs only with $j$. These indices are interchangable with ``order statistic'', so in the next section, we will devise a synthetic order statistic that uses two indices.
+% \end{remark}
 
 %****************************************************************************************%
 %****************************************************************************************%
 
 %****************************************************************************************%
+\medskip
 \minititle{Summary Table of Pairing Schema}
 %****************************************************************************************%
 Suppose $P$ is an $N \times N$ matrix. Then, its spectral pairs $\spair(P)$ may take on the following pairing schemes. \newline
@@ -158,10 +162,9 @@ Suppose $P$ is an $N \times N$ matrix. Then, its spectral pairs $\spair(P)$ may 
 
 \noindent Another way we can define the pairing scheme is defining an auxilliary object: the eigenvalue (pair) matrix.
 %****************************************************************************************%
-
-
+%\newpage
 %****************************************************************************************%
-\newpage
+\medskip
 \minititle{An Alternative Represetation: Eigenvalue Matrix}
 %****************************************************************************************%
 \begin{definition}[Eigenvalue Matrix]
@@ -185,7 +188,7 @@ $$
 \newline
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
+%\newpage
 \subsection{Dispersions}
 
 Alas, with dispersion metrics and pairing schemes defined, we are finally able to motivate the definition of a matrix dispersion for both singleton matrices and their ensemble counterparts.

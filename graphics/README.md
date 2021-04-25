@@ -3,7 +3,7 @@ Contained within this directory is a set of `.Rmd` files in which lies the code 
 
 ## Setup:
 The setup is as follows.
-- In any `.Rmd` file, there will be one plot per code chunk. 
+- In any `.Rmd` file, there will be one plot per code chunk. See the code chunk breakdown in the subsection below.
 - Running the code chunk should automatically generate the graphic and place it in the appopriate directory.
 - After generating the plot, running `pdflatex` should update the graphics! The file reading in the filenames is in `teX/graphics.tex`.
 
