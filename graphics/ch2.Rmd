@@ -17,7 +17,7 @@ set.seed(23)
 run <- T
 if(run)
 {
-save <- F
+save <- T
 if(save){ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)}
 }
 ```
@@ -58,7 +58,7 @@ if(run)
   comparison_plot <- P_plot + ens_plot
   comparison_plot
   # Save the plot
-  save <- F
+  save <- T
   if(save){
     ggsave(filename = "2-1-2_comparison.pdf", path = "chap2", width = 10.5, height = 7)
   }
@@ -89,7 +89,7 @@ if(run){
   # Glue the plots using patchwork
   comparison_plot <- sign_plot + norm_plot
   # Save the plot
-  save <- F
+  save <- T
   if(save){
     ggsave(filename = "2-2-1_orderscheme.pdf", path = "chap2", width = 10.5, height = 7)
   }
@@ -114,7 +114,7 @@ if(run){
   ens_plot <- RME_beta(N = N, beta = 4, size = 100) %>% 
     spectrum.scatterplot(mat_str = makeTitle(N, "Beta-4"))
   # Save the plot
-  save <- F
+  save <- T
   if(save){
     ggsave(filename = "2-3-1_symmetric_spectrum.pdf", path = "chap2", width = 10.5, height = 7)
   }
@@ -134,7 +134,7 @@ if(run){
   # Plot distribution of eigenvalues
   ens_plot <- ens %>% spectrum_par() %>% spectrum.histogram(component = "Re", bins = 100)
   # Save the plot
-  save <- F
+  save <- T
   if(save){
     ggsave(filename = "2-3-2_semicircle.pdf", path = "chap2", width = 10.5, height = 7)
   }
@@ -155,7 +155,7 @@ if(run){
   ens_plot <- RME_unif(N = N, min = 0, max = 1, size = 1000) %>% 
     spectrum.scatterplot(mat_str = makeTitle(N, class = "Unif(0,1)"))
   # Save the plot
-  save <- F
+  save <- T
   if(save){
     ggsave(filename = "2-4_unif01_spec.pdf", path = "chap2", width = 10.5, height = 7)
   }
@@ -195,7 +195,7 @@ if(run){
     spectrum.scatterplot(mat_str = makeTitle(N, class = "Complex Hermitian Standard Normal"))
   ens_plot
   # Save the plot
-  save <- F
+  save <- T
   if(save){
     ggsave(filename = "2-4_cplxherm_normal_spec.pdf", path = "chap2", width = 10.5, height = 7)
   }
@@ -215,7 +215,7 @@ if(run){
     spectrum.scatterplot(mat_str = makeTitle(N, class = "Stochastic"))
   ens_plot
   # Save the plot
-  save <- F
+  save <- T
   if(save){
     ggsave(filename = "2-4_stoch_spec.pdf", path = "chap2", width = 10.5, height = 7)
   }
@@ -235,7 +235,7 @@ if(run){
     spectrum.scatterplot(mat_str = makeTitle(N, class = "Symmetric Stochastic"))
   ens_plot
   # Save the plot
-  save <- F
+  save <- T
   if(save){
     ggsave(filename = "2-4_symmstoch_spec.pdf", path = "chap2", width = 10.5, height = 7)
   }
@@ -280,7 +280,7 @@ erdos_lam2 <-
   geom_point() +
   scale_color_viridis_c() +
   labs(title = "2nd Largest Eigenvalue of p-Erdos Ensembles by p")
-save <- F
+save <- T
 if(save){ggsave(filename = "2-4_erdos_lam2.pdf", path = "chap2", width = 9, height = 7)}
 }
 ```
