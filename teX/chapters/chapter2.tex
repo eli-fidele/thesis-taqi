@@ -100,11 +100,14 @@ A common theme in this thesis will be that singleton matrices do not provide ins
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\section{Ordered Spectra}
+\section{Spectrum Analysis}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Eigenvalue Ordering}
+\subsection{Ordered Spectra}
+
+\minititle{Order Schemes: How to Order Eigenvalues}
+
 When we motivate the idea of matrix dispersion in the next section, we will consider order statistics of that matrix's eigenvalues in tandem with its dispersion. However, to do so presupposes that we have a sense of what \textit{ordered} eigenvalues means. Take a matrix $P$ and its \textit{unordered} spectrum $\sigma(P) = \{\lambda_j\}$. It is paramount to know what ordering scheme $\sigma(P)$ is using, because otherwise, the eigenvalue indices are meaningless! So, to eliminate confusion, we add an index to $\sigma$ that indicates how the spectrum is ordered. Often, the ordering context will be clear and the indexing will be omitted. Consider the two following $\textit{ordering schema}$:
 
 Standard definitions of an ordered spectrum follows the standard ordering in the reals; denote this as the ordering by the $\textbf{sign scheme}$. Note that because total-ordering is only well-defined on the reals, we can only use this scheme when on a spectrum with real entries. So, we write the $\textit{sign-ordered spectrum}$ as follows:
@@ -144,7 +147,7 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Order Statistics}
+\minititle{Order Statistics}
 
 With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics. In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (See A.x)
 
@@ -160,11 +163,40 @@ So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ a
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Spectrum Analysis}
+\newpage
+\subsection{Case Study: Perron-Frobenius Theorem}
+
+\begin{definition}[Spectral Radius]
+  Let be $P$ be any matrix and $\spec(P)$ be its ordered spectrum. Then, the spectral radius of $P$ is defined as $\rho(P) = ||\sup \spec(P)||$ is the norm of its largest eigenvalue.
+\end{definition}
+
+\minititle{Detour: The Perron-Frobenius Theorem}
+
+Using the toolkit we have now accquired, we can now discuss an elegant, visual representation of the Perron-Frobenius theorem (See A.x). To put it shortly, the Perron-Frobenius theorem, applied to stochastic matrices is a result that gurantees a stationary distribution to an ergodic Markov Chain (see A.x). Sparing the details, we can use the conjunction of two facts, that if true, yield the result for the Perron-Frobenius Theorem for ergodic Markov chains through stochastic matrices.
+\begin{enumerate}
+  \item The largest eigenvalue of stochastic matrices is 1.
+  \item When multiplied by $P^K$ (for large $K$), any point $v$ enters the eigenspace of the matrix's largest eigenvalue. That is, $v P^K$ is an eigenvector of $P$.
+\end{enumerate}
+
+Again, those two statements were not formally proven in this thesis. However, there are large amounts of computational evidence for both of these results. Consider the first statement.
+
+Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREstochspectrum{h}{0.65}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+This shows that the spectral of stochastic matrices is $1$! What is left is the other fact. For the second statement, again, there is plenty of computational evidence to back this up. This is the reason why \textbf{Appendix D} is included. This is a side project that started in this thesis, simulating eigenvectors computationally. From the simulations, we find that there is overwhelming evidence that most matrices, if not all, satisfy the second statement.
+
+\blocktitle{Conclusions} So, to conclude, we can say that the computational evidence for these two facts support and provide an alternative method of seeing why the Perron-Frobenius theorem is true.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Symmetric and Hermitian Matrices}
 
-\subsection{Introduction}
-
+%\subsection{Introduction}
 A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (See A.x). Simply put, those are matrices which are equal to their conjugate transpose.
 
 $\textbf{Note:}$ Since real numbers are their own conjugate transpose, every Symmetric matrix is Hermitian. However, we will still delineate the two terms to avoid confusion.
@@ -176,8 +208,26 @@ P = \overline{P^{T}} \implies \sigma(P) = \{\lambda_i \mid \lambda_i \in \R\}
 Having a complete set of real eigenvalues yields many great properties. For instance, if all eigenvalues are real, we have the option of observing either the sign-ordered spectrum or the norm-ordered spectrum. This way, we can preserve negative signs and we would not lose the rotational aspect of the eigenvalue when we study its statistics. That is just one reason out of many more why having real eigenvalues is quite nice.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREsymmetricspectrum{h}{0.5}
+%\FIGUREsymmetricspectrum{h}{0.5}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\minititle{Example: Stochastic Matrices}
+
+One very pleasing example to look at is stochastic matrices. As seen previously in \textbf{Section 2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and singularity that is the largest eigenvalue.
+
+Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREstochspectrum{h}{0.65}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\newpage
+
+Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues.
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREsymmstochspectrum{h}{0.65}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\newpage 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -197,6 +247,7 @@ The dimension of the matrix determines the radius of the eigenvalues. Namely, if
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREsemicircle{h}{0.6}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -102,7 +102,24 @@ The reader might find this definition slightly obscure, and rightfully so. The d
   $$\spair(P \mid \Pi_0) = \spair(P) = \{\pi_{ij} = (\lambda_{i},\lambda_j) \mid i,j \in \N_N\}$$
 \end{enumerate}
 %****************************************************************************************%
-%****************************************************************************************%
+
+\newpage
+
+\noindent Consider some examples of generating pairing schemes in R. These methods are
+not exported in the \RMAT package.
+
+\begin{code}[Consecutive Pairing Scheme]
+  blabla
+\end{code}
+
+\begin{code}[Lower Pairing Scheme]
+  bla bla
+\end{code}
+
+Think of the pairing schemes as a conditional argument when considering dispersions. You ask yourself: which pairs do I want to look at? There will be a discussion in 3.2 about why we have to formalize the notions of dispersion metrics and pairing schemes when we eventually talk about dispersions.
+
+Additionally, making the pairing schemes independent from the matrices (taking only their dimension, $N \in \N$) was a difficult decision. It may cloud understanding initally but the payoff comes if you consider the implementation of the functions in \RMAT. As a whole, you should not be bothered by the details of formalizing the pairing schemes but you should definitely understand what they do. In fact, it's totally fair that you do. The \RMAT implementation abstracts this all away in the dispersion function. The user would input a string denoting which pairing scheme and the function would handle it. Similarly, you should do the same!
+
 
 %****************************************************************************************%
 \newpage
@@ -234,6 +251,12 @@ i j eig_i    eig_j    id_diff iddf_norm abs_diff diff_ij
 \section{Dispersion Analysis}
 
 With dispersions well defined, we provide a few guidelines for analyzing a dispersion of a matrix. We will synthesize all the techniques, notations, and remarks in the previous section to provide a comprehensive manual on how to analyze the dispersion of a matrix.
+
+\subsection{Considerations}
+
+Here are some considerations that should be taken into account when studying dispersions.
+
+Dispersion metrics, linear combinations, and the relation to pairing schemes.
 
 % \minititle{Conjugate Pairs}
 %
