@@ -13,6 +13,12 @@
 \usepackage{array} % For the analytical eigenvector proof (block matrices)
 % \usepackage{times} % other fonts are available like times, bookman, charter, palatino
 
+% For the quote environments!
+\usepackage[utf8]{inputenc}
+\usepackage{epigraph}
+% For inline quotes as opposed to chapters
+\usepackage{csquotes}
+
 % For code snippet environments
 \usepackage{listings}
 \usepackage[svgnames]{xcolor}
@@ -57,7 +63,11 @@
 \newtheorem{algorithm}{Algorithm}[section]
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
-%\newtheorem*{algorithm}{Algorithm}%[section]
+
+% Algorithms (unnumbered)
+\newtheorem*{algorithm*}{Algorithm}%[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
 
 % Remarks
 \newtheorem*{remark}{Remark}
@@ -122,6 +132,15 @@
 %==================
 %     OTHER
 %==================
+\newcommand{\dumitriuALGORITHMunnum}{
+  \begin{algorithm*}[Dumitriu's Beta Matrix] \hfill
+    \begin{enumerate}
+      \item To simulate an $N \times N$ beta matrix, fix $N \in \N$.
+      \item Start by taking a diagonal of $\Normal(0,2)$ variables.
+      \item Set both of the nearest off-diagonals to the row that samples from a $\chi(df = c_j) \where c_j = \beta \cdot j$ for columns spanning $j = 1,\dots,n-1$.
+    \end{enumerate}
+  \end{algorithm*}
+}
 \newcommand{\dumitriuALGORITHM}{
   \begin{algorithm}[Dumitriu's Beta Matrix] \hfill
     \begin{enumerate}
