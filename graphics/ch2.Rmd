@@ -14,7 +14,7 @@ library(future)
 
 ```{r, eval = FALSE, include = FALSE}
 set.seed(23)
-run <- T
+run <- F
 if(run)
 {
 save <- T
@@ -43,7 +43,7 @@ makeTitle(N = 20, class = "Standard Normal")
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run)
 {
   # Set parameters
@@ -70,7 +70,7 @@ if(run)
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Some random matrices and ensembles
   ens <- RME_beta(N = 100, beta = 4, size = 5)
@@ -106,7 +106,7 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Set parameters
   N <- 50
@@ -125,7 +125,7 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Set parameters
   N <- 50
@@ -147,7 +147,7 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Set parameters
   N <- 50
@@ -166,7 +166,7 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Set parameters
   N <- 50
@@ -189,9 +189,9 @@ set.seed(23)
 run <- T
 if(run){
   # Set parameters
-  N <- 50
+  N <- 200
   # Obtain the complex hermitian standard normal spectrum plot
-  ens_plot <- RME_norm(N = N, cplx = T, herm = T, size = 1000) %>% 
+  ens_plot <- RME_norm(N = N, cplx = T, herm = T, size = 500) %>% 
     spectrum.scatterplot(mat_str = makeTitle(N, class = "Complex Hermitian Standard Normal"))
   ens_plot
   # Save the plot
@@ -206,7 +206,7 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Set parameters
   N <- 50
@@ -226,7 +226,7 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Set parameters
   N <- 50
