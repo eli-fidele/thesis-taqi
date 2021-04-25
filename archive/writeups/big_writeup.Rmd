@@ -147,7 +147,7 @@ However, as we said previously, only the identity difference metric gives us tra
 \begin{align*}
 ||y| - |x|| \leq |y - x|
 \end{align*}
-If we let $d_1$ be the difference of absolutes metric and $d_2$ be the standard norm, then we could rephrase this as saying $|d_1(\pi_{ij})| \leq d_2(\pi_{ij})$. This is just a rephrasing of the inequality. However, if we are careful enough, we can remove the absolute value to obtain a more meaningful upper bound. The value of $d_1(\pi_{ij})$ can be interpreted as the difference between the sizes of $\lambda_j$ and $\lambda_i$. However, recall that in the standard definition of a dispersion, we use the **lower** pair combinations so that we get $i > j$, making the value $|\lambda_j|$ always greater than $|\lambda_i|$ by construction. As such, the left-hand value would always be positive, allowing us to drop the absolute value. So, we could say: 
+If we let $d_1$ be the difference of absolutes metric and $d_2$ be the standard norm, then we could rephrase this as saying $|d_1(\pi_{ij})| \leq d_2(\pi_{ij})$. This is just a rephrasing of the inequality. However, if we are careful enough, we can remove the absolute value to obtain a more meaningful upper bound. The value of $d_1(\pi_{ij})$ can be interpreted as the difference between the sizes of $\lambda_j$ and $\lambda_i$. However, recall that in the standard definition of a dispersion, we use the \textbf{lower} pair combinations so that we get $i > j$, making the value $|\lambda_j|$ always greater than $|\lambda_i|$ by construction. As such, the left-hand value would always be positive, allowing us to drop the absolute value. So, we could say: 
 \begin{align*}
 d_1(\pi_{ij}) \leq d_2(\pi_{ij}) \given \pi_{ij} \in \Pi_>
 \end{align*}

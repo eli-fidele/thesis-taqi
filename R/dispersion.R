@@ -157,7 +157,7 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
 # The consecutive pairing scheme:
 # Enumerate all possible consecutive/neighboring pairs. No linear combiantions of dispersions exist.
 .consecutive_pairs <- function(N){
-  purrr::map_dfr(2:N, function(i){data.frame(i = i, j = i - 1)})
+  purrr::map_dfr(2:N, function(i){data.frame(i = i, j = as.integer(i - 1))})
 }
 
 #=================================================================================#
