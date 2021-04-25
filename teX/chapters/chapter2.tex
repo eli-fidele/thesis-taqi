@@ -123,7 +123,7 @@ Note that when we take the norms of the eigenvalues, we essentially ignore "rota
 For example, consider the following plots, showing the difference in using the sign and norm ordering schemes for the same spectrum.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREorderscheme{h}{0.6}
+\FIGUREorderscheme{h}{0.55}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -215,19 +215,19 @@ Having a complete set of real eigenvalues yields many great properties. For inst
 
 One very pleasing example to look at is stochastic matrices. As seen previously in \textbf{Section 2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and singularity that is the largest eigenvalue.
 
-Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
+% Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
+%
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREstochspectrum{h}{0.65}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \newpage
 
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREstochspectrum{h}{0.65}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\newpage
-
-Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues.
+Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues. This can be compared to the spectrum of non-Symmetric stochastic matrices in the previous figure. The patterns are similar, but now, imposing symmetry on the matrices forces the eigenvalues to ``collapse'' onto the real line!
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREsymmstochspectrum{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\newpage 
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -262,19 +262,21 @@ stochastic matrices.
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \newpage
 
-Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
+% Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
+%
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREstochspectrum{h}{0.65}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \newpage
+%
+% Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues.
+%
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREsymmstochspectrum{h}{0.65}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \newpage
 
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREstochspectrum{h}{0.65}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\newpage
-
-Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues.
-
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREsymmstochspectrum{h}{0.65}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\newpage
+\subsection{Erdos p-Ensembles}
 
 Here we have the second largest eigenvalue of the Erdos-Renyi ensemble. We parameterize the eigenvalue by $p$ and we observe a trend below.
 
@@ -290,6 +292,10 @@ Normal matrices tend to have eigenvalues distributed about the complex disk.
 \newpage
 
 Hermitian Complex Normal matrices tend to have eigenvalues distributed about the complex disk.
+
+\begin{remark}[Floating Point Errors]
+Because the model involves finding coefficients of polynomials with rounded entries (by computing the determinant), floating point errors and algorithmic systemic error will yield small, but negligible imaginary components.
+\end{remark}
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREnormalCPLXHERMspectrum{h}{0.65}
