@@ -1,9 +1,9 @@
 
 \chapter{Random Matrices}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \epigraph{Unfortunately, no one can be told what The Matrix is. You'll have to see it for yourself.}{\textit{Morpheus \\ The Matrix}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 As discussed in the introduction, this thesis will be an exploration of spectral statistics of random matrices. This means that we must first be able to understand what random matrices are. At a fundamental level, random matrices are simply matrices whose entries are randomly distributed in accordance to some distribution or method. To formalize all these notions, we will define what random matrices are and what it means for them to be $\D$-distributed.
 
@@ -12,8 +12,8 @@ Prior to beginning the discussion on $\D$-distributions, the reader should be fa
 %\section{Introduction}
 When it comes to random simulation, there must always be a rule to which our randomness must conform, regardless of complexity. For example, sampling a vector from a distribution is a rudimentary example of this. For random matrices, there will be a few methods of generating their entries that are not just sampling from theoretical distributions. As such, we motivate the $\D$-distribution.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 
 \section{$\D$-Distributions}
 
@@ -23,7 +23,7 @@ Now, we motivate the $D$-distribution. A formalization on how to initialize a ra
 When we define a random matrix that is $\D$-distributed, we say that $P \sim \D$. In the simplest of terms, $\D$ is essentially the algorithm that generates the random matrix $P$. We define two primary methods of distribution: explicit distribution and implicit distribution. If $\D$ is an explicit distribution, then every entry of $P$ is homogenously sampled from that distribution. Otherwise, if it is implicit, we utilize an algorithm that imposes an implicit distribution on the entries.
 \end{definition}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{Explicit Distributions}
 
@@ -44,7 +44,7 @@ Explicit distributions can be formalized in scope of the standard notation in pr
 For example, suppose $P$ is a $2 \times 2$ random matrix with $\D = \Normal(0,1)$. Then, we have four random variables to initialize. In the random matrix representation, we need to initialize $P_{11}, P_{12}, P_{21}, \and P_{22}$ by sampling them from $\D$. In the vector representation, we just say we are sampling four i.i.d random variables from $\D$. The matrix indexing is intrinsic and preservable by using index hacking with some modular math.
 \end{example}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{Implicit Distributions}
 
@@ -57,7 +57,7 @@ Consider for example, the following implicit distributions.
 \item If $\D$ is any distribution (implicit or explicit), then $\D^{\dagger}$ is the Symmetric/Hermitian version of $\D$. (See Algorithm B.x)
 \end{enumerate}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{Random Matrices}
 
@@ -99,8 +99,8 @@ P
 %****************************************************************************************%
 \newpage
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 
 \section{The Crew: Ensembles}
 
@@ -132,7 +132,7 @@ ensemble
 
 With this in mind, we will gloss over, characterize, and briefly discuss a few special recurring ensembles in this thesis.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{Erdos-Renyi $p$-Ensembles}
 
@@ -165,7 +165,7 @@ ensemble
 [4,] 0.2151029 0.3929580 0.3919391 0.000000
 \end{lstlisting}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{Hermite $\beta$-Ensembles}
 
@@ -173,6 +173,6 @@ The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in 
 
 At a practical level, all one would need to know is that the matrices are generated in accordance to an algorithm found in the appendix (Algorithm B.x) and in Chapter 4.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 %\section{Analytical Results}

@@ -1,23 +1,23 @@
 
 \chapter{Spectra}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \epigraph{Life is like a box of crayons.}{\textit{Unknown}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \section{Introduction}
 So, what are \textit{spectral statistics}? Do they have to do with rainbows? Sceptres? No, they don’t, but they’re almost as colorful and regal. The word spectral is borrowed from the spectral-like patterns observed in statistical physics - whether it may be atomic spectra or other quantum mechanical phenomena. The borrowing is loose and not literal, but still somewhat well founded. In fact, the field of Random Matrix Theory was extensively developed in the 1930s by the nuclear physicist Eugene Wigner. He found connections between the deterministic properties of atomic nuclei and their random and stochastic behaviors. The link? Random matrices. \newline
 
 So in the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors. That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix. They are quite important for many reasons. For instance in statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corrosponding matrices. The study of eigenvalues and eigenvectors primarily falls in the scope of Linear Algebra, but their utility is far-reaching. So, what exactly are \textit{eigenvalues} exactly?
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{The Quintessential Spectral Statistic: the Eigenvalue}
 Given any standard square matrix $P \in \F^{N \times N}$, its \textit{eigenvalues} are simply the roots of the characteristic polynomial $\text{char}_P{(\lambda)}$ = $\det(P - \lambda I)$. By the Fundamental Theorem of Algebra, we know that there is always have as many complex eigenvalues $\lambda \in \Cc$ as the dimension of the matrix.
 
 That being said, when our random matrix has a specified distribution (say, standard normal), we can see patterns in the eigenvalue distributions. So, an eigenvalue is a \textbf{spectral statistic} of a random matrix! To talk about a matrix's eigenvalues in a more formal and concise manner, we motivate what is the \text{eigenvalue spectrum}.
 
-\newpage
+%\newpage
 
 \begin{definition}[Spectrum]
 Suppose $P \in \F^{N \times N}$ is a square matrix of size $N$ over $\F$. Then, the (eigenvalue) spectrum of $P$ is defined as the multiset of its eigenvalues and it is denoted
@@ -57,7 +57,7 @@ Suppose $P \sim \D$ is an $N \times N$ random matrix. Then, $P$ has a representa
 To summarize, here is how we formalize the spectrum as a statistic. Suppose we sample $P \sim \D$. Then, we take its spectrum formally using $\sigma$ as such:\hfill
 $$P_{\text{array}} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \lambda I) \ra \sigma(P_{\text{array}})$$
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{Interlude: Ensembles}
 While the spectrum of a matrix provides a good summary of the matrix, a matrix is only considered a single point/observation in random matrix theory. Additionally, simulating large matrices and computing their eigenvalues becomes harder and more computationally expensive as $N \to \infty$. As such, to obtain more eigenvalue statistics efficiently, another dimension is introduced by motiving the \textit{spectrum of a random matrix ensemble}. If we have an ensemble $\Ens$, then we can naturally extend the definition of $\sigma(\Ens)$.
@@ -98,18 +98,20 @@ A common theme in this thesis will be that singleton matrices do not provide ins
 \FIGUREspectrumcomparison{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 \newpage
 \section{Spectrum Analysis}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{Ordered Spectra}
 
+When we motivate the idea of matrix dispersion in the next section, we will consider order statistics of that matrix's eigenvalues in tandem with its dispersion. However, to do so presupposes that we have a sense of what \textit{ordered} eigenvalues means. Take a matrix $P$ and its \textit{unordered} spectrum $\sigma(P) = \{\lambda_j\}$. It is paramount to know what ordering scheme $\sigma(P)$ is using, because otherwise, the eigenvalue indices are meaningless! So, to eliminate confusion, we add an index to $\sigma$ that indicates how the spectrum is ordered. Often, the ordering context will be clear and the indexing will be omitted.
+
 \minititle{Order Schemes: How to Order Eigenvalues}
 
-When we motivate the idea of matrix dispersion in the next section, we will consider order statistics of that matrix's eigenvalues in tandem with its dispersion. However, to do so presupposes that we have a sense of what \textit{ordered} eigenvalues means. Take a matrix $P$ and its \textit{unordered} spectrum $\sigma(P) = \{\lambda_j\}$. It is paramount to know what ordering scheme $\sigma(P)$ is using, because otherwise, the eigenvalue indices are meaningless! So, to eliminate confusion, we add an index to $\sigma$ that indicates how the spectrum is ordered. Often, the ordering context will be clear and the indexing will be omitted. Consider the two following $\textit{ordering schema}$:
+\noindent Consider the two following $\textit{ordering schema}$:
 
 Standard definitions of an ordered spectrum follows the standard ordering in the reals; denote this as the ordering by the $\textbf{sign scheme}$. Note that because total-ordering is only well-defined on the reals, we can only use this scheme when on a spectrum with real entries. So, we write the $\textit{sign-ordered spectrum}$ as follows:
 \begin{align*}
@@ -127,7 +129,7 @@ For example, consider the following plots, showing the difference in using the s
 \FIGUREorderscheme{h}{0.55}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \newpage
 \minititle{Singular Values}
 
@@ -146,7 +148,7 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 \spectrumschemetable
 %****************************************************************************************%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \minititle{Order Statistics}
 
@@ -162,8 +164,8 @@ Suppose we have seek the largest eigenvalue distribution for a ensemble distribu
 
 So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 %\section{Spectrum Analysis}
 \newpage
 \subsection{Case Study: Perron-Frobenius Theorem}
@@ -192,8 +194,8 @@ This shows that the spectral of stochastic matrices is $1$! What is left is the 
 
 \blocktitle{Conclusions} So, to conclude, we can say that the computational evidence for these two facts support and provide an alternative method of seeing why the Perron-Frobenius theorem is true.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 \newpage
 \section{Symmetric and Hermitian Matrices}
 
@@ -208,7 +210,7 @@ P = \overline{P^{T}} \implies \sigma(P) = \{\lambda_i \mid \lambda_i \in \R\}
 \end{align*}
 Having a complete set of real eigenvalues yields many great properties. For instance, if all eigenvalues are real, we have the option of observing either the sign-ordered spectrum or the norm-ordered spectrum. This way, we can preserve negative signs and we would not lose the rotational aspect of the eigenvalue when we study its statistics. That is just one reason out of many more why having real eigenvalues is quite nice.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \minititle{Example: Stochastic Matrices}
 
 One very pleasing example to look at is stochastic matrices. As seen previously in \textbf{Section 2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and singularity that is the largest eigenvalue.
@@ -219,7 +221,7 @@ Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the 
 \FIGUREsymmstochspectrum{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \newpage
 \subsection{Wigner's Semicircle Distribution}
 
@@ -238,11 +240,11 @@ The dimension of the matrix determines the radius of the eigenvalues. Namely, if
 \FIGUREsemicircle{h}{0.6}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 \newpage
 \section{Findings}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \subsection{Uniform Ensembles}
 Here we have an ensemble of $\Ens \sim \Unif(0,1)$ matrices. We see a resemblance to
 stochastic matrices.
@@ -252,7 +254,7 @@ stochastic matrices.
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \newpage
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \subsection{Erdos p-Ensembles}
 
 Here we have the second largest eigenvalue of the Erdos-Renyi ensemble. We parameterize the eigenvalue by $p$ and we observe a trend below.
@@ -261,7 +263,7 @@ Here we have the second largest eigenvalue of the Erdos-Renyi ensemble. We param
 \FIGUREerdosLAMTWO{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \newpage
 \subsection{Normal Matrices}
 

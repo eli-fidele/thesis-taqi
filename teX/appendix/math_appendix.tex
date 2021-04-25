@@ -4,7 +4,7 @@
 %\noindent Add a short paragraph. Cite sources. Indicate how much the reader needs to skim. Think about the audience of this paper. Guide them to the resources as we are listing the definitions accordingly. Mention the importance and rank each definition (1,2,3 stars).
 \noindent In the first section of this appendix, we list a few items in Linear Algebra worth reviewing to make sure there are no gaps in knowledge necessary to understand concepts in this thesis. Additionally, there is another subsection including a proof that was written in the research process of this thesis. Albeit this proof has no direct relation to the primary topic, spectral statistics, it is loosely relevant and displays the tools and techniques relevant to the material.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \section{Linear Algebra}
 \subsection{Matrices}
 \begin{definition}[Eigenvalue]
@@ -54,7 +54,7 @@ $$ P^{\dagger}=P^{-1}. $$
 \begin{theorem}[Unitary Group]
 The set of {\em all} unitary matrices in $\C^{n\times n}$ is a matrix group. (It is called the {unitary group}.)
 \end{theorem}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \subsection{Other}
 
@@ -64,7 +64,7 @@ bla bla
 \end{theorem}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 
 \newpage
 
@@ -96,8 +96,8 @@ $$\forall i \in \N_{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
 
 \taqiproof
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 \newpage
 \section{Probability Theory}
 
@@ -109,7 +109,7 @@ Please refer to \cite{blitz} as a resource; the definitions were sourced from th
 A random variable $X: \Omega \to \R$ is a function from some sample space $\Omega = \{s_i\}_{i=1}^n$ to the real numbers $\R$. The sample space is taken to be any set of events such that the probability function corrosponding to the random variable, $p_X$ exhausts over all the events in $\Omega$. In other words, we expect $\int_\Omega p_X(s) = 1$.
 \end{definition}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \minititle{PDFs}
 
 \begin{definition}[Probability Density Function]
@@ -131,7 +131,7 @@ For example, consider the probability density function for a r.v. $X \sim \Norma
 $$\P(X = x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp (-\frac{1}{2} \left(\frac{x - \mu}{\sigma}\right)^2 )$$
 \end{example}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \minititle{CDFs}
 
 \begin{definition}[Cumulative Distribution Function]
@@ -150,7 +150,7 @@ A cumulative distribution function is characterized by a few properties that are
   \end{enumerate}
 \end{theorem}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \minititle{Independence}
 
 \begin{definition}[Independence]
@@ -164,8 +164,8 @@ $$ \P(X = x, Y = y) = \P(X = x) \P(Y = y) $$
 A vector of random variables $\vec{X} = (X_i)_{i = 1}^N$ is said to be i.i.d (independent and identially distributed) is each of its entries $X_i$ are exactly so.
 \end{definition}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 \subsection{Statistics}
 
 \begin{definition}[Statistic]
@@ -195,8 +195,8 @@ Let $\seq[n]{U}$ be i.i.d. $\Unif(0, 1)$. Then, the $j^{th}$ order statistic $U_
 %$$ f_j(x) = n \binom{n - 1}{j - 1} x^{j-1} (1-x)^{n-j}$$
 \end{theorem}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
 \newpage
 \section{Markov Chains}
 
@@ -213,7 +213,7 @@ Tie back the relevance of this section to the rest of this thesis. This will com
 $$ \Prb(X_{n+1} = j \mid X_n = i) = \Prb(X_{n+1} = j \mid X_n = i, X_{n-1} = i', \dots,X_0 = i^{(n-1)})$$
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \minititle{Transition Matrices}
 
 \begin{definition}[Transition Matrix]
@@ -240,7 +240,7 @@ $$q_{ij}^{(n)} \text{ is the } (i,j) \text{ entry of } Q^n$$
 \begin{definition}[Marginal Distribution of $X_n$] Let $\textbf{t} = (t_1,t_2,\dots,t_M)$ such that $\forall i \in S_M : t_i = \Prb(X_0 = i)$. So, $\textbf{t} \in \R^{1 \times M}$. Then, the marginal distribution of $X_n$ is given by the product of the vector $\textbf{t} Q^n \in \R^{1 \times M}$. That is, the $j^{th}$ component of that vector is $\P(X_n = j)$ for any $j \in S_M$. We may call $\textbf{t}$ an initial state distribution.
 \end{definition}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
 \minititle{Classification of states}
 
 \begin{itemize}
@@ -260,6 +260,6 @@ $$\forall i,j \in S_M: \exists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
 
 $$\exists i,j \in S_M: \nexists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
 \end{itemize}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=========================================================================================
+%=========================================================================================
+%=========================================================================================
