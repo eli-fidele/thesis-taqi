@@ -195,8 +195,8 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = FALSE, cplx = FALSE, herm = FALS
 #' # Generate a 3x3 random beta matrix with beta = 4
 #' P <- RM_beta(N = 3, beta = 4)
 #'
-#' # Generate a 10x10 random beta matrix with beta = 21
-#' P <- RM_beta(N = 10, beta = 21)
+#' # Generate a 10x10 random beta matrix with beta = 25
+#' P <- RM_beta(N = 10, beta = 25)
 #'
 RM_beta <- function(N, beta){
   # Set the diagonal as a N(0,2) distributed row.
