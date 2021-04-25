@@ -1,41 +1,46 @@
 
-# This script includes functions that help extract and plot eigenvalues of matrices.
+# dispersion : A script file including functions to help compute the dispersions
+# of random matrices and random matrix ensembles.
 
 #=================================================================================#
-#                           EIGENVALUE DISPERSION (PARALLEL)
+#                               DISPERSION (PARALLEL)
 #=================================================================================#
 
 #' @title Obtain the eigenvalue spacings of a matrix or ensemble of matrices.
-#'
 #' @description Returns a vector of the eigenvalue spacings of a random matrix or ensemble.
 #'
 #' @inheritParams dispersion
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
-#' @examples
 #' 
+#' @examples
 #' # Eigenvalue dispersion in parallel
 #' P <- RM_norm(N = 100, size = 500)
-#' #disp_P <- dispersion_parallel(P)
-dispersion_parallel <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
-  digits <- 4 # Digits to round values to
-  pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
-  # Array is a matrix; call function returning dispersion for singleton matrix
-  if(class(array) == "matrix"){
-    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
-  }
-  # Array is an ensemble; recursively row binding each matrix's dispersions
-  else if(class(array) == "list"){
+#' #disp_P <- dispersion_par(P)
+#' 
+dispersion_par <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
+  # Digits to round values to
+  digits <- 4
+  # Set up futures
+  future::plan(multisession)
+  # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
+  pairs <- .parsePairs(pairs, array) 
+  # Compute the dispersion
+  if(class(array) == "list"){
+    # Array is an ensemble; recursively row binding each matrix's dispersions
     furrr::future_map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
+  }
+  else{
+    # Array is a matrix; call function returning dispersion for singleton matrix
+    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
   }
 }
 
 #=================================================================================#
-#                              EIGENVALUE DISPERSION
+#                                   DISPERSION
 #=================================================================================#
 
 #' @title Obtain the eigenvalue spacings of a matrix or ensemble of matrices.
-#'
 #' @description Returns a vector of the eigenvalue spacings of a random matrix or ensemble.
 #'
 #' @param array a square matrix or matrix ensemble whose eigenvalue spacings are to be returned
@@ -44,8 +49,8 @@ dispersion_parallel <- function(array, pairs = NA, sort_norms = TRUE, singular =
 #' @param norm_pow power to raise norm to - defaults to 1 (the standard absolute value); otherwise raises norm to the power of argument (beta norm)
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
+#' 
 #' @examples
-#'
 #' # Eigenvalue dispersion of a normal matrix
 #' P <- RM_norm(N = 5)
 #' #disp_P <- dispersion(P)
@@ -55,13 +60,13 @@ dispersion_parallel <- function(array, pairs = NA, sort_norms = TRUE, singular =
 #' #disp_Q <- dispersion(Q)
 #'
 #' # Eigenvalue dispersion of an ensemble
-#' ensemble <- RME_norm(N = 3, size = 10)
-#' #disp_ensemble <- dispersion(ensemble)
+#' ens <- RME_norm(N = 3, size = 10)
+#' #disp_ens <- dispersion(ens)
 #'
 #' # Alternatively, use the pipe
-#' #disp_ensemble <- RME_norm(N = 3, size = 10) %>% dispersion()
+#' #disp_ens <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
-dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
+dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){
   digits <- 2 # Digits to round values to
   # Array is an ensemble; recursively row binding each matrix's dispersions
   if(class(array) == "list"){
@@ -77,13 +82,18 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
   }
 }
 
+#=================================================================================#
 # Find the eigenvalue dispersions for a given matrix
 .dispersion_matrix <- function(P, pairs, sort_norms, singular, norm_pow, digits = 4){
-  eigenvalues <- spectrum(P, sort_norms = sort_norms, singular = singular) # Get the sorted eigenvalues of the matrix
-  norm_fn <- function(x){(abs(x))^norm_pow} # Generate norm function to pass along as argument (Euclidean or Beta norm)
-  purrr::map2_dfr(pairs[,1], pairs[,2], .resolve_dispersion, eigenvalues, norm_fn, digits) # Evaluate the matrix dispersion
+  # Get the ordered spectrum of the matrix
+  eigenvalues <- spectrum(P, sort_norms = sort_norms, singular = singular) 
+  # Generate norm function to pass along as argument (Euclidean or Beta norm)
+  norm_fn <- function(x){ (abs(x))^norm_pow } 
+  # Compute the dispersion
+  purrr::map2_dfr(pairs[["i"]], pairs[["j"]], .resolve_dispersion, eigenvalues, norm_fn, digits) # Evaluate the matrix dispersion
 }
 
+#=================================================================================#
 # Read and parse a dispersion observation between eigenvalue i and j.
 .resolve_dispersion <- function(i, j, eigenvalues, norm_fn, digits){
   ## Copmute dispersion metrics
@@ -99,6 +109,10 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
   disp # Return resolved dispersion observation
 }
 
+#=================================================================================#
+#                           DISPERSION: HELPER FUNCTIONS
+#=================================================================================#
+
 # Parses a matrix spectrum array for the eigenvalue at a given order as cplx type (for arithmetic)
 .read_eigenvalue <- function(order, mat_spectrum){
   if(ncol(mat_spectrum) == 3){mat_spectrum[order, 1]} # If the components are not resolved, return value in the first (Eigenvalue) column
@@ -109,9 +123,6 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
 }
 
 #=================================================================================#
-#                                 PAIR SCHEMA
-#=================================================================================#
-
 # Parse a string argument for which pairing scheme to utilize
 .parsePairs <- function(pairs, array){
   valid_schemes <- c("largest", "lower", "upper", "consecutive", "all") # Valid schemes for printing if user is unaware of options
@@ -132,29 +143,38 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
   pair_scheme # Return pair scheme
 }
 
-# The antisymmetric pair scheme (for assymetric dispersion metrics); essentially all the permutations
+#=================================================================================#
+#                                PAIRING SCHEMES
+#=================================================================================#
+
+# The trivial pairing scheme: 
+# Enumerate all possible pairs.
 .all_pairs <- function(N){
   purrr::map_dfr(1:N, function(i, N){data.frame(i = rep(i, N), j = 1:N)}, N)
 }
 
-# The consecutive-value scheme (Sufficient such that no linear combiantions of the diseprsion metric exists); one apart
+#=================================================================================#
+# The consecutive pairing scheme:
+# Enumerate all possible consecutive/neighboring pairs. No linear combiantions of dispersions exist.
 .consecutive_pairs <- function(N){
   purrr::map_dfr(2:N, function(i){data.frame(i = i, j = i - 1)})
 }
 
-# The triangular pair schema (for symmetric dispersion metrics); essentially all the combinations
-# (Enumerate the pair combinations given N items with i > j)
+#=================================================================================#
+# The lower-triangular pairing scheme:
+# Enumerate the pair combinations given N items with i > j.
 .unique_pairs_lower <- function(N){
   is <- do.call("c", purrr::map(1:N, function(i){rep(i,N)}))
   js <- rep(1:N, N)
   do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i > j){c(i = i, j = j)}}))
 }
-# The triangular pair schema (for symmetric dispersion metrics); essentially all the combinations
-# (Enumerate the pair combinations given N items with i < j)
+
+#=================================================================================#
+# The upper-triangular pairing scheme:
+# Enumerate the pair combinations given N items with i < j.
 .unique_pairs_upper <- function(N){
   is <- do.call("c", purrr::map(1:N, function(i){rep(i,N)}))
   js <- rep(1:N, N)
   do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i < j){c(i = i, j = j)}}))
 }
-
 

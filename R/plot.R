@@ -222,7 +222,7 @@ spectrum.histogram <- function(array, ..., component = NA, bins = 100, mat_str =
   # Plot lambda function
   component_plot <- function(component){
     # Plot parameters
-    component_str <- paste(" (",component,")",collapse = "")
+    component_str <- paste(" (",component,")", sep = "")
     # Plot
     array_spectrum %>%
       ggplot() +
