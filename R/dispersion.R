@@ -39,16 +39,12 @@ dispersion <- function(array, pairs = NA, norm_order = TRUE, singular = FALSE, p
   pairs <- .parsePairs(pairs, array, array_class)
   # For ensembles; iteratively rbind() each matrix's dispersion
   if(array_class == "ensemble"){
-    disp <- purrr::map_dfr(array, .dispersion_matrix, pairs, norm_order, singular, pow_norm, digits)
+    purrr::map_dfr(array, .dispersion_matrix, pairs, norm_order, singular, pow_norm, digits)
   }
   # Array is a matrix; call function returning dispersion for singleton matrix
   else if(array_class == "matrix"){
-    disp <- .dispersion_matrix(array, pairs, norm_order, singular, pow_norm, digits)
+    .dispersion_matrix(array, pairs, norm_order, singular, pow_norm, digits)
   }
-  # Resolve column types; i.e. coerce real-valued eigenvalues to a numeric type if possible
-  disp <- .resolveNumType(disp)
-  # Return the dispersion
-  disp
 }
 
 #=================================================================================#
@@ -58,10 +54,8 @@ dispersion <- function(array, pairs = NA, norm_order = TRUE, singular = FALSE, p
   eigenvalues <- spectrum(P, norm_order = norm_order, singular = singular)
   # Generate norm function to pass along as argument (Euclidean or Beta norm)
   norm_fn <- function(x){ (abs(x))^pow_norm }
-  # Compute the dispersion
-  disp <- purrr::map2_dfr(pairs[["i"]], pairs[["j"]], .resolve_dispersion, eigenvalues, norm_fn, digits)
-  # Return the dispersion
-  disp
+  # Compute and return the dispersion
+  purrr::map2_dfr(pairs[["i"]], pairs[["j"]], .resolve_dispersion, eigenvalues, norm_fn, digits)
 }
 
 #=================================================================================#
@@ -163,7 +157,9 @@ dispersion <- function(array, pairs = NA, norm_order = TRUE, singular = FALSE, p
 .unique_pairs_lower <- function(N){
   is <- do.call("c", purrr::map(1:N, function(i){rep(i,N)}))
   js <- rep(1:N, N)
-  pairs <- do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i > j){c(i = i, j = j)}}))
+  # Helper function: selects elements only if they are lower triangular
+  .isLowerTri <- function(i, j){if(i > j){ c(i = i, j = j) }}
+  pairs <- do.call("rbind",purrr::map2(is, js, .f = .isLowerTri))
   data.frame(pairs)
 }
 
@@ -173,7 +169,9 @@ dispersion <- function(array, pairs = NA, norm_order = TRUE, singular = FALSE, p
 .unique_pairs_upper <- function(N){
   is <- do.call("c", purrr::map(1:N, function(i){rep(i,N)}))
   js <- rep(1:N, N)
-  pairs <- do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i < j){c(i = i, j = j)}}))
+  # Helper function: selects elements only if they are lower triangular
+  .isUpperTri <- function(i, j){if(i < j){ c(i = i, j = j) }}
+  pairs <- do.call("rbind",purrr::map2(is, js, .f = .isUpperTri))
   data.frame(pairs)
 }
 
