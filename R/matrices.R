@@ -13,9 +13,9 @@
 #' @param cplx indicates whether the matrix should have complex entries.
 #' @param herm indicates whether the matrix should be hermitian (equal to its conjugate transpose).
 #'   Reserved for when complex = T, otherwise use symm = T.
-#' 
+#'
 #' @return A random matrix with uniformly distributed entries.
-#' 
+#'
 #' @examples
 #' # Unif(1,2) distributed matrix
 #' P <- RM_unif(N = 3, min = 1, max = 2)
@@ -59,7 +59,7 @@ RM_unif <- function(N, min, max, symm = FALSE, cplx = FALSE, herm = FALSE){
 #' @param cplx indicates whether the matrix should have complex entries.
 #' @param herm indicates whether the matrix should be hermitian (equal to its conjugate transpose).
 #'   Reserved for when complex = T, otherwise use symm = T.
-#' 
+#'
 #' @return A random matrix with normally distributed entries.
 #' @examples
 #' # N(1,2) distributed matrix
@@ -96,9 +96,9 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = FALSE, cplx = FALSE, herm = FALS
 #'
 #' @param N number of dimensions of the square matrix
 #' @param beta the value of the beta parameter for the beta ensemble
-#' 
+#'
 #' @return A random Hermite beta matrix with any integer parameter beta
-#' 
+#'
 #' @examples
 #' # Generate a 3x3 random beta matrix with beta = 4
 #' P <- RM_beta(N = 3, beta = 4)
@@ -121,9 +121,9 @@ RM_beta <- function(N, beta){
 #'
 #' @param N number of dimensions of the square matrix
 #' @param symm indicates whether the matrix should be symmetric; equal to its transpose.
-#' 
+#'
 #' @return A random tridiagonal matrix with N(0,2) diagonal and N(0,1) band.
-#' 
+#'
 #' @examples
 #' # Generate a 3x3 standard normal tridiagonal matrix
 #' P <- RM_trid(N = 3)
@@ -149,9 +149,9 @@ RM_trid <- function(N, symm = FALSE){
 #' @param N number of dimensions of the square matrix
 #' @param symm indicates whether the matrix should be symmetric; equal to its transpose.
 #' @param sparsity indicates whether the matrix should add some arbitrary sparsity (zeros)
-#' 
+#'
 #' @return A random stochastic matrix.
-#' 
+#'
 #' @examples
 #' P <- RM_stoch(N = 3)
 #' P <- RM_stoch(N = 9, sparsity = TRUE)
@@ -184,9 +184,9 @@ RM_stoch <- function(N, symm = F, sparsity = F){
 #' @param p the probability two vertices are connected in an Erdos-Renyi graph.
 #' @param stoch indicates whether the matrix should be stochastic;
 #'   changing this parameter may lead to the function returning invalid transition matrices.
-#' 
+#'
 #' @return A random stochastic matrix corrosponding to a walk on an Erdos-Renyi graph with probability p.
-#' 
+#'
 #' @examples
 #' # Very sparse graph
 #' P <- RM_erdos(N = 3, p = 0.2)
@@ -257,7 +257,7 @@ RM_erdos <- function(N, p, stoch = T){
 }
 
 #=================================================================================#
-# Return the off-diagonal entries of row i 
+# Return the off-diagonal entries of row i
 .offdiagonalEntries <- function(row, row_index){
   row[which(1:length(row) != row_index)]
 }
@@ -270,13 +270,13 @@ RM_erdos <- function(N, p, stoch = T){
 #' @description Given the same arguments as RM_norm, this function returns an ensemble of random normal matrices.
 #'   While random matrices usually do not exude unique properties on their own, they do indeed have
 #'   deterministic properties at the ensemble level in terms of their spectral statistics.
-#' 
+#'
 #' @inheritParams RM_unif
 #' @param ... any default-valued parameters taken as arguments by RM_norm()
 #' @param size the size of the ensemble (i.e. number of matrices)
-#' 
+#'
 #' @return An ensemble (list) of normal matrices as specified by the matrix arguments.
-#' 
+#'
 #' @examples
 #' # Generate an ensemble of standard normal 3x3 matrices of size 20
 #' ensemble <- RME_norm(N = 3, size = 20)
@@ -288,13 +288,13 @@ RME_unif <- function(N, min, max, ..., size){lapply(X = rep(N, size), FUN = RM_u
 #' @description Given the same arguments as RM_norm, this function returns an ensemble of random normal matrices.
 #'   While random matrices usually do not exude unique properties on their own, they do indeed have
 #'   deterministic properties at the ensemble level in terms of their spectral statistics.
-#' 
+#'
 #' @inheritParams RM_norm
 #' @param ... any default-valued parameters taken as arguments by RM_norm()
 #' @param size the size of the ensemble (i.e. number of matrices)
-#' 
+#'
 #' @return An ensemble (list) of normal matrices as specified by the matrix arguments.
-#' 
+#'
 #' @examples
 #' # Generate an ensemble of standard normal 3x3 matrices of size 20
 #' ensemble <- RME_norm(N = 3, size = 20)
@@ -309,9 +309,9 @@ RME_norm <- function(N, mean = 0, sd = 1, ..., size){lapply(X = rep(N, size), FU
 #'
 #' @inheritParams RM_beta
 #' @param size the size of the ensemble (i.e. number of matrices)
-#' 
+#'
 #' @return An ensemble (list) of beta matrices as specified by the matrix arguments.
-#' 
+#'
 #' @examples
 #' # Generate an ensemble of 10x10 beta matrices with beta = 4 of size 100.
 #' ensemble <- RME_beta(N = 10, beta = 4, size = 100)
@@ -327,9 +327,9 @@ RME_beta <- function(N, beta, size){lapply(X = rep(N, size), FUN = RM_beta, beta
 #' @inheritParams RM_stoch
 #' @param ... pass any default-valued parameters taken as arguments by RM_stoch()
 #' @param size the size of the ensemble (i.e. number of matrices)
-#' 
+#'
 #' @return An ensemble (list) of stochastic matrices as specified by the matrix arguments.
-#' 
+#'
 #' @examples
 #' # Generate an ensemble of random 5x5 transition matrices of size 20.
 #' ensemble <- RME_stoch(N = 5, size = 20)
@@ -348,12 +348,12 @@ RME_stoch <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_stoch, ...
 #' @inheritParams RM_erdos
 #' @param ... any default-valued parameters taken as arguments by RM_erdos()
 #' @param size the size of the ensemble (i.e. number of matrices)
-#' 
+#'
 #' @return An ensemble (list) of Erdos-Renyi transition matrices as specified by the matrix arguments.
-#' 
+#'
 #' @examples
 #' # Generate an ensemble of 10x10 Erdos-Renyi transition matrices of size 50 with p = 0.7
-#' # ensemble <- RME_erdos(N = 10, p = 0.7, size = 50)
+#' ensemble <- RME_erdos(N = 10, p = 0.7, size = 50)
 #'
 RME_erdos <- function(N, p, ..., size){lapply(X = rep(N, size), FUN = RM_erdos, p, ...)}
 
