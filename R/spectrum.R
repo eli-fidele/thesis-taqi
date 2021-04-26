@@ -59,7 +59,7 @@ spectrum <- function(array, components = TRUE, norm_order = TRUE, singular = FAL
   # If uninitialized, get eigenvalues of all orders; otherwise, use c() so singletons => vectors
   if(class(order) == "logical"){order <- 1:nrow(P)} else{order <- c(order)}
   # Return the spectrum of the matrix
-  return(purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits))
+  purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits)
 }
 
 #=================================================================================#

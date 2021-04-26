@@ -8,11 +8,7 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 
 # Matrices
 
-Random matrices can either be explicitly or implicitly distributed. If they are explicitly distributed, their entries have a specific distribution. Otherwise, the entries have an implicit distribution imposed by generative algorithm the matrix uses.
-
 ## Explicitly Distributed
-
-For (homogenous) explicitly distributed matrices, we can use a ``function factory'' method to be concise. The actual implementation is more verbose for the purposes of argument documentation, but the following code is minimal and fully functional. Additionally, there are the beta matrices, which use the matrix model provided by the algorithm in Dimitriu's paper.
 
 ### Homogenously Distributed
 
@@ -49,17 +45,14 @@ RM_explicit_cplx <- function(rdist){
 }
 ```
 
-With our function factories set up, we can quickly generate all the random matrix functions for all the distributions our hearts could desire.
-
 ```{r}
 RM_unif <- RM_explicit_cplx(runif)
 RM_norm <- RM_explicit_cplx(rnorm)
 ```
 
+\newpage
 
 ### Beta Matrices
-
-For the $\beta$-ensemble matrices, we simply use the algorithm provided in Dimitriu's paper. Doing so, we get the function:
 
 ```{r}
 # Generate a Hermite beta matrix using Dumitriu's Matrix Model
@@ -81,11 +74,7 @@ RM_beta <- function(N, beta){
 
 ## Implicitly Distributed
 
-In the case of implicitly distributed matrices, we have various types of stochastic matrices.
-
 ### Stochastic Matrices
-
-For stochastic matrices, we require slightly more setup. First, we setup the row functions to sample probability vectors:
 
 ```{r}
 # Generates stochastic rows of length N
@@ -96,8 +85,6 @@ For stochastic matrices, we require slightly more setup. First, we setup the row
   row / sum(row)
 }
 ```
-
-For random introduced sparsity, we define the following row function.
 
 ```{r}
 # Generates same rows as in .stoch_row(N), but with randomly introduced sparsity
@@ -113,8 +100,6 @@ For random introduced sparsity, we define the following row function.
 }
 ```
 
-Once this is done, we can use this function iteratively. With some magic, we can incorporate an option to make the matrix symmetric, and we get the following function.
-
 ```{r}
 RM_stoch <- function(N, symm = F, sparsity = F){
   # Choose row function depending on sparsity argument
@@ -129,8 +114,6 @@ RM_stoch <- function(N, symm = F, sparsity = F){
 ```
 
 ### Erdos-Renyi Matrices
-
-For the Erdos-Renyi walks, we do something similar by defining a parameterized row function.
 
 ```{r}
 # Generates a stochastic row with parameterized sparsity of p
@@ -150,7 +133,7 @@ For the Erdos-Renyi walks, we do something similar by defining a parameterized r
 }
 ```
 
-And we again use the row function iteratively to get the following function.
+\newpage
 
 ```{r}
 RM_erdos <- function(N, p, stoch = T){
@@ -160,8 +143,6 @@ RM_erdos <- function(N, p, stoch = T){
   P
 }
 ```
-
-And as such, we have minimal, functional implementations of functions that sample random matrices! In total, we only needed two helper functions. The `.offdiagonalEntries` function was used to normalize the probabilities in `RM_stoch` and `RM_erdos`.
 
 ```{r}
 # Returns a Hermitian version of a matrix by manual assignment
@@ -187,18 +168,15 @@ And as such, we have minimal, functional implementations of functions that sampl
 
 ## Ensemble Extensions
 
-Lastly, we have the ensemble extensions. These functions are quite simple to implement user a ``function factory''. Again, the actual implementations are more verbose due to the argument descriptions, but otherwise, are exactly the same.
-
 ```{r}
+# Extends a RM_dist function to its RME_dist ensemble counterpart 
 RME_extender <- function(RM_dist){
-  # Function returns a list of replicates of the RM_dist function with ... as its arguments
+  # Function returns a list of replicates of the RM_dist function with '...' as arguments
   function(N, ..., size){
     lapply(X = rep(N, size), FUN = RM_dist, ...)
   }
 }
 ```
-
-Now, we extend the functions as follows, and we are done with the matrix module!
 
 ```{r}
 RME_unif <- RME_extender(RM_unif)
@@ -222,7 +200,7 @@ spectrum <- function(array, components = T, norm_order = T, singular = F, order 
   array_class <- .arrayClass(array)
   # For ensembles, iteratively rbind() each matrix's spectrum
   if(array_class == "ensemble"){
-    purrr::map_dfr(array, .spectrum_matrix, components, norm_order, singular, order, digits)
+    map_dfr(array, .spectrum_matrix, components, norm_order, singular, order, digits)
   }
   # From matrices, call the function returning the ordered spectrum for a singleton matrix
   else if(array_class == "matrix"){
@@ -245,7 +223,7 @@ spectrum <- function(array, components = T, norm_order = T, singular = F, order 
   # If uninitialized, select all orders; otherwise, use c() so singletons => vectors
   if(class(order) == "logical"){order <- 1:nrow(P)} else{order <- c(order)}
   # Return the spectrum of the matrix
-  return(purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits))
+  purrr::map_dfr(order, .resolve_eigenvalue, eigenvalues, components, digits)
 }
 ```
 
@@ -317,7 +295,7 @@ dispersion <- function(array, pairs = NA, norm_order = T, singular = F, pow_norm
   pairs <- .parsePairs(pairs, array, array_class)
   # For ensembles; iteratively rbind() each matrix's dispersion
   if(array_class == "ensemble"){
-    purrr::map_dfr(array, .dispersion_matrix, pairs, norm_order, singular, pow_norm, digits)
+    map_dfr(array, .dispersion_matrix, pairs, norm_order, singular, pow_norm, digits)
   }
   # Array is a matrix; call function returning dispersion for singleton matrix
   else if(array_class == "matrix"){
@@ -334,7 +312,7 @@ dispersion <- function(array, pairs = NA, norm_order = T, singular = F, pow_norm
   # Generate norm function to pass along as argument (Euclidean or Beta norm)
   norm_fn <- function(x){ (abs(x))^pow_norm }
   # Compute and return the dispersion
-  purrr::map2_dfr(pairs[["i"]], pairs[["j"]], .resolve_dispersion, eigenvalues, norm_fn, digits)
+  map2_dfr(pairs[["i"]], pairs[["j"]], .resolve_dispersion, eigenvalues, norm_fn, digits)
 }
 ```
 
@@ -399,6 +377,7 @@ dispersion <- function(array, pairs = NA, norm_order = T, singular = F, pow_norm
 ### Pairing Schema
 
 ```{r}
+#=================================================================================#
 # The trivial pairing scheme:
 # Enumerate all possible pairs.
 .all_pairs <- function(N){
