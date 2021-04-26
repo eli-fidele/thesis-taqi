@@ -1,0 +1,32 @@
+---
+title: "Tests"
+author: "Ali Taqi"
+date: "2/19/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+library(RMAT)
+library(purrr)
+#source("../R/mat-diag.R")
+#source("../R/matrices.R")
+```
+
+# eigen()
+
+```{r}
+# Set parameters
+N <- 50
+reps <- 5e3
+# Time function calls
+system.time(replicate(n = reps, expr = eigen(RM_norm(N = N), only.values = T)$values))
+```
+
+```{r}
+# Set parameters
+N <- 50
+reps <- 5e3
+# Time function calls
+system.time(replicate(n = reps, expr = eigen(RM_norm(N = N), only.values = F)$values))
+```

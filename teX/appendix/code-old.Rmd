@@ -123,6 +123,11 @@ RM_stoch <- function(N, symm = F, sparsity = F){
 }
 ```
 
+```{r}
+RM_stoch(N = 4, symm = T)
+```
+
+
 ### Erdos-Renyi Matrices
 
 For the Erdos-Renyi walks, we do something similar by defining a parameterized row function.

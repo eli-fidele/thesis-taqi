@@ -107,13 +107,16 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = FALSE, cplx = FALSE, herm = FALS
 #' P <- RM_beta(N = 10, beta = 25)
 #'
 RM_beta <- function(N, beta){
-  # Set the diagonal as a N(0,2) distributed row.
-  P <- diag(rnorm(N, mean = 0, sd = sqrt(2)))
-  # Set the off-1 diagonals as chi squared variables with df(beta), as given in Dumitriu's model
-  df_seq <- beta*(N - seq(1, N-1)) # Get degrees of freedom sequence for offdigonal
-  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- sqrt(rchisq(N-1, df_seq)) # Generate tridiagonal
-  P <- P/sqrt(2) # Rescale the entries by 1/sqrt(2)
-  P # Return the matrix
+  # Set the diagonal ~ N(0,2)
+  P <- diag(rnorm(n = N, mean = 0, sd = sqrt(2)))
+  # Get degrees of freedom sequence for offdigonal
+  df_seq <- beta * (N - seq(1, N-1))
+  # Set the off-1 diagonals as chi squared variables with df(beta_i)
+  P[row(P) - col(P) == 1] <- P[row(P) - col(P) == -1] <- sqrt(rchisq(N-1, df_seq))
+  # Rescale the entries by 1/sqrt(2)
+  P <- P/sqrt(2)
+  # Return the beta matrix
+  P
 }
 
 #=================================================================================#
@@ -159,19 +162,14 @@ RM_trid <- function(N, symm = FALSE){
 #' Q <- RM_stoch(N = 9, symm = TRUE, sparsity = TRUE)
 #'
 RM_stoch <- function(N, symm = F, sparsity = F){
-  if(sparsity){row_fxn <- .stoch_row_zeros} else {row_fxn <- .stoch_row} # Choose row function
-  # Generate the [N x N] stochastic matrix stacking N stochastic rows (using the chosen function)
+  # Choose row function depending on sparsity argument
+  if(sparsity){row_fxn <- .stoch_row_zeros} else {row_fxn <- .stoch_row}
+  # Generate the [N x N] stochastic matrix stacking N stochastic rows
   P <- do.call("rbind", lapply(X = rep(N, N), FUN = row_fxn))
-  if(symm){ # Make symmetric (if prompted)
-    P <- .makeHermitian(P) # Make lower and upper triangles equal to each other's conjugate transpose
-    diag(P) <- rep(0, N) # Nullify diagonal
-    for(i in 1:N){P[i, ] <- P[i, ]/sum(P[i, ])} # Normalize rows
-    # Set diagonal to the diff. between 1 and the non-diagonal entry sums such that rows sum to 1
-    diag <- vector("numeric", N)
-    for(i in 1:N){diag[i] <- (1 - sum(.offdiagonalEntries(row = P[i, ], row_index = i)))}
-    diag(P) <- diag
-  }
-  P # Return the matrix
+  # Make symmetric (if prompted)
+  if(symm){ P <- .makeStochSymm(P) }
+  # Return the matrix
+  P
 }
 
 #=================================================================================#
@@ -182,8 +180,6 @@ RM_stoch <- function(N, symm = F, sparsity = F){
 #'
 #' @param N number of dimensions of the square matrix
 #' @param p the probability two vertices are connected in an Erdos-Renyi graph.
-#' @param stoch indicates whether the matrix should be stochastic;
-#'   changing this parameter may lead to the function returning invalid transition matrices.
 #'
 #' @return A random stochastic matrix corrosponding to a walk on an Erdos-Renyi graph with probability p.
 #'
@@ -191,69 +187,97 @@ RM_stoch <- function(N, symm = F, sparsity = F){
 #' # Very sparse graph
 #' P <- RM_erdos(N = 3, p = 0.2)
 #'
+#' # Slightly sparse graph
 #' P <- RM_erdos(N = 9, p = 0.6)
 #'
 #' # Completely connected graph
 #' P <- RM_erdos(N = 5, p = 1)
 #'
-#' # May yield invalid transition matrix.
-#' Q <- RM_erdos(N = 5, p = 0.3, stoch = FALSE)
-#'
 RM_erdos <- function(N, p, stoch = T){
-  # Generate an [N x N] Erdos-Renyi walk stochastic matrix by stacking N p-stochastic rows
+  # Generate an [N x N] Erdos-Renyi stochastic matrix by stacking N p-stochastic rows
   P <- do.call("rbind", lapply(X = rep(N, N), FUN = .stoch_row_erdos, p = p))
-  # If the matrix is to be truly stochastic, map rows with all zeros to have diagonal entry 1
-  if(stoch){
-    # Set diagonal to ensure that rows sum to 1
-    diag <- rep(0, N)
-    for(i in 1:N){diag[i] <- (1 - sum(.offdiagonalEntries(row = P[i, ], row_index = i)))}
-    diag(P) <- diag
-  }
-  P # Return the matrix
+  # Return the Erdos-Renyi transition matrix
+  P
 }
 
 #=================================================================================#
 #                            STOCHASTIC ROW FUNCTIONS
 #=================================================================================#
 
-# Generates stochastic rows of size N
+# Generates stochastic rows of length N
 .stoch_row <- function(N){
-  row <- runif(N,0,1) # Sample probability distribution
-  row/sum(row) # Return normalized row
+  # Sample a vector of probabilities
+  row <- runif(n = N, min = 0, max = 1)
+  # Return the normalized row (sums to one)
+  row / sum(row)
 }
 
 #=================================================================================#
-# Generates same rows as in r_stoch(N), but with introduced random sparsity
+# Generates same rows as in .stoch_row(N), but with randomly introduced sparsity
 .stoch_row_zeros <- function(N){
-  row <- runif(N,0,1)
-  degree_vertex <- sample(1:(N-1), size = 1) # Sample a degree of at least 1, as to ensure row is stochastic
-  row[sample(1:N, size = degree_vertex)] <- 0 # Choose edges to sever and sever them
-  row/sum(row) # Return normalized row
+  # Sample a vector of probabilities
+  row <- runif(n = N, min = 0, max = 1)
+  # Sample a vertex degree of at least one (as to ensure row is stochastic)
+  degree_vertex <- sample(x = 1:(N-1), size = 1)
+  # Sever a random selection of edges to set the vertex degree
+  row[sample(1:N, size = N - degree_vertex)] <- 0
+  # Return normalized row
+  row / sum(row)
 }
 
 #=================================================================================#
 # Generates a stochastic row with parameterized sparsity of p
 .stoch_row_erdos <- function(N, p){
-  row <- runif(N,0,1) # Generate a uniform row of probabilites
-  degree_vertex <- rbinom(1, N, 1-p) # Sample number of zeros so that degree of row/vertex i ~ Bin(n,p)
-  row[sample(1:N, degree_vertex)] <- 0 # Choose edges to sever and sever them
-  if(sum(row) != 0){row/sum(row)} else{row} # Return normalized row only if non-zero (cannot divide by 0)
+  # Sample a vector of probabilities
+  row <- runif(n = N, min = 0, max = 1)
+  # Sample the vertex degree so that it is ~ Bin(n,p)
+  degree_vertex <- rbinom(n = 1, size = N, prob = 1 - p)
+  # Sever a random selection of edges to set the vertex degree
+  row[sample(1:N, degree_vertex)] <- 0
+  # Return normalized row only if non-zero (cannot divide by 0)
+  if(sum(row) != 0){
+    row / sum(row)
+  } else{
+    .stoch_row_erdos(N, p) # Otherwise, try again
+  }
 }
 
 #=========================================================================#
 #                             HELPER FUNCTIONS
 #=========================================================================#
 
-# Manually make equate the entries in the upper triangle to the conjugate of those in the lower triangle of the matrix
+# Returns a Hermitian version of a matrix by manual assignment
 .makeHermitian <- function(P){
-  # Run over entry of the matrix
   for(i in 1:nrow(P)){
     for(j in 1:ncol(P)){
-      # Restrict view to one of the triangles (i < j): Lower Triangle
-      if(i < j){P[i,j] <- Conj(P[j,i])} # Equalize lower and upper triangles, making conjugate if complex
+      # Select the entries in the upper triangle (i < j)
+      if(i < j){
+        # Make the upper triangle equal to the conjugate transpose of the lower triangle
+        P[i,j] <- Conj(P[j,i])
+      }
     }
   }
-  P # Return Hermitian Matrix
+  # Return the Hermitian Matrix
+  P
+}
+
+#=================================================================================#
+# Take a stochastic matrix and make it symmetric
+.makeStochSymm <- function(P_){
+  # Get parameters
+  N <- nrow(P_)
+  # Make lower and upper triangles equal to each other's conjugate transpose
+  P <- .makeHermitian(P_)
+  # Nullify diagonal
+  diag(P) <- rep(0, N)
+  # Normalize rows
+  for(i in 1:N){P[i, ] <- P[i, ]/sum(P[i, ])}
+  # Set diagonal to diffrence between 1 and sum of offdigonal entries to make rows sum to 1
+  diag <- vector(mode = "numeric", length = N)
+  for(i in 1:N){diag[i] <- (1 - sum(.offdiagonalEntries(row = P[i, ], row_index = i)))}
+  diag(P) <- diag
+  # Return the symmetric stochastic matrix
+  return(P)
 }
 
 #=================================================================================#
@@ -356,4 +380,3 @@ RME_stoch <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_stoch, ...
 #' ensemble <- RME_erdos(N = 10, p = 0.7, size = 50)
 #'
 RME_erdos <- function(N, p, ..., size){lapply(X = rep(N, size), FUN = RM_erdos, p, ...)}
-
