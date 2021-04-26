@@ -14,10 +14,12 @@ source("../R/header.R")
 ```{r}
 set.seed(23)
 run <- T
-if(run)
-{
-save <- T
-if(save){ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)}
+if(run){
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)
+  }
 }
 ```
 
@@ -64,7 +66,7 @@ ens_disp %>% dispersion.scatterplot(metric = "id_diff_norm") / ens_disp %>% disp
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run)
 {
 # Set parameters
@@ -80,4 +82,45 @@ save <- F
 if(save){ggsave(filename = "2-1-2_comparison.pdf", path = "chap2", width = 10.5, height = 7)}
 }
 ```
+
+### Pair Table
+
+```{r}
+# ===================================================
+#                       Setup
+# ===================================================
+dispersion.table <- function(dispersion, component){
+  # Plot parameters
+  jitt <- 0.4
+  # Plot
+  disp_ens %>%
+    ggplot(mapping = aes(x = j, y = i, color = {{ component }})) +
+    geom_jitter(width = jitt, height = jitt) +
+    scale_color_viridis_c() +
+    scale_y_reverse()
+}
+# ===================================================
+#                     Simulation
+# ===================================================
+set.seed(23)
+run <- T
+if(run){
+  # Generate the plot
+  ens <- RME_beta(50, beta = 4, size = 50)
+  disp_ens <- ens %>% dispersion_par(pairs = "lower")
+  table_plot <- disp_ens %>% dispersion.table(component = abs_diff)
+  table_plot <- table_plot + labs(title = "Eigenvalue Pair Difference of Norms for Beta = 4")
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "3-2_pairtable.pdf", path = "chap3", width = 10.5, height = 7)
+  }
+}
+```
+
+
+```{r}
+
+```
+
 

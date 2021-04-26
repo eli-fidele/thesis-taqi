@@ -58,7 +58,7 @@ dispersion_par <- function(array, pairs = NA, norm_order = TRUE, singular = FALS
   # Get the type of array
   array_class <- .arrayClass(array)
   # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
-  pairs <- .parsePairs(pairs, array)
+  pairs <- .parsePairs(pairs, array, array_class)
   # Compute the dispersion
   if(array_class == "ensemble"){
     # Array is an ensemble; recursively row binding each matrix's dispersions
