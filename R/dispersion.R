@@ -3,40 +3,6 @@
 # of random matrices and random matrix ensembles.
 
 #=================================================================================#
-#                               DISPERSION (PARALLEL)
-#=================================================================================#
-
-#' @title Obtain the eigenvalue spacings of a matrix or ensemble of matrices.
-#' @description Returns a vector of the eigenvalue spacings of a random matrix or ensemble.
-#'
-#' @inheritParams dispersion
-#'
-#' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
-#' 
-#' @examples
-#' # Eigenvalue dispersion in parallel
-#' P <- RM_norm(N = 100, size = 500)
-#' #disp_P <- dispersion_par(P)
-#' 
-dispersion_par <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
-  # Digits to round values to
-  digits <- 4
-  # Set up futures
-  future::plan(multisession)
-  # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
-  pairs <- .parsePairs(pairs, array) 
-  # Compute the dispersion
-  if(class(array) == "list"){
-    # Array is an ensemble; recursively row binding each matrix's dispersions
-    furrr::future_map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
-  }
-  else{
-    # Array is a matrix; call function returning dispersion for singleton matrix
-    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
-  }
-}
-
-#=================================================================================#
 #                                   DISPERSION
 #=================================================================================#
 
@@ -46,10 +12,11 @@ dispersion_par <- function(array, pairs = NA, sort_norms = TRUE, singular = FALS
 #' @param array a square matrix or matrix ensemble whose eigenvalue spacings are to be returned
 #' @param pairs a string argument representing the pairing scheme to use
 #' @param sort_norms sorts the eigenvalue spectrum by its norms when TRUE; otherwise, sorts eigenvalue by sign
+#' @param singular get the singular values of the matrix (i.e. square root of the eigenvalues of the matrix times its transpose)
 #' @param norm_pow power to raise norm to - defaults to 1 (the standard absolute value); otherwise raises norm to the power of argument (beta norm)
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
-#' 
+#'
 #' @examples
 #' # Eigenvalue dispersion of a normal matrix
 #' P <- RM_norm(N = 5)
@@ -67,15 +34,18 @@ dispersion_par <- function(array, pairs = NA, sort_norms = TRUE, singular = FALS
 #' #disp_ens <- RME_norm(N = 3, size = 10) %>% dispersion()
 #'
 dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){
-  digits <- 2 # Digits to round values to
+  # Digits to round values to
+  digits <- 4
+  # Get the type of array
+  array_class <- .arrayClass(array)
   # Array is an ensemble; recursively row binding each matrix's dispersions
-  if(class(array) == "list"){
+  if(array_class == "ensemble"){
     # Parse input and generate pair scheme (default NA), passing on array for dimension
     pairs <- .parsePairs(pairs, array = array[[1]])
     purrr::map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
   }
   # Array is a matrix; call function returning dispersion for singleton matrix
-  else{
+  else if(array_class == "matrix"){
     # Parse input and generate pair scheme (default NA), passing on array for dimension
     pairs <- .parsePairs(pairs, array)
     .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
@@ -86,9 +56,9 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
 # Find the eigenvalue dispersions for a given matrix
 .dispersion_matrix <- function(P, pairs, sort_norms, singular, norm_pow, digits = 4){
   # Get the ordered spectrum of the matrix
-  eigenvalues <- spectrum(P, sort_norms = sort_norms, singular = singular) 
+  eigenvalues <- spectrum(P, sort_norms = sort_norms, singular = singular)
   # Generate norm function to pass along as argument (Euclidean or Beta norm)
-  norm_fn <- function(x){ (abs(x))^norm_pow } 
+  norm_fn <- function(x){ (abs(x))^norm_pow }
   # Compute the dispersion
   purrr::map2_dfr(pairs[["i"]], pairs[["j"]], .resolve_dispersion, eigenvalues, norm_fn, digits) # Evaluate the matrix dispersion
 }
@@ -147,7 +117,7 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
 #                                PAIRING SCHEMES
 #=================================================================================#
 
-# The trivial pairing scheme: 
+# The trivial pairing scheme:
 # Enumerate all possible pairs.
 .all_pairs <- function(N){
   purrr::map_dfr(1:N, function(i, N){data.frame(i = rep(i, N), j = 1:N)}, N)
@@ -176,5 +146,41 @@ dispersion <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, n
   is <- do.call("c", purrr::map(1:N, function(i){rep(i,N)}))
   js <- rep(1:N, N)
   do.call("rbind",purrr::map2(is, js, .f = function(i, j){if(i < j){c(i = i, j = j)}}))
+}
+
+#=================================================================================#
+#                               DISPERSION (PARALLEL)
+#=================================================================================#
+
+#' @title Obtain the eigenvalue spacings of a matrix or ensemble of matrices.
+#' @description Returns a vector of the eigenvalue spacings of a random matrix or ensemble.
+#'
+#' @inheritParams dispersion
+#'
+#' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
+#'
+#' @examples
+#' # Eigenvalue dispersion in parallel
+#' P <- RME_norm(N = 20, size = 100)
+#' #disp_P <- dispersion_par(P)
+#'
+dispersion_par <- function(array, pairs = NA, sort_norms = TRUE, singular = FALSE, norm_pow = 1){ #sortNorms? orderByNorms? pair_scheme?
+  # Digits to round values to
+  digits <- 4
+  # Set up futures
+  future::plan(future::multisession)
+  # Get the type of array
+  array_class <- .arrayClass(array)
+  # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
+  pairs <- .parsePairs(pairs, array)
+  # Compute the dispersion
+  if(array_class == "ensemble"){
+    # Array is an ensemble; recursively row binding each matrix's dispersions
+    furrr::future_map_dfr(array, .dispersion_matrix, pairs, sort_norms, singular, norm_pow, digits)
+  }
+  else if(array_class == "matrix"){
+    # Array is a matrix; call function returning dispersion for singleton matrix
+    .dispersion_matrix(array, pairs, sort_norms, singular, norm_pow, digits)
+  }
 }
 

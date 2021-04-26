@@ -1,9 +1,9 @@
- 
+
 # spectrum.R : A script file including functions to help compute the spectra
 # of random matrices and random matrix ensembles.
 
 #=================================================================================#
-#                              EIGENVALUE SPECTRUM 
+#                              EIGENVALUE SPECTRUM
 #=================================================================================#
 
 #' @title Obtain the eigenvalue spectrum of a matrix or ensemble of matrices.
@@ -17,7 +17,7 @@
 #'   If uninitialized, returns the entire spectrum.
 #'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
-#' 
+#'
 #' @examples
 #' # Eigenvalue spectrum of a random normal matrix
 #' P <- RM_norm(N = 5)
@@ -33,12 +33,14 @@
 spectrum <- function(array, components = TRUE, sort_norms = TRUE, singular = FALSE, order = NA){
   # Digits to round values to
   digits <- 4
+  # Get the type of array
+  array_class <- .arrayClass(array)
   # Array is an ensemble; recursively row binding each matrix's eigenvalues
-  if(class(array) == "list"){
+  if(array_class == "ensemble"){
     purrr::map_dfr(array, .spectrum_matrix, components, sort_norms, singular, order, digits)
   }
   # Array is a matrix; call function returning eigenvalues for singleton matrix
-  else{
+  else if(array_class == "matrix"){
     .spectrum_matrix(array, components, sort_norms, singular, order, digits)
   }
 }
@@ -53,7 +55,7 @@ spectrum <- function(array, components = TRUE, sort_norms = TRUE, singular = FAL
   # Take the square root of the eigenvalues to obtain singular values
   if(singular){eigenvalues <- sqrt(eigenvalues)}
   # Sort the eigenvalues to make it an ordered spectrum
-  eigenvalues <- .sort_values(eigenvalues, sort_norms)
+  eigenvalues <- .sortValues(eigenvalues, sort_norms)
   # If uninitialized, get eigenvalues of all orders; otherwise, use c() so singletons => vectors
   if(class(order) == "logical"){order <- 1:nrow(P)} else{order <- c(order)}
   # Return the spectrum of the matrix
@@ -70,21 +72,35 @@ spectrum <- function(array, components = TRUE, sort_norms = TRUE, singular = FAL
   if(components){
     # If components are requested, resolve parts into seperate columns and cbind to norm and order
     res <- cbind(data.frame(Re = Re(eigenvalue), Im = Im(eigenvalue)), features)
-  } else{ 
+  } else{
     # Otherwise, don't resolve the eigenvalue components
     res <- cbind(data.frame(Eigenvalue = eigenvalue), features)
   }
   # Round entries and return the resolved eigenvalue
-  res <- round(res, digits) 
-  return(res) 
+  res <- round(res, digits)
+  return(res)
 }
 
 #=================================================================================#
 #                           SPECTRUM: HELPER FUNCTIONS
 #=================================================================================#
 
+# Parses an array to see classify it as a matrix or an ensemble of matrices.
+.arrayClass <- function(array){
+  # Sample an element from the array and get its class
+  elem <- array[[1]]
+  types <- class(elem)
+  # Classify it by analyzing the element class
+  if("numeric" %in% types || "complex" %in% types){
+    return("matrix")
+  }
+  else if("matrix" %in% types){
+    return("ensemble")
+  }
+}
+
 # Sort an array of numbers by their norm (written for eigenvalue sorting)
-.sort_values <- function(vals, sort_norms){
+.sortValues <- function(vals, sort_norms){
   values <- data.frame(value = vals)
   # If asked to sort by norms, arrange by norm and return
   if(sort_norms){
@@ -92,7 +108,7 @@ spectrum <- function(array, components = TRUE, sort_norms = TRUE, singular = FAL
     values <- values %>% arrange(desc(norm))
     # Return the norm-sorted values
     values$value
-  } 
+  }
   # Otherwise, sort by sign and return
   else{ sort(vals, decreasing = TRUE) }
 }
@@ -103,27 +119,30 @@ spectrum <- function(array, components = TRUE, sort_norms = TRUE, singular = FAL
 
 #' @title Obtain the eigenvalue spectrum of a matrix or ensemble of matrices concurrently (faster).
 #' @description Returns a tidied dataframe of the eigenvalues of a random matrix or ensemble concurrently (faster).
-#' 
+#'
 #' @inheritParams spectrum
-#' 
+#'
 #' @return A tidy dataframe with the real & imaginary components of the eigenvalues and their norms along with a unique index.
-#' 
+#'
 #' @examples
-#' # Generate a random matrix 
-#' P <- RME_norm(N = 100, size = 500)
+#' # Generate a random matrix
+#' P <- RME_norm(N = 20, size = 100)
 #' # Compute the spectrum concurrently (faster)
-#' spec_P <- spectrum_par(P)
-#' 
+#' #spec_P <- spectrum_par(P)
+#'
 spectrum_par <- function(array, components = TRUE, sort_norms = TRUE, singular = FALSE, order = NA){
   # Digits to round values to
   digits <- 4
   # Set up futures
-  future::plan(multisession)
+  future::plan(future::multisession)
+  # Get the type of array
+  array_class <- .arrayClass(array)
   # Compute the spectrum
-  if(class(array) == "list") {
-    # Array is an ensemble; recursively row bind each matrix's eigenvalues  
+  if(array_class == "ensemble"){
+    # Array is an ensemble; recursively row bind each matrix's eigenvalues
     furrr::future_map_dfr(array, .spectrum_matrix, components, sort_norms, singular, order, digits)
-  } else {
+  }
+  else if(array_class == "matrix"){
     # Array is a matrix; call function returning eigenvalues for a singleton matrix
     .spectrum_matrix(array, components, sort_norms, singular, order, digits)
   }
