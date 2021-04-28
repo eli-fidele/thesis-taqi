@@ -17,8 +17,8 @@
 \newcommand{\ALGstoch}{
 	\begin{algorithm}[Stochastic Matrix] \hfill
 	\begin{enumerate}
-		\item To generate a stochastic square matix $P$ of size $N$, fix $N \in \N$.
-		\item Then, for every row of $P$, randomly sample a stochastic row and assign it to $P$.
+		\item To generate a stochastic square matix $P$ of size $N \times N$, fix $N \in \N$.
+		\item Then, for every row of $P$, randomly sample a stochastic row of size $N$ and assign it.
 		\item Return the stochastic matrix $P$.
 	\end{enumerate}
 	\end{algorithm}
