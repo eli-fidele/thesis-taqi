@@ -91,7 +91,7 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = FALSE, cplx = FALSE, herm = FALS
 #=================================================================================#
 #' @title Generate a Hermite \eqn{\beta}-matrix
 #' @description Hermite-\eqn{\beta} ensemble matrices are matrices with normal entries and beta real number components.
-#'   Using Dumitriu's tridiagonal matrix model, this function is an implementation of the generalized, but not necessarily invariant,
+#'   Using Ioana Dumitriu's tridiagonal matrix model, this function is an implementation of the generalized, but not necessarily invariant,
 #'   beta ensembles for \eqn{\beta} > 0.
 #'
 #' @param N number of dimensions of the square matrix

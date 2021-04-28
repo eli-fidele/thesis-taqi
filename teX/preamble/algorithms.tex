@@ -1,0 +1,84 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 																	Implicit D-Matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ALGstochrow}{
+	\begin{algorithm}[Stochastic Row] \hfill
+	\begin{enumerate}
+		\item To sample a row of size $N$, fix $N \in \N$.
+		\item Sample a vector $X$ with $N$ entries between $[0,1]$. So, generate $X = (x_i)_{i = 1}^N \where x_i \sim \Unif(0,1)$.
+		\item Normalize the rows by diving each entry by the row sum; so assign $x_i \la x_i \cdot \frac{1}{\sum{x_i}}$
+		\item Return the stochastic row $X$.
+	\end{enumerate}
+	\end{algorithm}
+}
+
+\newcommand{\ALGstoch}{
+	\begin{algorithm}[Stochastic Matrix] \hfill
+	\begin{enumerate}
+		\item To generate a stochastic square matix $P$ of size $N$, fix $N \in \N$.
+		\item Then, for every row of $P$, randomly sample a stochastic row and assign it to $P$.
+		\item Return the stochastic matrix $P$.
+	\end{enumerate}
+	\end{algorithm}
+}
+
+\newcommand{\ALGstochsymm}{
+	\begin{algorithm}[Symmetric Stochastic Matrix] \hfill
+	\begin{enumerate}
+		\item To sample a symmetric stochastic matrix $P$ of size $N$, fix $N \in \N$.
+		\item Sample a random stochastic matrix $Q$ of size $N$.
+		\item Choosing one of the triangles of $Q$, set both the upper and lower of triangles of $P$ to be that triangle.
+		\item Set the diagonal of the matrix $P$ to be equal to 1 minus the sum of the non-diagonal entries.
+		\item Return the symmetric stochastic matrix $P$.
+	\end{enumerate}
+	\end{algorithm}
+}
+
+\newcommand{\ALGerdos}{
+	\begin{algorithm}[Transition Matrix on an Erdos-Renyi Graph] \hfill
+	\begin{enumerate}
+		\item{Fix $N \in \N$ and $p \in [0,1]$}.
+		\item{Generate a matrix Q such that every entry $i,j\in \oneto[N]$ is $x_{ij} \sim \Unif(0,1)$.}
+		\item{For each $v_i$ in $\{1,\dots,N\}$, generate $deg(v_i) \sim \Bin(N,p)$.}
+		\item{Randomly chose $1-deg(v_i)$ vertices, set the entries $x_{ij}$ in the $j$ columns to 0.}
+		\item{Renormalize the matrix by dividing each row by its sum; let $(x_i) \leftarrow (x_i)/\sum_j(x_i)$}.
+	\end{enumerate}
+	\end{algorithm}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 																	Explicit D-Matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ALGexplicit}{
+	\begin{algorithm}[Explicit $\D$-Matrix] \hfill
+	\begin{enumerate}
+		\item To simulate a $\D$-distributed square matrix $P$ of size $N$, fix $N \in \N$.
+		\item Sample a vector $\vec{X}$ with $N$ i.i.d entries from $\D$. So, generate $\vec{X} = X_1,\dots,X_N \where X_i \text{is i.i.d } \D$.
+		\item Assign the vector $\vec{X}$ as a row of the matrix $P$. Repeat for every other row.
+		\item Return the $\D$-distributed matrix $P$.
+	\end{enumerate}
+	\end{algorithm}
+}
+
+\newcommand{\ALGbeta}{
+  \begin{algorithm}[Dumitriu's Beta Matrix] \hfill
+    \begin{enumerate}
+      \item To simulate an $N \times N$ beta matrix, fix $N \in \N$.
+      \item Start by taking a diagonal of $\Normal(0,2)$ variables.
+      \item Set both of the nearest off-diagonals to the row that samples from a $\chi(df = c_j) \where c_j = \beta \cdot j$ for columns spanning $j = 1,\dots,n-1$.
+    \end{enumerate}
+  \end{algorithm}
+}
+
+\newcommand{\ALGbetaunnum}{
+  \begin{algorithm*}[Dumitriu's Beta Matrix] \hfill
+    \begin{enumerate}
+      \item To simulate an $N \times N$ beta matrix, fix $N \in \N$.
+      \item Start by taking a diagonal of $\Normal(0,2)$ variables.
+      \item Set both of the nearest off-diagonals to the row that samples from a $\chi(df = c_j) \where c_j = \beta \cdot j$ for columns spanning $j = 1,\dots,n-1$.
+    \end{enumerate}
+  \end{algorithm*}
+}

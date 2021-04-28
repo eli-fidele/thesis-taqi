@@ -1,0 +1,29 @@
+---
+title: "Demo"
+author: "Taqi"
+date: "4/24/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(d = 1)
+```
+
+```{r}
+v <- as.vector(replicate(n = 100000, expr = .stoch_row(5), simplify = T))
+ggplot(data.frame(v = v)) + geom_histogram(aes(v), bins = 200)
+```
+
+```{r}
+stoch_dist <- function(N){
+  v <- as.vector(replicate(n = 100000, expr = .stoch_row(N), simplify = T))
+  ggplot(data.frame(v = v)) + geom_histogram(aes(v), bins = 200) + geom_vline(xintercept = 1/N)
+}
+```
+
+```{r}
+map(1:10, stoch_dist)
+```
+

@@ -1,0 +1,30 @@
+---
+title: "Demo"
+author: "Taqi"
+date: "4/24/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+.src(d = 1)
+install.packages("RMAT")
+```
+
+```{r}
+set.seed(23)
+# Set the dimension of the matrix
+N <- 5
+# Generate an example matrix of zeros
+P <- matrix(rep(0, N^2), nrow = N)
+# Assign the upper main off-diagonal band as a vector
+rho <- -1
+P[row(P) - col(P) == rho] <- rnorm(n = 4, mean = 0, sd = 1)
+# Assign the main diagonal as a vector
+rho <- 0
+P[row(P) - col(P) == rho] <- rep(10, N)
+# Returns the following
+P
+```
+
