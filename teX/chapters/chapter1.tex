@@ -68,13 +68,11 @@ Suppose $P$ is an $N \times N$ random matrix that is explicity and homogenously 
 
 There are a few instances where we encounter the need to only initialize a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$ distribution.
 This type is distribution is similar to e.h. $\D$-distributions, but we no longer have the ability to overload random variable notation and indicate that only some entries have such distribution. This would be
-confusing. As such, whenever we are not initializing every entry to have the same distribution, we have to define new, unique notation to do so.
+confusing because entry doesn't necessarily have the same distribution anymore. As such, we have to define new notation to do so.
 
 To keep things simple, we characterize a non-homogenous explicit $D$-distribution by listing the distribution of every entry. However, in this thesis, there are only one application of this that imposes a different
-distribution by diagonals. Since we do not need full generality, we will avoid defining a matrix with entries with that much freedom. This is because there is only one non-homogenous explicit distribution in this thesis,
-the Hermite-$\beta$ matrix distribution. The reason having full entry-wise freedom is redundant is because the algorithm that generates it is defined in terms of its diagonals. As such, we could save ourselves the effort
-and only describe Non-Homogenous Explicit $\D$-distributions as schemes where we assign diagonal bands to a specific vector of i.i.d random variables.
-
+distribution, and it does so by its diagonals --- this is the Hermite $\b$-ensemble. Since its definition is characterized by distributions on the diagonals, we will avoid full entry-wise generality to be more concise.
+As such, we will only describe Non-Homogenous Explicit $\D$-distributions as schemes where we assign diagonal bands to a specific vector of i.i.d random variables.
 
 \begin{definition}[Diagonal Bands]
 Suppose $P = (p_ij)$ is an $N \times N$ matrix. Then, $P$ may be partitioned into $2n - 1$ rows called diagonal bands. Each band is denoted $[\rho]$ where $\rho = \{p_{ij} \mid \rho = i - j\}$. We have
@@ -84,7 +82,7 @@ $\rho \in \{ -(N-1), \dots, -1, 0, 1, \dots, N-1 \}$.
 Heres an example using the diagonal bands constructor notation.
 
 \begin{example}
-Suppose $P$ is an $N \times N$ matrix. Then, $[0]_P$ is the main diagonal of $P$ since $p_{ij} \in [0]_P \iff i - j = 0$.
+Suppose $P$ is an $N \times N$ matrix. Then, $[0]_P$ is the main diagonal of $P$ since $p_{ii} \Ra i = j \Ra i - j = 0 \Ra p_{ii} \in [0]_P$.
 Similarly, the main off-diagonal in the upper triangle is $[-1]_P$ since $p_{12} \in [-1]_P$.
 Likewise, the main off-digonal in the lower triangle is $[1]_P$. The entry in the top-right corner of the matrix, $p_{1N}$ comprises $[1 - N]_P$.
 \end{example}
