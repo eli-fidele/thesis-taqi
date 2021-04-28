@@ -6,7 +6,7 @@
 %=========================================================================================
 
 As discussed in the introduction, this thesis will be an exploration of spectral statistics of random matrices. This means that we must first be able to understand what random matrices are.
-At a fundamental level, random matrices are simply matrices whose entries are random variables that are distributed in accordance to either some explicit distribution or algorithm.
+At a fundamental level, random matrices are simply matrices which have \textit{some or all} entries as random variables that are distributed in accordance to either some explicit distribution or algorithm.
 So, to define a random matrix, our approach will be to do so by formalizing and defining what it mean for one to be $\D$-distributed.
 This way, the notation encapsulates and completely characterizes the random matrix.
 
@@ -20,8 +20,8 @@ For a review, see \textbf{Appendix A.2.1}.
 
 As a general rule, when it comes to random simulation, there is usually a rule or constrain to which our randomness must conform.
 For example, sampling a vector from a distribution is a rudimentary example of this.
-For random matrices, there will be a few methods of generating their entries that are not just sampling from theoretical distributions.
-As such, we motivate the $\D$-distribution.
+For random matrices, there are various techniques for generating their entries that are not just sampling from theoretical distributions.
+As such, we motivate the $\D$-distribution: a generalized matrix entry distribution framework.
 
 \begin{definition}[$\D$-distribution]
 Suppose $P$ is a $\D$-distributed random matrix. Then, we notate this $P \sim \D$. In the simplest of terms, $\D$ is essentially the algorithm that generates the entries of $P$.
@@ -45,7 +45,7 @@ In otherwords, we simply perform entry-wise sampling from the corresponding r.v.
 
 Note that this means by construction, $\D$ can only be e.h.d. if it has a corresponding probability distribution for random variables.
 
-\begin{definition}[Explicit $\D$-distribution]
+\begin{definition}[Homogenous Explicit $\D$-distribution]
 Suppose $P \sim \D$ where $\D$ is a homogenous and explicit distribution. Additionally, let $\D^*$ denote the corresponding random variable analogue of $\D$.
 Then, every single entry of $P$ is an i.i.d random variable with the corresponding distribution. That is,
 $$ P \sim \D \iff \forall i,j \mid p_{ij} \sim \D^* $$
@@ -66,16 +66,16 @@ Suppose $P$ is an $N \times N$ random matrix that is explicity and homogenously 
 
 \minititle{Non-Homogenous Explicit $\D$-distributions}
 
-There are a few instances where we encounter the need to only initialize a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$ distribution.
+There are a few instances where we encounter the need to only initialize only a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$ distribution.
 This type is distribution is similar to e.h. $\D$-distributions, but we no longer have the ability to overload random variable notation and indicate that only some entries have such distribution. This would be
-confusing because entry doesn't necessarily have the same distribution anymore. As such, we have to define new notation to do so.
+confusing because not every has the same distribution anymore. As such, we have to define new notation to do so.
 
-To keep things simple, we characterize a non-homogenous explicit $D$-distribution by listing the distribution of every entry. However, in this thesis, there are only one application of this that imposes a different
+Simply put, a non-homogenous explicit $D$-distribution can be completely characterized by listing the distributions of every entry. However, in this thesis, there are only one application of this that imposes a different
 distribution, and it does so by its diagonals --- this is the Hermite $\b$-ensemble. Since its definition is characterized by distributions on the diagonals, we will avoid full entry-wise generality to be more concise.
-As such, we will only describe Non-Homogenous Explicit $\D$-distributions as schemes where we assign diagonal bands to a specific vector of i.i.d random variables.
+As such, we will only describe Non-Homogenous Explicit $\D$-distributions as schemes where we assign diagonal bands a specific vector of i.i.d random variables.
 
 \begin{definition}[Diagonal Bands]
-Suppose $P = (p_ij)$ is an $N \times N$ matrix. Then, $P$ may be partitioned into $2n - 1$ rows called diagonal bands. Each band is denoted $[\rho]$ where $\rho = \{p_{ij} \mid \rho = i - j\}$. We have
+Suppose $P = (p_{ij})$ is an $N \times N$ matrix. Then, $P$ may be partitioned into $2n - 1$ rows called diagonal bands. Each band is denoted $[\rho]$ where $\rho = \{p_{ij} \mid \rho = i - j\}$. We have
 $\rho \in \{ -(N-1), \dots, -1, 0, 1, \dots, N-1 \}$.
 \end{definition}
 
