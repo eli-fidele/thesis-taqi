@@ -66,14 +66,14 @@ Suppose $P$ is an $N \times N$ random matrix that is explicity and homogenously 
 
 \minititle{Non-Homogenous Explicit $\D$-distributions}
 
-There are a few instances where we encounter the need to only initialize only a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$ distribution.
+There are a few instances where we encounter the need to only initialize only a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$-distribution.
 This type is distribution is similar to e.h. $\D$-distributions, but we no longer have the ability to overload random variable notation and indicate that only some entries have such distribution. This would be
 confusing because not every has the same distribution anymore. As such, we have to define new notation to do so.
 
-Simply put, a non-homogenous explicit $D$-distribution can be completely characterized by listing the distributions of every entry.
+Simply put, a non-homogenous explicit $\D$-distribution can be completely characterized by listing the distributions of every entry.
 In this thesis, there are only one application of this type of $\D$-distribution; however, it describes the entry disributions by its diagonals --- this is the Hermite $\b$-ensemble.
 Since its definition is characterized by distributions on the diagonals, we will avoid full entry-wise generality to be more concise.
-As such, we will only describe Non-Homogenous Explicit $\D$-distributions as schemes where we assign diagonal bands a specific vector of i.i.d random variables.
+As such, we will only describe non-homogenous explicit $\D$-distributions as schemes where we assign diagonal bands a specific vector of i.i.d random variables.
 
 \begin{definition}[Diagonal Bands]
 Suppose $P = (p_{ij})$ is an $N \times N$ matrix. Then, $P$ may be partitioned into $2n - 1$ rows called diagonal bands. Each band is denoted $[\rho]$ where $\rho = \{p_{ij} \mid \rho = i - j\}$. We have
