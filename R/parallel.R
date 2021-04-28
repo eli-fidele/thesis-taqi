@@ -26,11 +26,11 @@ spectrum_par <- function(array, components = TRUE, norm_order = TRUE, singular =
   # Compute the spectrum
   if(array_class == "ensemble"){
     # Array is an ensemble; recursively row bind each matrix's eigenvalues
-    furrr::future_map_dfr(array, .spectrum_matrix, components, norm_order, singular, order, digits)
+    furrr::future_map_dfr(array, .spectrum_matrix, norm_order, singular, components, order, digits)
   }
   else if(array_class == "matrix"){
     # Array is a matrix; call function returning eigenvalues for a singleton matrix
-    .spectrum_matrix(array, components, norm_order, singular, order, digits)
+    .spectrum_matrix(array, norm_order, singular, components, order, digits)
   }
 }
 

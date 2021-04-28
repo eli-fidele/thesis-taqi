@@ -108,7 +108,7 @@ spectrum_ens
  9  0.7357  0.0000 0.7357     3
 \end{lstlisting}
 
-\newpage
+%\newpage
 
 A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. So in a way, ensemble statistics are the engine of this research.
 
@@ -122,7 +122,7 @@ Include brief discussion (~1 paragraph) about what the reader should take away f
 
 %=========================================================================================
 %=========================================================================================
-\newpage
+%\newpage
 \section{Spectrum Analysis}
 
 %=========================================================================================
@@ -152,7 +152,7 @@ For example, consider the following plots, showing the difference in using the s
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %=========================================================================================
-\newpage
+%\newpage
 \minititle{Singular Values}
 
 An aternative to using the norm ordering scheme is using the singular values of the matrix. If a matrix is symmetric, the singular values are simply the norm of the eigenvalues. We ignore rotational features and focus solely on scale when we do so.
@@ -188,7 +188,7 @@ So, we will consider the conditional order statistics $\E(\lambda_{i} \mid i)$ a
 
 %=========================================================================================
 %=========================================================================================
-\newpage
+%\newpage
 \subsection{Case Study: Perron-Frobenius Theorem}
 
 \begin{definition}[Spectral Radius]
@@ -201,13 +201,20 @@ Using the toolkit we have now accquired, we can now discuss an elegant, visual r
 To put it shortly, the Perron-Frobenius theorem, applied to stochastic matrices is a result that guarantees the existence of a stationary distribution to an ergodic Markov Chain (see \textbf{Section A.3}).
 That being said, the following facts give us a heuristic demonstration of the Perron-Frobenius theorem.
 
-\begin{theorem}[Perron-Frobenius Theorem]
+\begin{theorem}[Perron-Frobenius Theorem] \hfill
+  \vspace{-1em}
+  \\ \\ Consider the two following facts:
+  \begin{enumerate}
+    \item The largest eigenvalue of stochastic matrices is 1.
+    \item When multiplied by $P^K$, any point $v$ asymptotically enters the eigenspace of the matrix's largest eigenvalue as $K \to \infty$. That is, as $K$ grows, $v P^K$ approaches eigenvector of $P$ of $\lambda_1$.
+  \end{enumerate}
+So, there is an eigenvector of the largest eigenvalue --- for a Markov Chain, this is a stationary distribution.
 \end{theorem}
 
-\begin{enumerate}
-  \item The largest eigenvalue of stochastic matrices is 1.
-  \item When multiplied by $P^K$ (for large $K$), any point $v$ enters the eigenspace of the matrix's largest eigenvalue. That is, $v P^K$ is an eigenvector of $P$.
-\end{enumerate}
+\begin{note}
+  Note that this is only part of the results of the theorem. The theorem is more general and has a wider scope and applies to matrices in a more general fashion.
+  We only demonstrate this because we have a case with a constant largest eigenvalue and an eigenvector with a unique interpretation (a stationary distribution).
+\end{note}
 
 Again, those two statements were not formally proven in this thesis. However, there are large amounts of computational evidence for both of these results. Consider the first statement.
 
@@ -217,7 +224,14 @@ Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue 
 \FIGUREstochspectrum{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-This shows that the spectral radius of stochastic matrices is $1$! What is left is the other fact. For the second statement, again, there is plenty of computational evidence to back this up. This is the reason why \textbf{Appendix D} is included. This is a side project that started in this thesis, simulating eigenvectors computationally. From the simulations, we find that there is overwhelming evidence that most matrices, if not all, satisfy the second statement.
+This shows that the spectral radius of stochastic matrices is $1$! What is left is the other fact.
+For the second statement, again, there is plenty of computational evidence to back this up.
+%This is the reason why \textbf{Appendix D} is included. This is a side project that started in this thesis, simulating eigenvectors computationally.
+The reader may refer to \textbf{Appendix D} for an empirical demonstation of fact 2. Because the discussion of eigenvectors is too far afield from the current topic, so we will not include it in the current section.
+
+From the simulations, we find that there is overwhelming evidence that most matrices, if not all, satisfy the second statement.
+The "almost all" part here is an artifact of random matrices, since it is unlikely they will have duplicate eigenvalues, or eigenvalues corresponding to pure rotations (with no scaling).
+These are the types of eigenvalues that lead to the second statement not holding. \newline
 
 \blocktitle{Conclusions} So, to conclude, we can say that the computational evidence for these two facts support and provide an alternative method of empirically demonstrating that the Perron-Frobenius theorem is true.
 
