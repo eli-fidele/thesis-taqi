@@ -71,7 +71,7 @@ This type is distribution is similar to e.h. $\D$-distributions, but we no longe
 confusing because not every has the same distribution anymore. As such, we have to define new notation to do so.
 
 Simply put, a non-homogenous explicit $\D$-distribution can be completely characterized by listing the distributions of every entry.
-In this thesis, there are only one application of this type of $\D$-distribution; however, it describes the entry disributions by its diagonals --- this is the Hermite $\b$-ensemble.
+In this thesis, there are only one application of this type of $\D$-distribution; however, it describes the entry disributions by its diagonals --- this is the Hermite $\b$-ensemble matrices.
 Since its definition is characterized by distributions on the diagonals, we will avoid full entry-wise generality to be more concise.
 As such, we will only describe non-homogenous explicit $\D$-distributions as schemes where we assign diagonal bands a specific vector of i.i.d random variables.
 
@@ -129,9 +129,15 @@ For the distribution using diagonal bands, consider the definiton of the beta ma
 
 \ALGbeta
 
-\begin{definition}[Beta Matrix]
+\begin{definition}[$\b$-Matrix]
 Suppose $P \sim \H(\b)$. Then, $[0]_P \sim \Normal(0,1)$. Additionally, $[-1]_{P} = \vec{X}$ where $X_k = \chi(\text{df} = \beta k)$ for $k = 1,\dots,N-1$. Then, set $[1]_P = [-1]_P$.
 \end{definition}
+
+\begin{warning}[$\b$-Notation]
+Please note that the Hermite $\b$-ensemble matrices are \textbf{not} related to the $\Beta$ distribution. They are completely independent.
+Instead, $\b \in \N$ is a natural number that determines the nature of the matrix ensemble (more later). The $\Beta(a,b)$ distribution is a r.v. distribution that
+takes in two parameters. For this reason, it is possible to have a homogenous explicit distribution $P \sim \Beta(a,b)$, but they do not mean the same thing.
+\end{warning}
 
 % \begin{example}[Formalization]
 % For example, suppose $P$ is a $2 \times 2$ random matrix with $\D = \Normal(0,1)$. Then, we have four random variables to initialize. In the random matrix representation, we need to initialize $P_{11}, P_{12}, P_{21}, \and P_{22}$ by sampling them from $\D$. In the vector representation, we just say we are sampling four i.i.d random variables from $\D$. The matrix indexing is intrinsic and preservable by using index hacking with some modular math.
@@ -152,10 +158,16 @@ Consider for example, the following implicit distributions.
 
 \minititle{Stochastic Matrices}
 
-Stochastic matrices will serve as our canonical implicitly distributed $\D$-distributed. One might ask, what are stochastic matrices? How are they distributions?
+Stochastic matrices will serve as our canonical implicitly distributed $\D$-distributed matrices.
+One might ask, what are stochastic matrices? How are they distributions?
 
-Stochastic matrices, in short, are matrices that represent Markov Chains (see A.x).
-We can also think of them as the matrix representation of a specific setup of a random walk on a fixed graph with \textbf{randomized weights}. Consider the following generative algorithm.
+Stochastic matrices, in short, are matrices that represent random walks on Markov Chains (see \textbf{Appendix A.3}).
+Conventionally, stochastic matrices represent random walks on fixed graphs - so what does it mean to sample a random stochastic matrix?
+Well, the algorithm tells us that sampling a random stochastic matrix represents a random walk on a fixed random graph with \textbf{randomized weights}.
+In other words, we sample a fully connected graph, and randomize the weights of each edge. In \textbf{Section 1.2.1}, we explore walks on Erdos-Renyi graphs,
+which are graphs with sparsity as opposed to fully connected graphs.
+
+Consider the following generating algorithms below. We first start by generating a stochastic row - a row that sums to 1.
 
 \ALGstochrow
 
