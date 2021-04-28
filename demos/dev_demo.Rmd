@@ -1,0 +1,41 @@
+---
+title: "Main Demo"
+author: "Ali Taqi"
+date: "2/17/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(RMAT)
+library(tidyverse)
+```
+
+```{r}
+# Eigenvalue dispersion in parallel
+P <- RME_norm(N = 50, size = 20)
+disp_P <- dispersion_par(P)
+```
+
+```{r}
+ens <- RME_norm(5, size = 2)
+length(ens)
+elem_ens <- ens[[1]]
+P <- RM_norm(5, cplx = TRUE)
+length(P)
+elem_P <- P[[1]]
+class(elem_P)
+"matrix" %in% class(elem_ens)
+sum(c("numeric","complex") %in% class(elem_P))
+```
+
+```{r}
+.arrayClass(P)
+```
+
+
+```{r}
+N <- 5
+purrr::map_dfr(2:N, function(i){data.frame(i = i, j = i - 1)})
+```
+

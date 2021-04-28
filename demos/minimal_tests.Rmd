@@ -1,0 +1,45 @@
+---
+title: "Main Demo"
+author: "Ali Taqi"
+date: "2/17/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(RMAT)
+library(tidyverse)
+```
+
+## Matrix
+
+```{r}
+P <- RM_norm(N = 5)
+ens <- RME_erdos(N = 5, p = 0.5, size = 5)
+```
+
+## Spectrum
+
+```{r}
+ens <- RME_beta(N = 5, beta = 2, size = 5)
+ens %>% spectrum()
+```
+
+## Dispersion
+
+```{r}
+disp_ens <- dispersion(ens, pairs = "lower")
+disp_ens
+```
+
+
+```{r}
+N <- 10
+p <- 0.5
+size <- 200
+ens <- RME_erdos(N, p, size)
+spec <- ens %>% spectrum(order = 1:3)
+spec$Order <- as.factor(spec$Order)
+spec %>% spectrum.scatterplot()
+```
+

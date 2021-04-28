@@ -1,0 +1,66 @@
+---
+title: "Tests"
+author: "Ali Taqi"
+date: "2/19/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+library(RMAT)
+library(purrr)
+source("../R/mat-diag.R")
+#source("../R/matrices.R")
+```
+
+# Normal Matrices
+
+```{r, echo = F}
+# Testing parameter accuracy for RM_norm
+normal_mean <- function(N = 5, mu = 0, threshold = 0.25){
+  P <- RM_norm(N = N, mean = mu)
+  mu_sim <- .normal_params(P)[[1]]
+  abs(mu - mu_sim) < threshold
+}
+normal_sd <- function(N, sd = 1, threshold = 0.25){
+  P <- RM_norm(N = 5, mean = 0, sd = sd)
+  sd_sim <- .normal_params(P)[[2]]
+  abs(sd - sd_sim) < threshold
+}
+```
+
+```{r}
+# Set parameters
+N <- 100
+repl <- 100
+```
+
+```{r}
+# Test accuracy
+sum(replicate(n = repl, normal_mean(N, mu = 5, threshold = 0.2), simplify = TRUE)) / repl
+sum(replicate(repl, normal_sd(N, sd = 1, threshold = 0.2), simplify = TRUE)) / repl
+```
+
+# Stochastic Matrices
+
+```{r, echo = F}
+# Testing parameter accuracy for RM_stoch
+stoch_test <- function(N, size, symm = T, sparsity = F){
+  ens <- RME_stoch(N = N, symm = symm, sparsity = sparsity, size = size)
+  v <- purrr::map_lgl(ens, .isStochastic)  
+  return(sum(v) / size) # Get result
+}
+```
+
+```{r}
+# Set parameters
+N <- 100
+size <- 100
+```
+
+```{r}
+# Test accuracy
+stoch_test(N = N, size = 1000)
+stoch_test(N = N, size = 1000, symm = T)
+```
+
