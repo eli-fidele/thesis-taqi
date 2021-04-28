@@ -84,9 +84,9 @@ $\rho \in \{ -(N-1), \dots, -1, 0, 1, \dots, N-1 \}$.
 Heres an example using the diagonal bands constructor notation.
 
 \begin{example}
-Suppose $P$ is an $N \times N$ matrix. Then, $[0]_P$ is the main diagonal of $P$ since $p_{ij} \in [0]_P \implies i - j = 0$.
+Suppose $P$ is an $N \times N$ matrix. Then, $[0]_P$ is the main diagonal of $P$ since $p_{ij} \in [0]_P \iff i - j = 0$.
 Similarly, the main off-diagonal in the upper triangle is $[-1]_P$ since $p_{12} \in [-1]_P$.
-Likewise, the main off-digonal in the lower triangle is $[1]_P$. The entry in the top-right corner of the matrix comprises $[1 - N]_P$.
+Likewise, the main off-digonal in the lower triangle is $[1]_P$. The entry in the top-right corner of the matrix, $p_{1N}$ comprises $[1 - N]_P$.
 \end{example}
 
 \begin{code}
@@ -106,12 +106,12 @@ rho <- 0
 P[row(P) - col(P) == rho] <- rep(10, N)
 # Returns the following
 P
-     [,1]      [,2]       [,3]      [,4]     [,5]
-[1,]    0 0.1932123  0.0000000 0.0000000 0.000000
-[2,]    0 0.0000000 -0.4346821 0.0000000 0.000000
-[3,]    0 0.0000000  0.0000000 0.9132671 0.000000
-[4,]    0 0.0000000  0.0000000 0.0000000 1.793388
-[5,]    0 0.0000000  0.0000000 0.0000000 0.000000
+     [,1]       [,2]       [,3]       [,4]      [,5]
+[1,]   10  0.1932123  0.0000000  0.0000000  0.000000
+[2,]    0 10.0000000 -0.4346821  0.0000000  0.000000
+[3,]    0  0.0000000 10.0000000  0.9132671  0.000000
+[4,]    0  0.0000000  0.0000000 10.0000000  1.793388
+[5,]    0  0.0000000  0.0000000  0.0000000 10.000000
 \end{lstlisting}
 
 %The general defintion is below.
@@ -126,7 +126,7 @@ P
 % Suppose $\D$ is a non-homogenous explicit $D$-distribution. Then, for an $N \times N$ matrix, $A_\D = \{a_{ij} = \D_{ij}\}$ is its rule set.
 % \end{definition}
 
-For the distribution using diagonal bands, refer to the definition of a beta matrix in \textbf{Section 1.2.2}.
+For the distribution using diagonal bands, consider the definiton of the beta matrix below. %refer to the definition of a beta matrix in \textbf{Section 1.2.2}.
 
 \ALGbeta
 
@@ -267,17 +267,24 @@ With this in mind, we will survey and characterize, and briefly discuss a few sp
 
 \subsection{Erdos-Renyi $p$-Ensembles}
 
-The Erdos-Renyi transition matrices are a new class of matrices: stochastic matrices. Stochastic matrices, in short, are matrices that represent Markov Chains (see A.x).
-We can also think of them as the matrix representation of a specific setup of a random walk on a fixed graph.
-
-A particular class of random graphs that we will consider are the Erdos-Renyi random graphs. Essentially, these are graphs whose vertices are connected with a uniform probability $p$. We can interpret this as saying an Erdos-Renyi graph is a simple random walk on a graph with parameterized sparsity (given by $p$). Without further ado, we motivate the Erdos-Renyi graph:
+The Erdos-Renyi transition matrices are a class of stochastic matrices. Any stochastic matrix represents a walk on a fixed graph, the particular class of random graphs that we will consider are the Erdos-Renyi random graphs. Essentially, these are graphs whose vertices are connected with a uniform probability $p$. We can interpret this as saying an Erdos-Renyi graph is a simple random walk on a graph with parameterized sparsity (given by $p$). Without further ado, we motivate the Erdos-Renyi graph:
 
 \begin{definition}[Erdos-Renyi Graph]
 An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \{\oneto[N]\}$ and edges $E = \mathds{1}_{i,j \in V} \sim \Bern(p_{ij})$. It is homogenous if $p_{ij} = p$ is fixed for all $i, j$.
 \end{definition}
 
-Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameterized by a probability $p$ (assuming it's homogenous, which this document will unless otherwise noted). As $p \to 0$, we say that graph becomes more sparse; analogously, as $p \to 1$ the graph becomes more connected.\newline
-\indent Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable. As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices. This makes simulating the graphs much easier. This is demonstrated in the algorithm used to generate the matrices.  (See B.x)
+Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameterized by a probability $p$ (assuming it's homogenous, which this document will unless otherwise noted).
+As $p \to 0$, we say that graph becomes more sparse; analogously, as $p \to 1$ the graph becomes more connected.
+
+Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable.
+As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices.
+This makes simulating the graphs much easier. This is demonstrated in the algorithm used to generate the matrices.  (See B.x)
+
+\ALGerdos
+
+\begin{warning}
+Note that we are not considering the adjacency matrix of an Erdos-Renyi graph. Rather, we are simulating a transition matrix that \textbf{represents a walk on one}.
+\end{warning}
 
 \begin{code}[Erdos-Renyi p = 0.5 Ensemble]
 Let $\mathcal{D} = \text{ER}(p = 0.5)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Erdos-Renyi matrices ($p = 0.5$) of size 10 as such:

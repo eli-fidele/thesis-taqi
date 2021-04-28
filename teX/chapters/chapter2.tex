@@ -54,12 +54,25 @@ While our definition for spectrum is nice and clean, there are a few caveats tha
 Recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices,we always had one thing - a vector representation of random variables. Using this framework, the formalization is trivial.
 
 \begin{formalization}
-Suppose $P \sim \D$ is an $N \times N$ random matrix. Then, $P$ has a representation as a sequence of $N^2$ random variables, denote it $\vec{X} = \{X_i \mid i = 1,2,\dots,N^2\}$. Then, the spectrum of the matrix $P$ is simply a function of the vector $\vec{X}$. We can denote this $\sigma(\vec{X})$, where the operator $\sigma$ is overloaded to mean the spectrum of a matrix $\textbf{with respect to the vector representation}$. The actual process for $\sigma$ is not necessary to explicitly write out, since characterizing it will be sufficient for now. Essentially, $\sigma$ is a function that would parse the random variables into the array form by index hacking. Then, it must compute the determinant of the matrix $P - \lambda I$, and solve for its roots. To summarize this, consider the flow chart below.
+Suppose $P \sim \D$ is an $N \times N$ random matrix.
+Then, $P$ has a representation as a sequence of $K$ random variables (for some $K \in \N$).
+Denote it as the vector $\vec{X} = \seqo[K]{X}$.
+Then, the spectrum of the matrix $P$ is simply a function of the vector $\vec{X}$.
+We can denote this $\sigma(\vec{X})$, where the operator $\sigma$ is overloaded to mean the spectrum of a matrix $\textbf{with respect to the vector representation}$.
+The actual process for $\sigma$ is not necessary to explicitly write out, since characterizing it will be sufficient for now.
+Essentially, $\sigma$ is a function that would parse the random variables into the array form by index hacking.
+Then, it must compute the determinant of the matrix $P - \lambda I$, and solve for its roots.
+To summarize this, consider the flow chart below.
 \end{formalization}
 
 To summarize, here is how we formalize the spectrum as a statistic. Suppose we sample $P \sim \D$. Then, we take its spectrum formally using $\sigma$ as such:\hfill
 %$$P_{\text{array}} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \lambda I) \ra \sigma(P_{\text{array}})$$
 $$ X_1,X_2,\dots,X_K \xra{\text{Make array}} (\vec{X} \rightsquigarrow P^*) \xra{\text{Compute} \det(P - \lambda I)} char_{P^*}(\lambda) \xra{\text{Solve for roots}} \sigma(P^*) $$
+
+\begin{remark}[Formalization]
+Note how in the formalization we said that an $N \times N$ matrix $P$ has a representation as a vector of $K$ random variables rather than $N^2$ variables. Recall that some non-homogenous explicit $\D$-distributions
+do not initialize every entry of the matrix. Only our homogenous explicit and implicit $\D$-distributions do.
+\end{remark}
 %=========================================================================================
 
 \subsection{Interlude: Ensembles}
@@ -184,7 +197,13 @@ So, we will consider the conditional order statistics $\E(\lambda_{i} \mid i)$ a
 
 \minititle{Detour: The Perron-Frobenius Theorem}
 
-Using the toolkit we have now accquired, we can now discuss an elegant, visual representation of the Perron-Frobenius theorem (See A.x). To put it shortly, the Perron-Frobenius theorem, applied to stochastic matrices is a result that guarantees the existence of a stationary distribution to an ergodic Markov Chain (see A.x). Sparing the details, we can use the conjunction of two facts, that if true, yield the result for the Perron-Frobenius Theorem for ergodic Markov chains through stochastic matrices.
+Using the toolkit we have now accquired, we can now discuss an elegant, visual representation of the Perron-Frobenius theorem (see \textbf{Section A.1.2}).
+To put it shortly, the Perron-Frobenius theorem, applied to stochastic matrices is a result that guarantees the existence of a stationary distribution to an ergodic Markov Chain (see \textbf{Section A.3}).
+That being said, the following facts give us a heuristic demonstration of the Perron-Frobenius theorem.
+
+\begin{theorem}[Perron-Frobenius Theorem]
+\end{theorem}
+
 \begin{enumerate}
   \item The largest eigenvalue of stochastic matrices is 1.
   \item When multiplied by $P^K$ (for large $K$), any point $v$ enters the eigenspace of the matrix's largest eigenvalue. That is, $v P^K$ is an eigenvector of $P$.

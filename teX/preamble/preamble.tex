@@ -19,8 +19,6 @@
 % For the quote environments!
 \usepackage[utf8]{inputenc}
 \usepackage{epigraph}
-% For inline quotes as opposed to chapters
-\usepackage{csquotes}
 
 % For code snippet environments
 \usepackage{listings}
@@ -90,7 +88,11 @@
 
 % Formalization
 \newtheorem*{formalization}{Formalization}
-%\newtheorem{remark}{Remark}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Formalization
+\newtheorem*{warning}{Warning}
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 
