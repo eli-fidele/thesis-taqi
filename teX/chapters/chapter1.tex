@@ -173,10 +173,11 @@ Consider the following generating algorithms below. We first start by generating
 
 \ALGstoch
 
-A stochastic row is a vector whose entries are all dependent. This is because we normalize by the row sum, making things very difficult. Since it is not the perview of this thesis, we won't try to find
-the exact distribution.
-As such, to avoid the process of finding the distribution of these dependent entries, we will encapsulate the distribution and abstract it away by calling these implicit distributions!
-
+\begin{remark}[Dependent Entries]
+A stochastic row is a vector whose entries are all dependent; this is due to the fact that we normalize by the row sum.
+As such, this makes finding the distribution of entries very difficult. Since it is not the perview of this thesis, we won't try to find the exact distribution.
+As such, to avoid the process of finding the distribution of these dependent entries, we will encapsulate the distribution and abstract it away by calling it an implicit distribution!
+\end{remark}
 
 %=========================================================================================
 
