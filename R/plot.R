@@ -75,12 +75,12 @@ dispersion.scatterplot <- function(array, metric = "id_diff_norm", pairs = NA, .
   else{disps_df <- array} # Otherwise, the array is a precomputed dispersion dataframe
   # Parse plotting aesthetics from pairs. diff_ij is more useful unless pairs = "consecutive" or "largest", where j is better.
   if(pairs %in% c("consecutive","largest")){order_stat <- "j"} else{order_stat <- "diff_ij"}
-  
+
   # Plot parameters
   color0 <- "darkorchid4"
   real_valued <- T
   # Scatterplot of dispersion metric
-  if(real_valued){  
+  if(real_valued){
     disps_df %>%
       ggplot(mapping = aes_string(x = metric, y = order_stat, color = order_stat)) +
       geom_point() +
@@ -260,7 +260,7 @@ order.scatterplot <- function(spectrum, component){
 }
 order.density <- function(spectrum, component){
   spectrum %>%
-    ggplot(mapping = aes(group = Order, x = {{ component }}, color = Order)) + 
+    ggplot(mapping = aes(group = Order, x = {{ component }}, color = Order)) +
     geom_density() +
     scale_color_viridis_c() +
     theme(legend.position = "bottom")
@@ -271,7 +271,7 @@ order.summary <- function(spectrum, component){
     summarize(
       Mean_Re = mean(Re), Mean_Im = mean(Im), Mean_Norm = mean(Norm),
       Variance_Re = var(Re), Variance_Im = var(Im), Variance_Norm = var(Norm)) %>%
-    ggplot(mapping = aes(y = {{ component }}, x = Order, color = Order)) + 
+    ggplot(mapping = aes(y = {{ component }}, x = Order, color = Order)) +
     geom_point() +
     geom_line() +
     scale_color_viridis_c() +

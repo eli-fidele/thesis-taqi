@@ -125,14 +125,15 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- F
+run <- T
 if(run){
   # Set parameters
   N <- 50
   # Get the beta ensemble
-  ens <- RME_beta(N = N, beta = 4, size = 100)
+  ens <- RME_beta(N = N, beta = 2, size = 1000)
   # Plot distribution of eigenvalues
-  ens_plot <- ens %>% spectrum_par() %>% spectrum.histogram(component = "Re", bins = 100)
+  ens_spec <- ens %>% spectrum(components = T) 
+  ens_plot <- ens_spec %>% spectrum.histogram(component = "Re", bins = 100)
   # Save the plot
   save <- T
   if(save){

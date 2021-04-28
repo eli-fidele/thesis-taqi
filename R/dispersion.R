@@ -68,7 +68,7 @@ dispersion <- function(array, pairs = NA, norm_order = TRUE, singular = FALSE, p
   disp$eig_i <- .read_eigenvalue(i, eigenvalues)
   disp$eig_j <- .read_eigenvalue(j, eigenvalues)
   # Get the identity difference
-  disp$id_diff <- disp$eig_j - disp$eig_i 
+  disp$id_diff <- disp$eig_j - disp$eig_i
   # Compute norm of the identity difference (standard norm metric)
   disp$id_diff_norm <- norm_fn(disp$id_diff)
   # Compute the difference of absolutes
@@ -78,7 +78,7 @@ dispersion <- function(array, pairs = NA, norm_order = TRUE, singular = FALSE, p
   # Get the ranking difference
   disp$diff_ij <- disp$i - disp$j
   # Return the resolved dispersion observation
-  disp 
+  disp
 }
 
 #=================================================================================#
@@ -121,7 +121,7 @@ dispersion <- function(array, pairs = NA, norm_order = TRUE, singular = FALSE, p
   }
   # // Once we verify that we have a valid pair scheme string, try to parse it.
   # First, obtain a matrix by inferring array type; if ensemble take first matrix
-  if(array_class == "ensemble") { P <- array[[1]] } 
+  if(array_class == "ensemble") { P <- array[[1]] }
   else if(array_class == "matrix") { P <- array }
   # Obtain the dimension of the matrix
   N <- nrow(P)
@@ -171,7 +171,7 @@ dispersion <- function(array, pairs = NA, norm_order = TRUE, singular = FALSE, p
   is <- do.call("c", purrr::map(1:N, function(i){rep(i,N)}))
   js <- rep(1:N, N)
   # Helper function: selects elements only if they are lower triangular
-  .LowerTri <- function(i, j){if(i < j) { c(i = i, j = j) }}
+  .UpperTri <- function(i, j){if(i < j) { c(i = i, j = j) }}
   pairs <- do.call("rbind", purrr::map2(is, js, .f = .UpperTri))
   data.frame(pairs)
 }

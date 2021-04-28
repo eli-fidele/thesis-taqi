@@ -12,7 +12,7 @@
 #' @param symm indicates whether the matrix should be symmetric (equal to its transpose).
 #' @param cplx indicates whether the matrix should have complex entries.
 #' @param herm indicates whether the matrix should be hermitian (equal to its conjugate transpose).
-#'   Reserved for when complex = T, otherwise use symm = T.
+#'   Reserved for when cplx = TRUE, otherwise use symm = TRUE.
 #'
 #' @return A random matrix with uniformly distributed entries.
 #'
@@ -55,10 +55,10 @@ RM_unif <- function(N, min, max, symm = FALSE, cplx = FALSE, herm = FALSE){
 #' @param mean mean of the normal distribution of entries
 #' @param sd standard deviation of the normal distribution of entries
 #' @param symm indicates whether the matrix should be symmetric (equal to its transpose).
-#'   Reserved for when complex = F, otherwise use hermitian = T.
+#'   Reserved for when cplx = FALSE, otherwise use herm = TRUE.
 #' @param cplx indicates whether the matrix should have complex entries.
 #' @param herm indicates whether the matrix should be hermitian (equal to its conjugate transpose).
-#'   Reserved for when complex = T, otherwise use symm = T.
+#'   Reserved for when cplx = TRUE, otherwise use symm = TRUE.
 #'
 #' @return A random matrix with normally distributed entries.
 #' @examples
@@ -91,7 +91,7 @@ RM_norm <- function(N, mean = 0, sd = 1, symm = FALSE, cplx = FALSE, herm = FALS
 #=================================================================================#
 #' @title Generate a Hermite \eqn{\beta}-matrix
 #' @description Hermite-\eqn{\beta} ensemble matrices are matrices with normal entries and beta real number components.
-#'   Using Dumitriu's tridiagonal model, this function is an implementation of the generalized, but not necessarily invariant,
+#'   Using Dumitriu's tridiagonal matrix model, this function is an implementation of the generalized, but not necessarily invariant,
 #'   beta ensembles for \eqn{\beta} > 0.
 #'
 #' @param N number of dimensions of the square matrix
@@ -161,7 +161,7 @@ RM_trid <- function(N, symm = FALSE){
 #' Q <- RM_stoch(N = 9, symm = TRUE)
 #' Q <- RM_stoch(N = 9, symm = TRUE, sparsity = TRUE)
 #'
-RM_stoch <- function(N, symm = F, sparsity = F){
+RM_stoch <- function(N, symm = FALSE, sparsity = FALSE){
   # Choose row function depending on sparsity argument
   if(sparsity){row_fxn <- .stoch_row_zeros} else {row_fxn <- .stoch_row}
   # Generate the [N x N] stochastic matrix stacking N stochastic rows
@@ -193,7 +193,7 @@ RM_stoch <- function(N, symm = F, sparsity = F){
 #' # Completely connected graph
 #' P <- RM_erdos(N = 5, p = 1)
 #'
-RM_erdos <- function(N, p, stoch = T){
+RM_erdos <- function(N, p){
   # Generate an [N x N] Erdos-Renyi stochastic matrix by stacking N p-stochastic rows
   P <- do.call("rbind", lapply(X = rep(N, N), FUN = .stoch_row_erdos, p = p))
   # Return the Erdos-Renyi transition matrix
@@ -370,7 +370,6 @@ RME_stoch <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_stoch, ...
 #'   deterministic properties at the ensemble level in terms of their spectral statistics.
 #'
 #' @inheritParams RM_erdos
-#' @param ... any default-valued parameters taken as arguments by RM_erdos()
 #' @param size the size of the ensemble (i.e. number of matrices)
 #'
 #' @return An ensemble (list) of Erdos-Renyi transition matrices as specified by the matrix arguments.
@@ -379,4 +378,4 @@ RME_stoch <- function(N, ..., size){lapply(X = rep(N, size), FUN = RM_stoch, ...
 #' # Generate an ensemble of 10x10 Erdos-Renyi transition matrices of size 50 with p = 0.7
 #' ensemble <- RME_erdos(N = 10, p = 0.7, size = 50)
 #'
-RME_erdos <- function(N, p, ..., size){lapply(X = rep(N, size), FUN = RM_erdos, p, ...)}
+RME_erdos <- function(N, p, size){lapply(X = rep(N, size), FUN = RM_erdos, p)}
