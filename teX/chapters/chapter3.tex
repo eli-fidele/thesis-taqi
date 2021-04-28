@@ -7,7 +7,7 @@
 
 \section{Introduction}
 
-In this section, we define the final spectral statistic studied in this chapter: eigenvalue dispersions. As the name suggests, these statistics are concerned with the distirbution of the spacings between the eigenvalues. Interestingly, this is almost as literal as it gets when we use the word "spectral". In physics and chemistry, atomic spectra are essentially differences between energy levels or quanta, so the translation is close.
+In this section, we define the final spectral statistic studied in this chapter: eigenvalue dispersions. As the name suggests, these statistics are concerned with the distirbution of the spacings between the eigenvalues. Interestingly, this is almost as literal as it gets when we use the word ``spectral''. In physics and chemistry, atomic spectra are essentially differences between energy levels or quanta, so the translation is close.
 
 In any case, we will begin this chapter by first motivating a few definitions and formalisms in this section. Then, once our setup is ready, we will motivate the definition of a matrix's eigenvalue dispersion and formalize it as a statistic. To outline the section, we will first define two things: the dispersion metric and the pairing scheme. In simple terms, we formalize $\textbf{what}$ ``eigenvalue spacings'' are and $\textbf{which}$ eigenvalue pairs' spacings to consider. So, to begin, we first formally define an eigenvalue pair.
 
@@ -38,7 +38,7 @@ $$\pit_1 = (\lambda_2,\lambda_1)$$
 
 \subsection{Dispersion Metrics}
 
-Before we may even start to consider studying dispersions of eigenvalues, we must first formalize and make clear what ``metric'' of spacing we are using. To do so, we motivate the dispersion metric. In simple words, a dispersion metric is a function that takes in a pair of eigenvalues and returns a positive real number that represents some metric of dispersion or spacing.
+Before we may even start to consider studying dispersions of eigenvalues, we must first formalize and make clear what ``metric'' of spacing we are using. To do so, we motivate the dispersion metric. In simple words, a dispersion metric is a function that takes in a pair of eigenvalues and returns a positive real number that represents some notion of dispersion or spacing.
 
 \begin{definition}[Dispersion Metric]
 A dispersion metric $\delta: \Cc \times \Cc \to \R^+$ is defined as a function from the space of pairs of complex numbers to the positive reals. In simple terms, it is a way of measuring ``space'' between two complex numbers - our eigenvalues.
@@ -82,7 +82,7 @@ For every dispersion metric, assume the functions' order of arguments is $\d(z, 
 
 The next thing we need to motivate before talking about eigenvalue dispersions are pairing schema. In simple terms, pairing schema are templates (for some $N \in \N$) for which eigenvalue pairs to pick. There are many subtle reasons why this is important, which will be covered in detail later. Without further ado, we motivate the pairing schema.
 
-Before we may begin talking about pairing scheme, we define an auxilliary object - the spectral pairs of a matrix, which we denote $\spair$. Since we are now talking about eigenvalue pairs, it is helpful to define this object before proceeding.
+Before we may begin talking about pairing scheme, we define an auxilliary object, the spectral pairs of a matrix, which we denote $\spair$. Since we are now talking about eigenvalue pairs, it is helpful to define this object before proceeding.
 
 \begin{definition}[Spectral Pairs]
 Suppose $P$ is an $N \times N$ random matrix. Then, taking the spectral pair of $P$, denoted $\spair(P)$ is equivalent to taking the Cartesian product of its ordered spectrum $\sigma(P)$. That is, $\spair(P) = \sigma(P) \times \sigma(P) = \{(\lambda_i, \lambda_j) \mid i,j \in \N_N\}$.
@@ -219,7 +219,7 @@ $$
 %\newpage
 \subsection{Dispersions}
 
-Alas, with dispersion metrics and pairing schemes defined, we are finally able to motivate the definition of a matrix dispersion for both singleton matrices and their ensemble counterparts.
+Now, with dispersion metrics and pairing schemes defined, we are finally able to motivate the definition of a matrix dispersion for both singleton matrices and their ensemble counterparts.
 
 \begin{definition}[Dispersion]
 Suppose $P$ is an $N \times N$ matrix, and $\spair(P)$ are its spectral pairs. The dispersion of $P$ with respect to the pairing scheme $\Pi$ and dispersion metric $\delta$ is denoted by $\disp_\d(P \mid \Pi)$ and it is given by the following:
@@ -295,7 +295,7 @@ One thing to consider from this dispersion set is what we could learn from it. T
 
 \minititle{Linear Combinations}
 
-The identity difference metric is not necessarily a "bad metric". In fact, it is one of the few metrics which allow transitivity under composition - which brings up an important detail. In the total dispersion $\Delta_d(P)$, there is some redundant information if we are totally concerned with spacings. Namely, consider the following fact:
+The identity difference metric is not necessarily a ``bad metric''. In fact, it is one of the few metrics which allow transitivity under composition - which brings up an important detail. In the total dispersion $\Delta_d(P)$, there is some redundant information if we are totally concerned with spacings. Namely, consider the following fact:
 \begin{align*}
 \lambda_1 - \lambda_3 = (\lambda_1 - \lambda_2) - (\lambda_3 - \lambda_2)
 \end{align*}
@@ -316,7 +316,7 @@ d_1(\pi_{ij}) \leq d_2(\pi_{ij}) \given \pi_{ij} \in \Pi_>
 
 Recall from previously that with respect to the identity difference, some elements of the dispersion $\Delta_d(P)$ can be expressed as a linear combination of other elements. Note that using those linear combinations and the triangle inequality, we could derive the analogous bounds. It is quite useful to impose a condition that none of the values are a linear combination of the other.
 
-So, we motivate a more restrictive definition of matrix dispersion: the consecutive-values dispersion $\Delta_d(P, \Pi_c)$. This dispersion is essentially a special case of the regular dispersion, but with a particular pairing scheme $\Pi_c$. To avoid this issue of linear combinations, we simply take the pairs of consecutive eigenvalues. In other words, $\Pi_c = \{(\lambda_i, \lambda_j) \in \sigma_P \times \sigma_P  \mid j = i+1\}_{i=1}^{N-1}$. This pairing scheme enumerates the pairs such that the dispersion metric has a natural mapping - it is simply the "distance" between an eigenvalue and the one that is one rank smaller than it.
+So, we motivate a more restrictive definition of matrix dispersion: the consecutive-values dispersion $\Delta_d(P, \Pi_c)$. This dispersion is essentially a special case of the regular dispersion, but with a particular pairing scheme $\Pi_c$. To avoid this issue of linear combinations, we simply take the pairs of consecutive eigenvalues. In other words, $\Pi_c = \{(\lambda_i, \lambda_j) \in \sigma_P \times \sigma_P  \mid j = i+1\}_{i=1}^{N-1}$. This pairing scheme enumerates the pairs such that the dispersion metric has a natural mapping - it is simply the ``distance'' between an eigenvalue and the one that is one rank smaller than it.
 
 % \minititle{Conjugate Pairs}
 %
@@ -336,7 +336,7 @@ However, prior to introducing any new concepts, there is one scenario where usin
 When we consider the dispersion with repsect to the consecutive pairs, things are much simpler since our pairs are intrinsically defined by one index ($j$). This is because we are observing the $j^{th}$ eigenvalue and its smaller neighbour. As such, we will consider dispersion statistics in the form of $\E(\pit_j \mid j)$ and $\Var(\pit_j \mid j)$.
 \end{remark}
 
-Otherwise, we synthesize a new order statistic that takes in two indices (from a given pair) called the $\textbf{ranking difference class}$. Since we are no longer observing a single eigenvalue at a given rank, we will need a way to standardize observing a pair of eigenvalues at a time. To do so, we introduce a new $\textbf{eqivalence relation}$ (see A.x) called the \textbf{ranking difference}. As the name suggests, it is precisely the integer difference of the eigenvalue orders.
+Otherwise, we synthesize a new order statistic that takes in two indices (from a given pair) called the $\textbf{ranking difference class}$. Since we are no longer observing a single eigenvalue at a given rank, we will need a way to standardize observing a pair of eigenvalues at a time. To do so, we introduce a new $\textbf{equivalence relation}$ (see A.x) called the \textbf{ranking difference}. As the name suggests, it is precisely the integer difference of the eigenvalue orders.
 
 \minititle{Ranking Difference}
 
@@ -360,6 +360,8 @@ Using the eigenvalue matrix analogy, $\sim_\rankdiff$ partitions the matrix into
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREpairtable{h}{0.6}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\minititle{[Plot takeaways]}
 
 \newpage
 

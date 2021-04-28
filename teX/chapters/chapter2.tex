@@ -6,9 +6,8 @@
 %=========================================================================================
 
 \section{Introduction}
-So, what are \textit{spectral statistics}? Do they have to do with rainbows? Sceptres? No, they don’t, but they’re almost as colorful and regal. The word spectral is borrowed from the spectral-like patterns observed in statistical physics - whether it may be atomic spectra or other quantum mechanical phenomena. The borrowing is loose and not literal, but still somewhat well founded. In fact, the field of Random Matrix Theory was extensively developed in the 1930s by the nuclear physicist Eugene Wigner. He found connections between the deterministic properties of atomic nuclei and their random and stochastic behaviors. The link? Random matrices. \newline
 
-So in the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors. That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix. They are quite important for many reasons. For instance in statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corrosponding matrices. The study of eigenvalues and eigenvectors primarily falls in the scope of Linear Algebra, but their utility is far-reaching. So, what exactly are \textit{eigenvalues} exactly?
+In the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors. That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix. They are quite important for many reasons. For instance in statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corresponding matrices. The study of eigenvalues and eigenvectors primarily falls in the scope of Linear Algebra, but their utility is far-reaching. So, what are \textit{eigenvalues} exactly?
 
 %=========================================================================================
 
@@ -28,7 +27,7 @@ Note that it is important to specify that a spectrum is a multiset and not just 
 \medskip
 \noindent For example, consider the following code example from the RMAT package.
 \begin{code}[Spectrum of a Standard Normal Matrix]
-Let $P \sim \Normal(0,1)$ be a $4 \times 4$ standard normal random matrix. We can generate the spectrum of $P$, $\sigma(P)$ as follows:
+Let $P \sim \Normal(0,1)$ be a $5 \times 5$ standard normal random matrix. We can generate the spectrum of $P$, $\sigma(P)$ as follows:
 \end{code}
 
 \begin{lstlisting}[language=R]
@@ -38,7 +37,7 @@ spectrum_P <- spectrum(P)
 # Outputs the following
 spectrum_P
 ...
-        Re      Im   Norm Order
+      Real    Imag   Norm Order
  1 -0.5434  1.3539 1.4589     1
  2 -0.5434 -1.3539 1.4589     2
  3  0.2255  1.4250 1.4427     3
@@ -46,17 +45,21 @@ spectrum_P
  5 -0.8678  0.0000 0.8678     5
 \end{lstlisting}
 
+\minititle{[Explain what each column represents]}
+
+Since this is the first time the output of the spectrum appears, it may be worth briefly specifying what each column represents (i.e. Re denotes real, Im is imaginary, norm is complex norm and order is ranking from largest norm to smallest
+
 While our definition for spectrum is nice and clean, there are a few caveats that we must take care of. First, how are spectra statistics? So we can even call them statistics, so there needs to be some formalization as to why we consider eigenvalues statistics. In this dialogue, we will call back on the same sort of formalization dialogue in the Random Matrices section. Before beginning, the reader is encouraged to review what a statistic is in the review appendix (A.x).
 
 Recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices,we always had one thing - a vector representation of random variables. Using this framework, the formalization is trivial.
 
 \begin{formalization}
-Suppose $P \sim \D$ is an $N \times N$ random matrix. Then, $P$ has a representation as a sequence of $N^2$ random variables, denote it $\vec{X} = \{X_i \mid i = 1,2,\dots,N^2 - 1,N^2\}$. Then, the spectrum of the matrix $P$ is simply a function of the vector $\vec{X}$. We can denote this $\sigma(\vec{X})$, where the operator $\sigma$ is overloaded to mean the spectrum of a matrix $\textbf{with respect to the vector representation}$. The actual process for $\sigma$ is not necessary to explicitly write out, since characterizing it will be sufficient for now. Essentially, $\sigma$ is a function that would parse the random variables into the array form by index hacking. Then, it must compute the determinant of the matrix $P - \lambda I$, and solve for its roots. To summarize this, consider the flow chart below.
+Suppose $P \sim \D$ is an $N \times N$ random matrix. Then, $P$ has a representation as a sequence of $N^2$ random variables, denote it $\vec{X} = \{X_i \mid i = 1,2,\dots,N^2\}$. Then, the spectrum of the matrix $P$ is simply a function of the vector $\vec{X}$. We can denote this $\sigma(\vec{X})$, where the operator $\sigma$ is overloaded to mean the spectrum of a matrix $\textbf{with respect to the vector representation}$. The actual process for $\sigma$ is not necessary to explicitly write out, since characterizing it will be sufficient for now. Essentially, $\sigma$ is a function that would parse the random variables into the array form by index hacking. Then, it must compute the determinant of the matrix $P - \lambda I$, and solve for its roots. To summarize this, consider the flow chart below.
 \end{formalization}
 
 To summarize, here is how we formalize the spectrum as a statistic. Suppose we sample $P \sim \D$. Then, we take its spectrum formally using $\sigma$ as such:\hfill
-$$P_{\text{array}} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \lambda I) \ra \sigma(P_{\text{array}})$$
-
+%$$P_{\text{array}} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \lambda I) \ra \sigma(P_{\text{array}})$$
+$$ X_1,X_2,\dots,X_K \xra{\text{Make array}} (\vec{X} \rightsquigarrow P^*) \xra{\text{Compute} \det(P - \lambda I)} char_{P^*}(\lambda) \xra{\text{Solve for roots}} \sigma(P^*) $$
 %=========================================================================================
 
 \subsection{Interlude: Ensembles}
@@ -80,7 +83,7 @@ spectrum_ens <- spectrum(ens)
 # Outputs the following
 spectrum_ens
 ...
-        Re      Im   Norm Order
+      Real    Imag   Norm Order
  1  1.7581  0.0000 1.7581     1
  2 -0.2614  1.0012 1.0347     2
  3 -0.2614 -1.0012 1.0347     3
@@ -92,11 +95,17 @@ spectrum_ens
  9  0.7357  0.0000 0.7357     3
 \end{lstlisting}
 
+\newpage
+
 A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. So in a way, ensemble statistics are the engine of this research.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREspectrumcomparison{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\minititle{[Plot takeaways]}
+
+Include brief discussion (~1 paragraph) about what the reader should take away from this graph in particular
 
 %=========================================================================================
 %=========================================================================================
@@ -138,7 +147,7 @@ An aternative to using the norm ordering scheme is using the singular values of 
 Suppose $P$ is a random matrix. Then, we can take it singular values as such.
 
 \begin{definition}[Singular Values]
-The singular values of a matrix $P$ are given by the square root of the eigenvalues of the corrosponding product of that matrix and its transpose. That is, $\sigma_+(P) = \sqrt{\sigma(P \cdot P^T)}$.
+The singular values of a matrix $P$ are given by the square root of the eigenvalues of the corresponding product of that matrix and its transpose. That is, $\sigma_+(P) = \sqrt{\sigma(P \cdot P^T)}$.
 \end{definition}
 
 
@@ -156,17 +165,16 @@ With eigenvalue ordering unambiguous and well-defined, we may proceed to start t
 
 In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution. They tell us how the eigenvalues space themselves and give us useful upper and lower bounds.
 
-For example, the maximum of a sample is an order statistic concerned with the highest ranked element. In our case, this could corrospond the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined.
+For example, the maximum of a sample is an order statistic concerned with the highest ranked element. In our case, this could correspond the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined.
 
 \begin{example}[The Largest Eigenvalue]
 Suppose we have seek the largest eigenvalue distribution for a ensemble distribution $\D$, we would simulate an ensemble $\Ens$ and observe $\lambda_1$ for each of its matrices. Then, we can set the distribution of the largest eigenvalue for $\D$ by observing the distribution of $\lambda_1$.
 \end{example}
 
-So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
+So, we will consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
 
 %=========================================================================================
 %=========================================================================================
-%\section{Spectrum Analysis}
 \newpage
 \subsection{Case Study: Perron-Frobenius Theorem}
 
@@ -176,7 +184,7 @@ So, we fill consider the conditional order statistics $\E(\lambda_{i} \mid i)$ a
 
 \minititle{Detour: The Perron-Frobenius Theorem}
 
-Using the toolkit we have now accquired, we can now discuss an elegant, visual representation of the Perron-Frobenius theorem (See A.x). To put it shortly, the Perron-Frobenius theorem, applied to stochastic matrices is a result that gurantees a stationary distribution to an ergodic Markov Chain (see A.x). Sparing the details, we can use the conjunction of two facts, that if true, yield the result for the Perron-Frobenius Theorem for ergodic Markov chains through stochastic matrices.
+Using the toolkit we have now accquired, we can now discuss an elegant, visual representation of the Perron-Frobenius theorem (See A.x). To put it shortly, the Perron-Frobenius theorem, applied to stochastic matrices is a result that guarantees the existence of a stationary distribution to an ergodic Markov Chain (see A.x). Sparing the details, we can use the conjunction of two facts, that if true, yield the result for the Perron-Frobenius Theorem for ergodic Markov chains through stochastic matrices.
 \begin{enumerate}
   \item The largest eigenvalue of stochastic matrices is 1.
   \item When multiplied by $P^K$ (for large $K$), any point $v$ enters the eigenspace of the matrix's largest eigenvalue. That is, $v P^K$ is an eigenvector of $P$.
@@ -190,9 +198,9 @@ Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue 
 \FIGUREstochspectrum{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-This shows that the spectral of stochastic matrices is $1$! What is left is the other fact. For the second statement, again, there is plenty of computational evidence to back this up. This is the reason why \textbf{Appendix D} is included. This is a side project that started in this thesis, simulating eigenvectors computationally. From the simulations, we find that there is overwhelming evidence that most matrices, if not all, satisfy the second statement.
+This shows that the spectral radius of stochastic matrices is $1$! What is left is the other fact. For the second statement, again, there is plenty of computational evidence to back this up. This is the reason why \textbf{Appendix D} is included. This is a side project that started in this thesis, simulating eigenvectors computationally. From the simulations, we find that there is overwhelming evidence that most matrices, if not all, satisfy the second statement.
 
-\blocktitle{Conclusions} So, to conclude, we can say that the computational evidence for these two facts support and provide an alternative method of seeing why the Perron-Frobenius theorem is true.
+\blocktitle{Conclusions} So, to conclude, we can say that the computational evidence for these two facts support and provide an alternative method of empirically demonstrating that the Perron-Frobenius theorem is true.
 
 %=========================================================================================
 %=========================================================================================
@@ -202,9 +210,11 @@ This shows that the spectral of stochastic matrices is $1$! What is left is the 
 %\subsection{Introduction}
 A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (See A.x). Simply put, those are matrices which are equal to their conjugate transpose.
 
-$\textbf{Note:}$ Since real numbers are their own conjugate transpose, every Symmetric matrix is Hermitian. However, we will still delineate the two terms to avoid confusion.
+\begin{remark}[Symmetric versus Hermitian]
+Since real numbers are their own conjugate transpose, every Symmetric matrix is Hermitian. However, we will still delineate the two terms to avoid confusion and indicate what field $\F$ we are working with.
+\end{remark}
 
-In any case, one critical result in Linear Algebra that will be extensively wielded in this thesis is the fact that a matrix is Symmetric or Hermitian if and only if it has real eigenvalues. In other words:
+In any case, one critical result in Linear Algebra that will be extensively wielded in this thesis is the fact that if a matrix is Symmetric or Hermitian, then it has real eigenvalues. In other words:
 \begin{align*}
 P = \overline{P^{T}} \implies \sigma(P) = \{\lambda_i \mid \lambda_i \in \R\}
 \end{align*}
@@ -213,7 +223,7 @@ Having a complete set of real eigenvalues yields many great properties. For inst
 %=========================================================================================
 \minititle{Example: Stochastic Matrices}
 
-One very pleasing example to look at is stochastic matrices. As seen previously in \textbf{Section 2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and singularity that is the largest eigenvalue.
+One very pleasing example to look at is stochastic matrices. As seen previously in \textbf{Subsection 2.2.2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and isolated point that is the largest eigenvalue.
 
 Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues. This can be compared to the spectrum of non-Symmetric stochastic matrices in the previous figure. The patterns are similar, but now, imposing symmetry on the matrices forces the eigenvalues to ``collapse'' onto the real line!
 
@@ -233,7 +243,7 @@ $$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
 \end{definition}
 
 \begin{remark}[Radius and Matrix Dimension]
-The dimension of the matrix determines the radius of the eigenvalues. Namely, if a Hermitian matrix $P$ is $N \times N$, then its eigenvalues are semicircle distributed with radius $R = 2\sqrt{N}$. That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(2\sqrt{R})$.
+The dimension of the matrix determines the radius of the eigenvalues. Namely, if a Hermitian matrix $P$ is $N \times N$, then its eigenvalues are approximately semicircle distributed with radius $R = 2\sqrt{N}$; the approximation improves as $N$ gets larger. That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(R = 2\sqrt{N})$ as $N \to \infty$.
 \end{remark}
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
@@ -252,6 +262,10 @@ stochastic matrices.
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREunifspectrum{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\minititle{Plot takeaways}
+Largest eigenvalue is varied; compared with stochastic!
+
 \newpage
 
 %=========================================================================================
@@ -262,6 +276,10 @@ Here we have the second largest eigenvalue of the Erdos-Renyi ensemble. We param
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREerdosLAMTWO{h}{0.65}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\minititle{Plot takeaways}
+
+Why upper half plane only?
 
 %=========================================================================================
 \newpage

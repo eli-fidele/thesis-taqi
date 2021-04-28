@@ -91,12 +91,7 @@ P
 [4,] -1.0398587  0.1975445 -0.8511950  0.86366082
 \end{lstlisting}
 
-%****************************************************************************************%
-\minititle{Summary Table of $\D$-Distributions}
-\begin{center}
-  \Ddisttable
-\end{center}
-%****************************************************************************************%
+
 \newpage
 
 %=========================================================================================
@@ -130,7 +125,7 @@ ensemble
 [3,]  0.83539+0.16662i -1.16592-1.14666i -0.51256+0.17750i
 \end{lstlisting}
 
-With this in mind, we will gloss over, characterize, and briefly discuss a few special recurring ensembles in this thesis.
+With this in mind, we will survey and characterize, and briefly discuss a few special recurring ensembles in this thesis.
 
 %=========================================================================================
 
@@ -145,7 +140,7 @@ An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \{\oneto
 \end{definition}
 
 Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameterized by a probability $p$ (assuming it's homogenous, which this document will unless otherwise noted). As $p \to 0$, we say that graph becomes more sparse; analogously, as $p \to 1$ the graph becomes more connected.\newline
-\indent Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable. As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices. This makes simulating the graphs much easier.
+\indent Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable. As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices. This makes simulating the graphs much easier. This is demonstrated in the algorithm used to generate the matrices.  (See B.x)
 
 \begin{code}[Erdos-Renyi p = 0.5 Ensemble]
 Let $\mathcal{D} = \text{ER}(p = 0.5)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Erdos-Renyi matrices ($p = 0.5$) of size 10 as such:
@@ -176,3 +171,10 @@ At a practical level, all one would need to know is that the matrices are genera
 %=========================================================================================
 
 %\section{Analytical Results}
+
+%****************************************************************************************%
+\minititle{Summary Table of $\D$-Distributions}
+\begin{center}
+  \Ddisttable
+\end{center}
+%****************************************************************************************%
