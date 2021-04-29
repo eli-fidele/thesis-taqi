@@ -130,7 +130,7 @@ For the distribution using diagonal bands, consider the definiton of the beta ma
 \ALGbeta
 
 \begin{definition}[$\b$-Matrix]
-Suppose $P \sim \H(\b)$. Then, $[0]_P \sim \Normal(0,1)$. Additionally, $[-1]_{P} = \vec{X}$ where $X_k = \chi(\text{df} = \beta k)$ for $k = 1,\dots,N-1$. Then, set $[1]_P = [-1]_P$.
+Suppose $P \sim \H(\b)$. Then, $[0]_P \sim \Normal(0,2)$. Additionally, $[-1]_{P} = \vec{X}$ where $X_k = \chi(\text{df} = \beta k)$ for $k = 1,\dots,N-1$. Then, set $[1]_P = [-1]_P$.
 \end{definition}
 
 \begin{warning}[$\b$-Notation]
@@ -300,7 +300,7 @@ Note that we are not considering the adjacency matrix of an Erdos-Renyi graph. R
 
 \begin{code}[Erdos-Renyi p = 0.5 Ensemble]
 Let $\mathcal{D} = \text{ER}(p = 0.5)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Erdos-Renyi matrices ($p = 0.5$) of size 10 as such below.
-Notice how half of all the entries are $0$, which is what we expect since $p = 0.5$ implies that we expect half the edges to not be connected (have weight 0). 
+Notice how half of all the entries are $0$, which is what we expect since $p = 0.5$ implies that we expect half the edges to not be connected (have weight 0).
 \end{code}
 
 \begin{lstlisting}[language=R]
