@@ -129,9 +129,19 @@ For the distribution using diagonal bands, consider the definiton of the beta ma
 
 \ALGbeta
 
-\begin{definition}[$\b$-Matrix]
-Suppose $P \sim \H(\b)$. Then, $[0]_P \sim \Normal(0,2)$. Additionally, $[-1]_{P} = \vec{X}$ where $X_k = \chi(\text{df} = \beta k)$ for $k = 1,\dots,N-1$. Then, set $[1]_P = [-1]_P$.
+%for $k \in \N_{N-1}$.
+
+\begin{definition}[Hermite-$\b$ Matrix]
+Suppose $P \sim \H(\b)$ is an $N \times N$ matrix. Then, the main diagonal $[0]_P \sim \Normal(0,2)$.
+Additionally, both the main off-digaonals are equal and they are given by $[1]_{P} = [-1]_{P} = \vec{X} = (X_k)_{k=1}^{N-1}$ where $X_k \sim \chi(\text{df} = \beta k)$.
+As such, we obtain a Hermite-$\b$ distributed matrix. Note that this is a symmetric tridiagonal matrix.
 \end{definition}
+
+\begin{remark}[Off-Diagonal Distributions]
+Note that the off-diagonal distributions are chi variables with varying degrees of freedom.
+For this reason, we cannot say that the entries are identically distributed, despite being within the same diagonal band, but they are independent.
+On the other hand, the diagonal is a vector of $N$ i.i.d $\Normal(0,2)$ variables.
+\end{remark}
 
 \begin{warning}[$\b$-Notation]
 Please note that the Hermite $\b$-ensemble matrices are \textbf{not} related to the $\Beta$ distribution. They are completely independent.
