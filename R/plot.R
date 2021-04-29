@@ -180,7 +180,7 @@ spectrum.scatterplot <- function(array, ..., mat_str = ""){
   array_spectrum %>%
     ggplot() +
     geom_point(mapping = aes(x = Re, y = Im, color = order), alpha = 0.75) +
-    scale_color_continuous(type = "viridis") +
+    scale_color_discrete(type = "viridis") +
     labs(x = "Re", y = "Im", title = paste(title_str,sep = "")) +
     coord_fixed()
 }

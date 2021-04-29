@@ -59,3 +59,10 @@ ens_spec %>%
   coord_fixed()
 ```
 
+```{r}
+ens <- RME_stoch(N = 10, sparsity = T, size = 1000)
+ens_spec <- ens %>% spectrum()
+ens_spec$Order <- as.factor(ens_spec$Order) 
+ens_spec %>% spectrum.scatterplot()
+```
+
