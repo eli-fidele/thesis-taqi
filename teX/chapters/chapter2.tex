@@ -66,8 +66,7 @@ To summarize this, consider the flow chart below.
 \end{formalization}
 
 To summarize, here is how we formalize the spectrum as a statistic. Suppose we sample $P \sim \D$. Then, we take its spectrum formally using $\sigma$ as such:\hfill
-%$$P_{\text{array}} \ra \vec{P} \ra \sigma(\vec{P}) \ra \text{index magic} \ra \det(P - \lambda I) \ra \sigma(P_{\text{array}})$$
-$$ X_1,X_2,\dots,X_K \xra{\text{Make array}} (\vec{X} \rightsquigarrow P^*) \xra{\text{Compute} \det(P - \lambda I)} char_{P^*}(\lambda) \xra{\text{Solve for roots}} \sigma(P^*) $$
+$$ X_1,X_2,\dots,X_K \xra{\text{Make array}} (\vec{X} \rightsquigarrow P) \xra{\det(P - \lambda I)} char_{P}(\lambda) \xra{\text{Solve for roots}} \sigma(P) $$
 
 \begin{remark}[Formalization]
 Note how in the formalization we said that an $N \times N$ matrix $P$ has a representation as a vector of $K$ random variables rather than $N^2$ variables. Recall that some non-homogenous explicit $\D$-distributions

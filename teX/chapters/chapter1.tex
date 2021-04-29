@@ -181,7 +181,7 @@ Consider the following generating algorithms below. We first start by generating
 \ALGstochrow
 
 As such, we define the implicit $\D$-distribution corrosponding to a transition matrix on a complete graph with randomized weights as $\D = \text{Stochastic}$ as the distribution that
-is characterized by the generating algorithm below. 
+is characterized by the generating algorithm below.
 
 \ALGstoch
 
@@ -234,7 +234,7 @@ Note that this means we cannot set the field for implicit $\D$ distributions, as
 \end{remark}
 
 \medskip
-\noindent Below, we can see code on how to generate a standard normal random matrix using the $\textbf{RMAT}$ package.
+ Below, we can see code on how to generate a standard normal random matrix using the $\textbf{RMAT}$ package.
 \begin{code}[Standard Normal Matrix]
 Let $\mathcal{D} = \Normal(0,1)$. We can generate $P \sim \D$, a $4 \times 4$ standard normal matrix, as such:
 \end{code}
@@ -266,7 +266,7 @@ A $\D$-distributed random matrix ensemble $\Ens$ over $\F^{N \times N}$ of size 
 \end{definition}
 
 \medskip
-\noindent So, for example, we could compute a simple ensemble of matrices as follows.
+ So, for example, we could compute a simple ensemble of matrices as follows.
 \begin{code}[Standard Normal Hermitian Ensemble]
 Let $\mathcal{D} = \Normal(0,1)^{\dagger}$. We can generate $\Ens \sim \D$ over $\Cc$, an ensemble of $4 \times 4$ complex Hermitian standard normal matrices of size 10 as such:
 \end{code}
@@ -315,7 +315,7 @@ We say that the edge probabilities are homogenous - akin to our description of h
 
 Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable.
 As such, we may alternatively say that the degree of each vertex $v$ (corrosponding to a row) is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices.
-This makes simulating the graphs much easier. To achieve this effect, we first sample the vertex degree, and then uniformly randomly sever edges by setting the weights of $N - deg(v)$ to $)0$.
+This makes simulating the graphs much easier. To achieve this effect, we first sample the vertex degree, and then uniformly randomly sever edges by setting the weights of $N - deg(v)$ edges to $0$. \newline
 
 All, that being said, we now motivate the defintion of an $p$-Erdos-Renyi transition matrix as an implicit $\D$-distribution by the generating algorithm below.
 
@@ -325,7 +325,7 @@ We can interpret this as saying an Erdos-Renyi graph is a simple random walk on 
 
 \begin{warning}
 Note that we are not considering the adjacency matrix of an Erdos-Renyi graph. Adjacency matrices are a commonly studied class of matrices that also represent graphs.
-However, we are simulating a transition matrix that \textbf{represents a walk on one}.
+However, we are simulating a transition matrix, which \textbf{represents a random walk on one}.
 \end{warning}
 
 Consider the code example below, where generate an Erdos-Renyi ensemble of matrices.
@@ -356,7 +356,7 @@ ensemble
 The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in this thesis. The Hermite $\beta$-ensembles are a normal-like class of random matrices.
 This ensemble will be characterized, motivated, and defined more thoroughly in $\textbf{Chapter 4}$. However, we will give a brief introduction to the ensemble.
 
-As mentioned briefly in \textbf{Subsection 1.1.1}, the $\b$-ensemble is an ensemble whose matrix model has a special unique generative algorithm. There is a reason we
+As mentioned briefly in \textbf{Section 1.1.1}, the $\b$-ensemble is an ensemble whose matrix model has a special unique generative algorithm. There is a reason we
 care about this type the $\b$-matrix. This is because their original characterization is not in this matrix model with a non-homogenous $\D$-distribution. Rather, it is
 a matrix model that is characterized by its joint density of eigenvalues!
 
