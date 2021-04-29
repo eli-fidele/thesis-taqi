@@ -176,9 +176,12 @@ Well, the algorithm tells us that sampling a random stochastic matrix represents
 In other words, we sample a fully connected graph, and randomize the weights of each edge. As mentioned previously, in \textbf{Section 1.2.1}, we explore walks on Erdos-Renyi graphs,
 which are graphs with introduced sparsity as opposed to fully connected graphs.
 
-Consider the following generating algorithms below. We first start by generating a stochastic row - a row that sums to 1.
+Consider the following generating algorithms below. We first start by generating a stochastic row - a row that sums to one. Afterwards, we simply take $N$ stochastic rows to generate a stochastic matrix.
 
 \ALGstochrow
+
+As such, we define the implicit $\D$-distribution corrosponding to a transition matrix on a complete graph with randomized weights as $\D = \text{Stochastic}$ as the distribution that
+is characterized by the generating algorithm below. 
 
 \ALGstoch
 
