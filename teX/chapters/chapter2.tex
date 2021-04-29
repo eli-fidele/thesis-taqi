@@ -7,14 +7,20 @@
 
 \section{Introduction}
 
-In the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors. That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix. They are quite important for many reasons. For instance in statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corresponding matrices. The study of eigenvalues and eigenvectors primarily falls in the scope of Linear Algebra, but their utility is far-reaching. So, what are \textit{eigenvalues} exactly?
+In the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors.
+That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix.
+They are quite important for many reasons.
+For instance in statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corresponding matrices.
+The study of eigenvalues and eigenvectors primarily falls in the scope of Linear Algebra, but their utility is far-reaching. So, what are \textit{eigenvalues} exactly?
 
 %=========================================================================================
 
 \subsection{The Quintessential Spectral Statistic: the Eigenvalue}
-Given any standard square matrix $P \in \F^{N \times N}$, its \textit{eigenvalues} are simply the roots of the characteristic polynomial $\text{char}_P{(\lambda)}$ = $\det(P - \lambda I)$. By the Fundamental Theorem of Algebra, we know that there is always have as many complex eigenvalues $\lambda \in \Cc$ as the dimension of the matrix.
+Given any standard square matrix $P \in \F^{N \times N}$, its \textit{eigenvalues} are simply the roots of the characteristic polynomial $\text{char}_P{(\lambda)}$ = $\det(P - \lambda I)$.
+By the Fundamental Theorem of Algebra, we know that there is always have as many complex eigenvalues $\lambda \in \Cc$ as the dimension of the matrix.
 
-That being said, when our random matrix has a specified distribution (say, standard normal), we can see patterns in the eigenvalue distributions. So, an eigenvalue is a \textbf{spectral statistic} of a random matrix! To talk about a matrix's eigenvalues in a more formal and concise manner, we motivate what is the \text{eigenvalue spectrum}.
+That being said, when our random matrix has a specified distribution (say, standard normal), we can see patterns in the eigenvalue distributions.
+So, an eigenvalue is a \textbf{spectral statistic} of a random matrix! To talk about a matrix's eigenvalues in a more formal and concise manner, we motivate what is the \text{eigenvalue spectrum}.
 
 %\newpage
 
@@ -47,11 +53,16 @@ spectrum_P
 
 \minititle{[Explain what each column represents]}
 
-Since this is the first time the output of the spectrum appears, it may be worth briefly specifying what each column represents (i.e. Re denotes real, Im is imaginary, norm is complex norm and order is ranking from largest norm to smallest
+Since this is the first time the output of the spectrum appears, it may be worth briefly specifying what each column represents (i.e. Re denotes real,
+Im is imaginary, norm is complex norm and order is ranking from largest norm to smallest
 
-While our definition for spectrum is nice and clean, there are a few caveats that we must take care of. First, how are spectra statistics? So we can even call them statistics, so there needs to be some formalization as to why we consider eigenvalues statistics. In this dialogue, we will call back on the same sort of formalization dialogue in the Random Matrices section. Before beginning, the reader is encouraged to review what a statistic is in the review appendix (A.x).
+While our definition for spectrum is nice and clean, there are a few caveats that we must take care of.
+First, how are spectra statistics? So we can even call them statistics, so there needs to be some formalization as to why we consider eigenvalues statistics.
+In this dialogue, we will call back on the same sort of formalization dialogue in the Random Matrices section.
+Before beginning, the reader is encouraged to review what a statistic is in the review appendix (A.x).
 
-Recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices,we always had one thing - a vector representation of random variables. Using this framework, the formalization is trivial.
+Recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices,we always had one thing - a vector representation of random variables.
+Using this framework, the formalization is trivial.
 
 \begin{formalization}
 Suppose $P \sim \D$ is an $N \times N$ random matrix.
@@ -66,19 +77,23 @@ To summarize this, consider the flow chart below.
 \end{formalization}
 
 To summarize, here is how we formalize the spectrum as a statistic. Suppose we sample $P \sim \D$. Then, we take its spectrum formally using $\sigma$ as such:\hfill
-$$ X_1,X_2,\dots,X_K \xra{\text{Make array}} (\vec{X} \rightsquigarrow P) \xra{\det(P - \lambda I)} char_{P}(\lambda) \xra{\text{Solve for roots}} \sigma(P) $$
+$$ X_1,X_2,\dots,X_K \xra{\text{make array}} (\vec{X} \rightsquigarrow P) \xra{\det(P - \lambda I)} char_{P}(\lambda) \xra{\text{solve for roots}} \sigma(P) $$
 
 \begin{remark}[Formalization]
-Note how in the formalization we said that an $N \times N$ matrix $P$ has a representation as a vector of $K$ random variables rather than $N^2$ variables. Recall that some non-homogenous explicit $\D$-distributions
-do not initialize every entry of the matrix. Only our homogenous explicit and implicit $\D$-distributions do.
+Note how in the formalization we said that an $N \times N$ matrix $P$ has a representation as a vector of $K$ random variables rather than $N^2$ variables.
+Recall that some non-homogenous explicit $\D$-distributions do not initialize every entry of the matrix. Only our homogenous explicit and implicit $\D$-distributions do.
 \end{remark}
 %=========================================================================================
 
 \subsection{Interlude: Ensembles}
-While the spectrum of a matrix provides a good summary of the matrix, a matrix is only considered a single point/observation in random matrix theory. Additionally, simulating large matrices and computing their eigenvalues becomes harder and more computationally expensive as $N \to \infty$. As such, to obtain more eigenvalue statistics efficiently, another dimension is introduced by motiving the \textit{spectrum of a random matrix ensemble}. If we have an ensemble $\Ens$, then we can naturally extend the definition of $\sigma(\Ens)$.
+While the spectrum of a matrix provides a good summary of the matrix, a matrix is only considered a single point/observation in random matrix theory.
+Additionally, simulating large matrices and computing their eigenvalues becomes harder and more computationally expensive as $N \to \infty$.
+As such, to obtain more eigenvalue statistics efficiently, another dimension is introduced by motiving the \textit{spectrum of a random matrix ensemble}.
+If we have an ensemble $\Ens$, then we can naturally extend the definition of $\sigma(\Ens)$.
 
 \begin{definition}[Ensemble Spectrum]
-Let $\Ens \sim \D$ be an ensemble of matrices $P_i \in \F^{n \times n}$. To take the spectrum of $\Ens$, simply take the union of the spectra of each of its matrices. In other words, if $\Ens = \{P_i \sim \mathcal{D}\}_{i = 1}^K$, then we denote the spectrum of the ensemble
+Let $\Ens \sim \D$ be an ensemble of matrices $P_i \in \F^{n \times n}$. To take the spectrum of $\Ens$, simply take the union of the spectra of each of its matrices.
+In other words, if $\Ens = \{P_i \sim \mathcal{D}\}_{i = 1}^K$, then we denote the spectrum of the ensemble
 $$\sigma(\Ens) = \bigcup_{i=1}^K \sigma(P_i)$$
 \end{definition}
 
@@ -109,7 +124,9 @@ spectrum_ens
 
 %\newpage
 
-A common theme in this thesis will be that singleton matrices do not provide insightful information on their own. Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics. So in a way, ensemble statistics are the engine of this research.
+A common theme in this thesis will be that singleton matrices do not provide insightful information on their own.
+Rather, it is the collective behavior of a $\D$-distributed ensemble that tells us about how $\D$ impacts our spectral statistics.
+So in a way, ensemble statistics are the engine of this research.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREspectrumcomparison{h}{0.65}
@@ -128,21 +145,32 @@ Include brief discussion (~1 paragraph) about what the reader should take away f
 
 \subsection{Ordered Spectra}
 
-When we motivate the idea of matrix dispersion in the next section, we will consider order statistics of that matrix's eigenvalues in tandem with its dispersion. However, to do so presupposes that we have a sense of what \textit{ordered} eigenvalues means. Take a matrix $P$ and its \textit{unordered} spectrum $\sigma(P) = \{\lambda_j\}$. It is paramount to know what ordering scheme $\sigma(P)$ is using, because otherwise, the eigenvalue indices are meaningless! So, to eliminate confusion, we add an index to $\sigma$ that indicates how the spectrum is ordered. Often, the ordering context will be clear and the indexing will be omitted.
+When we motivate the idea of matrix dispersion in the next section, we will consider order statistics of that matrix's eigenvalues in tandem with its dispersion.
+However, to do so presupposes that we have a sense of what \textit{ordered} eigenvalues means.
+Take a matrix $P$ and its \textit{unordered} spectrum $\sigma(P) = \{\lambda_j\}$.
+It is paramount to know what ordering scheme $\sigma(P)$ is using, because otherwise, the eigenvalue indices are meaningless!
+So, to eliminate confusion, we add an index to $\sigma$ that indicates how the spectrum is ordered.
+Often, the ordering context will be clear and the indexing will be omitted.
 
 \minititle{Order Schemes: How to Order Eigenvalues}
 
 \noindent Consider the two following $\textit{ordering schema}$:
 
-Standard definitions of an ordered spectrum follows the standard ordering in the reals; denote this as the ordering by the $\textbf{sign scheme}$. Note that because total-ordering is only well-defined on the reals, we can only use this scheme when on a spectrum with real entries. So, we write the $\textit{sign-ordered spectrum}$ as follows:
+Standard definitions of an ordered spectrum follows the standard ordering in the reals; denote this as the ordering by the $\textbf{sign scheme}$.
+Note that because total-ordering is only well-defined on the reals, we can only use this scheme when on a spectrum with real entries.
+So, we write the $\textit{sign-ordered spectrum}$ as follows:
 \begin{align*}
 \sigma_S(P) = \{\lambda_j : \lambda_1 \geq \lambda_2 \geq \dots \geq \lambda_N\}_{j = 1}^N
 \end{align*}
-Alternatively, we can motivate a different scheme that properly handles complex eigenvalues. We could sort the spectrum by the norm of its entries; denote this as ordering using the \textit{norm scheme}. This way, all the eigenvalues are mapped to a real value, in which we could use the sign-scheme of ordering. Without further ado, we write the $\textit{norm-ordered spectrum}$ as follows:
+Alternatively, we can motivate a different scheme that properly handles complex eigenvalues.
+We could sort the spectrum by the norm of its entries; denote this as ordering using the \textit{norm scheme}.
+This way, all the eigenvalues are mapped to a real value, in which we could use the sign-scheme of ordering.
+Without further ado, we write the $\textit{norm-ordered spectrum}$ as follows:
 \begin{align*}
 \sigma_N(P) = \{\lambda_j : |\lambda_1| \geq |\lambda_2| \geq \dots \geq |\lambda_N|\}_{j = 1}^N
 \end{align*}
-Note that when we take the norms of the eigenvalues, we essentially ignore "rotational" features of the eigenvalues. Signs of eigenvalues indicate reflection or rotation, so when we take the norm, we essentially become more concerned with scaling.
+Note that when we take the norms of the eigenvalues, we essentially ignore "rotational" features of the eigenvalues.
+Signs of eigenvalues indicate reflection or rotation, so when we take the norm, we essentially become more concerned with scaling.
 
 For example, consider the following plots, showing the difference in using the sign and norm ordering schemes for the same spectrum.
 
@@ -154,7 +182,9 @@ For example, consider the following plots, showing the difference in using the s
 %\newpage
 \minititle{Singular Values}
 
-An aternative to using the norm ordering scheme is using the singular values of the matrix. If a matrix is symmetric, the singular values are simply the norm of the eigenvalues. We ignore rotational features and focus solely on scale when we do so.
+An aternative to using the norm ordering scheme is using the singular values of the matrix.
+If a matrix is symmetric, the singular values are simply the norm of the eigenvalues.
+We ignore rotational features and focus solely on scale when we do so.
 
 Suppose $P$ is a random matrix. Then, we can take it singular values as such.
 
@@ -173,14 +203,18 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 
 \minititle{Order Statistics}
 
-With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics. In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (See A.x)
+With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics.
+In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (See A.x)
 
-In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution. They tell us how the eigenvalues space themselves and give us useful upper and lower bounds.
+In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution.
+They tell us how the eigenvalues space themselves and give us useful upper and lower bounds.
 
-For example, the maximum of a sample is an order statistic concerned with the highest ranked element. In our case, this could correspond the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined.
+For example, the maximum of a sample is an order statistic concerned with the highest ranked element.
+In our case, this could correspond the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined.
 
 \begin{example}[The Largest Eigenvalue]
-Suppose we have seek the largest eigenvalue distribution for a ensemble distribution $\D$, we would simulate an ensemble $\Ens$ and observe $\lambda_1$ for each of its matrices. Then, we can set the distribution of the largest eigenvalue for $\D$ by observing the distribution of $\lambda_1$.
+Suppose we have seek the largest eigenvalue distribution for a ensemble distribution $\D$, we would simulate an ensemble $\Ens$ and observe $\lambda_1$ for each of its matrices.
+Then, we can set the distribution of the largest eigenvalue for $\D$ by observing the distribution of $\lambda_1$.
 \end{example}
 
 So, we will consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
@@ -225,8 +259,8 @@ Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue 
 
 This shows that the spectral radius of stochastic matrices is $1$! What is left is the other fact.
 For the second statement, again, there is plenty of computational evidence to back this up.
-%This is the reason why \textbf{Appendix D} is included. This is a side project that started in this thesis, simulating eigenvectors computationally.
-The reader may refer to \textbf{Appendix D} for an empirical demonstation of fact 2. Because the discussion of eigenvectors is too far afield from the current topic, so we will not include it in the current section.
+The reader may refer to \textbf{Appendix D} for an empirical demonstation of fact 2.
+Because the discussion of eigenvectors is too far afield from the current topic, so we will not include it in the current section.
 
 From the simulations, we find that there is overwhelming evidence that most matrices, if not all, satisfy the second statement.
 The "almost all" part here is an artifact of random matrices, since it is unlikely they will have duplicate eigenvalues, or eigenvalues corresponding to pure rotations (with no scaling).
@@ -236,10 +270,10 @@ These are the types of eigenvalues that lead to the second statement not holding
 
 %=========================================================================================
 %=========================================================================================
+
 \newpage
 \section{Symmetric and Hermitian Matrices}
 
-%\subsection{Introduction}
 A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (See A.x). Simply put, those are matrices which are equal to their conjugate transpose.
 
 \begin{remark}[Symmetric versus Hermitian]
@@ -250,14 +284,18 @@ In any case, one critical result in Linear Algebra that will be extensively wiel
 \begin{align*}
 P = \overline{P^{T}} \implies \sigma(P) = \{\lambda_i \mid \lambda_i \in \R\}
 \end{align*}
-Having a complete set of real eigenvalues yields many great properties. For instance, if all eigenvalues are real, we have the option of observing either the sign-ordered spectrum or the norm-ordered spectrum. This way, we can preserve negative signs and we would not lose the rotational aspect of the eigenvalue when we study its statistics. That is just one reason out of many more why having real eigenvalues is quite nice.
+Having a complete set of real eigenvalues yields many great properties. For instance, if all eigenvalues are real, we have the option of observing either the sign-ordered spectrum or the norm-ordered spectrum.
+This way, we can preserve negative signs and we would not lose the rotational aspect of the eigenvalue when we study its statistics. That is just one reason out of many more why having real eigenvalues is quite nice.
 
 %=========================================================================================
 \minititle{Example: Stochastic Matrices}
 
-One very pleasing example to look at is stochastic matrices. As seen previously in \textbf{Subsection 2.2.2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and isolated point that is the largest eigenvalue.
+One very pleasing example to look at is stochastic matrices.
+As seen previously in \textbf{Subsection 2.2.2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and isolated point that is the largest eigenvalue.
 
-Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues. This can be compared to the spectrum of non-Symmetric stochastic matrices in the previous figure. The patterns are similar, but now, imposing symmetry on the matrices forces the eigenvalues to ``collapse'' onto the real line!
+Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues.
+This can be compared to the spectrum of non-Symmetric stochastic matrices in the previous figure.
+The patterns are similar, but now, imposing symmetry on the matrices forces the eigenvalues to ``collapse'' onto the real line!
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \FIGUREsymmstochspectrum{h}{0.65}
@@ -267,7 +305,9 @@ Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the 
 \newpage
 \subsection{Wigner's Semicircle Distribution}
 
-The eigenvalues of Hermitian matrices obey Wigner's Semicircle distribution. Since Hermitian matrices have real eigenvalues, then we can be more precise and generally say that the real component of the eigenvalues follow the semicircle distribution. The distribution is named after physicist Eugene Wigner.
+The eigenvalues of Hermitian matrices obey Wigner's Semicircle distribution.
+Since Hermitian matrices have real eigenvalues, then we can be more precise and generally say that the real component of the eigenvalues follow the semicircle distribution.
+The distribution is named after physicist Eugene Wigner.
 
 \begin{definition}[Semicircle Distribtion]
 If a random variable $X$ is semicircle distributed with radius $R \in \R^+$, then we say $X \sim \text{SC}(R)$. $X$ has the following probability density function:
@@ -275,7 +315,9 @@ $$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
 \end{definition}
 
 \begin{remark}[Radius and Matrix Dimension]
-The dimension of the matrix determines the radius of the eigenvalues. Namely, if a Hermitian matrix $P$ is $N \times N$, then its eigenvalues are approximately semicircle distributed with radius $R = 2\sqrt{N}$; the approximation improves as $N$ gets larger. That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(R = 2\sqrt{N})$ as $N \to \infty$.
+The dimension of the matrix determines the radius of the eigenvalues.
+Namely, if a Hermitian matrix $P$ is $N \times N$, then its eigenvalues are approximately semicircle distributed with radius $R = 2\sqrt{N}$; the approximation improves as $N$ gets larger.
+That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(R = 2\sqrt{N})$ as $N \to \infty$.
 \end{remark}
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
@@ -328,7 +370,8 @@ Normal matrices tend to have eigenvalues distributed about the complex disk.
 Hermitian Complex Normal matrices tend to have eigenvalues distributed about the complex disk.
 
 \begin{remark}[Floating Point Errors]
-Because the model involves finding coefficients of polynomials with rounded entries (by computing the determinant), floating point errors and algorithmic systemic error will yield small, but negligible imaginary components.
+Because the model involves finding coefficients of polynomials with rounded entries (by computing the determinant),
+floating point errors and algorithmic systemic error will yield small, but negligible imaginary components.
 \end{remark}
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF

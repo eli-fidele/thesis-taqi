@@ -6,8 +6,8 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-source("../R/header.R")
-.src(d = 1)
+source("../../R/header.R")
+.src(d = 2)
 ```
 
 ```{r}
@@ -22,7 +22,7 @@ ens <- RME_norm(N = 200, cplx = T, herm = T, size = 20)
 ```
 
 ```{r}
-spec_P <- ens %>% spectrum_parallel()
+spec_P <- ens %>% spectrum_par(components = T)
 spec_P %>% spectrum.scatterplot()
 spec_P %>% spectrum.histogram(component = "Re")
 ```
