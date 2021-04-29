@@ -18,8 +18,8 @@ For a review, see \textbf{Appendix A.2.1}.
 
 \section{$\D$-Distributions}
 
-As a general rule, when it comes to random simulation, there is usually a rule or constrain to which our randomness must conform.
-For example, sampling a vector from a distribution is a rudimentary example of this.
+As a general rule, when it comes to random simulation, there is usually a rule or constraint to which the randomness must conform.
+For example, sampling a vector of random variables from a distribution is a rudimentary example of this.
 For random matrices, there are various techniques for generating their entries that are not just sampling from theoretical distributions.
 As such, we motivate the $\D$-distribution: a generalized matrix entry distribution framework.
 
@@ -61,18 +61,18 @@ Then, $p_{11}, p_{12}, p_{21}, p_{22}$ are independent, identically distributed 
 \begin{formalization}
 Explicit homogenous distributions can be formalized as overloading the standard notation of random variable distribution as seen in probability theory.
 This way, our random matrix has a representation as a random vector, which we commonly encounter in probability theory as a (i.i.d) sequence of random variables!
-Suppose $P$ is an $N \times N$ random matrix that is explicity and homogenously $\D$-distributed. Then, this would mean that $P$ is an array of $N^2$ i.i.d random variables sampled from $\D$.
+Suppose $P$ is an $N \times N$ random matrix that is explicitly and homogenously $\D$-distributed. Then, this would mean that $P$ is an array of $N^2$ i.i.d random variables sampled from $\D$.
 \end{formalization}
 
 \minititle{Non-Homogenous Explicit $\D$-distributions}
 
 There are a few instances where we encounter the need to only initialize only a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$-distribution.
-This type is distribution is similar to e.h. $\D$-distributions, but we no longer have the ability to overload random variable notation and indicate that only some entries have such distribution. This would be
-confusing because not every has the same distribution anymore. As such, we have to define new notation to do so.
+This type of distribution is similar to e.h. $\D$-distributions, but we no longer have the ability to overload random variable notation and indicate that only some entries have such distribution. This would be
+confusing because not every entry has the same distribution anymore. As such, we have to define new notation to do so.
 
 Simply put, a non-homogenous explicit $\D$-distribution can be completely characterized by listing the distributions of every entry.
-In this thesis, there are only one application of this type of $\D$-distribution; however, it describes the entry disributions by its diagonals --- this is the Hermite $\b$-ensemble matrices.
-Since its definition is characterized by distributions on the diagonals, we will avoid full entry-wise generality to be more concise.
+In this thesis, there is only one application of this type of $\D$-distribution; however, it describes the entry disributions by its diagonals --- this is the Hermite $\b$-ensemble matrix.
+Since its definition is characterized by distributions on the diagonals, we may avoid full entry-wise generality for the purpose of being succinct.
 As such, we will only describe non-homogenous explicit $\D$-distributions as schemes where we assign diagonal bands a specific vector of i.i.d random variables.
 
 \begin{definition}[Diagonal Bands]
@@ -80,12 +80,12 @@ Suppose $P = (p_{ij})$ is an $N \times N$ matrix. Then, $P$ may be partitioned i
 $\rho \in \{ -(N-1), \dots, -1, 0, 1, \dots, N-1 \}$.
 \end{definition}
 
-Heres an example using the diagonal bands constructor notation.
+Heres an example of using the diagonal bands constructor notation.
 
 \begin{example}
 Suppose $P$ is an $N \times N$ matrix. Then, $[0]_P$ is the main diagonal of $P$ since $p_{ii} \Ra i = j \Ra i - j = 0 \Ra p_{ii} \in [0]_P$.
 Similarly, the main off-diagonal in the upper triangle is $[-1]_P$ since $p_{12} \in [-1]_P$.
-Likewise, the main off-digonal in the lower triangle is $[1]_P$. The entry in the top-right corner of the matrix, $p_{1N}$ comprises $[1 - N]_P$.
+Likewise, the main off-digonal in the lower triangle is $[1]_P$. The entry in the top-right corner of the matrix, $p_{1N}$ solely comprises $[1 - N]_P$.
 \end{example}
 
 \begin{code}
@@ -184,16 +184,20 @@ Stochastic matrices will serve as our canonical implicitly distributed $\D$-dist
 Conventionally, stochastic matrices represent random walks on fixed graphs - so what does it mean to sample a random stochastic matrix?
 Well, the algorithm tells us that sampling a random stochastic matrix represents a random walk on a fixed random graph with \textbf{randomized weights}.
 In other words, we sample a fully connected graph, and randomize the weights of each edge. As mentioned previously, in \textbf{Section 1.2.1}, we explore walks on Erdos-Renyi graphs,
-which are graphs with introduced sparsity as opposed to fully connected graphs.
+which are graphs with introduced sparsity (have edges with weight 0) as opposed to fully connected graphs.
 
 Consider the following generating algorithms below. We first start by generating a stochastic row - a row that sums to one. Afterwards, we simply take $N$ stochastic rows to generate a stochastic matrix.
 
+%AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 \ALGstochrow
+%AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 As such, we define the implicit $\D$-distribution corrosponding to a transition matrix on a complete graph with randomized weights as $\D = \text{Stochastic}$ as the distribution that
 is characterized by the generating algorithm below.
 
+%AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 \ALGstoch
+%AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 \begin{remark}[Dependent Entries]
 A stochastic row is a vector whose entries are all dependent; this is due to the fact that we normalize by the row sum.
@@ -217,15 +221,8 @@ With the various types of $\D$-distributions defined, the definition of a random
 
 \begin{definition}[Random Matrix]
 Let $P \sim \D$ be an $N \times N$ matrix over $\F$. Then, the entries of $P$ are elements in $\F$ completely determined by the $\D$-distribution, regardless of what type it is.
-Also, if $\D$ is an explicit distribution, $\D^\dagger$ represents the symmetric/hermitian version $\D$.
+Also, if $\D$ is an explicit distribution, $\D^\dagger$ represents the symmetric/hermitian version of $\D$.
 \end{definition}
-
-% \begin{definition}[Random Matrix]
-% Assuming $\D$ is an explicit distribution, a random matrix is any matrix over the field $\F$ is a matrix $M \in \F^{N \times N}$ is a matrix whose entries are i.i.d random variables.
-% So, if a random matrix $M = (m_{ij})$ is $\mathcal{D}$-distributed, then we say $m_{ij} \sim \mathcal{D}$.
-% In the scope of this thesis, assume every random matrix to be homogenously distributed.
-% Otherwise, if $\D$ is an implicit distribution, then $P$ is a matrix whose entries are determined by the algorithm imposed by $\D$.
-% \end{definition}
 
 Here is a clarification on symmetric/hermitian versions of distributions.
 
@@ -235,7 +232,7 @@ As mentioned in the definition, we automatically have a class of derivative $\D$
 \end{remark}
 
 As mentioned in the definition, a random matrix defined over a field $\F$ has entries from $\F$ that are determined by the $\D$-distribution.
-Sometimes, specify that a matrix may have complex entires. We notate this by specifying $\F = \Cc$, and signify it as described below.
+Sometimes, we may specify a matrix to have complex entries. We notate this by specifying $\F = \Cc$, and interpret it as described below.
 
 \begin{remark}[Complex Entries]
 To say that a random matrix is explicitly $\D$-distributed over $\Cc$ would mean that its entries take the form $a + bi$ where $a,b \sim \D$ are random variables.
