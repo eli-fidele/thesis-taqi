@@ -147,25 +147,34 @@ takes in two parameters. For this reason, it is possible to have a homogenous ex
 
 \subsection{Implicit Distributions}
 
-In the latter case, we are concerned less about the distribution of the matrix entries and moreso about its holisitic properties.
+Now, we are done with defining the explicit $\D$-distribtions. The other type of $\D$-distribution is the implicit $\D$-distribution.
+As a general rule, when it comes to implicit $\D$-distributions, we are concerned less about the distribution of actual the matrix entries and moreso about its holisitic properties.
 
-Consider for example, the following implicit distributions.
+In this thesis, we will cover one type of implicit $\D$-distributed matrix: the stochastic matrix. One might ask, what are stochastic matrices?
+Stochastic matrices, in short, are matrices that represent random walks on Markov Chains (see \textbf{Appendix A.3}). So, for a fixed graph, there exists a matrix that represents a random walk on that graph.
+We call that either the stochastic matrix or transition matrix of the graph.
 
-\begin{enumerate}
-\item If $\D = \text{Stochastic}$, then the matrix is a row of random stochastic rows. (See Algorithm B.x)
-\item If $\D = \text{ER(p)}$, then the matrix is a row of Erdos-Renyi $p$-stochastic rows. (See Algorithm B.x)
-\end{enumerate}
+We will consider two variations of stochastic matrices: fully connected stochastic matrices and sparse stochastic matrices.
+The sparse stochastic matrices will be refered as Erdos-Renyi matrices, they are essentially the same as stochastic matrices, except they have a parameter $p$ that
+determines how connected the graph it represents is. They will be discussed in more detail in \textbf{Section 1.2.1}.
+
+% In the latter case, we are concerned less about the distribution of the matrix entries and moreso about its holisitic properties.
+%
+% Consider for example, the following implicit distributions.
+%
+% \begin{enumerate}
+% \item If $\D = \text{Stochastic}$, then the matrix is a row of random stochastic rows. (See Algorithm B.x)
+% \item If $\D = \text{ER(p)}$, then the matrix is a row of Erdos-Renyi $p$-stochastic rows. (See Algorithm B.x)
+% \end{enumerate}
 
 \minititle{Stochastic Matrices}
 
-Stochastic matrices will serve as our canonical implicitly distributed $\D$-distributed matrices.
-One might ask, what are stochastic matrices? How are they distributions?
+Stochastic matrices will serve as our canonical implicitly distributed $\D$-distributed matrices. How are they distributions?
 
-Stochastic matrices, in short, are matrices that represent random walks on Markov Chains (see \textbf{Appendix A.3}).
 Conventionally, stochastic matrices represent random walks on fixed graphs - so what does it mean to sample a random stochastic matrix?
 Well, the algorithm tells us that sampling a random stochastic matrix represents a random walk on a fixed random graph with \textbf{randomized weights}.
-In other words, we sample a fully connected graph, and randomize the weights of each edge. In \textbf{Section 1.2.1}, we explore walks on Erdos-Renyi graphs,
-which are graphs with sparsity as opposed to fully connected graphs.
+In other words, we sample a fully connected graph, and randomize the weights of each edge. As mentioned previously, in \textbf{Section 1.2.1}, we explore walks on Erdos-Renyi graphs,
+which are graphs with introduced sparsity as opposed to fully connected graphs.
 
 Consider the following generating algorithms below. We first start by generating a stochastic row - a row that sums to 1.
 
@@ -279,24 +288,44 @@ With this in mind, we will survey and characterize, and briefly discuss a few sp
 
 \subsection{Erdos-Renyi $p$-Ensembles}
 
-The Erdos-Renyi transition matrices are a class of stochastic matrices. Any stochastic matrix represents a walk on a fixed graph, the particular class of random graphs that we will consider are the Erdos-Renyi random graphs. Essentially, these are graphs whose vertices are connected with a uniform probability $p$. We can interpret this as saying an Erdos-Renyi graph is a simple random walk on a graph with parameterized sparsity (given by $p$). Without further ado, we motivate the Erdos-Renyi graph:
+As mentioned in \textbf{Section 1.1.3}, Erdos-Renyi transition matrices are a specific class of stochastic matrices.
+Again, a stochastic matrix represents a random walk on a fixed graph. For $\D = \text{Stochastic}$, we generate matrices that represent walks on fully connected graphs with randomized weights.
+For the Erdos-Renyi matrices, we will alternatively be considering a different graph to represent --- the $p$-Erdos-Renyi graphs.
+
+Essentially, these are graphs whose vertices are connected with a uniform probability $p$.
+This way, we add more variation since the connectivity of a graph is one feature of interest.
+Without further ado, we motivate the Erdos-Renyi graph:
 
 \begin{definition}[Erdos-Renyi Graph]
 An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \{\oneto[N]\}$ and edges $E = \mathds{1}_{i,j \in V} \sim \Bern(p_{ij})$. It is homogenous if $p_{ij} = p$ is fixed for all $i, j$.
 \end{definition}
 
-Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameterized by a probability $p$ (assuming it's homogenous, which this document will unless otherwise noted).
-As $p \to 0$, we say that graph becomes more sparse; analogously, as $p \to 1$ the graph becomes more connected.
+Essentially, an Erdos-Renyi graph is a graph whose ``connectedness'' is parameterized by a probability $p$.
+We will assume every edge $(i,j)$ has a non-zero weight with probability $p$ (so $p_{ij} \neq 0$).
+As $p \to 0$, we say that graph becomes more \textit{sparse}; analogously, as $p \to 1$ the graph becomes more \textit{connected}.
+
+\begin{remark}[Homogeneity]
+In this thesis, we will assume that every edge has a uniform probability $p$ of being connected.
+That is, we will assume $p_{ij}$ is non-zero with probability $p$ for all $i,j$.
+We say that the edge probabilities are homogenous - akin to our description of homogenous $\D$-distributions.
+\end{remark}
 
 Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable.
-As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices.
-This makes simulating the graphs much easier. This is demonstrated in the algorithm used to generate the matrices.  (See B.x)
+As such, we may alternatively say that the degree of each vertex $v$ (corrosponding to a row) is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices.
+This makes simulating the graphs much easier. To achieve this effect, we first sample the vertex degree, and then uniformly randomly sever edges by setting the weights of $N - deg(v)$ to $)0$.
+
+All, that being said, we now motivate the defintion of an $p$-Erdos-Renyi transition matrix as an implicit $\D$-distribution by the generating algorithm below.
 
 \ALGerdos
 
+We can interpret this as saying an Erdos-Renyi graph is a simple random walk on a graph with parameterized sparsity (given by $p$).
+
 \begin{warning}
-Note that we are not considering the adjacency matrix of an Erdos-Renyi graph. Rather, we are simulating a transition matrix that \textbf{represents a walk on one}.
+Note that we are not considering the adjacency matrix of an Erdos-Renyi graph. Adjacency matrices are a commonly studied class of matrices that also represent graphs.
+However, we are simulating a transition matrix that \textbf{represents a walk on one}.
 \end{warning}
+
+Consider the code example below, where generate an Erdos-Renyi ensemble of matrices.
 
 \begin{code}[Erdos-Renyi p = 0.5 Ensemble]
 Let $\mathcal{D} = \text{ER}(p = 0.5)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Erdos-Renyi matrices ($p = 0.5$) of size 10 as such below.
