@@ -179,6 +179,14 @@ As such, this makes finding the distribution of entries very difficult. Since it
 As such, to avoid the process of finding the distribution of these dependent entries, we will encapsulate the distribution and abstract it away by calling it an implicit distribution!
 \end{remark}
 
+Additionally, our distribtions depend on the dimension of the matrix $N$.
+
+\begin{remark}[Dependence on $N$]
+Every implicit $\D$-distribution will have some sort of dependence on the dimension of the matrix $N$.
+Non-homogenous explicit distributions may have a dependence, in the case of Hermite-$\beta$ matrices, it happens that they do.
+It is only e.h. $\D$-distributions that never have a dependence on $N$, matrices with such distributions have entries which are i.i.d.
+\end{remark}
+
 %=========================================================================================
 
 \subsection{Random Matrices}
@@ -202,14 +210,6 @@ Here is a clarification on symmetric/hermitian versions of distributions.
 \begin{remark}[Symmetric/Hermitian Matrices]
 As mentioned in the definition, we automatically have a class of derivative $\D$-distributions given that they are explicitly distributed denoted by $\D^\dagger$. To make a matrix symmetric
 (or Hermitian if $\F = \C$), then we simply set the elements in the upper triangle to be equal to those in the lower triangle. There is also an alternative algorithm provided in the appendix. (See B.x)
-\end{remark}
-
-Sometimes, our distribtions may depend on the dimension of the matrix $N$.
-
-\begin{remark}[Dependence on $N$]
-Every implicit $\D$-distribution will have some sort of dependence on the dimension of the matrix $N$.
-Non-homogenous explicit distributions may have a dependence, in the case of Hermite-$\beta$ matrices, it happens that they do.
-It is only e.h. $\D$-distributions that never have a dependence on $N$, matrices with such distributions have entries which are i.i.d.
 \end{remark}
 
 As mentioned in the definition, a random matrix defined over a field $\F$ has entries from $\F$ that are determined by the $\D$-distribution.
