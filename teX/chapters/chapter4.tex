@@ -8,40 +8,221 @@ and with statistical mechanics, one can calculate almost nothing exactly.}{\text
 
 \section{Introduction}
 
-In this chapter, we will talk about the Hermite $\beta$-ensembles more in depth.
-The beta ensembles have wide applications in statistical physics, eningeering, and many other places.
-They are defined by the joint density of their eigenvalues, and have a special characterization discussed in the next subsection.
+In this chapter, we will talk about the Hermite $\beta$-ensembles, also commonly known as the \textit{Gaussian ensembles}, more in depth.
+The $\b$-ensembles have wide applications in statistical physics, eningeering, and many other places.
+Canonically, there are three ``standard'' $\b$-ensembles, corrosponding to the values of $\b = 1, 2, \and 4$.
+It was briefly mentioned in a previous section, but what makes these ensembles special is how they are characterized.
+Fundamentally, the ensembles are defined by the joint density of their eigenvalues, dependent on the parameter $\beta$ of course.
+While $\b$-ensemble model parameter $\b$ has a support of $\N$, the three standard values give us very special properties that we discuss in this chapter.
+Extending the model beyond those standard values (which we do using the $\b$-matrix model) as we do in the previous sections in turn mean that the following special characterizations
+that will be discussed do not apply anymore.
 
 %=========================================================================================
+\newpage
+\subsection{Hermite $\beta$-Ensemble}
 
-\subsection{Hermite $\beta$-Ensembles}
+To begin, we will write down the joint eigenvalue probability density function of a Hermite $\b$-matrix.
 
-The Hermite $\beta$-ensembles, also called the Gaussian ensembles, are an important class of random matrix ensembles studied in engineering, statistical physics, and probability theory.
-Parameterized by $\beta \in \N$ through the Dyson index, this ensemble is charecterized by a few things.
-
-\begin{itemize}
-  \item The Dyson index $\beta$ corrosponds to the number of real number of components the subject matrices have.
-  \item The subject matrices are classically defined for $\beta = 1,2,4$ and they corrospond to matrices with real, complex, and quaternionic entries.
-      The corrosponding fields are $\R$, $\Cc$, and $\mathbb{H}$.
-  \item The matrices in this ensemble, most importantly, have a feature called conjugation invariance. With respect to the conjugation by the respective group of matrices.
-  \item Most importantly, the eigenvalues are determined by the joint probability density function given below.
-\end{itemize}
-
-\begin{definition}[Hermite $\beta$-ensembles]
-The Hermite $\beta$-ensembles, commonly known as the Gaussian ensembles, are an ensemble of random matrices parameterized by $\beta$, and their eigenvalues have the joint probability density function:
+\begin{definition}[$\beta$-ensemble]
+A (Hermite) $\beta$-ensemble is an ensemble of random matrices parameterized by $\beta$, which determines the joint eigenvalue p.d.f that characterizes it.
+So, given an observed set of eigenvalues $\L = (\seqo[N]{\lambda})$. Then, the joint p.d.f. of $\L$ is as follows:
 \begin{align*}
-f_\beta(\Lambda) = c_H^\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta e^{-1/2\sum_i \lambda_i^2}
+\jepdf = C_\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta e^{-\frac{1}{2} \sum_{i=1}^N \lambda_i^2}
+%f_\beta(\Lambda) = c_\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta \exp({-\frac{1}{2} \sum_{i=1}^N \lambda_i^2})
 \end{align*}
-where the normalization constant $c_H^\beta$ is given by:
+where the normalization constant $C_\beta$ is given by:
 \begin{align*}
-c_H^\beta = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \beta/2)}{\Gamma(1 + \beta j/2)}
+C_{\beta} = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \frac{\b}{2})}{\Gamma(1 + \frac{\b}{2}j)}
 \end{align*}
 \end{definition}
 
-To simulate matrices from the $\beta$-ensemble, we will be using a recent result published in ``Matrix Models for Beta Ensembles'' \cite{dumitriu}.
-This makes the $\beta$-ensemble a canonical example of an implicity distributed matrix; we do not care about the actual distribution of the entries,
-but rather the effect they have on the eigenvalues (trace) of the matrices.
-The algorithm used is directly cited from the results of Dumitriu's paper, and can be found in Appendix B.X.
+%=========================================================================================
+\minititle{Breaking Down the Behemoth}
+
+Now, if the reader's reaction to the statement of the $\b$-ensemble was shock or trepidation. Do not worry.
+Everything will become clear soon as we start to understand the components of the density function and
+focus on characterizing the components rather than try to parse through the dense notation.
+Speaking of which, let us start to rewrite the density function with friendlier, more readable notation.
+To begin, let us refer to the two primary components as the ``blue term'' and the ``red term'' as shown below.
+\begin{center}
+$\jepdf = \betaconst \; $\bbx{$\blueterm$} \; \rbx{$\redterm$}
+\end{center}
+
+\blocktitle{Normalization Constant} First things first, let us consider the normalization constant $\betaconst$.
+This constant is simply a constant needed by $f_\b$ to normalize the p.d.f such that it sums to $1$.
+The term is expressed as a product of gamma terms involving $\beta$. Additionally, this term is related to an integral called the \textit{Selberg integral}. (Ref)
+While the constant is interesting in terms of its relationship with that integral, it is not under our perview. So, the important takeaway is that it just normalizes our p.d.f,
+because every p.d.f needs to sum to $1$ in the end of the day.
+
+\bigskip
+%\newpage
+
+\blocktitle{The Blue Term} The first big component, which we will call ``the blue term'' is the term $\blueterme$. Let us break this term down further.
+  \begin{enumerate}
+    \item The first thing to note is that this term is a product of terms in the form $|\l_j - \l_i|^\b$.
+    \item Secondly, note that this product term runs over the indices $1 \leq i < j \leq n$.
+  \end{enumerate}
+    Here's the great part: the reader has already seen and is already accquianted with those two items! Realize,
+  \begin{enumerate}
+    \item The term $|\l_j - \l_i|^\b$ is simply the dispersion of $\piij$ with respect to the $\b$-norm dispersion metric $\d_\b$.
+      So, we can rewrite $\d_\b(\piij) = |\l_j - \l_i|^\b$.
+    \item The indices $\{i < j \mid i,j \in \N_N\}$ may look familiar. This is the lower pairing scheme!
+  \end{enumerate}
+  As such, when we consider two facts, the interpretation hopefully becomes a little simpler. We can say that the blue term is a product of the dispersion of all eigenvalue pairs in the lower pairing scheme w.r.t the $\b$-norm dispersion metric.
+Now, we know that for all $\b \in \N$ that the $\b$-norm is a positive definite metric. As such, this means that the term $\d_\b(\pi)$ is a positive term that grows when the dispersion between the eigenvalues in the pair $\pi$ grow larger.
+So, the important takeaway here is that the blue term tells us that the eigenvalues in the $\b$-ensemble tend to ``repel'' each other.
+The farther all the eigenvalues in $\L$ are from each other, the more likely we are to observe such $\L$.
+
+Additionally, this also means there is \textbf{zero probability} of observing any pair of identical eigenvalues.
+This is because $\d_\b(z,z') = 0$ if $z = z'$, meaning that if we observed two identical eigenvalues, then the probability density would be zero.
+This effectively places a bound on the how close our eigenvalues can be to each other.
+
+\bigskip
+
+\blocktitle{The Red Term} The second big component, which we will call ``the red term'' is the term $\redterm$. This term is slightly simpler to understand.
+Fundamentally, this term is simply an exponential term with an input that is a \textbf{negative value}.
+
+To see this, first label the term $S = \sum_{i = 1}^N \l_i^2$. This simplifies the red term to become $\exp(-\frac{1}{2} S)$.
+We know the term $S$ to be positive since the eigenvalues are \textbf{real} and that the sum of squares of several real values is strictly positive.
+As such, the term, multiplied by a negative number ($-\frac{1}{2}$) is guranteed to be negative. So, to summarize, we know that $-\frac{1}{2} S$ is a negative value.
+Then, from what we know about the exponential function, we know that:
+$$\lim_{x \to -\infty} \exp(x) = 0$$
+So, this means that as $S \to \infty$, $\exp(-\frac{1}{2}S) \to 0$. Since $S$ is simply the sum of magnitudes of the eigenvalues, this implies that the larger our eigenvalues
+are, the smaller is our red term. In turn, this implies that the joint p.d.f. of eigenvalues is smaller overall.
+To summarize, this means that our red term tells us that (relatively speaking) the larger the eigenvalues in $\L$, the less likely we are to observe those eigenvalues in the $\b$-ensemble. This effectively places a bound on the sizes of our eigenvalues.
+
+\bigskip
+
+\blocktitle{Takeaways} Altogether, here is what we can say about the $\beta$-ensemble joint eigenvalue p.d.f just from observing the terms.
+  \begin{enumerate}
+    %\item When $\l_i \in \L$ is large, then $\P(\L)$ is small.
+    %\item When $\d(\l_i, \l_j) \for \l_i,\l_j \in \L$ is small, then $\P(\L)$ is small.
+    \item When $\l_i$ is large, then $\P(\L)$ is small.
+    \item When $\d(\l_i, \l_j)$ is small, then $\P(\L)$ is small.
+  \end{enumerate}
+
+%=========================================================================================
+%=========================================================================================
+\newpage
+\subsection{The Invariance Criterion}
+
+\minititle{The Three Musketeers (Associative Algebras)}
+
+We know from Abstract Algebra (Ref) that there are only three associative algebras (i.e. algebras with a robust multiplication structure).
+They are the following:
+% \begin{enumerate}
+%   \item The real numbers: $$\R = \{ x \in \R \}$$
+%   \item The complex numbers: $$\C = \{ z = x + yi \mid x,y \in \R \}$$
+%   \item The quaternionic numbers: $$\Hh = \{ \alpha = a + bi + cj + dk \mid a,b,c,d \in \R \}$$
+% \end{enumerate}
+\begin{enumerate}
+  \item The real numbers $\R = \{ x \in \R \}$
+  \item The complex numbers $\C = \{ z = x + yi \mid x,y \in \R \}$
+  \item The quaternionic numbers $\Hh = \{ \alpha = a + bi + cj + dk \mid a,b,c,d \in \R \}$
+\end{enumerate}
+
+\minititle{Diagonalization \& Conjugation Invariance}
+
+One of the most elegant results in Random Matrix Theory is the equivalence between the $\b$-ensembles
+and their normal matrix counterparts over the three associative algebras. Without futher ado, consider the following.
+
+\medskip
+
+\blocktitle{Real} Suppose $M \sim \Normal(\mu,\sigma^2)^\dagger$ over $\R$ is a real symmetric matrix.
+Then, its eigenvalues have a joint p.d.f. of $f_{\b = 1}(\L)$, meaning it repersents the $\beta = 1$ ensemble.
+
+Additionally, we know that symmetric matrices are diagonalizable under conjugation with a orthogonal matrix.
+In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in O(n)$ is an orthogonal matrix.
+For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Orthogonal Ensemble}, abbreviated as GOE.
+
+\bigskip
+
+\blocktitle{Complex} Suppose $M \sim \Normal(\mu,\sigma^2)^\dagger$ over $\C$ is a complex hermitian matrix.
+Then, its eigenvalues have a joint p.d.f. of $f_{\b = 2}(\L)$, meaning it repersents the $\beta = 2$ ensemble.
+
+Additionally, we know that hermitian matrices are diagonalizable under conjugation with a unitary matrix.
+In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in U(n)$ is an unitary matrix.
+For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Unitary Ensemble}, abbreviated as GUE.
+
+\bigskip
+
+\blocktitle{Quaternionic} Suppose $M \sim \Normal(\mu,\sigma^2)^*$ over $\Hh$ is a quaternionic self-dual matrix.
+Then, its eigenvalues have a joint p.d.f. of $f_{\b = 4}(\L)$, meaning it repersents the $\beta = 4$ ensemble.
+
+Additionally, we know that self-dual quaternionic matrices are diagonalizable under conjugation with a sympleptic matrix.
+In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in Sp(n)$ is a sympleptic matrix.
+For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Sympleptic Ensemble}, abbreviated as GSE.
+
+\bigskip
+
+All that being said, we can say that with respect to each matrix group, each $\b$-ensemble matrix has a feature called
+\textbf{conjugation invariance}.
+
+\newpage
+%=========================================================================================
+\minititle{Dyson Index}
+
+So, all that being said, why do we use the value $\b$ and where do the numbers come from? The answer is the Dyson index. (Ref)
+The Dyson index $\beta$ corrosponds to the number of real number of components the subject matrices have. Refer to the definitions
+of the associative algebras above, and you will find that for $\b = 1,2,4$, you have the representation of a matrix over a field with $\b$ real dimensions.
+
+
+%=========================================================================================
+%=========================================================================================
+\newpage
+\subsection{A Physical Interpretation}
+
+Alongside these great algebraic properies, the $\b$-ensembles also have a intepretation as a physical model.
+This is because as mentioned previously, these ensembles show up frequently in statistical physics.
+So, we will cover one physical model that the $\b$-ensemble represents.
+
+Suppose that $P \sim \H(\beta)$ is an $N \times N$ matrix. Then, the eigenvalues of $P$ have a representation as a model of charged particles.
+
+\minititle{Charged Particle Model}
+
+Suppose $N$ particles are in a line about the origin. Additionally, suppose there is a quadratic potential $V(x) = x^2$.
+Then, the eigenvalues of $P$, $\spec(P)$ represents a stochastic system of such particles. As discussed previously in the breakdown of the density function,
+these particles tend to repel each other. Specifically, their repulsion factor is $\beta$ itself! By observing the red term and blue term at extreme values of $\b$,
+we can interpret the physical model as follows:
+\medskip
+
+\blocktitle{Low Replsuion, High Temperature} As $\b \to 0$, the temperature of the system $T \to \infty$.
+At these values, the model starts to behave like an ideal gas.
+Additionally, there is no interaction between the paricles anymore as the power of the blue term implies that the dispersion has no effect anymore. This returns a fully stochastic
+model of particles trying to align themselves. In this model, the potential matters a lot, as it determines the positioning of the particles.
+
+\bigskip
+
+\blocktitle{High Repulsion, Low Temperature} As $\b \to \infty$, the temperature of the system $T \to 0$.
+At these values, the model loses its stochastic properties and becomes deterministic.
+Additionally, there is maximal interaction between the paricles as the power of the blue term starts to become more prominent. This returns a fully deterministic*
+model of particles that align themselves equidistantly. In this model, the potential doesn't matter anymore.
+
+\medskip
+
+\begin{remark}[Deterministic System]
+While the second model is effectively deterministic, there does remain the randomness in the indices of the particles which are uniform.
+\end{remark}
+
+%=========================================================================================
+
+
+
+%=========================================================================================
+\newpage
+%=========================================================================================
+\subsection{The Matrix Model}
+
+Now, we have throughly charecterized, interpreted, and explained the $\b$-ensemble. How do we simulate such an ensemble given that we only know the joint p.d.f. of the eigenvalues?
+This is a problem known as the inverse eigenvalue problem. (Ref) Luckily, we do not need to dwelve deep into this. To simulate matrices from the $\beta$-ensemble, we will be using the result published in ``Matrix Models for Beta Ensembles'' by Dr. Ioana Dumitriu. \cite{dumitriu}. This gives us a matrix model that generates a matrix that would be observed in a $\beta$-ensemble given any $\beta \in \N$.
+
+\minititle{Dumitriu's Matrix Model of $\b$-Ensembles}
+
+This result was actually described previously in \textbf{Section 1.1.1}! We first described the $\b$-matrices as a non-homogenous $\D$-distribution that we denoted $\D = \H(\b)$. This is a symmetric, tridiagonal matrix model with entries sampling from the normal and chi distributions. What we get in turn, is a matrix model whose eigenvalues \textbf{implicitly} have the joint p.d.f. of the Hermite-$\b$ ensemble described in \textbf{Section 4.1.1}. The algorithm used is directly cited from the results of Dumitriu's paper, and can be found below.
+
+\ALGbeta
+
+In turn, we can now easily simulate $\b$-ensembles using $\RMAT$ as such.
 
 \begin{code}[Hermite Beta = 2 Ensemble]
 Let $\mathcal{D} = \mathcal{H}(\beta = 2)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Hermite matrices ($\beta = 2$) of size 10 as such:
@@ -60,23 +241,6 @@ ensemble
 [3,] 0.0000000 0.6884004 -0.03876104 1.944495
 [4,] 0.0000000 0.0000000  1.94449533 1.042741
 \end{lstlisting}
-
-%=========================================================================================
-
-\minititle{Dumitriu's Matrix Model}
-
-To generate Hermite $\beta$ matrices, we consider the result given in the Matrix Models of Beta Ensembles paper \cite{dumitriu}. We obtain the following algorithm.
-
-\ALGbeta
-
-%=========================================================================================
-
-\subsection{The Invariance Criterion}
-
-%=========================================================================================
-
-\subsection{A Physical Interpretation}
-
 %=========================================================================================
 
 \newpage

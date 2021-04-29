@@ -1,6 +1,29 @@
 % General
 \newcommand{\RMAT}{{\textbf{RMAT}}}
 
+% Probability & Probability Distributions
+%\newcommand{\Prb}{{\EuScript P}}
+\newcommand{\Prb}{\textbf{P}}
+\renewcommand{\P}{\Prb}
+\newcommand{\E}{\mathbb{E}}
+%\newcommand{\E}{\textbf{E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Unif}{\text{Unif}}
+\newcommand{\Bern}{\text{Bern}}
+\newcommand{\Beta}{\text{Beta}}
+\newcommand{\Bin}{\text{Bin}}
+\newcommand{\Normal}{\mathcal{N}}
+\renewcommand{\H}{\mathcal{H}} % Hermite
+
+% Beta ensembles
+\newcommand{\jepdf}{ {f_\beta(\Lambda)} }
+\newcommand{\betaconst}{ {C_\beta} }
+\newcommand{\blueterm}{ {\displaystyle \prod_{i < j} |\lambda_i - \lambda_j|^{\b}} }
+\newcommand{\blueterme}{ {\prod_{i < j} |\lambda_i - \lambda_j|^{\b}} }
+\newcommand{\redterme}{ {e^{-\frac{1}{2} \sum_{i=1}^N \lambda_i^2}} }
+\newcommand{\redterm}{ {\exp({-\frac{1}{2} \sum_{i=1}^N \lambda_i^2})} }
+\newcommand{\vand}{\sigma}
+
 % Spectral Statistics
 \newcommand{\spec}{\sigma}
 %\newcommand{\spair}{{\sigma^{\times 2}}}
@@ -14,6 +37,7 @@
 % Latin Letters (bb)
 \newcommand{\Cc}{\mathbb{C}} % Complex Numbers
 \newcommand{\C}{\Cc}
+\newcommand{\Hh}{\mathbb{H}} % Quaternions
 \newcommand{\R}{\mathbb{R}} % Reals
 \newcommand{\N}{\mathbb{N}} % Naturals
 \newcommand{\F}{\mathbb{F}} % Field
@@ -31,20 +55,8 @@
 \newcommand{\ep}{\epsilon}
 \renewcommand{\d}{\delta}
 \renewcommand{\b}{\beta}
-
-% Probability & Probability Distributions
-%\newcommand{\Prb}{{\EuScript P}}
-\newcommand{\Prb}{\textbf{P}}
-\renewcommand{\P}{\Prb}
-\newcommand{\E}{\mathbb{E}}
-%\newcommand{\E}{\textbf{E}}
-\newcommand{\Var}{\text{Var}}
-\newcommand{\Unif}{\text{Unif}}
-\newcommand{\Bern}{\text{Bern}}
-\newcommand{\Beta}{\text{Beta}}
-\newcommand{\Bin}{\text{Bin}}
-\newcommand{\Normal}{\mathcal{N}}
-\renewcommand{\H}{\mathcal{H}} % Hermite
+\renewcommand{\l}{\lambda}
+\renewcommand{\L}{\Lambda}
 
 % Math macros
 \newcommand{\oneto}[1][n]{1,\dots,#1} % 1,...,n

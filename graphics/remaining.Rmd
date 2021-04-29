@@ -1,0 +1,40 @@
+---
+title: "Chapter 2 Graphics"
+author: "Taqi"
+#date: "4/18/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+source("../R/header.R")
+library(future)
+.src(1)
+```
+
+```{r, eval = FALSE, include = FALSE}
+set.seed(23)
+run <- F
+if(run)
+{
+save <- T
+if(save){ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)}
+}
+```
+
+```{r}
+# Note: Add this feature to spectrum.scatterplot()!
+# Creates a matrix title given the dimension and classification of the matrix (ex. 20x20 Unif(0,1))
+.make_matrix_title <- function(N, class){
+  #dim_str <- paste(N,"X",N, sep = " ")
+  dim_str <- paste(N,"x",N, sep = "")
+  title_str <- paste(dim_str, class, sep = " ")
+  return(title_str)
+}
+# Create a shorter alias of this function
+makeTitle <- .make_matrix_title 
+# Example
+makeTitle(N = 20, class = "Standard Normal")
+```
+
+

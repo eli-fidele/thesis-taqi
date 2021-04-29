@@ -11,6 +11,7 @@ library(future)
 library(viridis)
 library(tidyverse)
 source("../R/header.R")
+library(RMAT)
 .src(1)
 ```
 
@@ -19,21 +20,24 @@ source("../R/header.R")
 #             Wigner's Surmise: Setup
 # ===================================================
 # Find the eigenvalue dispersions for a given matrix; overrided for Wigner's surmise
-.dispersion_matrix_W <- function(P, pairs, sort_norms, norm_pow, digits = 4){
+.dispersion_matrix_W <- function(P, pairs, sort_norms, pow_norm, digits = 4){
   # Evaluate the regular dispersion
-  disp <- .dispersion_matrix(P, pairs, sort_norms, singular = F, norm_pow = 1, digits = 4)
+  disp <- .dispersion_matrix(P, pairs, sort_norms, singular = F, pow_norm = 1, digits = 4)
   # Add the normalized eigenvalue spacing
   disp$normalized <- disp$id_diff_norm / mean(disp$id_diff_norm)
   return(disp)
 }
 # Find the dispersion of a matrix; overrided for Wigner's surmise
 dispersion_W <- function(array, pairs = NA, sort_norms = T, norm_pow = 1){
-  digits <- 4 # Digits to round values to
-  pairs <- .parsePairs(pairs, array) # Parse input and generate pair scheme (default NA), passing on array for dimension and array type inference
-  # Array is a matrix; call function returning dispersion for singleton matrix
-  if(class(array) == "matrix"){.dispersion_matrix_W(array, pairs, sort_norms, norm_pow, digits)}
-  # Array is an ensemble; recursively row binding each matrix's dispersions
-  else if(class(array) == "list"){furrr::future_map_dfr(array, .dispersion_matrix_W, pairs, sort_norms, norm_pow, digits)}
+  digits <- 4
+  array_class <- .arrayClass(array)
+  pairs <- .parsePairs(pairs, array, array_class) 
+  if(class(array) == "matrix"){
+    .dispersion_matrix_W(array, pairs, sort_norms, norm_pow, digits)
+  }
+  else if(class(array) == "list"){
+    furrr::future_map_dfr(array, .dispersion_matrix_W, pairs, sort_norms, norm_pow, digits)
+  }
 }
 # Labels a generic array with a value column
 .label_array <- function(array, value, label, size){
@@ -41,11 +45,14 @@ dispersion_W <- function(array, pairs = NA, sort_norms = T, norm_pow = 1){
   colnames(label_column) <- as.factor(label)
   cbind(array, label_column)
 }
-# Creates a tidy, labelled p-Erdos ensemble spectrum
+# Creates a tidy, labelled Hermite-beta ensemble Wigner dispersion
 beta_wigner_dispersion <- function(beta, N, size){
   beta_disp <- RME_beta(N, beta, size) %>% dispersion_W(pairs = "consecutive", sort_norms = F)
   beta_disp %>% .label_array(value = beta, label = "beta", size = nrow(beta_disp))
 }
+```
+
+```{r}
 # ===================================================
 #             Simulation: Beta Ensembles
 # ===================================================
@@ -73,6 +80,9 @@ beta_wigner %>%
 # Save plot
 save <- T
 if(save){ggsave(filename = "3-3_wigner_beta.pdf", path = "chap3", width = 10.5, height = 7)}
+```
+
+```{r}
 # ===================================================
 #        Simulation: Beta Ensembles, Extended
 # ===================================================
@@ -101,3 +111,93 @@ beta_wigner %>%
 save <- T
 if(save){ggsave(filename = "3-3_wigner_beta_extended.pdf", path = "chap3", width = 10.5, height = 7)}
 ```
+
+
+```{r}
+# ===================================================
+#             Wigner's Surmise: Setup
+# ===================================================
+# Creates a tidy, labelled normal ensemble Wigner dispersion
+normal_wigner_dispersion <- function(sd, N, size){
+  norm_disp <- RME_norm(N, sd = sd, symm = T, size = size) %>% dispersion_W(pairs = "consecutive", sort_norms = F)
+  norm_disp %>% .label_array(value = sd, label = "sd", size = nrow(norm_disp))
+}
+# ===================================================
+#             Simulation: Normal Matrices
+# ===================================================
+set.seed(23)
+# Global parameters
+N <- 200
+size <- 200
+sds <- seq(from = 0, to = 50, by = 5); sds[1] <- 1
+#sds <- c(5)
+# Generate the beta ensemble dispersions
+if(F){
+  norm_wigner <- purrr::map_dfr(sds, normal_wigner_dispersion, N, size)
+  if(T){write.csv(norm_wigner, "data/norm-wigner.csv", row.names = F)}
+} else{
+  norm_wigner <- read.csv("data/norm-wigner.csv")
+}
+# Make beta a factor
+norm_wigner$sd <- as.factor(norm_wigner$sd)
+# Remove extreme values
+norm_wigner <- norm_wigner %>% filter(normalized < 10)
+# Select certain sds
+'%ni%' <- Negate('%in%')
+#norm_wigner <- norm_wigner %>% filter(sd %ni% sds[1])
+# ===================================================
+# Create plot
+norm_wigner %>% 
+  ggplot(aes(x = normalized, group = sd, color = sd)) + 
+  geom_density() +
+  scale_color_brewer(type = "qual", palette = "Spectral")  +
+  labs(title = "Wigner's Surmise for the Symmetric Standard Normal Ensembles")
+# Save plot
+save <- T
+if(save){ggsave(filename = "3-3_norm_wigner.pdf", path = "chap3", width = 10.5, height = 7)}
+```
+
+```{r}
+# ===================================================
+#             Wigner's Surmise: Setup
+# ===================================================
+# Creates a tidy, labelled normal ensemble Wigner dispersion
+normal_wigner_dispersion <- function(sd, N, size){
+  norm_disp <- RME_norm(N, sd = sd, symm = T, size = size) %>% dispersion_W(pairs = "consecutive", sort_norms = F)
+  norm_disp %>% .label_array(value = sd, label = "sd", size = nrow(norm_disp))
+}
+# ===================================================
+#             Simulation: Normal Matrices
+# ===================================================
+set.seed(23)
+# Global parameters
+N <- 200
+size <- 200
+sds <- seq(from = 0, to = 50, by = 5); sds[1] <- 1
+#sds <- c(5)
+# Generate the beta ensemble dispersions
+if(F){
+  norm_wigner <- purrr::map_dfr(sds, normal_wigner_dispersion, N, size)
+  if(T){write.csv(norm_wigner, "data/norm-wigner.csv", row.names = F)}
+} else{
+  norm_wigner <- read.csv("data/norm-wigner.csv")
+}
+# Make beta a factor
+norm_wigner$sd <- as.factor(norm_wigner$sd)
+# Remove extreme values
+norm_wigner <- norm_wigner %>% filter(normalized < 10)
+# Select certain sds
+'%ni%' <- Negate('%in%')
+#norm_wigner <- norm_wigner %>% filter(sd %ni% sds[1])
+# ===================================================
+# Create plot
+norm_wigner %>% 
+  ggplot(aes(x = normalized, group = sd, color = sd)) + 
+  geom_density() +
+  scale_color_brewer(type = "qual", palette = "Spectral")  +
+  labs(title = "Wigner's Surmise for the Symmetric Standard Normal Ensembles")
+# Save plot
+save <- T
+if(save){ggsave(filename = "3-3_norm_wigner.pdf", path = "chap3", width = 10.5, height = 7)}
+```
+

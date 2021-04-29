@@ -24,24 +24,9 @@
 \usepackage{listings}
 \usepackage[svgnames]{xcolor}
 
-% For stitching the code appendix
-\usepackage{pdfpages}
-%\usepackage{markdown} % For using `script.R` md in code appendix
-%\usepackage[hashEnumerators,smartEllipses]{markdown}
-
-%% Single quotation environment for introduction
-\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
-  \hbox{}\nobreak\hfil(#1)%
-  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
-
-\newsavebox\mybox
-\newenvironment{aquote}[1]
-  {\savebox\mybox{#1}\begin{quote}}
-  {\signed{\usebox\mybox}\end{quote}}
-
-%=====================
-%     ENVIRONMENTS
-%=====================
+%=============================
+%     THEOREM ENVIRONMENTS
+%=============================
 % Theorems
 \newtheorem{theorem}{Theorem}[section]
 \setlength{\parskip}{0pt}
@@ -91,14 +76,28 @@
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 
-% Formalization
+% Warning
 \newtheorem*{warning}{Warning}
 \setlength{\parskip}{0pt}
 \setlength\parindent{24pt}
 
+%=====================
+%     ENVIRONMENTS
+%=====================
+\usepackage{tcolorbox}
+% Blue box
+\definecolor{bbxcolor}{RGB}{0,60,255}% Rule colour
+\newtcbox{\bbx}{on line,
+  colframe=bbxcolor,colback=bbxcolor!10!white,
+  boxrule=0.5pt,arc=4pt,boxsep=0pt,left=6pt,right=6pt,top=6pt,bottom=6pt}
+%=====================
+% Red box
+\definecolor{rbxcolor}{RGB}{190,30,45}
+\newtcbox{\rbx}{on line,
+  colframe=rbxcolor,colback=rbxcolor!10!white,
+  boxrule=0.5pt,arc=4pt,boxsep=0pt,left=6pt,right=6pt,top=6pt,bottom=6pt}
+%=====================
 % R Code Chunks
-%code snippet environments V1
-
 \lstset{language=R,
     basicstyle=\small\ttfamily,
     stringstyle=\color{DarkGreen},
@@ -108,9 +107,21 @@
     keywordstyle=\color{blue},
     commentstyle=\color{DarkGreen},
 }
-
 \xdefinecolor{gray}{rgb}{0.4,0.4,0.4}
 \xdefinecolor{blue}{RGB}{58,95,205}% R's royalblue3; #3A5FCD
+%=====================
+%% Single quotation environment for introduction
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+% Quote environment
+\newsavebox\myqbox
+\newenvironment{aquote}[1]
+  {\savebox\myqbox{#1}\begin{quote}}
+  {\signed{\usebox\myqbox}\end{quote}}
+%=====================
+
 
 %==================
 %     FORMAT

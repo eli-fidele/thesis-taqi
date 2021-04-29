@@ -7,8 +7,8 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-source("../R/header.R")
-.src(1)
+source("../R../R/header.R")
+.src(2)
 ```
 
 ## Order Statistics Simulations
