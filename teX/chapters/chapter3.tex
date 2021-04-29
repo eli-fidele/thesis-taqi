@@ -463,7 +463,8 @@ we get the following classes:
 \end{example}
 
 %=========================================================================================
-\subsection{Conditional Statistics}
+\newpage
+\subsection{Conditional Order Statistics}
 
 We will considering the conditional statistics $\E(\rankdiff_{ij} \mid \rho)$ and $\Var(\rankdiff_{ij} \mid \rho)$.
 
@@ -510,7 +511,44 @@ did so for the spectrum and dispersion of an ensemble. That being said, consider
 
 \newpage
 
+%=========================================================================================
 
+\minititle{Wigner's Surmise: Symmetric Normal Matrices}
+
+We simulate the Wigner dispersion distribution (Wigner's surmise) for several $\Ens \sim \Normal(0, \sigma^2)^\dagger$ matrices over $\R$.
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREwignernorm{h}{0.6}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\minititle{Plot Takeaways}
+
+It seems as though the distribution is independent of the variance of the distribution. So, how do we really vary the wigner dispersion distribution?
+The answer is $\b$-ensembles.
+
+%=========================================================================================
+\newpage
+\minititle{Beta Ensembles}
+%=========================================================================================
+
+The analytical results for the Hermite $\beta$-ensembles for $\beta = 1, 2, 4$, denoted by $w_\beta$, are stated below.
+These are the asymptotic densities for the normalized spacings between consecutive eigenvalues for each of the matrices for $\b = 1,2,4$.
+
+\begin{align*}
+  w_1(s) &= \frac{\pi}{2} \exp(-\frac{\pi}{4}s^2) \\
+  w_2(s) &= \frac{32}{\pi^2} s^2 \exp(-\frac{4}{\pi}s^2) \\
+  w_4(s) &= \frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2) \\
+\end{align*}
+
+Additionally, their simulated densities are given in the plot below.
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\FIGUREwignerbeta{h}{0.6}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\minititle{Plot Takeaways}
+
+Moments, variance, mean
 
 %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

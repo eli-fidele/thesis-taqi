@@ -56,11 +56,15 @@ ens <- RME_beta(N, beta, size)
 spec_ens <- ens %>% spectrum()
 spec_ens %>% spectrum.scatterplot()
 # Dispersion plots
-disp_ens <- ens %>% dispersion(pairs = "lower", sort_norms = T)
+disp_ens <- ens %>% dispersion(pairs = "lower", norm_order = T)
 disp_ens %>% dispersion.scatterplot(metric = "abs_diff")
 ## Linear Model
 model <- model_beta_AD(disp_ens, intercept = F)
-model[[1]]
+# Save plot
+save <- T
+if(save){
+  ggsave(filename = "4-2_lm_beta_small.pdf", path = "chap4", width = 10.5, height = 7)
+}
 # ===================================================
 #              Simulation: N = 100
 # ===================================================
@@ -73,11 +77,20 @@ ens <- RME_beta(N, beta, size)
 spec_ens <- ens %>% spectrum()
 spec_ens %>% spectrum.scatterplot()
 # Dispersion plots
-disp_ens <- ens %>% dispersion(pairs = "lower", sort_norms = T)
+if(F){ 
+  disp_ens <- ens %>% dispersion(pairs = "lower", norm_order = T)
+  write.csv(disp_ens, "data/disp_ens_beta.csv", row.names = F)
+} else{
+  disp_ens <- read_csv("data/disp_ens_beta.csv")
+}
 disp_ens %>% dispersion.scatterplot(metric = "abs_diff")
 ## Linear Model
 model <- model_beta_AD(disp_ens, intercept = F)
-model[[1]]
+# Save plot
+save <- T
+if(save){
+  ggsave(filename = "4-2_lm_beta_big.pdf", path = "chap4", width = 10.5, height = 7)
+}
 ```
 
 ```{r}

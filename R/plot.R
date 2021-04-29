@@ -1,4 +1,26 @@
 
+spectrum.scatterplot2 <- function(array, ..., mat_str = ""){
+  # Process spectrum of the matrix/ensemble
+  if(class(array) == "list" || class(array) == "matrix"){
+    array_spectrum <- spectrum(array, ...)
+  }
+  # Else, the array is a precomputed spectrum (avoid computational waste for multiple visualizations)
+  else{
+    array_spectrum <- array
+  }
+  # Infer plot title string from which type of array (matrix/ensemble)
+  title_str <- .plot_title(class(array), prefix = "Spectrum", mat_str)
+  # Plot parameters
+  order <- array_spectrum[["Order"]]
+  # Plot
+  array_spectrum %>%
+    ggplot() +
+    geom_point(mapping = aes(x = Re, y = Im, color = order), alpha = 0.75) +
+    scale_color_discrete(type = "viridis") +
+    labs(x = "Re", y = "Im", title = paste(title_str,sep = "")) +
+    coord_fixed()
+}
+
 #=================================================================================#
 #                         DISPERSION VISUALIZATION FUNCTIONS
 #=================================================================================#
@@ -180,7 +202,7 @@ spectrum.scatterplot <- function(array, ..., mat_str = ""){
   array_spectrum %>%
     ggplot() +
     geom_point(mapping = aes(x = Re, y = Im, color = order), alpha = 0.75) +
-    scale_color_discrete(type = "viridis") +
+    scale_color_continuous(type = "viridis") +
     labs(x = "Re", y = "Im", title = paste(title_str,sep = "")) +
     coord_fixed()
 }

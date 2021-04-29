@@ -151,10 +151,10 @@ norm_wigner %>%
   ggplot(aes(x = normalized, group = sd, color = sd)) + 
   geom_density() +
   scale_color_brewer(type = "qual", palette = "Spectral")  +
-  labs(title = "Wigner's Surmise for the Symmetric Standard Normal Ensembles")
+  labs(title = "Wigner's Surmise for the Symmetric Normal Ensembles")
 # Save plot
 save <- T
-if(save){ggsave(filename = "3-3_norm_wigner.pdf", path = "chap3", width = 10.5, height = 7)}
+if(save){ggsave(filename = "3-3_wigner_norm.pdf", path = "chap3", width = 10.5, height = 7)}
 ```
 
 ```{r}

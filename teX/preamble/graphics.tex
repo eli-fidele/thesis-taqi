@@ -1,3 +1,15 @@
+
+\newcommand{\plotwrapper}[4]{
+  \begin{center}
+    \begin{figure}[#1]
+      \begin{center}
+        \includegraphics[scale = #2]{#3}
+      \end{center}
+      \caption{#4}
+    \end{figure}
+  \end{center}
+}
+
 %=========================================================================================
 %                                  CHAPTER 2
 %=========================================================================================
@@ -141,23 +153,13 @@
 %                                 Section 3
 %=========================================================================================
 
-\newcommand{\FIGUREwignerbeta}[2]{
+\newcommand{\FIGUREwignernorm}[2]{
   \begin{figure}[#1]
    \begin{center}
-    \includegraphics[scale = #2]{../graphics/chap3/3-3_wigner_beta}
-    \caption{Wigner's Surmise for standard Beta Ensembles}
+    \includegraphics[scale = #2]{../graphics/chap3/3-3_wigner_norm}
+    \caption{Wigner's Surmise for Symmetric Normal Matrices}
    \end{center}
    \label{wigner_beta}
-  \end{figure}
-}
-
-\newcommand{\FIGUREwignerbetaextended}[2]{
-  \begin{figure}[#1]
-   \begin{center}
-    \includegraphics[scale = #2]{../graphics/chap3/3-3_wigner_beta_extended}
-    \caption{Wigner's Surmise for non-standard Beta Ensembles}
-   \end{center}
-   \label{wigner_beta_extended}
   \end{figure}
 }
 
@@ -233,6 +235,29 @@
   \end{figure}
 }
 
+%=========================================================================================
+%                                 Section 3
+%=========================================================================================
+
+\newcommand{\FIGUREwignerbeta}[2]{
+  \begin{figure}[#1]
+   \begin{center}
+    \includegraphics[scale = #2]{../graphics/chap3/3-3_wigner_beta}
+    \caption{Wigner's Surmise for standard Beta Ensembles}
+   \end{center}
+   \label{wigner_beta}
+  \end{figure}
+}
+
+\newcommand{\FIGUREwignerbetaextended}[2]{
+  \begin{figure}[#1]
+   \begin{center}
+    \includegraphics[scale = #2]{../graphics/chap3/3-3_wigner_beta_extended}
+    \caption{Wigner's Surmise for non-standard Beta Ensembles}
+   \end{center}
+   \label{wigner_beta_extended}
+  \end{figure}
+}
 
 %=========================================================================================
 %                                  CODE APPENDIX

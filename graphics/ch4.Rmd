@@ -11,13 +11,29 @@ source("../R/header.R")
 .src(1)
 ```
 
-```{r}
+```{r, eval = FALSE}
 set.seed(23)
-run <- T
-if(run)
-{
-save <- T
-if(save){ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)}
+run <- F
+if(run){
+  # Set parameters
+  N <- 50
+  # Generate ensemble
+  ens <- RME_norm(N = N, symm = T, size = 300)
+  if(F){  
+    # Get spectrum 
+    ens_spec <- ens %>% spectrum_par()
+    write.csv(ens_spec, "data/spec_order_density.csv", row.names = F)
+  } else{
+    ens_spec <- read_csv("data/spec_order_density.csv")
+  }
+  # Get plot
+  ens_plot <- order.summary(ens_spec, Variance_Re)
+  ens_plot
+  # Save plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-2-1_spec_order_summary.pdf", path = "chap2", width = 10.5, height = 7)
+  }
 }
 ```
 

@@ -200,11 +200,15 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 %****************************************************************************************%
 
 %=========================================================================================
+\newpage
+\subsection{Conditional Order Statistics}
 
-\minititle{Order Statistics}
+%=========================================================================================
 
 With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics.
-In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (See A.x)
+In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (see \textbf{Appendix A.2.2})
+
+\minititle{Order Statistics}
 
 In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution.
 They tell us how the eigenvalues space themselves and give us useful upper and lower bounds.
@@ -217,11 +221,26 @@ Suppose we have seek the largest eigenvalue distribution for a ensemble distribu
 Then, we can set the distribution of the largest eigenvalue for $\D$ by observing the distribution of $\lambda_1$.
 \end{example}
 
+%=========================================================================================
+
 So, we will consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
+
+\plotwrapper{h}{0.5}{../graphics/chap2/2-2-1_spec_order12}{Largest eigenvalues distribution}
+
+\newpage
+
+Now, consider the densities at each order $i$:
+
+\plotwrapper{h}{0.45}{../graphics/chap2/2-2-1_spec_order_density}{Distibution of Eigenvalues by Order Statistic}
+
+
+And consider the variances:
+
+\plotwrapper{h}{0.35}{../graphics/chap2/2-2-1_spec_order_summary}{Distibution of Eigenvalues by Order Statistic}
 
 %=========================================================================================
 %=========================================================================================
-%\newpage
+\newpage
 \subsection{Case Study: Perron-Frobenius Theorem}
 
 \begin{definition}[Spectral Radius]

@@ -15,10 +15,11 @@ library(future)
 ```{r, eval = FALSE, include = FALSE}
 set.seed(23)
 run <- F
-if(run)
-{
-save <- T
-if(save){ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)}
+if(run){
+  save <- T
+  if(save){
+    ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)
+  }
 }
 ```
 
@@ -65,7 +66,6 @@ if(run)
 }
 ```
 
-
 ## Order Scheme Comparison
 
 ```{r}
@@ -98,7 +98,106 @@ if(run){
 
 # Section 2
 
---
+# Order Statistics 1
+
+```{r}
+set.seed(23)
+run <- T
+if(run){
+  # Set parameters
+  N <- 10
+  # Generate ensemble
+  ens <- RME_norm(N = N, symm = T, size = 2000)
+  if(F){  
+    # Get spectrum 
+    ens_spec <- ens %>% spectrum_par(order = 1:2)
+    write.csv(ens_spec, "data/spec_order12.csv", row.names = F)
+  } else{
+    ens_spec <- read_csv("data/spec_order12.csv")
+  }
+  order_1 <- ens_spec %>% filter(Order == 1)
+  order_2 <- ens_spec %>% filter(Order == 2)
+  # Get plot
+  ens_plot <- ens_spec %>% ggplot() +
+    geom_histogram(data = order_1, mapping = aes(x = Norm, fill = "1"), bins = 50) +
+    geom_histogram(data = order_2, mapping = aes(x = Norm, fill = "2"), bins = 50) +
+    labs(fill = "Order", 
+         title = paste("Distribution of the Largest Eigenvalues of a", 
+                       .makeTitle(N, "Symmetric Normal Matrix")))
+  ens_plot
+  # Save plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-2-1_spec_order12.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Order Statistics 2
+
+```{r}
+set.seed(23)
+run <- T
+if(run){
+  # Set parameters
+  N <- 50
+  # Generate ensemble
+  ens <- RME_norm(N = N, symm = T, size = 300)
+  if(T){  
+    # Get spectrum 
+    ens_spec <- ens %>% spectrum_par()
+    write.csv(ens_spec, "data/spec_order_density.csv", row.names = F)
+  } else{
+    ens_spec <- read_csv("data/spec_order_density.csv")
+  }
+  # Get plot
+  ens_plot <- ens_spec %>%
+    ggplot(mapping = aes(x = Norm, group = Order, color = Order)) +
+    geom_density(kernel = "gaussian") +
+    scale_color_gradient(low = "red", high = "blue") +
+      labs(fill = "Order", 
+           title = paste("Distribution of the Eigenvalues of a", 
+                         .makeTitle(N, "Symmetric Normal Matrix by Order")))
+  ens_plot
+  # Save plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-2-1_spec_order_density.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+
+```
+
+## Order Statistics 3
+
+```{r}
+set.seed(23)
+run <- T
+if(run){
+  # Set parameters
+  N <- 50
+  # Generate ensemble
+  ens <- RME_norm(N = N, symm = T, size = 300)
+  if(F){  
+    # Get spectrum 
+    ens_spec <- ens %>% spectrum_par()
+    write.csv(ens_spec, "data/spec_order_density.csv", row.names = F)
+  } else{
+    ens_spec <- read_csv("data/spec_order_density.csv")
+  }
+  # Get plot
+  ens_plot <- order.summary(ens_spec, Variance_Re)
+  ens_plot
+  # Save plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-2-1_spec_order_summary.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+
+
 
 # Section 3
 
