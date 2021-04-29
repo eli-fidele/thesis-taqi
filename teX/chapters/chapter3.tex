@@ -217,7 +217,7 @@ Similarly, you should do the same!
 %****************************************************************************************%
 
 %****************************************************************************************%
-\medskip
+\newpage
 \minititle{Summary Table of Pairing Schema}
 %****************************************************************************************%
 Suppose $P$ is an $N \times N$ matrix. Then, its spectral pairs $\spair(P)$ may take on the following pairing schemes. Assume that $i,j \in \N_N$. \newline
@@ -228,8 +228,7 @@ Suppose $P$ is an $N \times N$ matrix. Then, its spectral pairs $\spair(P)$ may 
 \vspace{1em}
 
 \noindent Another way we can define the pairing scheme is defining an auxilliary object: the eigenvalue (pair) matrix.
-%****************************************************************************************%
-%\newpage
+
 %****************************************************************************************%
 \medskip
 \minititle{An Alternative Represetation: Eigenvalue Matrix}
@@ -266,7 +265,7 @@ meaning $\forall \d : \d(\pi_{ii}) = 0$. So, as a convention, we omit these pair
 \end{remark}
 
 %=========================================================================================
-%\newpage
+\newpage
 \subsection{Dispersions}
 
 Now, with dispersion metrics and pairing schemes defined, we are finally able to motivate the definition of a matrix dispersion for both singleton matrices and their ensemble counterparts.
@@ -344,13 +343,15 @@ We will synthesize all the techniques, notations, and remarks in the previous se
 
 \subsection{Considerations}
 
-Here are some considerations that should be taken into account when studying dispersions.
+After an extensive amount of setup, possibly too many definitions, the reader should be proud! This is the last of it. (I promise.)
+Now, in the future sections, we will utilize our toolkit to analyze and study dispersions. \newline
 
-Dispersion metrics, linear combinations, and the relation to pairing schemes.
+However, before we may proceed, this section will be a primer prior to starting analyzing dispersions.
+Specifically, this section will discuss various subtle caveats and general considerations to take into account before proceeding.
+Essentially, we will be justifying the truck-load of definitions that were provided by showing why it is useful to have short-hand for them and use them concisely.
+Without further ado, here are some considerations that should be taken into account when studying a dispersions. \newline
 
-\minititle{Bounds and Considerations}
-
-One thing to consider from this dispersion set is what we could learn from it.
+Generally speaking, when we consider from a dispersion set, what we care to obtain from it are insights and patterns in the eigenvalue spacings.
 The dispersion of a matrix $P$, $\Delta_M(P)$ could tell us quite a few things.
 One thing it could tell us is the distribution of the dispersion of eigenvalues given that we uniformly and randomly select a pair of eigenvalues;
 this works when $\d$ is a symmetric function. However, if we are considered about spacings, then we must taking into consideration a few facts.
@@ -398,7 +399,7 @@ they give us almost all the information we need.
 \subsection{Order Statistics}
 With eigenvalue dispersions and eigenvalue orderings well-defined, we may proceed to start talking about their order statistics.
 
-In $\textbf{Chapter 2}$, we observed simple order statistics regarding the eigenvalues.
+In $\textbf{Section 2.2.3}$, we observed simple order statistics regarding the eigenvalues.
 This time around, we have two eigenvalues being compared at once, so there needs to be further setup with regards to dispersion order statistics.
 
 However, prior to introducing any new concepts, there is one scenario where using one index is sufficient in terms of discussing dispersion order statistics.
@@ -506,13 +507,6 @@ $$ \disp_{W}(P) = \left\{ \frac{\d_n(\pi)}{\meanspacing} \mid \pi \in \spair(P \
 
 The extension for ensembles is trivial; it inherits the same notation for matrices and the definition is extended similar to how we
 did so for the spectrum and dispersion of an ensemble. That being said, consider the following simulation of Wigner's surmise.
-
-
-
-
-%\begin{definition}[Wigner's Surmise]
-%Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
-%\end{definition}
 
 \newpage
 

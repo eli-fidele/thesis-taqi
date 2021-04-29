@@ -2,22 +2,27 @@
 \chapter{$\beta$-Ensembles}
 
 %=========================================================================================
-\epigraph{With thermodynamics, one can calculate almost everything crudely; with kinetic theory, one can calculate fewer things, but more accurately; and with statistical mechanics, one can calculate almost nothing exactly.}{\textit{Eugene Wigner}}
+\epigraph{With thermodynamics, one can calculate almost everything crudely; with kinetic theory, one can calculate fewer things, but more accurately;
+and with statistical mechanics, one can calculate almost nothing exactly.}{\textit{Eugene Wigner}}
 %=========================================================================================
 
 \section{Introduction}
 
-In this chapter, we will talk about the Hermite $\beta$-ensembles more in depth. The beta ensembles have wide applications in statistical physics, eningeering, and many other places. They are defined by the joint density of their eigenvalues, and have a special characterization discussed in the next subsection.
+In this chapter, we will talk about the Hermite $\beta$-ensembles more in depth.
+The beta ensembles have wide applications in statistical physics, eningeering, and many other places.
+They are defined by the joint density of their eigenvalues, and have a special characterization discussed in the next subsection.
 
 %=========================================================================================
 
 \subsection{Hermite $\beta$-Ensembles}
 
-The Hermite $\beta$-ensembles, also called the Gaussian ensembles, are an important class of random matrix ensembles studied in engineering, statistical physics, and probability theory. Parameterized by $\beta \in \N$ through the Dyson index, this ensemble is charecterized by a few things.
+The Hermite $\beta$-ensembles, also called the Gaussian ensembles, are an important class of random matrix ensembles studied in engineering, statistical physics, and probability theory.
+Parameterized by $\beta \in \N$ through the Dyson index, this ensemble is charecterized by a few things.
 
 \begin{itemize}
   \item The Dyson index $\beta$ corrosponds to the number of real number of components the subject matrices have.
-  \item The subject matrices are classically defined for $\beta = 1,2,4$ and they corrospond to matrices with real, complex, and quaternionic entries. The corrosponding fields are $\R$, $\Cc$, and $\mathbb{H}$.
+  \item The subject matrices are classically defined for $\beta = 1,2,4$ and they corrospond to matrices with real, complex, and quaternionic entries.
+      The corrosponding fields are $\R$, $\Cc$, and $\mathbb{H}$.
   \item The matrices in this ensemble, most importantly, have a feature called conjugation invariance. With respect to the conjugation by the respective group of matrices.
   \item Most importantly, the eigenvalues are determined by the joint probability density function given below.
 \end{itemize}
@@ -33,7 +38,10 @@ c_H^\beta = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \beta/2)}{\Gamma(1 + 
 \end{align*}
 \end{definition}
 
-To simulate matrices from the $\beta$-ensemble, we will be using a recent result published in ``Matrix Models for Beta Ensembles'' \cite{dumitriu}. This makes the $\beta$-ensemble a canonical example of an implicity distributed matrix; we do not care about the actual distribution of the entries, but rather the effect they have on the eigenvalues (trace) of the matrices. The algorithm used is directly cited from the results of Dumitriu's paper, and can be found in Appendix B.X.
+To simulate matrices from the $\beta$-ensemble, we will be using a recent result published in ``Matrix Models for Beta Ensembles'' \cite{dumitriu}.
+This makes the $\beta$-ensemble a canonical example of an implicity distributed matrix; we do not care about the actual distribution of the entries,
+but rather the effect they have on the eigenvalues (trace) of the matrices.
+The algorithm used is directly cited from the results of Dumitriu's paper, and can be found in Appendix B.X.
 
 \begin{code}[Hermite Beta = 2 Ensemble]
 Let $\mathcal{D} = \mathcal{H}(\beta = 2)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Hermite matrices ($\beta = 2$) of size 10 as such:
@@ -63,11 +71,12 @@ To generate Hermite $\beta$ matrices, we consider the result given in the Matrix
 
 %=========================================================================================
 
-\subsection{A Physical Interpretation}
-
-
+\subsection{The Invariance Criterion}
 
 %=========================================================================================
+
+\subsection{A Physical Interpretation}
+
 %=========================================================================================
 
 
@@ -75,45 +84,52 @@ To generate Hermite $\beta$ matrices, we consider the result given in the Matrix
 \newpage
 \section{Spectra}
 
-We know that $\beta$-matrices must be symmetric. So, their eigenvalues must be real. Any imaginary component we observe is simply computational error, and we may safely ignore it. It is good to see that the error is uniform and small.
+We know that $\beta$-matrices must be symmetric. So, their eigenvalues must be real. Any imaginary component we observe is simply computational error, and we may safely ignore it.
+It is good to see that the error is uniform and small.
 
 \begin{remark}[Implicit Distribution]
-Note that the beta ensemble is an ensemble characterized by some joint density function on its eigenvalues. So, this is a specific instance of an implcitly distributed matrix. There are many things to consider about $\textbf{identifiability}$ that are subtle, but important. Recall that in our formalization of a specturm as a formal statistic, we vectorized the matrix then tooks the determinant of the characteristic polynomial that came about it. For this reason, we can see that while Dumitriu's model provides an explicit formula, there is an issue of identifiability. That is, given some eigenvalues, there is no injective function to the characteristic polynomial that produced it. Rather, there are infinitly many equivalence classes of characteristic polynomials (and such, random matrices) that surjectively produce a given multiset of eigenvalues.
+Note that the beta ensemble is an ensemble characterized by some joint density function on its eigenvalues. So, this is a specific instance of an implcitly distributed matrix.
+There are many things to consider about $\textbf{identifiability}$ that are subtle, but important.
+Recall that in our formalization of a specturm as a formal statistic, we vectorized the matrix then tooks the determinant of the characteristic polynomial that came about it.
+For this reason, we can see that while Dumitriu's model provides an explicit formula, there is an issue of identifiability.
+That is, given some eigenvalues, there is no injective function to the characteristic polynomial that produced it.
+Rather, there are infinitly many equivalence classes of characteristic polynomials (and such, random matrices) that surjectively produce a given multiset of eigenvalues.
 \end{remark}
 
 \begin{remark}[Floating Point Errors]
-Because the model involves diving by $\sqrt{2}$, floating point errors and algorithmic systemic error will yield small, but negligible imaginary components. This is on top of the floating errors from rounding, as discussed in \textbf{Section 2.3}.
+Because the model involves diving by $\sqrt{2}$, floating point errors and algorithmic systemic error will yield small, but negligible imaginary components.
+This is on top of the floating errors from rounding, as discussed in \textbf{Section 2.3}.
 \end{remark}
 
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREbetaREspec{h}{0.6}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREbetaNORMspec{h}{0.6}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREbetaREsummary{h}{0.6}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREbetaNORMsummary{h}{0.6}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREbetaNORMsummary{h}{0.6}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREbetaNORMsummary{h}{0.6}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREbetaREspec{h}{0.6}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREbetaNORMspec{h}{0.6}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREbetaREsummary{h}{0.6}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREbetaNORMsummary{h}{0.6}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREbetaNORMsummary{h}{0.6}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \FIGUREbetaNORMsummary{h}{0.6}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %=========================================================================================
 %=========================================================================================
@@ -122,3 +138,7 @@ Because the model involves diving by $\sqrt{2}$, floating point errors and algor
 \section{Dispersions}
 
 Consider the following plot of the sign-sorted eigenvalue dispersions below.
+
+\subsection{Linear Fit}
+
+\subsection{Wigner's Surmise}
