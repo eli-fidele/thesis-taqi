@@ -257,18 +257,19 @@ if(run){
 }
 # Creates a tidy, labelled p-Erdos ensemble spectrum
 erdos_spectrum <- function(p, N, size){
-  ensemble_spectrum <- RME_erdos(N = N, p = p, size = size) %>% spectrum_parallel(order = 2)
+  ensemble_spectrum <- RME_erdos(N = N, p = p, size = size) %>% spectrum_par(order = 2:3)
   ensemble_spectrum %>% .label_array(value = p, label = "p", size = nrow(ensemble_spectrum))
 }
 # ===================================================
 #                     Simulation
 # ===================================================
 set.seed(23)
-run <- F
+run <- T
 if(run){
 # Global parameters
 N <- 50
-size <- 50
+size <- 2
+#size <- 50
 ps <- seq(0.005, 0.9995, 0.005)
 # ===================================================
 # Generate the p-ensembles

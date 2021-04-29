@@ -65,7 +65,7 @@ In simple terms, it is a way of measuring ``space'' between two complex numbers 
 In the scope of this thesis, we consider the following dispersion metrics below.
 
 \begin{enumerate}
-\item The standard norm: $\d(z,z') = |z' - z|$
+\item The standard norm: $\d_{n}(z,z') = |z' - z|$
 \item The $\beta$-norm: $\d_\beta(z,z') = |z' - z|^\beta$
 \item The difference of absolutes: $\d_{\text{abs}}(z,z') = |z'| - |z|$
 \end{enumerate}
@@ -270,18 +270,21 @@ meaning $\forall \d : \d(\pi_{ii}) = 0$. So, as a convention, we omit these pair
 \subsection{Dispersions}
 
 Now, with dispersion metrics and pairing schemes defined, we are finally able to motivate the definition of a matrix dispersion for both singleton matrices and their ensemble counterparts.
+In simple words, we define a dispersion of a matrix as a function that takes in a matrix along with a pairing scheme and dispersion metric.
+Then, it outputs the mapping of that dispersion metric onto the subset of spectral pairs specified by the pairing scheme.
+To formalize this, consider the following definition of a matrix dispersion:
 
 \begin{definition}[Dispersion]
 Suppose $P$ is an $N \times N$ matrix, and $\spair(P)$ are its spectral pairs.
-The dispersion of $P$ with respect to the pairing scheme $\Pi$ and dispersion metric $\delta$ is denoted by $\disp_\d(P \mid \Pi)$ and it is given by the following:
-$$\disp_\d(P \mid \Pi) = \{\d(\piij) \mid \piij \in \spair(P \mid \Pi)\}$$
+The dispersion of $P$ with respect to the pairing scheme $\Pi$ and dispersion metric $\delta_M$ is denoted by $\disp_M(P \mid \Pi)$ and it is given by the following:
+$$\disp_M(P \mid \Pi) = \{\d_M(\piij) \mid \piij \in \spair(P \mid \Pi)\}$$
 \end{definition}
 
 Consider the following code example, generating the dispersion of standard normal $5 \times 5$ matrix with respect to the consecutive pairing scheme.
 
 \begin{code}[Consecutive Pair Dispersion of a Standard Normal Matrix]
 In our notation, we are simulating the disperison of $P \sim \Normal(0,1) \where P \in \R^{5 \times 5}$.
-Specifically, we are simulating $\disp(P \mid \Pi_C)$. In the code implementation, we obtain an array for every dispersion metric $\delta$.
+Specifically, we are simulating $\disp(P \mid \Pi_C)$. In the code implementation, we obtain an array for every dispersion metric $\d$.
 \end{code}
 \begin{lstlisting}[language=R]
 library(RMAT)
@@ -290,7 +293,7 @@ disp_P <- dispersion(P, pairs = "consecutive")
 # Outputs the following
 disp_P
 ...
-i  j  eig_i       eig_j       id_diff    iddiff_norm abs_diff diff_ij
+i  j  eig_i       eig_j       id_diff    iddiff_norm abs_diff rank_diff
 2  1 -0.54-1.35i -0.54+1.35i  0.00+2.71i 2.71         0.00    1
 3  2  0.23+1.43i -0.54-1.35i -0.77-2.78i 2.88         0.02    1
 4  3  0.23-1.43i  0.23+1.43i  0.00+2.85i 2.85         0.00    1
@@ -300,10 +303,10 @@ i  j  eig_i       eig_j       id_diff    iddiff_norm abs_diff diff_ij
 Next, we extend the definition of dispersion for an ensemble as we usually do.
 
 \begin{definition}[Ensemble Dispersion]
-If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_\d(\Ens \mid \Pi)$.
+If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_M(\Ens \mid \Pi)$.
 To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices.
 In other words, if $\Ens = \{P_i \sim \mathcal{D}\}_{i = 1}^K$, then its dispersion is given by:
-$$\Delta_\d(\Ens \mid \Pi) = \bigcup_{i=1}^K \Delta_\d(P_i \mid \Pi)$$
+$$\Delta_M(\Ens \mid \Pi) = \bigcup_{i=1}^K \Delta_M(P_i \mid \Pi)$$
 \end{definition}
 
 Consider the following code example, generating the dispersion of a beta ensemble with respect to the consecutive pairing scheme.
@@ -348,48 +351,48 @@ Dispersion metrics, linear combinations, and the relation to pairing schemes.
 \minititle{Bounds and Considerations}
 
 One thing to consider from this dispersion set is what we could learn from it.
-The dispersion of a matrix $P$, $\Delta_d(P)$ could tell us quite a few things.
+The dispersion of a matrix $P$, $\Delta_M(P)$ could tell us quite a few things.
 One thing it could tell us is the distribution of the dispersion of eigenvalues given that we uniformly and randomly select a pair of eigenvalues;
-this works when $d$ is a symmetric function. However, if we are considered about spacings, then we must taking into consideration a few facts.
+this works when $\d$ is a symmetric function. However, if we are considered about spacings, then we must taking into consideration a few facts.
 \newline
 \medskip
 
 \blocktitle{Linear Combinations} The identity difference metric is not necessarily a ``bad metric''.
-In fact, it is one of the few metrics which allow transitivity under composition - which brings up an important detail.
-In the total pair dispersion $\Delta_\d(P \mid \Pi_0)$, there is some redundant information if we are totally concerned with spacings. Namely, consider the following fact:
+In fact, it is one of the few metrics which allow transitivity under composition.
+This brings up an important detail.
+In the all-pairs dispersion $\Delta_{id}(P \mid \Pi_0)$, there is some redundant information if we are totally concerned with spacings. Namely, consider the following fact:
 \begin{align*}
-\lambda_1 - \lambda_3 = (\lambda_1 - \lambda_2) - (\lambda_3 - \lambda_2)
+\lambda_i - \lambda_j = (\lambda_i - \lambda_k) - (\lambda_j - \lambda_k)
 \end{align*}
-In other words, if $d$ is the ID dispersion metric, then $d(\pi_{13}) = d(\pi_{12}) - d(\pi_{32})$.
-We could say the second eigenvalue is a pivot in which we could perform right-cancellation.
+In other words, if $\d = \d_{\text{id}}$, then $\d(\pi_{ij}) = \d(\pi_{ik}) - \d(\pi_{jk})$.
+We could say that $\lambda_k$ is a pivot in which we could perform right-cancellation.
+Because of this, using the all-pairs scheme $\Pi_0$ leads to finding various linear combinations in our dispersions.
 \newline
 \medskip
 
 \blocktitle{Triangle Inequality} However, as we said previously, only the identity difference metric gives us transitive properties.
 On the other hand, the other metrics provide us bounds when we compose them.
-They are given by a simple application of the reverse triangle inequality. Namely, consider the following fact:
+They are given by a simple application of the reverse triangle inequality. Namely, consider the following fact, which applies to any numbers $x, y$ in either $\R$ or $\C$.
 \begin{align*}
 ||y| - |x|| \leq |y - x|
 \end{align*}
-If we let $d_1$ be the difference of absolutes metric and $d_2$ be the standard norm, then we could rephrase this as saying $|\d_1(\pi_{ij})| \leq \d_2(\pi_{ij})$.
-This is just a rephrasing of the inequality. However, if we are careful enough, we can remove the absolute value to obtain a more meaningful upper bound.
-The value of $d_1(\pi_{ij})$ can be interpreted as the difference between the sizes of $\lambda_j$ and $\lambda_i$.
-However, recall that in the standard definition of a dispersion, we use the \textbf{lower} pair combinations so that we get $i > j$, making the value $|\lambda_j|$ always greater than $|\lambda_i|$ by construction.
+%If we let $\d_{abs}$ be the difference of absolutes metric and $\d_{n}$ be the standard norm, then we could rephrase this as saying
+Realize, two eigenvalues are just a pair of complex numbers, so we may rephrase that inequality as saying $|\d_{abs}(\pi_{ij})| \leq \d_{n}(\pi_{ij})$.
+However, if choose the appopriate pairing scheme, we can remove the absolute value to obtain a more meaningful upper bound. \newline
+
+Consider the following. The value of $\d_{abs}(\pi_{ij})$ can be interpreted as the difference between the sizes of $\lambda_j$ and $\lambda_i$.
+However, if we use the \textbf{lower} pair combinations $\Pi_<$, then we know that $i > j$, making the value $|\lambda_j|$ always greater than $|\lambda_i|$ by construction.
 As such, the left-hand value would always be positive, allowing us to drop the absolute value. So, we could say:
 \begin{align*}
-d_1(\pi_{ij}) \leq d_2(\pi_{ij}) \given \pi_{ij} \in \Pi_>
+\d_{abs}(\pi) \leq \d_{n}(\pi) \given \pi \in \spair(P \mid \Pi_>)
 \end{align*}
 \medskip
 
-\blocktitle{Sufficiency of Consecutive Pairs} Recall from previously that with respect to the identity difference, some elements of the dispersion $\Delta_\d(P)$ can be expressed as a linear combination of other elements.
-Note that using those linear combinations and the triangle inequality, we could derive the analogous bounds.
- It is quite useful to impose a condition that none of the values are a linear combination of the other.
-
-So, we motivate a more restrictive definition of matrix dispersion: the consecutive-values dispersion $\Delta_\d(P, \Pi_c)$.
-This dispersion is essentially a special case of the regular dispersion, but with a particular pairing scheme $\Pi_c$.
-To avoid this issue of linear combinations, we simply take the pairs of consecutive eigenvalues.
-In other words, $\Pi_c = \{(\lambda_i, \lambda_j) \in \sigma_P \times \sigma_P  \mid j = i+1\}_{i=1}^{N-1}$.
-This pairing scheme enumerates the pairs such that the dispersion metric has a natural mapping - it is simply the ``distance'' between an eigenvalue and the one that is one rank smaller than it.
+\blocktitle{Sufficiency of Consecutive Pairs} Recall from previously that with respect to the identity difference, some elements of the dispersion $\Delta_{id}(P)$
+can be expressed as a linear combination of other elements. To avoid this issue of linear combinations, we simply take the dispersion with respect to the consective pairing scheme. In other words,
+we consider only consecutive eigenvalues.
+By imposing this condition, we get that none of the values are a linear combination of the other in $\disp_{id}(P \mid \Pi_C)$. So, we can say that the consecutive pairs are sufficient in the sense that
+they give us almost all the information we need.
 
 %=========================================================================================
 \subsection{Order Statistics}
@@ -489,8 +492,23 @@ $$\langle s \rangle = \E[\disp_\d(P \mid \Pi_C)] = \E[\d(\pit_{j})]_{j = 1}^{N -
 \begin{definition}[Normalized Spacing]
 Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
 Then, the normalized spacing of the $j^{th}$ pair of eigenvalues, denoted $s_j$ is given by the following formula.
-$$s_j = \frac{(\lambda_j - \lambda_{j+1})}{\langle s \rangle} = \frac{\d(\pit_{j})}{\langle s \rangle}$$
+$$s_j = \frac{(\lambda_j - \lambda_{j+1})}{\meanspacing} = \frac{\d(\pit_{j})}{\langle s \rangle}$$
 \end{definition}
+
+Finally, we define the Wigner dispersion, which we may reconstruct using our notation. This way, we can formalize Wigner's Surmise as
+an observation of the Wigner dispersion for symmetric matrices.
+
+\begin{definition}[Wigner Dispersion]
+Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
+Then, the Wigner dispersion denoted $\disp_{Wigner}(P)$ is given by the set of normalized conseuctive eigenvalues of $P$. That is,
+$$ \disp_{W}(P) = \left\{ \frac{\d_n(\pi)}{\meanspacing} \mid \pi \in \spair(P \mid \Pi_C) \right\} $$
+\end{definition}
+
+The extension for ensembles is trivial; it inherits the same notation for matrices and the definition is extended similar to how we
+did so for the spectrum and dispersion of an ensemble. That being said, consider the following simulation of Wigner's surmise.
+
+
+
 
 %\begin{definition}[Wigner's Surmise]
 %Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
