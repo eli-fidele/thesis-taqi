@@ -168,15 +168,6 @@ We will consider two variations of stochastic matrices: fully connected stochast
 The sparse stochastic matrices will be refered as Erdos-Renyi matrices, they are essentially the same as stochastic matrices, except they have a parameter $p$ that
 determines how connected the graph it represents is. They will be discussed in more detail in \textbf{Section 1.2.1}.
 
-% In the latter case, we are concerned less about the distribution of the matrix entries and moreso about its holisitic properties.
-%
-% Consider for example, the following implicit distributions.
-%
-% \begin{enumerate}
-% \item If $\D = \text{Stochastic}$, then the matrix is a row of random stochastic rows. (See Algorithm B.x)
-% \item If $\D = \text{ER(p)}$, then the matrix is a row of Erdos-Renyi $p$-stochastic rows. (See Algorithm B.x)
-% \end{enumerate}
-
 \minititle{Stochastic Matrices}
 
 Stochastic matrices will serve as our canonical implicitly distributed $\D$-distributed matrices. How are they distributions?
@@ -228,7 +219,7 @@ Here is a clarification on symmetric/hermitian versions of distributions.
 
 \begin{remark}[Symmetric/Hermitian Matrices]
 As mentioned in the definition, we automatically have a class of derivative $\D$-distributions given that they are explicitly distributed denoted by $\D^\dagger$. To make a matrix symmetric
-(or Hermitian if $\F = \C$), then we simply set the elements in the upper triangle to be equal to those in the lower triangle. There is also an alternative algorithm provided in the appendix. (See B.x)
+(or Hermitian if $\F = \C$), then we simply set the elements in the upper triangle to be equal to those in the lower triangle.
 \end{remark}
 
 As mentioned in the definition, a random matrix defined over a field $\F$ has entries from $\F$ that are determined by the $\D$-distribution.

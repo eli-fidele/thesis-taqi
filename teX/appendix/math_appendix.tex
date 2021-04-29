@@ -16,44 +16,37 @@ Suppose $P \in \F^{n \times n}$ is a square matrix. Then, the eigenvalues of the
 
 \begin{definition}[Inverse Matrix]
 Suppose there is a matrix $P \in \F^{m\times n}$. Then, $P^{-1}$ is its inverse matrix iff multiplying it by $P$ returns the identity matrix. That is, the inverse matrix must satisfy:
-$$ P^{-1} P = I$$
+$$ P^{-1} \text{ is the inverse of } P \iff P^{-1} P = I$$
 \end{definition}
 
 \begin{definition}[Transpose Matrix]
-Suppose there is a matrix $P = (p_{ij}) \in \F^{m\times n}$. Then, its transpose matrix, $P^{T} = (q_{ij}) = (p_{ji}) \in \F^{n\times m}$ matrix whose columns are the rows of the original matrix.
+Suppose there is a matrix $P = (p_{ij}) \in \F^{m\times n}$. Then, its transpose matrix, $P^{T} = (t_{ij}) = (p_{ji}) \in \F^{n\times m}$ matrix whose columns are the rows of the original matrix.
 \end{definition}
 
 \begin{definition}[Conjugate Transpose Matrix]
-Suppose there is a matrix $P = (p_{ij}) \in \C^{m\times n}$. Then, its conjugate transpose matrix, $P^{\dagger} = (q_{ij}) = (\overline{p_{ji}}) \in \F^{n\times m}$ is a matrix whose columns are the rows of the original matrix.
+Suppose there is a matrix $P = (p_{ij}) \in \C^{m\times n}$. Then, its conjugate transpose matrix, $P^{\dagger} = (t_{ij}) = (\overline{p_{ji}}) \in \F^{n\times m}$ is a matrix whose columns are the rows of the original matrix.
 \end{definition}
 
 \begin{definition}[Symmetric Matrix]
 A matrix $P$ is symmetric iff it is equal to its transpose:
-$$ P = P^{T}$$
+$$P \text{ is Symmetric } \iff P = P^{T}$$
 \end{definition}
 
 \begin{definition}[Hermitian Matrix]
 A matrix $P$ is Hermitian iff it is equal to its conjugate transpose:
-$$ P = P^{\dagger}$$
+$$P \text{ is Hermitian } \iff P = P^{\dagger}$$
 \end{definition}
 
 \begin{definition}[Orthogonal Matrix]
 A matrix $P$ is called orthogonal iff its transpose is its inverse:
-$$ P^{T}=P^{-1}. $$
+$$P \text{ is Orthogonal } \iff P^{T} = P^{-1}$$
 \end{definition}
-
-% \begin{theorem}[Orthogonal Group]
-% The set of {\em all} orthogonal matrices in $\F^{n\times n}$ is a matrix group. (It is called the {orthogonal group}.)
-% \end{theorem}
 
 \begin{definition}[Unitary Matrix]
 A matrix $P$ is called unitary iff its conjugate transpose is its inverse:
-$$ P^{\dagger}=P^{-1}. $$
+$$ P \text{ is Unitary } \iff P^{\dagger} = P^{-1}. $$
 \end{definition}
 
-% \begin{theorem}[Unitary Group]
-% The set of {\em all} unitary matrices in $\C^{n\times n}$ is a matrix group. (It is called the {unitary group}.)
-% \end{theorem}
 %=========================================================================================
 
 \subsection{Other}
@@ -61,18 +54,18 @@ $$ P^{\dagger}=P^{-1}. $$
 As mentioned in \textbf{Section 2.3}, here is the statement of the Perron-Frobenius Theorem.
 Specifically, we consider only the application to ergodic Markov Chains by means of limiting scope to stochastic/transition matrices.
 
-\begin{theorem}[Perron-Frobenius Theorem]
-bla bla
-\end{theorem}
-
-For $\beta$-ensembles, we mention the invariance criterion.
+For $\beta$-ensembles, we mention the invariance criterion, which is defined in lieu of the following groups.
 
 \begin{theorem}[Orthogonal Group]
-The set of {\em all} orthogonal matrices in $\F^{n\times n}$ is a matrix group. (It is called the {orthogonal group}.)
+The set of {\em all} orthogonal matrices in $\F^{n\times n}$ is a matrix group. It is called the {orthogonal group}.
 \end{theorem}
 
 \begin{theorem}[Unitary Group]
-The set of {\em all} unitary matrices in $\C^{n\times n}$ is a matrix group. (It is called the {unitary group}.)
+The set of {\em all} unitary matrices in $\C^{n\times n}$ is a matrix group. It is called the {unitary group}.
+\end{theorem}
+
+\begin{theorem}[Perron-Frobenius Theorem]
+bla bla
 \end{theorem}
 
 %=========================================================================================
@@ -97,8 +90,6 @@ In this section, we will prove that for any $M \times M$ real symmetric matrix, 
 $$\forall i \in \N_{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
 
 \lemmaproof \newline
-
-%\newpage
 
 \noindent Now, leveraging the result of this lemma, we will prove the main theorem.
 
@@ -197,13 +188,8 @@ Suppose $\vec{X} = \{X_i\}_{i = 1}^N$ is an ordered vector of random variables. 
 Suppose $X = (20,7,2,1)$. The smallest (fourth) order statistic is $1$. The second order statistic is $7$. The largest (first) order statistic is $20$.
 \end{example}
 
-%\minititle{Theoretical Results}
-% Here, talk about the results in Chapter 8 of Blitzstein with the following pairs: (Uniform, Beta) and (Exponential, Gamma). Add the simulations. Beef up this sub-subsection.
-
 \begin{theorem}[Order Statistics of Uniform i.i.d Variables]
 Let $\seq[n]{U}$ be i.i.d. $\Unif(0, 1)$. Then, the $j^{th}$ order statistic $U_{(j)}$, is distributed as $U_{(j)} \sim \Beta(j, n-j+1)$.
-%Then, for $0 \leq x \leq 1$, $f(x)=1$ and $F(x)=x$, so the PDF of $U_{(j)}$ is
-%$$ f_j(x) = n \binom{n - 1}{j - 1} x^{j-1} (1-x)^{n-j}$$
 \end{theorem}
 
 %=========================================================================================
