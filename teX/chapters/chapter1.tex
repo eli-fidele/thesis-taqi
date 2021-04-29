@@ -243,7 +243,7 @@ Note that this means we cannot set the field for implicit $\D$ distributions, as
 \medskip
  Below, we can see code on how to generate a standard normal random matrix using the $\textbf{RMAT}$ package.
 \begin{code}[Standard Normal Matrix]
-Let $\mathcal{D} = \Normal(0,1)$. We can generate $P \sim \D$, a $4 \times 4$ standard normal matrix, as such:
+Let $P \sim \Normal(0,1)$ be a $4 \times 4$ random matrix. Then, we may generate $P$ as such:
 \end{code}
 
 \begin{lstlisting}[language=R]
@@ -266,10 +266,14 @@ P
 
 \section{The Crew: Ensembles}
 
-With a random matrix well defined, we may now motivate one of the most important ideas - the random matrix ensemble. One common theme in this thesis will be that random matrices on their own provide little information. When we consider them at the ensemble level, we start to obtain more fruitful results. Without further ado, we motivate the random matrix ensemble.
+With a random matrix well defined, we may now motivate one of the most important ideas - the random matrix ensemble.
+Simply put, a random matrix ensemble is essentially a collection of various matrices distributed the same way.
+One common theme in this thesis is that we will find that on their own, random matrices provide little information. However, when we consider them at the ensemble level, we start to obtain more fruitful results.
+Without further ado, we define the random matrix ensemble.
 
 \begin{definition}[Random Matrix Ensemble]
-A $\D$-distributed random matrix ensemble $\Ens$ over $\F^{N \times N}$ of size $K$ is defined as a set of $\D$-distributed random matrices $\Ens = \{P_i \sim \mathcal{D} \mid P_i \in \F^{N \times N}\}_{i = 1}^K$. In simple words, it is simply a collection of $K$ iterations of a specified class of random matrix.
+A $\D$-distributed ensemble $\Ens$ of $N \times N$ random matrices over $\F$ of size $K$ is defined as a set of $K$ iterations of that class of random matrix, and it is denoted:
+$$ \Ens = \bigcup_{i = 1}^K P_i \where P_i \sim \mathcal{D} \and P_i \in \F^{N \times N} $$
 \end{definition}
 
 \medskip
