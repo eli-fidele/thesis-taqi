@@ -1,0 +1,200 @@
+---
+title: "ch2-order"
+author: "Taqi"
+date: "4/29/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+source("../R/header.R")
+library(future)
+library(wesanderson)
+.src(1)
+```
+
+```{r}
+wes_pal <- wes_palette("Zissou1", 100, type = "continuous")
+# Note: Add this feature to spectrum.scatterplot()!
+# Creates a matrix title given the dimension and classification of the matrix (ex. 20x20 Unif(0,1))
+.make_matrix_title <- function(N, class){
+  #dim_str <- paste(N,"X",N, sep = " ")
+  dim_str <- paste(N,"x",N, sep = "")
+  title_str <- paste(dim_str, class, sep = " ")
+  return(title_str)
+}
+# Create a shorter alias of this function
+makeTitle <- .make_matrix_title 
+```
+
+```{r}
+# ===================================================
+#                       Setup
+# ===================================================
+# Real histogram
+plot_h_Re <- function(ens_spec, N, ordering){
+  ens_spec %>% 
+    mutate(Order = as.factor(Order)) %>% 
+    ggplot(mapping = aes(x = Re, fill = Order)) +
+    geom_histogram(alpha = alpha, bins = bins, inherit.aes = T) +
+    scale_fill_manual(values = wes_palette("Zissou1", N, type = "continuous"))+
+    labs(fill = "Order", 
+         title = paste(ordering,"-Ordered Spectrum of a ", 
+                       makeTitle(N, "Symmetric Normal Matrix Ensemble"), sep = ""))
+}
+# Real density
+plot_d_Re <- function(ens_spec, N, ordering){
+  ens_spec <- ens_spec %>% 
+    mutate(Order = as.factor(Order)) %>%
+    ggplot(mapping = aes(x = Re, fill = Order)) +
+    geom_density(alpha = alpha, bins = bins, inherit.aes = T)  +
+    labs(fill = "Order", 
+         title = paste(ordering,"-Ordered Spectrum of a ", 
+                       makeTitle(N, "Symmetric Normal Matrix Ensemble"), sep = ""))
+}
+# Norm density
+plot_d_Norm <- function(ens_spec, N, ordering){
+  ens_spec %>%
+    mutate(Order = as.factor(Order)) %>%
+    ggplot(mapping = aes(x = Norm, group = Order, fill = Order)) +
+    geom_density(alpha = alpha, kernel = "gaussian") +
+    labs(fill = "Order", 
+         title = paste(ordering,"-Ordered Spectrum of a ", 
+                         makeTitle(N, "Symmetric Normal Matrix by Order"), sep = ""))
+}
+# Norm density
+plot_d_Norm1 <- function(ens_spec, N){
+  ens_spec %>% 
+    mutate(Order = as.factor(Order)) %>%
+    ggplot(mapping = aes(x = Norm, fill = Order)) +
+    geom_density(alpha = alpha, bins = bins, inherit.aes = T) +
+    scale_fill_manual(values = wes_palette("Zissou1", N, type = "continuous"))+
+    labs(fill = "Order", 
+         title = paste("Norm-ordered Spectrum of a", 
+                       makeTitle(N, "Symmetric Normal Matrix Ensemble")))
+}
+plot_d_Norm2 <- function(ens_spec, N){
+  ens_spec %>% 
+    mutate(Order = as.factor(Order)) %>% 
+    ggplot(mapping = aes(x = Norm, fill = Order)) +
+    geom_density(alpha = alpha, bins = bins, inherit.aes = T) +
+    scale_fill_manual(values = wes_palette("Zissou1", N, type = "continuous"))
+}
+```
+
+
+```{r}
+# ===================================================
+#                       Setup
+# ===================================================
+# Set parameters
+N <- 15
+size <- 10000
+alpha <- 0.35
+bins <- 75
+# Generate ensemble
+ens <- RME_norm(N = N, symm = T, size = size)
+# Generate spectra
+ens_sign <- ens %>% spectrum_par(norm_order = F)
+ens_norm <- ens %>% spectrum_par(norm_order = T)
+```
+
+# Order Statistics 1a (Norm-Ordered)
+
+```{r}
+# ===================================================
+#                   Simulation
+# ===================================================
+set.seed(23)
+run <- T
+if(run){
+  # Plot parameters
+  alpha <- 0.35
+  bins <- 70
+  # Get norms plot
+  ens_plot <- plot_d_Norm1(ens_norm, N)
+  ens_plot
+  # Save plot
+  ggsave(filename = "norm_Norm.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  # Get another plot
+  ens_plot <- ens_norm %>% order.summary(component = Variance_Norm)
+  ens_plot
+  # Save plot
+  ggsave(filename = "norm_Norm_var.jpeg", path = "chap2_order", width = 10.5, height = 7)
+}
+```
+
+# Order Statistics 1b (Norm-Ordered)
+
+```{r}
+# ===================================================
+#                   Simulation
+# ===================================================
+run <- T
+if(run){
+  # Plot parameters
+  alpha <- 0.35
+  bins <- 70
+  # Get norms plot
+  ens_plot <- plot_d_Re(ens_norm, N, ordering = "Norm")
+  ens_plot
+  # Save plot
+  ggsave(filename = "norm_Re.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  # Get another plot
+  ens_plot <- ens_norm %>% order.summary(component = Variance_Re)
+  ens_plot
+  # Save plot
+  ggsave(filename = "norm_Re_var.jpeg", path = "chap2_order", width = 10.5, height = 7)
+}
+```
+
+# Order Statistics 2a (Sign-Ordered)
+
+```{r}
+# ===================================================
+#                   Simulation
+# ===================================================
+set.seed(23)
+run <- T
+if(run){
+  # Plot parameters
+  alpha <- 0.35
+  bins <- 70
+  # Get norms plot
+  ens_plot <- plot_d_Norm1(ens_sign, N)
+  ens_plot
+  # Save plot
+  ggsave(filename = "sign_Norm.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  # Get another plot
+  ens_plot <- ens_sign %>% order.summary(component = Variance_Norm)
+  ens_plot
+  # Save plot
+  ggsave(filename = "sign_Norm_var.jpeg", path = "chap2_order", width = 10.5, height = 7)
+}
+```
+
+# Order Statistics 2b (Sign-Ordered)
+
+```{r}
+# ===================================================
+#                   Simulation
+# ===================================================
+run <- T
+if(run){
+  # Plot parameters
+  alpha <- 0.35
+  bins <- 70
+  # Get norms plot
+  ens_plot <- plot_d_Re(ens_sign, N, ordering = "Sign")
+  ens_plot
+  # Save plot
+  ggsave(filename = "sign_Re.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  # Get another plot
+  ens_plot <- ens_sign %>% order.summary(component = Variance_Re)
+  ens_plot
+  # Save plot
+  ggsave(filename = "norm_Re_var.jpeg", path = "chap2_order", width = 10.5, height = 7)
+}
+```
+
+

@@ -1,0 +1,116 @@
+---
+title: "fit_betadisp"
+author: "Ali Taqi"
+date: "3/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = F)
+source("../R/header.R")
+#library(gglm)
+.src(d = 1)
+```
+
+```{r}
+# Master function returning list of objects to display
+model_beta_AD <- function(disp_ens, intercept = F){
+  if(intercept){
+    fit_disp <- lm(abs_diff ~ diff_ij, data = disp_ens)
+  } else{
+    intercept <- 0
+    fit_disp <- lm(I(abs_diff - intercept) ~ 0 + diff_ij, data = disp_ens)
+  }
+  summary <- summary(fit_disp)
+  # Return model summary
+  list(summary)
+}
+# Master function returning list of objects to display
+model_beta_IDN <- function(disp_ens, intercept = F){
+  if(intercept){
+    fit_disp <- lm(id_diff_norm ~ diff_ij, data = disp_ens)
+  } else{
+    intercept <- 0
+    fit_disp <- lm(I(id_diff_norm - intercept) ~ 0 + diff_ij, data = disp_ens)
+  }
+  summary <- summary(fit_disp)
+  # Return model summary
+  list(summary)
+}
+```
+
+## Linear Model: Beta Absolute Difference Dispersions 
+
+```{r}
+set.seed(23)
+# Set parameters
+N <- 20
+beta <- 4
+size <- 100
+# ===================================================
+#              Simulation: N = 20
+# ===================================================
+# Initialize ensemble
+ens <- RME_beta(N, beta, size)
+# Spectra plots
+spec_ens <- ens %>% spectrum()
+spec_ens %>% spectrum.scatterplot()
+# Dispersion plots
+disp_ens <- ens %>% dispersion(pairs = "lower", norm_order = T)
+disp_ens %>% dispersion.scatterplot(metric = "abs_diff")
+## Linear Model
+model <- model_beta_AD(disp_ens, intercept = F)
+# Save plot
+save <- T
+if(save){
+  ggsave(filename = "4-2_lm_beta_small.pdf", path = "chap4", width = 10.5, height = 7)
+}
+# ===================================================
+#              Simulation: N = 100
+# ===================================================
+set.seed(23)
+# Set parameters
+N <- 100
+# Initialize ensemble
+ens <- RME_beta(N, beta, size)
+# Spectra plots
+spec_ens <- ens %>% spectrum()
+spec_ens %>% spectrum.scatterplot()
+# Dispersion plots
+if(F){ 
+  disp_ens <- ens %>% dispersion(pairs = "lower", norm_order = T)
+  write.csv(disp_ens, "data/disp_ens_beta.csv", row.names = F)
+} else{
+  disp_ens <- read_csv("data/disp_ens_beta.csv")
+}
+disp_ens %>% dispersion.scatterplot(metric = "abs_diff")
+## Linear Model
+model <- model_beta_AD(disp_ens, intercept = F)
+# Save plot
+save <- T
+if(save){
+  ggsave(filename = "4-2_lm_beta_big.pdf", path = "chap4", width = 10.5, height = 7)
+}
+```
+
+```{r}
+# ===================================================
+#              Simulation: Sign-Sorted
+# ===================================================
+set.seed(23)
+# Set parameters
+N <- 100
+# Initialize ensemble
+ens <- RME_beta(N, beta, size)
+# Spectra plots
+spec_ens <- ens %>% spectrum()
+spec_ens %>% spectrum.scatterplot()
+# Dispersion plots
+disp_ens <- ens %>% dispersion(pairs = "lower", sort_norms = F)
+disp_ens %>% dispersion.scatterplot(metric = "id_diff_norm")
+## Linear Model
+model <- model_beta_IDN(disp_ens, intercept = F)
+model[[1]]
+```
+
+

@@ -1,0 +1,449 @@
+---
+title: "Chapter 2 Graphics"
+author: "Taqi"
+#date: "4/18/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+source("../R/header.R")
+library(future)
+library(wesanderson)
+.src(1)
+```
+
+```{r}
+wes_pal <- wes_palette("Zissou1", 100, type = "continuous")
+```
+
+
+```{r, eval = FALSE, include = FALSE}
+set.seed(23)
+run <- F
+if(run){
+  save <- T
+  if(save){
+    ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+```{r}
+# Note: Add this feature to spectrum.scatterplot()!
+# Creates a matrix title given the dimension and classification of the matrix (ex. 20x20 Unif(0,1))
+.make_matrix_title <- function(N, class){
+  #dim_str <- paste(N,"X",N, sep = " ")
+  dim_str <- paste(N,"x",N, sep = "")
+  title_str <- paste(dim_str, class, sep = " ")
+  return(title_str)
+}
+# Create a shorter alias of this function
+makeTitle <- .make_matrix_title 
+# Example
+makeTitle(N = 20, class = "Standard Normal")
+```
+
+# Section 1
+
+## Spectrum Comparison
+
+```{r}
+set.seed(23)
+run <- F
+if(run)
+{
+  # Set parameters
+  N <- 50
+  # Generate random matrix and ensemble
+  P <- RM_norm(N = N)
+  ens <- RME_norm(N = N, size = 100)
+  # Get the spectra plots
+  P_plot <- P %>% spectrum.scatterplot(mat_str = makeTitle(N, class = "Standard Normal"))
+  ens_plot <- ens %>% spectrum.scatterplot(mat_str = makeTitle(N, class = "Standard Normal"))
+  # Glue the plots using patchwork
+  comparison_plot <- P_plot + ens_plot
+  comparison_plot
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-1-2_comparison.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Order Scheme Comparison
+
+```{r}
+set.seed(23)
+run <- F
+if(run){
+  # Some random matrices and ensembles
+  ens <- RME_beta(N = 100, beta = 4, size = 5)
+  # Specturm by order scheme
+  spec_sign <- ens %>% spectrum_par(sort_norms = F)
+  spec_norm <- ens %>% spectrum_par(sort_norms = T)
+  # Generate the plots
+  sign_plot <-
+    spec_sign %>%
+    order.scatterplot(component = Re) +
+    labs(title = "Sign-ordered Spectrum")
+  norm_plot <-
+    spec_norm %>%
+    order.scatterplot(component = Re) +
+    labs(title = "Norm-ordered Spectrum")
+  # Glue the plots using patchwork
+  comparison_plot <- sign_plot + norm_plot
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-2-1_orderscheme.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+# Section 2
+
+# Order Statistics 1a Norms, (Norm-Ordered)
+
+```{r}
+# ===================================================
+#                       Setup
+# ===================================================
+extreme_norms_plotv2 <- function(ens_spec, N){
+  ens_spec <- ens_spec %>% mutate(Order = as.factor(Order))
+  ens_spec %>% 
+    ggplot(mapping = aes(x = Re, fill = Order)) +
+    geom_histogram(alpha = alpha, bins = bins, inherit.aes = T) +
+    scale_fill_manual(values = wes_palette("Zissou1", N, type = "continuous"))
+}
+extreme_norms_plotv1 <- function(ens_spec, N){
+  ens_spec <- ens_spec %>% mutate(Order = as.factor(Order))
+  ens_spec %>% 
+    ggplot(mapping = aes(x = Norm, fill = Order)) +
+    geom_density(alpha = alpha, bins = bins, inherit.aes = T) +
+    scale_fill_manual(values = wes_palette("Zissou1", N, type = "continuous"))
+}
+# ===================================================
+#                   Simulation
+# ===================================================
+set.seed(23)
+run <- T
+if(run){
+  # Set parameters
+  N <- 15
+  # Generate ensemble
+  ens <- RME_norm(N = N, symm = T, size = 5000)
+  if(F){  
+    # Get spectrum 
+    ens_spec <- ens %>% spectrum_par(norm_order = T)
+    write.csv(ens_spec, "data/spec_order_norm.csv", row.names = F)
+  } else{
+    ens_spec <- read_csv("data/spec_order_norm.csv")
+  }
+  # Plot parameters
+  alpha <- 0.35
+  bins <- 70
+  # Get plot
+  ens_plot <- extreme_norms_plotv1(ens_spec, N) +
+    labs(fill = "Order", 
+         title = paste("Norm-ordered Spectrum of a", 
+                       makeTitle(N, "Symmetric Normal Matrix Ensemble")))
+  ens_plot
+  # Save plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-2-1_spec_order12_norm.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+    # Get another plot
+  ens_plot <- ens_spec %>% order.summary(component = Variance_Norm)
+  if(save){
+    ggsave(filename = "2-2-1_spec_order12_norm_var.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+# Order Statistics 2 (Sign-Ordered)
+
+```{r}
+# ===================================================
+#                       Setup
+# ===================================================
+extreme_norms_plotv4 <- function(ens_spec, N){
+  ens_spec <- ens_spec %>% 
+    mutate(Order_ = as.factor(Order))
+  ens_spec %>% 
+    ggplot(mapping = aes(x = Re, fill = Order_)) +
+    geom_density(alpha = alpha, bins = bins, inherit.aes = T) #+
+    #scale_fill_manual(values = wes_palette("Zissou1", N, type = "continuous"))
+}
+# ===================================================
+#                   Simulation
+# ===================================================
+set.seed(23)
+run <- T
+if(run){
+  # Set parameters
+  N <- 15
+  # Generate ensemble
+  ens <- RME_norm(N = N, symm = T, size = 5000)
+  if(T){  
+    # Get spectrum 
+    ens_spec <- ens %>% spectrum_par(norm_order = F)
+    if(T){write.csv(ens_spec, "data/spec_order12_sign.csv", row.names = F)}
+  } else{
+    ens_spec <- read_csv("data/spec_order12_sign.csv")
+  }
+  # Plot parameters
+  alpha <- 0.3
+  bins <- 100
+  # Get plot
+  ens_plot <- extreme_norms_plotv4(ens_spec, N) +
+    labs(fill = "Order", 
+         title = paste("Sign-ordered Spectrum of a", 
+                       makeTitle(N, "Symmetric Normal Matrix Ensemble")))
+  ens_plot
+  # Save plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-2-1_spec_order12_sign.pdf", path = "chap2", width = 10.5, height = 7, units = "in")
+  }
+  # Get another plot
+  ens_plot <- ens_spec %>% order.summary(component = Variance_Re)
+  if(save){
+    ggsave(filename = "2-2-1_spec_order12_sign_var.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Order Statistics 2
+
+```{r}
+set.seed(23)
+run <- F
+if(run){
+  # Set parameters
+  N <- 15
+  # Generate ensemble
+  ens <- RME_norm(N = N, symm = T, size = 5000)
+  if(F){  
+    # Get spectrum 
+    ens_spec <- ens %>% spectrum_par(norm_order = FALSE)
+    if(F){write.csv(ens_spec, "data/spec_order_density.csv", row.names = F)}
+  } else{
+    ens_spec <- read_csv("data/spec_order_density.csv")
+  }
+  # Set parameters
+  alpha <- 0.2
+  # Get plot
+  ens_plot <- 
+    ens_spec %>%
+    mutate(Order = as.factor(Order)) %>%
+    ggplot(mapping = aes(x = Norm, group = Order, fill = Order)) +
+    geom_density(alpha = alpha, kernel = "gaussian") +
+    #scale_fill_viridis_d() +
+    #scale_fill_manual(values = wes_palette("Darjeeling1", N, type = "continuous")) +
+      labs(fill = "Order", 
+           title = paste("Norm-Ordered Spectrum of a", 
+                         makeTitle(N, "Symmetric Normal Matrix by Order")))
+  ens_plot
+  # Save plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-2-1_spec_order_density.jpg", path = "chap2", width = 10.5, height = 7)
+  }
+    # Get another plot
+  ens_plot <- ens_spec %>% order.summary(component = Variance_Re)
+  if(save){
+    ggsave(filename = "2-2-1_spec_order12_sign_var.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+
+```
+
+# Section 3
+
+## Beta: Symmetric Spectrum
+
+```{r}
+set.seed(23)
+run <- F
+if(run){
+  # Set parameters
+  N <- 50
+  # Generate a spectrum of a symmetric matrix ensemble
+  ens_plot <- RME_beta(N = N, beta = 4, size = 100) %>% 
+    spectrum.scatterplot(mat_str = makeTitle(N, "Beta-4"))
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-3-1_symmetric_spectrum.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Semicircle Distribution
+
+```{r}
+set.seed(23)
+run <- T
+if(run){
+  # Set parameters
+  N <- 50
+  # Get the beta ensemble
+  ens <- RME_beta(N = N, beta = 2, size = 1000)
+  # Plot distribution of eigenvalues
+  ens_spec <- ens %>% spectrum(components = T) 
+  ens_plot <- ens_spec %>% spectrum.histogram(component = "Re", bins = 100)
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-3-2_semicircle.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Section 4
+
+## Uniform Ensemble Spectrum
+
+```{r}
+set.seed(23)
+run <- F
+if(run){
+  # Set parameters
+  N <- 50
+  # Obtain the uniform(0,1) spectrum plot
+  ens_plot <- RME_unif(N = N, min = 0, max = 1, size = 1000) %>% 
+    spectrum.scatterplot(mat_str = makeTitle(N, class = "Unif(0,1)"))
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-4_unif01_spec.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Normal Ensemble Spectrum
+
+```{r}
+set.seed(23)
+run <- F
+if(run){
+  # Set parameters
+  N <- 50
+  # Obtain the standard normal spectrum plot
+  ens_plot <- RME_norm(N = N, size = 500) %>% 
+    spectrum.scatterplot(mat_str = makeTitle(N, class = "Standard Normal"))
+  ens_plot
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-4_normal_spec.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Normal Complex Hermitian Ensemble Spectrum
+
+```{r}
+set.seed(23)
+run <- T
+if(run){
+  # Set parameters
+  N <- 200
+  # Obtain the complex hermitian standard normal spectrum plot
+  ens_plot <- RME_norm(N = N, cplx = T, herm = T, size = 500) %>% 
+    spectrum.scatterplot(mat_str = makeTitle(N, class = "Complex Hermitian Standard Normal"))
+  ens_plot
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-4_cplxherm_normal_spec.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Stochastic Ensemble Spectrum
+
+```{r}
+set.seed(23)
+run <- F
+if(run){
+  # Set parameters
+  N <- 50
+  # Obtain the stochastic spectrum plot
+  ens_plot <- RME_stoch(N = N, size = 50) %>% 
+    spectrum.scatterplot(mat_str = makeTitle(N, class = "Stochastic"))
+  ens_plot
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-4_stoch_spec.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Symmetric Stochastic Ensemble Spectrum
+
+```{r}
+set.seed(23)
+run <- F
+if(run){
+  # Set parameters
+  N <- 50
+  # Obtain the symmetric stochastic spectrum plot
+  ens_plot <- RME_stoch(N = N, symm = T, size = 50) %>% 
+    spectrum.scatterplot(mat_str = makeTitle(N, class = "Symmetric Stochastic"))
+  ens_plot
+  # Save the plot
+  save <- T
+  if(save){
+    ggsave(filename = "2-4_symmstoch_spec.pdf", path = "chap2", width = 10.5, height = 7)
+  }
+}
+```
+
+## Erdos-Renyi 2nd Largest Eigenvalue
+
+```{r}
+# ===================================================
+#                       Setup
+# ===================================================
+# Labels a generic array with a value column
+.label_array <- function(array, value, label, size){
+  label_column <- data.frame(x = rep(value, size))
+  colnames(label_column) <- label
+  cbind(array, label_column)
+}
+# Creates a tidy, labelled p-Erdos ensemble spectrum
+erdos_spectrum <- function(p, N, size){
+  ensemble_spectrum <- RME_erdos(N = N, p = p, size = size) %>% spectrum_par(order = 2:3)
+  ensemble_spectrum %>% .label_array(value = p, label = "p", size = nrow(ensemble_spectrum))
+}
+# ===================================================
+#                     Simulation
+# ===================================================
+set.seed(23)
+run <- T
+if(run){
+# Global parameters
+N <- 50
+size <- 2
+#size <- 50
+ps <- seq(0.005, 0.9995, 0.005)
+# ===================================================
+# Generate the p-ensembles
+erdos_ensemble <- purrr::map_dfr(ps, erdos_spectrum, N, size)
+# ===================================================
+# Plot
+erdos_lam2 <-
+  erdos_ensemble %>%
+  ggplot(mapping = aes(x = Re, y = Im, color = p)) +
+  geom_point() +
+  scale_color_viridis_c() +
+  labs(title = "2nd Largest Eigenvalue of p-Erdos Ensembles by p")
+save <- T
+if(save){ggsave(filename = "2-4_erdos_lam2.pdf", path = "chap2", width = 9, height = 7)}
+}
+```

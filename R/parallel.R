@@ -16,7 +16,7 @@
 #' # Compute the spectrum concurrently (faster)
 #' #spec_P <- spectrum_par(P)
 #'
-spectrum_par <- function(array, components = TRUE, norm_order = TRUE, singular = FALSE, order = NA){
+spectrum_par <- function(array, norm_order = TRUE, singular = FALSE, components = TRUE, order = NA){
   # Digits to round values to
   digits <- 4
   # Set up futures

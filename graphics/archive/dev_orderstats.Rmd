@@ -99,7 +99,7 @@ sim_orders_cplx(N, iter, rnorm, mean = 0, sd = 1) %>% orders_plot(N)
 
 ```{r}
 # Source code for simulating from the semicircle distribution
-source("semicircle.R")
+source("../semicircle.R")
 ```
 
 ## The Semicircle Distribution
