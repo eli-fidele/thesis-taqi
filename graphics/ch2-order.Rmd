@@ -115,12 +115,12 @@ if(run){
   ens_plot <- plot_d_Norm1(ens_norm, N)
   ens_plot
   # Save plot
-  ggsave(filename = "norm_Norm.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  ggsave(filename = "norm_Norm.jpeg", path = "chap2_order", width = 10.5, height = 5)
   # Get another plot
   ens_plot <- ens_norm %>% order.summary(component = Variance_Norm)
   ens_plot
   # Save plot
-  ggsave(filename = "norm_Norm_var.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  ggsave(filename = "norm_Norm_var.jpeg", path = "chap2_order", width = 10.5, height = 5)
 }
 ```
 
@@ -139,12 +139,12 @@ if(run){
   ens_plot <- plot_d_Re(ens_norm, N, ordering = "Norm")
   ens_plot
   # Save plot
-  ggsave(filename = "norm_Re.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  ggsave(filename = "norm_Re.jpeg", path = "chap2_order", width = 10.5, height = 5)
   # Get another plot
   ens_plot <- ens_norm %>% order.summary(component = Variance_Re)
   ens_plot
   # Save plot
-  ggsave(filename = "norm_Re_var.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  ggsave(filename = "norm_Re_var.jpeg", path = "chap2_order", width = 10.5, height = 5)
 }
 ```
 
@@ -164,12 +164,12 @@ if(run){
   ens_plot <- plot_d_Norm1(ens_sign, N)
   ens_plot
   # Save plot
-  ggsave(filename = "sign_Norm.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  ggsave(filename = "sign_Norm.jpeg", path = "chap2_order", width = 10.5, height = 5)
   # Get another plot
   ens_plot <- ens_sign %>% order.summary(component = Variance_Norm)
   ens_plot
   # Save plot
-  ggsave(filename = "sign_Norm_var.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  ggsave(filename = "sign_Norm_var.jpeg", path = "chap2_order", width = 10.5, height = 5)
 }
 ```
 
@@ -188,12 +188,12 @@ if(run){
   ens_plot <- plot_d_Re(ens_sign, N, ordering = "Sign")
   ens_plot
   # Save plot
-  ggsave(filename = "sign_Re.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  ggsave(filename = "sign_Re.jpeg", path = "chap2_order", width = 10.5, height = 5)
   # Get another plot
   ens_plot <- ens_sign %>% order.summary(component = Variance_Re)
   ens_plot
   # Save plot
-  ggsave(filename = "norm_Re_var.jpeg", path = "chap2_order", width = 10.5, height = 7)
+  ggsave(filename = "norm_Re_var.jpeg", path = "chap2_order", width = 10.5, height = 5)
 }
 ```
 

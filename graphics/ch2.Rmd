@@ -32,17 +32,6 @@ makeTitle <- .make_matrix_title
 makeTitle(N = 20, class = "Standard Normal")
 ```
 
-```{r, eval = FALSE, include = FALSE}
-set.seed(23)
-run <- F
-if(run){
-  save <- T
-  if(save){
-    ggsave(filename = "test.pdf", path = "chap2", width = 10.5, height = 7)
-  }
-}
-```
-
 # Section 1
 
 ## Spectrum Comparison
@@ -66,7 +55,7 @@ if(run)
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-1-2_comparison.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-1-2_comparison.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -75,13 +64,13 @@ if(run)
 
 ```{r}
 set.seed(23)
-run <- F
+run <- T
 if(run){
   # Some random matrices and ensembles
   ens <- RME_beta(N = 100, beta = 4, size = 5)
   # Specturm by order scheme
-  spec_sign <- ens %>% spectrum_par(sort_norms = F)
-  spec_norm <- ens %>% spectrum_par(sort_norms = T)
+  spec_sign <- ens %>% spectrum_par(norm_order = F)
+  spec_norm <- ens %>% spectrum_par(norm_order = T)
   # Generate the plots
   sign_plot <-
     spec_sign %>%
@@ -96,7 +85,7 @@ if(run){
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-2-1_orderscheme.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-2-1_orderscheme.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -117,7 +106,7 @@ if(run){
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-3-1_symmetric_spectrum.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-3-1_symmetric_spectrum.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -126,19 +115,23 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Set parameters
-  N <- 50
+  N <- 30
   # Get the beta ensemble
-  ens <- RME_beta(N = N, beta = 2, size = 1000)
+  ens <- RME_beta(N = N, beta = 2, size = 2000)
   # Plot distribution of eigenvalues
   ens_spec <- ens %>% spectrum(components = T) 
-  ens_plot <- ens_spec %>% spectrum.histogram(component = "Re", bins = 100)
+  ens_spec_ <- ens_spec %>% mutate(Order = as.factor(Order))
+  ens_plot <- ens_spec %>% ggplot() +
+    geom_histogram(mapping = aes(x = Re), fill = "darkcyan", alpha = 0.75, bins = 60) +
+    labs(x = "Re", y = "Frequency", title = "Wigner's Semicircle Distribution")
+  ens_plot
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-3-2_semicircle.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-3-2_semicircle.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -159,7 +152,7 @@ if(run){
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-4_unif01_spec.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-4_unif01_spec.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -179,7 +172,7 @@ if(run){
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-4_normal_spec.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-4_normal_spec.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -188,18 +181,18 @@ if(run){
 
 ```{r}
 set.seed(23)
-run <- T
+run <- F
 if(run){
   # Set parameters
   N <- 200
   # Obtain the complex hermitian standard normal spectrum plot
-  ens_plot <- RME_norm(N = N, cplx = T, herm = T, size = 500) %>% 
+  ens_plot <- RME_norm(N = N, cplx = T, herm = T, size = 100) %>% 
     spectrum.scatterplot(mat_str = makeTitle(N, class = "Complex Hermitian Standard Normal"))
   ens_plot
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-4_cplxherm_normal_spec.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-4_cplxherm_normal_spec.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -219,7 +212,7 @@ if(run){
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-4_stoch_spec.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-4_stoch_spec.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -239,7 +232,7 @@ if(run){
   # Save the plot
   save <- T
   if(save){
-    ggsave(filename = "2-4_symmstoch_spec.pdf", path = "chap2", width = 10.5, height = 7)
+    ggsave(filename = "2-4_symmstoch_spec.jpg", path = "chap2", width = 10.5, height = 7)
   }
 }
 ```
@@ -258,7 +251,7 @@ if(run){
 }
 # Creates a tidy, labelled p-Erdos ensemble spectrum
 erdos_spectrum <- function(p, N, size){
-  ensemble_spectrum <- RME_erdos(N = N, p = p, size = size) %>% spectrum_par(order = 2:3)
+  ensemble_spectrum <- RME_erdos(N = N, p = p, size = size) %>% spectrum(order = 2:3)
   ensemble_spectrum %>% .label_array(value = p, label = "p", size = nrow(ensemble_spectrum))
 }
 # ===================================================
@@ -269,21 +262,25 @@ run <- T
 if(run){
 # Global parameters
 N <- 50
-size <- 2
+size <- 200
 #size <- 50
 ps <- seq(0.005, 0.9995, 0.005)
 # ===================================================
 # Generate the p-ensembles
 erdos_ensemble <- purrr::map_dfr(ps, erdos_spectrum, N, size)
+if(F){write_csv(erdos_ensemble, "data/erdos_ensemble.csv")} else{erdos <- read_csv("data/erdos_ensemble.csv")}
+erdos <- filter(erdos, Re != 0)
 # ===================================================
 # Plot
+if(F){
 erdos_lam2 <-
-  erdos_ensemble %>%
+  erdos %>%
   ggplot(mapping = aes(x = Re, y = Im, color = p)) +
   geom_point() +
   scale_color_viridis_c() +
-  labs(title = "2nd Largest Eigenvalue of p-Erdos Ensembles by p")
+  labs(title = "Second Largest Pair of Eigenvalues of p-Erdos Ensembles by p")
+}
 save <- T
-if(save){ggsave(filename = "2-4_erdos_lam2.pdf", path = "chap2", width = 9, height = 7)}
+if(save){ggsave(filename = "2-4_erdos_lam2.jpg", path = "chap2", width = 9, height = 7)}
 }
 ```
