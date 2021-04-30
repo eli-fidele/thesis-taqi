@@ -106,7 +106,7 @@ beta_wigner %>%
   ggplot(aes(x = normalized, group = beta, color = beta)) + 
   geom_density() +
   scale_color_brewer(type = "qual", palette = "Spectral")  +
-  labs(title = "Wigner's Surmise for the Beta Ensembles")
+  labs(title = "Wigner's Surmise for Non-Standard Beta Ensembles")
 # Save plot
 save <- T
 if(save){ggsave(filename = "3-3_wigner_beta_extended.pdf", path = "chap3", width = 10.5, height = 7)}

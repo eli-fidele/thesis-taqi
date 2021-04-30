@@ -211,8 +211,6 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 With eigenvalue ordering unambiguous and well-defined, we may proceed to start talking about their order statistics.
 In short, given a random sample of fixed size, order statistics are random variables defined as the value of an element conditioning on its rank within the sample. (see \textbf{Appendix A.2.2})
 
-\minititle{Order Statistics}
-
 In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution.
 They tell us how the eigenvalues space themselves and give us useful upper and lower bounds.
 
@@ -226,10 +224,21 @@ Then, we can set the distribution of the largest eigenvalue for $\D$ by observin
 
 \minititle{Conditional Statistics}
 
-As such, one framework of studying order statistics will be conditioning on their values. So, we will consider the following summary statistics that use conditional order statistics:
-\blocktitle{Expectation} $\E(\lambda_{i} \mid i)$
+As such, one framework of studying order statistics will be conditioning on their values. So, we will consider the following summary statistics that condition on the order statistics. \newline
 
-\blocktitle{Variance} $\Var(\lambda_{i} \mid i)$.
+%\vspace{1em}
+
+\blocktitle{Expectation} $\E(\lambda_{i} \mid i)$ One useful summary statistic to consider when analyzing a spectrum is the expected norm or value (which we will just call quantity hereinafter) of the eigenvalue at the $i^{th}$ rank. When considered at the ensemble level, the mean quantity order statistic can tell us a lot about the bounds on the eigenvalue sizes or values for a given $\D$-distribution. For instance, given the norm-ordered scheme the expected extreme values (assuming $N \times N$ matrices), given by $\E(\l_1)$ and $\E(\l_N)$ respectively can tell us the expected range our spectrum might take. \newline
+
+\medskip
+
+\blocktitle{Variance} $\Var(\lambda_{i} \mid i)$ Similarly, the variance of the eigenvalue quantity at a given order $i$ can tell us a lot about an ensemble. For example, we may observe that variances are heteroskedastic (not equal in every level) across all the levels $i$. This insight can tell us how a $\D$-distribution disperses it eigenvalues or perhaps how the eigenvalues ``repel'' each other.
+
+\medskip
+
+\begin{warning}[Order Schema \& Indices]
+Notice how when we are discussing summary statistics above, we make sure to say value or size (and generalize by saying quantity) because the $i^{th}$ rank has a different intrepretation under different order schema. In the norm-ordered scheme, $\l_1$ means the largest eigenvalue whereas in the sign-ordered scheme, $l_1$ means the ``most positive'' eigenvalue.
+\end{warning}
 
 %=========================================================================================
 %=========================================================================================
@@ -271,8 +280,6 @@ Notice how the largest eigenvalue is 1, living far from the island of \textbf{co
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapper{h}{0.15}{../graphics/chap2/2-4_stoch_spec}{Spectrum of a Stochastic Matrix ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-
 
 This shows that the spectral radius of stochastic matrices is $1$! What is left is the other fact.
 For the second statement, again, there is plenty of computational evidence to back this up.
@@ -351,37 +358,43 @@ the special properties of symmetric and hermitian matrices.
 Namely, we will be considering an ensemble $\Ens \sim \Normal(0,1)^\dagger$ of $15 \times 15$ matrices over $\R$.
 
 %=========================================================================================
-\minititle{Norm-Ordered}
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Norm}{Largest eigenvalues distribution}
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Norm_var}{Largest eigenvalues distribution}
-
-\newpage
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Re}{Largest eigenvalues distribution}
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Re_var}{Largest eigenvalues distribution}
-
-%=========================================================================================
-\newpage
+%\newpage
 %=========================================================================================
 \minititle{Sign-Ordered}
 
-% \plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Norm}{Largest eigenvalues distribution}
-%
-% \plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Norm_var}{Largest eigenvalues distribution}
-%
-% \newpage
+Consider the plot of the eigenvalues in our sign-ordered spectrum of our ensemble $\Ens$ below. To understand why our eigenvalues assume this shape of distribution, we need to recall that symmetric matrices (approximately) obey the Semicircle distribution. What we are observing is the ``echo'' of that being the underlying distribution.
 
-\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Re}{Largest eigenvalues distribution}
+What is more interesting, on the other hand, is the peaked variances we observe at the boundaries in the variance plot. Since this is the sign-ordered scheme, the boundaries correspond to the largest eigenvalues. In fact, if we consider symmetry about the origin, we could deduce a very clear trend that as the eigenvalue gets larger (closer to the semicircle boundary), the more variance we expect to observe in the quantities there. As such, we now switch to the \textit{norm-ordering scheme} for a different perspective.
 
-\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Re_var}{Largest eigenvalues distribution}
+\plotwrapperNC{h}{0.4}{../graphics/chap2_order/sign_Re}%{Largest eigenvalues distribution}
+\trim
+\plotwrapperNC{h}{0.4}{../graphics/chap2_order/sign_Re_var}%{Largest eigenvalues distribution}
+
+\newpage
+%=========================================================================================
+\minititle{Norm-Ordered}
+
+Consider the plot of the \textbf{same} eigenvalues in our norm-ordered spectrum of our ensemble $\Ens$ below.
+Now, consider the norm component of our norm-ordered spectrum of our ensemble $\Ens$ below. One of the very first things to note about the distribution of the eigenvalues is that when conditioning on its order, we see a very clear trend in the variance of the eigenvalue. Namely, we notice that as $i$ grows, $\Var(\l_i) \to 0$. In simple words, this means that the smallest eigenvalues have less ``freedom'' in their distribution. This is opposed to the largest eigenvalue, which has the highest variance or the most ``freedom''.
+
+\plotwrapperNC{h}{0.45}{../graphics/chap2_order/norm_Re}%{Largest eigenvalues distribution}
+\trim
+\plotwrapperNC{h}{0.45}{../graphics/chap2_order/norm_Re_var}%{Largest eigenvalues distribution}
+
+\newpage
+
+Lastly, consider the distribution of the \textbf{eigenvalue norms}. As mentioned previously, the variance seems to increase closer to the boundaries. Since we are now using the norm-ordering scheme, the fact that the distribution is symmetric means we are observing twice as many ``occupants'' in a statistical observation. Imagine this as ``folding the semicircle in half''. This explains why the variance is ``increasing'' more rapidly as our eigenvalues shrink.
+
+That being said, the variance plot shows that the variance of the eigenvalue norms seems to have an interesting, non-linear shape. Namely, we observe a rapidly decreasing variance initally, a levelling off, and then a slight dip to the minimum variance. We could trace this back as an artifact of the c.d.f of the semicircle distribution. Since the p.d.f. is the derivative of the c.d.f., we know that the flattest part of the semicircle occurs closer to the origin. As such, we observe the most ``stability`` there.
+
+\plotwrapperNC{h}{0.45}{../graphics/chap2_order/norm_Norm}%{Largest eigenvalues distribution}
+\trim
+\plotwrapperNC{h}{0.45}{../graphics/chap2_order/norm_Norm_var}%{Largest eigenvalues distribution}
 
 %=========================================================================================
 %=========================================================================================
 \newpage
-\section{Various Ensemble Spectra}
+\section{A Survey of Spectra}
 
 In this section, we will briefly survey the spectra for a variety of $\D$-distributions and characterize their properties.
 
@@ -434,7 +447,7 @@ At first glance, we can see a resounding pattern in the plot. It seems like the 
 
 %\newpage
 
-We have observed in Figure 2.1 in \textbf{Section 2.1.2} that a standard normal matrix ensemble tends to have a spectrum that is uniformly distributed about a complex disk. This happens to be the case for both real-valued and complex-valued standard normal matrices. However, the result regarding symmetric and hermitian matrices in \textbf{Section 2.3.1} also applies to complex-valued standard normal matrix ensembles. Consider the plot below.
+We have observed in Figure 2.1 in \textbf{Section 2.1.2} that a standard normal matrix ensemble tends to have a spectrum that is uniformly distributed about a complex disk. This happens to be the case for both real-valued and complex-valued standard normal matrices. Similarly, the result regarding symmetric and hermitian matrices in \textbf{Section 2.3.1} also applies to complex-valued standard normal matrix ensembles. Consider the plot below.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapper{h}{0.12}{../graphics/chap2/2-4_cplxherm_normal_spec}{Spectrum of a Complex Hermitian Standard Normal Matrix ensemble}

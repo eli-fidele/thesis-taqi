@@ -8,64 +8,117 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 source("../R/header.R")
+source("orderPlots.R")
 library(future)
+library(RMAT)
 library(wesanderson)
 .src(1)
 ```
 
 ```{r}
 wes_pal <- wes_palette("Zissou1", 100, type = "continuous")
-# Note: Add this feature to spectrum.scatterplot()!
-# Creates a matrix title given the dimension and classification of the matrix (ex. 20x20 Unif(0,1))
-.make_matrix_title <- function(N, class){
-  #dim_str <- paste(N,"X",N, sep = " ")
-  dim_str <- paste(N,"x",N, sep = "")
-  title_str <- paste(dim_str, class, sep = " ")
-  return(title_str)
+```
+
+```{r}
+beta_iteration <- function(beta){
+  # Generate the ensemble
+  ens <- RME_beta(N = N, beta = beta, size = size)
+  # Get the spectrum
+  ens_spec <- ens %>% spectrum_par(norm_order = FALSE)
+  # Get the summary statistics
+  summary <- ens_spec %>%
+    group_by(Order) %>%
+    summarize(
+      Mean_Re = mean(Re), Mean_Im = mean(Im), Mean_Norm = mean(Norm),
+      Variance_Re = var(Re), Variance_Im = var(Im), Variance_Norm = var(Norm))
+  # Label the array
+  summary <- summary %>% .label_array(beta, "beta", nrow(ens_spec))
+  # Return the summary array
+  summary
 }
-# Create a shorter alias of this function
-makeTitle <- .make_matrix_title 
+beta_summary <- function(component, factor = F){
+  # Make beta a factor
+  if(factor){beta_df$beta <- as.factor(beta_df$beta)}
+  # Set plot parameters
+  fill_grid <- "azure2" #"#BFD5E3"
+  color_grid <- "grey70" #"#6D9EC1"
+  linetype_grid <- "solid" #"solid"
+  color_line <- "grey95" #"white"
+  # Return plot
+  beta_df %>%
+    ggplot(aes(x = Order, y = {{ component }}, group = beta, color = beta)) +
+    geom_point()+
+    geom_line() +
+    scale_color_brewer(type = "seq", palette = "RdYlBu") +
+    theme(legend.position = "right",
+    panel.background = element_rect(fill = fill_grid, colour = color_grid,
+                                    size = 2, linetype = linetype_grid),
+    panel.grid.major = element_line(size = 0.5, linetype = linetype_grid,
+                                    colour = color_line),
+    panel.grid.minor = element_line(size = 0.25, linetype = linetype_grid,
+                                    colour = color_line))
+}
 ```
 
 ```{r}
-source("orderPlots.R")
-```
-
-```{r}
+set.seed(23)
 # Set parameters
-N <- 15
-size <- 2000
+N <- 30
+size <- 5000
+alpha <- 0.35
+bins <- 75
 # Generate beta ensembles
-beta2 <- RME_beta(N = N, beta = 2, size = size)
-beta4 <- RME_beta(N = N, beta = 4, size = size)
+betas <- c(2,4,8,16,32,64,128,256,512,1024,2048)
 ```
 
 ```{r}
-# Generate their sign-ordered spectra
 if(F){
-  beta2_sign <- beta2 %>% spectrum_par(norm_order = FALSE)
-  beta4_sign <- beta4 %>% spectrum_par(norm_order = FALSE)
-  # Save the spectra
-  write.csv(beta2_sign, "data/beta2-sign.csv", row.names = F) 
-  write.csv(beta2_sign, "data/beta4-sign.csv", row.names = F) 
+  beta_df <- purrr::map_dfr(betas, beta_iteration)
+  write.csv(beta_df, "data/beta_df.csv", row.names = F)
 } else{
-  beta2_sign <- read_csv("data/beta2-sign.csv")
-  beta4_sign <- read_csv("data/beta4-sign.csv")
-}
-# Generate their norm-ordered spectra
-if(F){
-  beta2_norm <- beta2 %>% spectrum_par(norm_order = TRUE)
-  beta4_norm <- beta4 %>% spectrum_par(norm_order = TRUE)
-  # Save the spectra
-  write.csv(beta2_norm, "data/beta2-norm.csv", row.names = F) 
-  write.csv(beta2_norm, "data/beta4-norm.csv", row.names = F) 
-} else{
-  beta2_norm <- read_csv("data/beta2-norm.csv")
-  beta4_norm <- read_csv("data/beta4-norm.csv")
+  beta_df <- read_csv("data/beta_df.csv")
 }
 ```
 
 ```{r}
+beta_summary(Variance_Re)
+ggsave(filename = "betaspec_Re_var.jpg", path = "chap4", width = 10.5, height = 5.25)
+beta_summary(Mean_Re)
+ggsave(filename = "betaspec_Re_mean.jpg", path = "chap4", width = 10.5, height = 5.25)
+beta_summary(Mean_Norm)
+ggsave(filename = "betaspec_Norm_mean.jpg", path = "chap4", width = 10.5, height = 5.25)
+```
 
+
+```{r}
+# disp_beta <- function(beta){
+#   RME_beta(N, 2, size = 50) %>% dispersion(pairs = "consecutive", norm_order = FALSE)
+# }
+# 
+# disp_plot <- function(disp){
+#   disp %>%
+#     ggplot(aes(x = j, y = id_diff_norm, color = j)) +
+#     geom_point() +
+#     scale_color_distiller(palette = "Spectral")
+# }
+# disp_plot2 <- function(disp){
+#   disp %>%
+#     ggplot(aes(x = j, y = id_diff_norm, color = j)) +
+#     geom_smooth()
+# }
+# 
+# beta_iter <- function(beta){
+#   disp_ens <- disp_beta(beta)
+#   disp_ens %>%
+#     group_by(j) %>%
+#     summarize(mean = mean(id_diff_norm)) %>%
+#     ggplot(aes(x = j, y = mean)) +
+#     geom_line()
+# }
+# 
+# beta_iter(2)
+# beta_iter(4)
+# beta_iter(6)
+# beta_iter(50)
 ```
 

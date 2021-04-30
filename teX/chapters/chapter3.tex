@@ -461,7 +461,7 @@ we get the following classes:
 \minititle{Example: Dispersion Matrix}
 
 As to showcase this dispersion technology, consider the following example, where we analyze the dispersion for the ensemble $\Ens \sim \H(\b = 4)$.
-Specifically, we are considering $\disp_{abs}(\Ens \mid \Pi_<)$.
+Specifically, we are considering $\disp_{\text{abs}}(\Ens \mid \Pi_<)$.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapperNC{h}{0.6}{../graphics/chap3/3-2_pairtable}
@@ -469,7 +469,17 @@ Specifically, we are considering $\disp_{abs}(\Ens \mid \Pi_<)$.
 
 \minititle{Takeaways}
 
-As we can see, the diagonal bands have uniform values.
+In the plot above, we are considering the absolute differences dispersion metric $\d = \d_{\text{abs}}$.
+That being considered, we can use the ranking difference construction provided earlier to parse this graph.
+Recall that the ranking difference partitions the eigenvalue pair into seperate classes based on how many ``ranks'' apart two eigenvalues are.
+With this interpretation, this tells us that roughly speaking, each diagonal band $[\rho]$ has a uniform difference of absolutes given by the color streak
+that diagonal occupies.
+
+For instance, we could say that any pairs occupying the midnight blue diagonal $[\rho \approx 10]$ has an approximate dispersion of $5$.
+So, this means that we expect $\d_{\text{abs}}(\l_{j + 10}, \l_j) \approx 5$.
+
+For another example, we could say that any pairs occupying the lime diagonal $[\rho \approx 40]$ has an approximate dispersion of $15$.
+So, this means that we expect $\d_{\text{abs}}(\l_{j + 40}, \l_j) \approx 15$.
 
 % %=========================================================================================
 % \newpage
@@ -543,7 +553,7 @@ matrices are represnted by the $\b$-ensemble with $\b = 2$! This will be discuss
 
 %=========================================================================================
 \newpage
-\subsection{Beta Ensembles}
+\subsection{$\b$-Ensembles}
 %=========================================================================================
 
 As we just mention, it turns out that Symmetric Normal matrices and Hermitian Normal matrices have an analogous representation as $\b$-ensembles for $\b = 1$ and $\b = 2$ respectively. Although this will be discussed later, it is helpful to know that there are three ``standard'' $\b$-ensembles with special properties. We have already talked about two of them. The last special $\b$-ensemble is that corrosponding to $\b = 4$.

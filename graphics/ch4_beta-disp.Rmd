@@ -94,6 +94,40 @@ if(save){
 ```
 
 ```{r}
+set.seed(23)
+# Set parameters
+N <- 20
+beta <- 4
+size <- 100
+# ===================================================
+#              Simulation: N = 100
+# ===================================================
+set.seed(23)
+# Set parameters
+N <- 100
+# Initialize ensemble
+ens <- RME_beta(N, beta, size)
+# Spectra plots
+spec_ens <- ens %>% spectrum()
+spec_ens %>% spectrum.scatterplot()
+# Dispersion plots
+if(T){ 
+  disp_ens <- ens %>% dispersion(pairs = "lower", norm_order = F)
+  write.csv(disp_ens, "data/disp_ens_beta2.csv", row.names = F)
+} else{
+  disp_ens <- read_csv("data/disp_ens_beta2.csv")
+}
+disp_ens %>% dispersion.scatterplot(metric = "id_diff_norm")
+## Linear Model
+#model <- model_beta_IDN(disp_ens, intercept = F)
+# Save plot
+save <- T
+if(save){
+  ggsave(filename = "4-2_lm_beta_big2.pdf", path = "chap4", width = 10.5, height = 7)
+}
+```
+
+```{r}
 # ===================================================
 #              Simulation: Sign-Sorted
 # ===================================================

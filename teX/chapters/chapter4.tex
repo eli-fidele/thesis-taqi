@@ -204,9 +204,6 @@ While the second model is effectively deterministic, there does remain the rando
 \end{remark}
 
 %=========================================================================================
-
-
-
 %=========================================================================================
 \newpage
 %=========================================================================================
@@ -245,50 +242,48 @@ ensemble
 \newpage
 \section{Spectra}
 
-We know that $\beta$-matrices must be symmetric. So, their eigenvalues must be real. Any imaginary component we observe is simply computational error, and we may safely ignore it.
-It is good to see that the error is uniform and small.
+In this section, we will continue survey the spectra of $\b$-ensembles. The reason we are continuing is because we have already started this work in \textbf{Section 2.3.3}!
+To remind the reader, in that section, we studied the symmetric normal ensemble over $\R$. As we now know, this means that we have already studied the GOE $(\b = 1)$ ensemble.
+However, before we proceed, here is an important regarding $\textbf{identifiability}$ to take into consideration when simulating these random eigenvalues.
 
 \begin{remark}[Implicit Distribution]
-Note that the beta ensemble is an ensemble characterized by some joint density function on its eigenvalues. So, this is a specific instance of an implcitly distributed matrix.
-There are many things to consider about $\textbf{identifiability}$ that are subtle, but important.
-Recall that in our formalization of a specturm as a formal statistic, we vectorized the matrix then tooks the determinant of the characteristic polynomial that came about it.
-For this reason, we can see that while Dumitriu's model provides an explicit formula, there is an issue of identifiability.
+Note that the  $\b$-ensemble is an ensemble characterized by its joint eigenvalue p.d.f.
+As such, there are some subtle but important consideration to take into account regarding identifiability.
+Recall that we formalized the spectrum of a matrix as a function which takes in as an input a vector of random variables.
+So, while Dumitriu's model provides an explicit formula for the matrix entries, for the eigenvalues, there is the issue of identifiability.
 That is, given some eigenvalues, there is no injective function to the characteristic polynomial that produced it.
 Rather, there are infinitly many equivalence classes of characteristic polynomials (and such, random matrices) that surjectively produce a given multiset of eigenvalues.
 \end{remark}
 
-\begin{remark}[Floating Point Errors]
-Because the model involves diving by $\sqrt{2}$, floating point errors and algorithmic systemic error will yield small, but negligible imaginary components.
-This is on top of the floating errors from rounding, as discussed in \textbf{Section 2.3}.
-\end{remark}
+Without further ado, we will now take a look at the properties of the spectra of $\b$-ensembles.
 
-% \newpage
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_Re_spec}{}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \vspace{-2em}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_Norm_spec}{}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-%
-% \newpage
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_Re_summary}{}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \vspace{-2em}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_Norm_summary}{}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-%
-%
-% \newpage
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_SING_Norm_spec}{}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \vspace{-2em}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_SING_Norm_summary}{}
-% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%=========================================================================================
+
+\subsection{Standard Ensembles}
+
+As mentioned previously, we have already analyzed the $\b = 1$. As it turns out, all three ensembles share the properties listed in \textbf{Section 2.3.3}. Namely, we find that all three ensembles have a semicircle distribution (with potentially differing radii). Additionally, we also observe that the variance is higher towards the edges where the larger eigenvalues are. That being said, consider the spectra of the $\b = 2$ and $\b = 4$ ensembles.
+
+\plotwrapperNC{h}{0.6}{../graphics/chap4/beta24_spec}
+
+\newpage
+
+The most notable difference between the two ensembles is that the peaks of the $\b = 4$ ensemble seem to be more ``dull'' than those of the $\b = 2$ ensemble. Recall from previous sections in this chapter, we state that the higher the value of $\b$, the more likely is the ensemble to have equidistant eigenvalues. As such, this aligns with that fact since less peaked densities for the values implies that there is more intersection between them at a given order. As such, this plot second-handedly demonstrates this phenomenon.
+
+%=========================================================================================
+\newpage
+\subsection{Extending the $\b$-Ensembles}
+
+\minititle{Mean Statistics}
+
+\plotwrapperNC{h}{0.4}{../graphics/chap4/betaspec_Norm_mean}
+
+\plotwrapperNC{h}{0.4}{../graphics/chap4/betaspec_Re_mean}
+
+\newpage
+
+\minititle{Variance Statistics}
+
+\plotwrapperNC{h}{0.4}{../graphics/chap4/betaspec_Re_var}
 
 %=========================================================================================
 \newpage
@@ -297,17 +292,30 @@ This is on top of the floating errors from rounding, as discussed in \textbf{Sec
 \section{Dispersions}
 %=========================================================================================
 
-Consider the following plot of the sign-sorted eigenvalue dispersions below.
+In this section, we will briefly discuss the dispersion statistics of the $\b$-ensembles.
 
 %=========================================================================================
 \subsection{Order Statistics}
 %=========================================================================================
 
-Consider the following plot of beta-ensemble dispersions.
+First, we will consider the dispersion $\disp_{\text{abs}}(\Ens \mid \Pi_<)$
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapper{h}{0.3}{../graphics/chap4/4-2_lm_beta_big}{}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+
+In the plot above, we are considering the absolute differences dispersion metric $\d = \d_{\text{abs}}$.
+That being considered, we can use the ranking difference construction just like before to parse this graph.
+Recall that the ranking difference partitions the eigenvalue pair into seperate classes based on how many ``ranks'' apart two eigenvalues are.
+With this interpretation, this tells us that roughly speaking, each diagonal band $[\rho]$ has a uniform difference of absolutes given by the color streak
+that diagonal occupies.
+
+For instance, we could say that any pairs occupying the midnight blue diagonal $[\rho \approx 10]$ has an approximate dispersion of $5$.
+So, this means that we expect $\d_{\text{abs}}(\l_{j + 10}, \l_j) \approx 5$.
+
+For another example, we could say that any pairs occupying the lime diagonal $[\rho \approx 40]$ has an approximate dispersion of $15$.
+So, this means that we expect $\d_{\text{abs}}(\l_{j + 40}, \l_j) \approx 15$.
 
 %=========================================================================================
 \newpage
@@ -315,12 +323,12 @@ Consider the following plot of beta-ensemble dispersions.
 \subsection{Wigner's Surmise}
 %=========================================================================================
 
-\minititle{Extending Beta Ensembles}
+\minititle{Extending the $\b$-Ensembles}
 
-Below, we extend the simulations of Wigner's surmise as discussed in \textbf{Section 3.3} beyond the standard values of $\beta = 1,2,4$ to any $\b \in \N$.
+Below, we extend the simulations of the Wigner dispersions as discussed in \textbf{Section 3.3} beyond the standard values of $\beta = 1,2,4$ to any $\b \in \N$.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.6}{../graphics/chap3/3-3_wigner_beta_extended}{Wigner's Surmise for Non-Standard Beta Ensembles}
+\plotwrapperNC{h}{0.6}{../graphics/chap3/3-3_wigner_beta_extended}%{Wigner's Surmise for Non-Standard Beta Ensembles}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 \minititle{Takeaways}
