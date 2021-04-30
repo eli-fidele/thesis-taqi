@@ -129,7 +129,7 @@ Rather, it is the collective behavior of a $\D$-distributed ensemble that tells 
 So in a way, ensemble statistics are the engine of this research.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREspectrumcomparison{h}{0.65}
+\plotwrapper{h}{0.15}{../graphics/chap2/2-1-2_comparison}{Spectrum of a Matrix versus an Ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 \minititle{[Plot takeaways]}
@@ -175,7 +175,8 @@ Signs of eigenvalues indicate reflection or rotation, so when we take the norm, 
 For example, consider the following plots, showing the difference in using the sign and norm ordering schemes for the same spectrum.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREorderscheme{h}{0.55}
+\plotwrapperNC{h}{0.5}{../graphics/chap2/2-2-1_orderscheme}
+%{Spectrum of an Ensemble with Two Different Ordering Schemes}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %=========================================================================================
@@ -226,38 +227,34 @@ Then, we can set the distribution of the largest eigenvalue for $\D$ by observin
 \newpage
 
 So, we will consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
-
+%=========================================================================================
 \minititle{Norm-Ordered}
 
-\plotwrapper{h}{0.4}{../graphics/chap2_order/norm_Norm}{Largest eigenvalues distribution}
+\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Norm}{Largest eigenvalues distribution}
 
-\plotwrapper{h}{0.4}{../graphics/chap2_order/norm_Norm_var}{Largest eigenvalues distribution}
-
-\newpage
-
-\plotwrapper{h}{0.4}{../graphics/chap2_order/norm_Re}{Largest eigenvalues distribution}
-
-\plotwrapper{h}{0.4}{../graphics/chap2_order/norm_Re_var}{Largest eigenvalues distribution}
+\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Norm_var}{Largest eigenvalues distribution}
 
 \newpage
 
+\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Re}{Largest eigenvalues distribution}
+
+\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Re_var}{Largest eigenvalues distribution}
+
+%=========================================================================================
+\newpage
+%=========================================================================================
 \minititle{Sign-Ordered}
 
-\plotwrapper{h}{0.5}{../graphics/chap2_order/sign_Norm}{Largest eigenvalues distribution}
+\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Norm}{Largest eigenvalues distribution}
+
+\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Norm_var}{Largest eigenvalues distribution}
 
 \newpage
 
-\plotwrapper{h}{0.5}{../graphics/chap2_order/sign_Norm_var}{Largest eigenvalues distribution}
+\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Re}{Largest eigenvalues distribution}
 
-\newpage
+%\plotwrapper{h}{0.1}{../graphics/chap2_order/sign_Re_var}{Largest eigenvalues distribution}
 
-\plotwrapper{h}{0.5}{../graphics/chap2_order/sign_Re}{Largest eigenvalues distribution}
-
-%\newpage
-
-%\plotwrapper{h}{0.5}{../graphics/chap2_order/sign_Re_var}{Largest eigenvalues distribution}
-
-%\newpage
 %=========================================================================================
 %=========================================================================================
 \newpage
@@ -293,7 +290,7 @@ Again, those two statements were not formally proven in this thesis. However, th
 Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREstochspectrum{h}{0.65}
+\plotwrapper{h}{0.15}{../graphics/chap2/2-4_stoch_spec}{Spectrum of a Stochastic Matrix ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 This shows that the spectral radius of stochastic matrices is $1$! What is left is the other fact.
@@ -337,7 +334,7 @@ This can be compared to the spectrum of non-Symmetric stochastic matrices in the
 The patterns are similar, but now, imposing symmetry on the matrices forces the eigenvalues to ``collapse'' onto the real line!
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREsymmstochspectrum{h}{0.65}
+\plotwrapper{h}{0.6}{../graphics/chap2/2-4_symmstoch_spec}{Spectrum of a Symmetric Stochastic Matrix ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %=========================================================================================
@@ -360,7 +357,7 @@ That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(R = 2\sqrt{N})
 \end{remark}
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREsemicircle{h}{0.6}
+\plotwrapper{h}{0.6}{../graphics/chap2/2-3-2_semicircle}{Eigenvalues of a Symmetric Matrix displaying the Semicircle Distribution}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %=========================================================================================
@@ -373,7 +370,8 @@ Here we have an ensemble of $\Ens \sim \Unif(0,1)$ matrices. We see a resemblanc
 stochastic matrices.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREunifspectrum{h}{0.65}
+\plotwrapper{h}{0.15}{../graphics/chap2/2-4_unif01_spec}
+{Spectrum of a Unif(0,1) ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 \minititle{Plot takeaways}
@@ -387,7 +385,7 @@ Largest eigenvalue is varied; compared with stochastic!
 Here we have the second largest eigenvalue of the Erdos-Renyi ensemble. We parameterize the eigenvalue by $p$ and we observe a trend below.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREerdosLAMTWO{h}{0.65}
+\plotwrapper{h}{0.6}{../graphics/chap2/2-4_erdos_lam2}{Second Largest Pair of Eigenvalues of an Erdos-p ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 \minititle{Plot takeaways}
@@ -401,7 +399,7 @@ Why upper half plane only?
 Normal matrices tend to have eigenvalues distributed about the complex disk.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREnormalspectrum{h}{0.5}
+\plotwrapper{h}{0.125}{../graphics/chap2/2-4_normal_spec}{Spectrum of a Standard Normal Matrix ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %\newpage
@@ -414,5 +412,5 @@ floating point errors and algorithmic systemic error will yield small, but negli
 \end{remark}
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\FIGUREnormalCPLXHERMspectrum{h}{0.65}
+\plotwrapper{h}{0.15}{../graphics/chap2/2-4_cplxherm_normal_spec}{Spectrum of a Complex Hermitian Standard Normal Matrix ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
