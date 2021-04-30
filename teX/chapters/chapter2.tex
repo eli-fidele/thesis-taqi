@@ -51,15 +51,14 @@ spectrum_P
  5 -0.8678  0.0000 0.8678     5
 \end{lstlisting}
 
-\minititle{[Explain what each column represents]}
-
-Since this is the first time the output of the spectrum appears, it may be worth briefly specifying what each column represents (i.e. Re denotes real,
-Im is imaginary, norm is complex norm and order is ranking from largest norm to smallest
+Note that in the output, we obtain the spectrum table returned by the spectrum wrapper function. The output has four columns.
+The first two columns are the components of the eigenvalue. The third column denotes its norm, and the fourth column denotes the eigenvalue's
+relative order within the matrix (with respect to the chosen order scheme).
 
 While our definition for spectrum is nice and clean, there are a few caveats that we must take care of.
 First, how are spectra statistics? So we can even call them statistics, so there needs to be some formalization as to why we consider eigenvalues statistics.
 In this dialogue, we will call back on the same sort of formalization dialogue in the Random Matrices section.
-Before beginning, the reader is encouraged to review what a statistic is in the review appendix (A.x).
+Before beginning, the reader is encouraged to review what a statistic is in \textbf{Appendix A.2.2}.
 
 Recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices,we always had one thing - a vector representation of random variables.
 Using this framework, the formalization is trivial.
@@ -132,13 +131,16 @@ So in a way, ensemble statistics are the engine of this research.
 \plotwrapper{h}{0.15}{../graphics/chap2/2-1-2_comparison}{Spectrum of a Matrix versus an Ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-\minititle{[Plot takeaways]}
-
-Include brief discussion (~1 paragraph) about what the reader should take away from this graph in particular
+From the plot above, we can see that the spectrum of the ensemble is much more populated.
+In both plots, we are simulating the spectrum of the same object: a standard normal $50 \times 50$ matrix.
+For this reason, the Order legends on the right-hand side are equivalent across the plots.
+However, since we are only considering the spectrum of a singleton matrix on the left-hand side, it means that every Order corresponds to exactly one point.
+On the right-hand side, each Order is populated with $K$ points (where $K$ is the size of the ensemble).
+As such, from just taking numerous iterations of the matrix, we are able to ``complete the picture'' and see that the eigenvalues seem to be uniformly distributed on a complex disk!
 
 %=========================================================================================
 %=========================================================================================
-%\newpage
+\newpage
 \section{Spectrum Analysis}
 
 %=========================================================================================
@@ -175,12 +177,12 @@ Signs of eigenvalues indicate reflection or rotation, so when we take the norm, 
 For example, consider the following plots, showing the difference in using the sign and norm ordering schemes for the same spectrum.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapperNC{h}{0.5}{../graphics/chap2/2-2-1_orderscheme}
-%{Spectrum of an Ensemble with Two Different Ordering Schemes}
+\plotwrapper{h}{0.65}{../graphics/chap2/2-2-1_orderscheme}
+{Spectrum of an Ensemble Using Two Different Ordering Schemes}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %=========================================================================================
-%\newpage
+\newpage
 \minititle{Singular Values}
 
 An aternative to using the norm ordering scheme is using the singular values of the matrix.
@@ -285,13 +287,18 @@ So, there is an eigenvector of the largest eigenvalue --- for a Markov Chain, th
   We only demonstrate this because we have a case with a constant largest eigenvalue and an eigenvector with a unique interpretation (a stationary distribution).
 \end{note}
 
-Again, those two statements were not formally proven in this thesis. However, there are large amounts of computational evidence for both of these results. Consider the first statement.
+\newpage
 
-Below we have a stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
+Again, those two statements were not formally proven in this thesis. However, there are large amounts of computational evidence for both of these results.
+
+Consider the first statement. Below we have a stochastic ensemble spectrum.
+Notice how the largest eigenvalue is 1, living far from the island of \textbf{complex} eigenvalues.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapper{h}{0.15}{../graphics/chap2/2-4_stoch_spec}{Spectrum of a Stochastic Matrix ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+
 
 This shows that the spectral radius of stochastic matrices is $1$! What is left is the other fact.
 For the second statement, again, there is plenty of computational evidence to back this up.
@@ -310,13 +317,14 @@ These are the types of eigenvalues that lead to the second statement not holding
 \newpage
 \section{Symmetric and Hermitian Matrices}
 
-A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (See A.x). Simply put, those are matrices which are equal to their conjugate transpose.
+\subsection{Introduction}
+A very important class of matrices in Linear Algebra is that of Symmetric or Hermitian matrices (see \textbf{Appendix A.1.1}). Simply put, those are matrices which are equal to their conjugate transpose.
 
 \begin{remark}[Symmetric versus Hermitian]
 Since real numbers are their own conjugate transpose, every Symmetric matrix is Hermitian. However, we will still delineate the two terms to avoid confusion and indicate what field $\F$ we are working with.
 \end{remark}
 
-In any case, one critical result in Linear Algebra that will be extensively wielded in this thesis is the fact that if a matrix is Symmetric or Hermitian, then it has real eigenvalues. In other words:
+In any case, one critical result in Linear Algebra that will be extensively wielded in this thesis is the fact that if a matrix is Symmetric or Hermitian, then it has real eigenvalues. (Ref) In other words:
 \begin{align*}
 P = \overline{P^{T}} \implies \sigma(P) = \{\lambda_i \mid \lambda_i \in \R\}
 \end{align*}
@@ -327,7 +335,7 @@ This way, we can preserve negative signs and we would not lose the rotational as
 \minititle{Example: Stochastic Matrices}
 
 One very pleasing example to look at is stochastic matrices.
-As seen previously in \textbf{Subsection 2.2.2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and isolated point that is the largest eigenvalue.
+As seen previously in \textbf{Section 2.2.2}, stochastic matrices tend to have two components: a complex disk of eigenvalues about the origin and isolated point that is the largest eigenvalue.
 
 Below we have a \textbf{symmetric} stochastic ensemble spectrum. Notice how the largest eigenvalue is 1, living far from the island of \textbf{real} eigenvalues.
 This can be compared to the spectrum of non-Symmetric stochastic matrices in the previous figure.
@@ -363,54 +371,69 @@ That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(R = 2\sqrt{N})
 %=========================================================================================
 %=========================================================================================
 \newpage
-\section{Findings}
+\section{Various Ensemble Spectra}
+
+In this section, we will briefly survey the spectra for a variety of $\D$-distributions and characterize their properties.
+
 %=========================================================================================
 \subsection{Uniform Ensembles}
 Here we have an ensemble of $\Ens \sim \Unif(0,1)$ matrices. We see a resemblance to
 stochastic matrices.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.15}{../graphics/chap2/2-4_unif01_spec}
-{Spectrum of a Unif(0,1) ensemble}
+\vspace{-1em}
+\plotwrapperNC{h}{0.155}{../graphics/chap2/2-4_unif01_spec}
+\vspace{-2em}
+%{Spectrum of a Unif(0,1) ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-\minititle{Plot takeaways}
-Largest eigenvalue is varied; compared with stochastic!
+%\minititle{Plot takeaways}
+The first thing that stands out about the spectrum of the $\Unif(0,1)$ ensemble spectrum is that it very much resembles the spectrum of the stochastic matrix ensemble!
+While surprising at first, it starts to make sense once we consider what the Stochastic $\D$-distribution fundamentally reperesents. Namely, it represents a matrix with normalized, uniformly random weights. The algorithm for generating the Stochastic matrices itself samples from the $\Unif(0,1)$ distribution. Additionally, the general shape of the spectrum of the uniform ensemble is similar to that of the stochastic matrix ensemble. This is in the sense that they both have a two ``islands'' of eigenvalues, one complex disk, and one ``island'' of real eigenvalues. \newline
+
+However, despite these similiarties, there is a notable difference between the two $\D$-distributions. This lies in the distribution of the largest eigenvalues which live in the aforementioned ``real island``. For the uniform ensemble, the largest eigenvalues have \textbf{non-zero variance}, we can see them being scattered around roughly the same place. On the other hand, stochastic matrices have a constant largest eigenvalue of one, meaning the largest eigenvalue has \textbf{zero variance}.
 
 \newpage
 
 %=========================================================================================
 \subsection{Erdos p-Ensembles}
 
-Here we have the second largest eigenvalue of the Erdos-Renyi ensemble. We parameterize the eigenvalue by $p$ and we observe a trend below.
+For this section, we will simulate an Erdos-Renyi ensemble for various values of $p \in [0,1]$ and find the second largest pair of eigenvalues.
+That is, we will simulate the distribution of $\l_2,\l_3 \in \sigma(\Ens)$ where $\Ens \sim \text{ER}(p)$ for many values of $p$ in hopes of finding a trend.
+The reason we are doing this is to find the radius of the complex disk portion of the Stochastic matrix ensemble but for matrices with parameterized sparsity.
+
+\begin{remark}[Conjugate Pairs]
+  The reader might ask, if we are interested in the radius of the complex disk, why is the distribution of $\l_2$ not sufficient? Well, the issue lies in the fact that eigenvalues quite often come in conjugate pairs. For this reason, R must arbitrarily select which eigenvalue in a conjugate pair to select, and it selects the values with a positive imaginary component. So, to generate the outer rim of the complex disk, we will need to find the \textbf{second largest pair} of eigenvalues to capture any conjugate pairs.
+\end{remark}
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.6}{../graphics/chap2/2-4_erdos_lam2}{Second Largest Pair of Eigenvalues of an Erdos-p ensemble}
+\plotwrapperNC{h}{0.6}{../graphics/chap2/2-4_erdos_lam2}%{Second Largest Pair of Eigenvalues of an Erdos-p ensemble}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-\minititle{Plot takeaways}
-
-Why upper half plane only?
+At first glance, we can see a resounding pattern in the plot. It seems like the value of $p$ is inversely related to the radius of the complex disk. So, we conclude that the more connected a graph is, the smaller is the magnitude of the second largest eigenvalue. On the ensemble level, this means that the more connected an ensemble of graphs is, the smaller will be the radius of the complex disk. Additionally, it is worth noting that the values of $p$ close to $0$ have \textbf{higher variance} roughly speaking. Also, the maximum radius of the eigenvalues is less than $1$, which makes sense since the largest eigenvalue must be $1$ for an arbitrary stochastic matrix. As a result, this also demonstrates that the second largest eigenvalue is bound by the \textbf{unit complex disk}.
 
 %=========================================================================================
 \newpage
-\subsection{Normal Matrices}
+\subsection{Normal Ensembles}
 
-Normal matrices tend to have eigenvalues distributed about the complex disk.
-
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.125}{../graphics/chap2/2-4_normal_spec}{Spectrum of a Standard Normal Matrix ensemble}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% Below, we simulate Normal matrices tend to have eigenvalues distributed about the complex disk.
+%
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \plotwrapper{h}{0.125}{../graphics/chap2/2-4_normal_spec}{Spectrum of a Standard Normal Matrix ensemble}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %\newpage
 
-Hermitian Complex Normal matrices tend to have eigenvalues distributed about the complex disk.
+We have observed in Figure 2.1 in \textbf{Section 2.1.2} that a standard normal matrix ensemble tends to have a spectrum that is uniformly distributed about a complex disk. This happens to be the case for both real-valued and complex-valued standard normal matrices. However, the result regarding symmetric and hermitian matrices in \textbf{Section 2.3.1} also applies to complex-valued standard normal matrix ensembles. Consider the plot below.
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\plotwrapper{h}{0.12}{../graphics/chap2/2-4_cplxherm_normal_spec}{Spectrum of a Complex Hermitian Standard Normal Matrix ensemble}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+As we can see, despite having purely complex entries, this ensemble of Hermitian standard normal matrices over $\C$ has a spectrum of real eigenvalues!
+However, we do observee a slight imaginary component.
 
 \begin{remark}[Floating Point Errors]
 Because the model involves finding coefficients of polynomials with rounded entries (by computing the determinant),
 floating point errors and algorithmic systemic error will yield small, but negligible imaginary components.
 \end{remark}
-
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.15}{../graphics/chap2/2-4_cplxherm_normal_spec}{Spectrum of a Complex Hermitian Standard Normal Matrix ensemble}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF

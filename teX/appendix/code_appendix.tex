@@ -49,91 +49,85 @@ For (homogenous) explicitly distributed matrices, we can use a ``function factor
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/ME-RM_dist}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
+\trimm
 With our function factories set up, we can quickly generate all the random matrix functions for all the distributions our hearts could desire.
 
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/ME-example}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
+\trimm
 \newpage
 
 %******************************************************
 \minititle{Beta Matrices}
 %******************************************************
-
 For the $\beta$-ensemble matrices, we simply use the algorithm provided in Dimitriu's paper. Doing so, we get the function:
-
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/ME-RM_beta}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-
-
-%=========================================================================================
-\newpage
-\subsection{Implicitly Distributed Matrices}
-
-In the case of implicitly distributed matrices, we have various types of stochastic matrices.
-
+\trimmm
 %******************************************************
-\blocktitle{Stochastic Matrices}
+\minititle{Helper Functions}
 %******************************************************
-
-For stochastic matrices, we require slightly more setup. First, we setup the row functions to sample probability vectors:
-
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row}
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-For random introduced sparsity, we define the following row function.
-
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row_zeros}
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-Once this is done, we can use this function iteratively. With some magic, we can incorporate an option to make the matrix symmetric, and we get the following function.
-
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/M/MI-RM_stoch}
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-%******************************************************
-\newpage
-\blocktitle{Erdos-Renyi Stochastic Matrices}
-%******************************************************
-
-For the Erdos-Renyi walks, we do something similar by defining a parameterized row function.
-
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row_erdos}
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-And we again use the row function iteratively to get the following function.
-
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/M/MI-RM_erdos}
-%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-And as such, we have minimal, functional implementations of functions that sample random matrices! In total, we only needed two helper functions. The `.offdiagonalEntries` function was used to normalize the probabilities in `RM-stoch` and `RM-erdos`.
-
-\newpage
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/MI-makeHerm}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 %=========================================================================================
 \newpage
+\subsection{Implicitly Distributed Matrices}
+
+% In the case of implicitly distributed matrices, we have various types of stochastic matrices.
+
+%******************************************************
+\blocktitle{Stochastic Matrices}
+%******************************************************
+
+For stochastic matrices, we require slightly more setup. First, we setup the row functions to sample probability vectors:
+\trimm
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row}
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\trimm
+For random introduced sparsity, we define the following row function.
+\trim
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row_zeros}
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\trimm
+Once this is done, we can use this function iteratively. With some magic, we can incorporate an option to make the matrix symmetric, and we get the following function.
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\codechunk{h}{0.9}{appendix/code_chunks/M/MI-RM_stoch}
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\trimm
+%******************************************************
+\newpage
+\blocktitle{Erdos-Renyi Stochastic Matrices}
+%******************************************************
+For the Erdos-Renyi walks, we do something similar by defining a parameterized row function.
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row_erdos}
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\trimm
+And we again use the row function iteratively to get the following function.
+\trim
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\codechunk{h}{0.9}{appendix/code_chunks/M/MI-RM_erdos}
+%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\trimm
+And as such, we have minimal, functional implementations of functions that sample random matrices! In total, we only needed two helper functions. The `.offdiagonalEntries` function was used to normalize the probabilities in `RM-stoch` and `RM-erdos`.
+%=========================================================================================
+\newpage
 \subsection{Ensemble Extensions}
 
 Lastly, we have the ensemble extensions. These functions are quite simple to implement user a ``function factory''. Again, the actual implementations are more verbose due to the argument descriptions, but otherwise, are exactly the same.
-
+\trim
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/MEE-RME_extender}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
+\trimm
 Now, we extend the functions as follows, and we are done with the matrix module!
-
+\trim
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/MEE-example}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
@@ -145,49 +139,48 @@ Now, we extend the functions as follows, and we are done with the matrix module!
 %=========================================================================================
 
 \subsection{Spectrum}
-
+\trim
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/S/S_def}
+\codechunk{h}{0.80}{appendix/code_chunks/S/S_def}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-
-
+\trimmm \trimm
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/S/S_def2}
+\codechunk{h}{0.80}{appendix/code_chunks/S/S_def2}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-
+\trimmm \trimm
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/S/S_def3}
+\codechunk{h}{0.80}{appendix/code_chunks/S/S_def3}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+\trimmm \trim
 
 \newpage
-
+\trimmm
+%******************************************************
+\minititle{Helper Functions}
+%******************************************************
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/S/S_helper}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
+\trimm
 %=========================================================================================
 \newpage
 \subsection{Dispersions}
-
+\trim
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/D/D_def1}
+\codechunk{h}{0.80}{appendix/code_chunks/D/D_def1}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-
-
+\trimmm \trimm
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/D/D_def2}
+\codechunk{h}{0.80}{appendix/code_chunks/D/D_def2}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-
+\trimmm \trimm
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-\codechunk{h}{0.9}{appendix/code_chunks/D/D_def3}
+\codechunk{h}{0.80}{appendix/code_chunks/D/D_def3}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-
-
+\newpage
+%******************************************************
+\minititle{Helper Functions}
+%******************************************************
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/D/D_helper}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC

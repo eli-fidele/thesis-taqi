@@ -245,7 +245,7 @@ Analogously, the $\textbf{upper pairs}$ by those of the upper triangle of the ma
 The $\textbf{consecutive pairs}$, given our default lower pair scheme, are given by the lower main off-diagonal band of the matrix.
 
 \begin{example}[Eigenvalue Matrix for a $5 \times 5$ Matrix]
-Suppose we have a $5 \times 5$ matrix $P$ and its corrosponding spectral pairs $\spair(P)$. Then, its eigenvalue matrix has the following strucutre:
+Suppose we have a $5 \times 5$ matrix $P$ and its corresponding spectral pairs $\spair(P)$. Then, its eigenvalue matrix has the following strucutre:
 \end{example}
 $$
 \begin{bmatrix}
@@ -399,7 +399,7 @@ they give us almost all the information we need.
 \subsection{Order Statistics}
 With eigenvalue dispersions and eigenvalue orderings well-defined, we may proceed to start talking about their order statistics.
 
-In $\textbf{Section 2.2.3}$, we observed simple order statistics regarding the eigenvalues.
+In \textbf{Section 2.2.3}, we observed simple order statistics regarding the eigenvalues.
 This time around, we have two eigenvalues being compared at once, so there needs to be further setup with regards to dispersion order statistics.
 
 However, prior to introducing any new concepts, there is one scenario where using one index is sufficient in terms of discussing dispersion order statistics.
@@ -411,7 +411,7 @@ This is because we are observing the $j^{th}$ eigenvalue and its smaller neighbo
 
 Otherwise, we synthesize a new order statistic that takes in two indices (from a given pair) called the $\textbf{ranking difference class}$.
 Since we are no longer observing a single eigenvalue at a given rank, we will need a way to standardize observing a pair of eigenvalues at a time.
-To do so, we introduce a new $\textbf{equivalence relation}$ (see A.x) called the \textbf{ranking difference}. As the name suggests, it is precisely the integer difference of the eigenvalue orders.
+To do so, we introduce a new $\textbf{equivalence relation}$ called the \textbf{ranking difference}. As the name suggests, it is precisely the integer difference of the eigenvalue orders.
 
 \minititle{Ranking Difference}
 
@@ -438,12 +438,6 @@ The diagonal represents $[0]_\rankdiff$, the first off-diagonal represents $[1]_
 Notice that this means every equivalence class has a different size.
 \end{remark}
 
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapperNC{h}{0.6}{../graphics/chap3/3-2_pairtable}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-\minititle{[Plot takeaways]}
-
 \newpage
 
 With this partition in mind, we can consider various statistics conditioning on the value of $r$.
@@ -462,22 +456,26 @@ we get the following classes:
 \end{enumerate}
 \end{example}
 
+\minititle{Dispersion: Matrix Plot}
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\plotwrapperNC{h}{0.6}{../graphics/chap3/3-2_pairtable}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+% %=========================================================================================
+% \newpage
+% \subsection{Conditional Order Statistics}
+%
+% We will considering the conditional statistics $\E(\rankdiff_{ij} \mid \rho)$ and $\Var(\rankdiff_{ij} \mid \rho)$.
+%
+% [Plots]
+
+%=========================================================================================
 %=========================================================================================
 \newpage
-\subsection{Conditional Order Statistics}
-
-We will considering the conditional statistics $\E(\rankdiff_{ij} \mid \rho)$ and $\Var(\rankdiff_{ij} \mid \rho)$.
-
-[Plots]
+\section{Wigner's Surmise}
 
 %=========================================================================================
-%=========================================================================================
-\newpage
-\section{Analytical Results}
-
-%=========================================================================================
-
-\subsection{Wigner's Surmise}
 
 Wigner's surmise is a result found by Eugene Wigner regarding the limiting distribution of eigenvalue spacings of for symmetric matrices.
 To start talking about this, we must talk about normalized spacings, which are the precise items considered in the distribution.
@@ -513,7 +511,7 @@ did so for the spectrum and dispersion of an ensemble. That being said, consider
 
 %=========================================================================================
 
-\minititle{Wigner's Surmise: Symmetric Normal Matrices}
+\subsection{Symmetric Normal Matrices}
 
 We simulate the Wigner dispersion distribution (Wigner's surmise) for several $\Ens \sim \Normal(0, \sigma^2)^\dagger$ matrices over $\R$.
 
@@ -528,7 +526,7 @@ The answer is $\b$-ensembles.
 
 %=========================================================================================
 \newpage
-\minititle{Beta Ensembles}
+\subsection{Beta Ensembles}
 %=========================================================================================
 
 The analytical results for the Hermite $\beta$-ensembles for $\beta = 1, 2, 4$, denoted by $w_\beta$, are stated below.
@@ -552,53 +550,53 @@ Moments, variance, mean
 
 %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section{Checkpoint}
-
-Here's what we've done so far.
-
-%=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\minititle{Chapter 1}
-
-
-\begin{enumerate}
-  \item Formalized the following items
-    \begin{enumerate}
-      \item Random Matrices using $\D$-distributions.
-      \item Random Matrix Ensembles
-    \end{enumerate}
-  \item Some item
-\end{enumerate}
-
-%=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\minititle{Chapter 2}
-
-\begin{enumerate}
-    \item Formalized the following items
-      \begin{enumerate}
-        \item Spectrum of a Random Matrix (Ensemble)
-      \end{enumerate}
-    \item Some item
-\end{enumerate}
-
-%=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\minititle{Chapter 3}
-
-\begin{enumerate}
-    \item Formalized the following items
-      \begin{enumerate}
-        \item Spectral Pairs: the set of eigenvalue pair combinations
-        \item Pair schemes: which eigenvalue pairs to choose
-        \item Dispersion metrics: what distance metric to use on the pairs
-        \item Dispersion of a Random Matrix (Ensemble)
-      \end{enumerate}
-    \item Some item
-\end{enumerate}
-
-%=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\minititle{Segway to Chapter 4}
-
-Here's how we'll segway to Chapter 4, which doesn't flow without this segway.
+% \newpage
+% \section{Checkpoint}
+%
+% Here's what we've done so far.
+%
+% %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \minititle{Chapter 1}
+%
+%
+% \begin{enumerate}
+%   \item Formalized the following items
+%     \begin{enumerate}
+%       \item Random Matrices using $\D$-distributions.
+%       \item Random Matrix Ensembles
+%     \end{enumerate}
+%   \item Some item
+% \end{enumerate}
+%
+% %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \minititle{Chapter 2}
+%
+% \begin{enumerate}
+%     \item Formalized the following items
+%       \begin{enumerate}
+%         \item Spectrum of a Random Matrix (Ensemble)
+%       \end{enumerate}
+%     \item Some item
+% \end{enumerate}
+%
+% %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \minititle{Chapter 3}
+%
+% \begin{enumerate}
+%     \item Formalized the following items
+%       \begin{enumerate}
+%         \item Spectral Pairs: the set of eigenvalue pair combinations
+%         \item Pair schemes: which eigenvalue pairs to choose
+%         \item Dispersion metrics: what distance metric to use on the pairs
+%         \item Dispersion of a Random Matrix (Ensemble)
+%       \end{enumerate}
+%     \item Some item
+% \end{enumerate}
+%
+% %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \minititle{Segway to Chapter 4}
+%
+% Here's how we'll segway to Chapter 4, which doesn't flow without this segway.
 %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
