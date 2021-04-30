@@ -262,28 +262,27 @@ Without further ado, we will now take a look at the properties of the spectra of
 \subsection{Standard Ensembles}
 
 As mentioned previously, we have already analyzed the $\b = 1$. As it turns out, all three ensembles share the properties listed in \textbf{Section 2.3.3}. Namely, we find that all three ensembles have a semicircle distribution (with potentially differing radii). Additionally, we also observe that the variance is higher towards the edges where the larger eigenvalues are. That being said, consider the spectra of the $\b = 2$ and $\b = 4$ ensembles.
-
-\plotwrapperNC{h}{0.6}{../graphics/chap4/beta24_spec}
+\trim
+\plotwrapperNC{h}{0.525}{../graphics/chap4/beta24_spec}
 
 \newpage
 
 The most notable difference between the two ensembles is that the peaks of the $\b = 4$ ensemble seem to be more ``dull'' than those of the $\b = 2$ ensemble. Recall from previous sections in this chapter, we state that the higher the value of $\b$, the more likely is the ensemble to have equidistant eigenvalues. As such, this aligns with that fact since less peaked densities for the values implies that there is more intersection between them at a given order. As such, this plot second-handedly demonstrates this phenomenon.
 
 %=========================================================================================
-\newpage
 \subsection{Extending the $\b$-Ensembles}
 
-\minititle{Mean Statistics}
+Now, we may consider extending the $\b$-ensembles and observe their spectra. In this section, we observe various $\b$-ensembles for various values of $\b$ in the first eleven powers of $2$. Additionally, we are using the sign-ordered scheme on the eigenvalues.
 
-\plotwrapperNC{h}{0.4}{../graphics/chap4/betaspec_Norm_mean}
+In the plot below, we observe the statistic $\E(\l_i \mid i)$. Immediately, we start to notice that the larger the value of $\b$, the larger the eigenvalues are (fixing $N$). This is consistent with what we expect about the limiting behaviour of the eigenvalues as $\b \to \infty$.
+\trim
+%**********************************************************
+\plotwrapperNC{h}{0.37}{../graphics/chap4/betaspec_Re_mean}
+%**********************************************************
+\trim
+In this plot, we now observe the statistic $\Var(\l_i \mid i)$. At a first glance, there doesn't seem to be any resounding patterns. There is roughly a tendency for the larger value of $\b$ to have a higher variance towards the center, but this may as well be random noise. This in turn shows that the variance $\Var(\l_i \mid i)$ is roughly uniform for any $\b \in \N$.
 
-\plotwrapperNC{h}{0.4}{../graphics/chap4/betaspec_Re_mean}
-
-\newpage
-
-\minititle{Variance Statistics}
-
-\plotwrapperNC{h}{0.4}{../graphics/chap4/betaspec_Re_var}
+\plotwrapperNC{h}{0.37}{../graphics/chap4/betaspec_Re_var}
 
 %=========================================================================================
 \newpage
@@ -292,30 +291,23 @@ The most notable difference between the two ensembles is that the peaks of the $
 \section{Dispersions}
 %=========================================================================================
 
-In this section, we will briefly discuss the dispersion statistics of the $\b$-ensembles.
+In this section, we will take a look at some dispersion statistics of the $\b$-ensembles.
 
 %=========================================================================================
 \subsection{Order Statistics}
 %=========================================================================================
 
-First, we will consider the dispersion $\disp_{\text{abs}}(\Ens \mid \Pi_<)$
+Firstly, we will consider the dispersion $\disp_{\text{abs}}(\Ens \mid \Pi_<)$ where $\Ens \sim \H(\b = 4)$ is an ensemble of $100 \times 100$ matrices. Since we are using $\Pi_<$, we can say that we are interested in the difference of absolutes for an arbitrary pair of eigenvalues. Additionally, assume that we are using the norm-ordering scheme.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.3}{../graphics/chap4/4-2_lm_beta_big}{}
+\plotwrapperNC{h}{0.3}{../graphics/chap4/4-2_lm_beta_big}%{}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 
-In the plot above, we are considering the absolute differences dispersion metric $\d = \d_{\text{abs}}$.
-That being considered, we can use the ranking difference construction just like before to parse this graph.
-Recall that the ranking difference partitions the eigenvalue pair into seperate classes based on how many ``ranks'' apart two eigenvalues are.
-With this interpretation, this tells us that roughly speaking, each diagonal band $[\rho]$ has a uniform difference of absolutes given by the color streak
-that diagonal occupies.
+In the plot above, we are considering the absolute differences dispersion metric $\d = \d_{\text{abs}}$. Additionally, we are using the lower pairing scheme $\Pi_C$ so we can interpet these pairs as the pairs we would obtain from randomly picking two distinct eigenvalues.
+Additionally, since we are using the norm-ordering scheme, this means that the ranking difference tells us the difference of sizes of two eigenvalues that are ranked a certain distance $\rho$ apart.
 
-For instance, we could say that any pairs occupying the midnight blue diagonal $[\rho \approx 10]$ has an approximate dispersion of $5$.
-So, this means that we expect $\d_{\text{abs}}(\l_{j + 10}, \l_j) \approx 5$.
-
-For another example, we could say that any pairs occupying the lime diagonal $[\rho \approx 40]$ has an approximate dispersion of $15$.
-So, this means that we expect $\d_{\text{abs}}(\l_{j + 40}, \l_j) \approx 15$.
+As such, this explains why the bulk about $\rho = 50$ is the widest. This is because it represents the dispersion between pairs of eigenvalues in the origin and those near the boundary. Analogously, this explains why both $\rho = 0$ and $\rho = 100$ exhibit the narrowest dispersions. This is because they are comparing the largest eigenvalues with themselves (since the Semicircle distribution is symmetric). Lastly, note that this graph is symmetric about the identity line. 
 
 %=========================================================================================
 \newpage

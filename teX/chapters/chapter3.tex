@@ -136,7 +136,7 @@ By definition, taking a spectral pair with respect to some pairing scheme constr
 
 %****************************************************************************************%
 %\newpage
-\minititle{Common Pairing Schema}
+\minititle{Selected Pairing Schema}
 %****************************************************************************************%
 
 \noindent Suppose $P$ in an $N \times N$ square matrix, and $\spair(P)$ are its spectral pairs. For every pairing scheme, assume $i,j \in \N_N$.
@@ -147,16 +147,15 @@ By definition, taking a spectral pair with respect to some pairing scheme constr
     \textbf{Benefits:} This pairing scheme gives us the minimal information needed to express important bounds and spacings in terms of its elements.
   \item The unique pair combinations schema are two complementary pair schema. By specifying $\textbf{either}$ $i > j$ or $i < j$,
     we characterize this scheme to entail all unique pair combinations of eigenvalues without repeats.
-    The reason we call them upper and lower pair combinations is an allusion to the indices of the upper and lower triangular matrices. \begin{enumerate}
+    They are named in allusion to indexing upper and lower triangular matrices. \begin{enumerate}
     \item Let $\Pi_>$ be the lower-pair combinations of ordered eigenvalues.
-      This will be the standard unique pair combination scheme used in lieu of the argument orders of our dispersion metrics (more later).
-      In this pairing scheme, the eigenvalue with the lower rank is always listed first, and the higher rank second.
+      This will be the preferred unique pair combination scheme used in lieu of the argument orders because our dispersion metrics expect the eigenvalue with the lower rank first and the higher rank second.
     $$\spair(P \mid \Pi_>) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
     \item For completeness, we will also define the upper-pair scheme. $\Pi_<$ is the set of upper-pair unique combinations of ordered eigenvalues.
-      Wont be used because we want bigger - smaller to make positive definite.
+      However, it wont be used because we want dispersions to be positive-definite.
     $$\spair(P \mid \Pi_<) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
     \end{enumerate}
-    \textbf{Benefits:} Solves the issue of repeated pairs for symmetric dispersion metrics.
+    \textbf{Benefits:} Solves the issue of repeated pairs for symmetric dispersion metrics. Also, represents the set of pairs obtained from randomly sampling two distinct eigenvalues.
   \item Let $\Pi_0$ be all the pairs in a spectrum. For completeness, we define this pairing scheme as the implicit pairing scheme for the spectral pairs of a matrix.
     $$\spair(P \mid \Pi_0) = \spair(P) = \{\pi_{ij} = (\lambda_{i},\lambda_j) \mid i,j \in \N_N\}$$
 \end{enumerate}
