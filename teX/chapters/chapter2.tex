@@ -109,6 +109,9 @@ spectrum_ens <- spectrum(ens)
 # Outputs the following
 spectrum_ens
 ...
+\end{lstlisting}
+\newpage
+\begin{lstlisting}[language=R]
       Real    Imag   Norm Order
  1  1.7581  0.0000 1.7581     1
  2 -0.2614  1.0012 1.0347     2
@@ -439,7 +442,7 @@ The reason we are doing this is to find the radius of the complex disk portion o
 At first glance, we can see a resounding pattern in the plot. It seems like the value of $p$ is inversely related to the radius of the complex disk. So, we conclude that the more connected a graph is, the smaller is the magnitude of the second largest eigenvalue. On the ensemble level, this means that the more connected an ensemble of graphs is, the smaller will be the radius of the complex disk. Additionally, it is worth noting that the values of $p$ close to $0$ have \textbf{higher variance} roughly speaking. Also, the maximum radius of the eigenvalues is less than $1$, which makes sense since the largest eigenvalue must be $1$ for an arbitrary stochastic matrix. As a result, this also demonstrates that the second largest eigenvalue is bound by the \textbf{unit complex disk}.
 
 %=========================================================================================
-\newpage
+%\newpage
 \subsection{Normal Ensembles}
 
 % Below, we simulate Normal matrices tend to have eigenvalues distributed about the complex disk.
