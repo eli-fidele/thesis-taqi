@@ -305,7 +305,7 @@ A very important class of matrices in Linear Algebra is that of Symmetric or Her
 Since real numbers are their own conjugate transpose, every Symmetric matrix is Hermitian. However, we will still delineate the two terms to avoid confusion and indicate what field $\F$ we are working with.
 \end{remark}
 
-In any case, one critical result in Linear Algebra that will be extensively wielded in this thesis is the fact that if a matrix is Symmetric or Hermitian, then it has real eigenvalues. (Ref) In other words:
+In any case, one critical result in Linear Algebra that will be extensively wielded in this thesis is the fact that if a matrix is Symmetric or Hermitian, then it has real eigenvalues [\cite{horn}]. In other words:
 \begin{align*}
 P = \overline{P^{T}} \implies \sigma(P) = \{\lambda_i \mid \lambda_i \in \R\}
 \end{align*}
@@ -339,11 +339,14 @@ If a random variable $X$ is semicircle distributed with radius $R \in \R^+$, the
 $$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
 \end{definition}
 
+It turns out the dimension of the matrix $N$ impacts the radius of the eigenvalue distribution [\cite{tao}].
+
 \begin{remark}[Radius and Matrix Dimension]
 The dimension of the matrix determines the radius of the eigenvalues.
 Namely, if a Hermitian matrix $P$ is $N \times N$, then its eigenvalues are approximately semicircle distributed with radius $R = 2\sqrt{N}$; the approximation improves as $N$ gets larger.
 That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(R = 2\sqrt{N})$ as $N \to \infty$.
 \end{remark}
+
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapper{h}{0.6}{../graphics/chap2/2-3-2_semicircle}{Eigenvalues of a Symmetric Matrix displaying the Semicircle Distribution}
