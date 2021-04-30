@@ -313,7 +313,7 @@ We say that the edge probabilities are homogenous - akin to our description of h
 \end{remark}
 
 Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable.
-As such, we may alternatively say that the degree of each vertex $v$ (corrosponding to a row) is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices.
+As such, we may alternatively say that the degree of each vertex $v$ (corresponding to a row) is distributed as $deg(v) \sim Bin(N,p)$ where $N$ is the number of vertices.
 This makes simulating the graphs much easier. To achieve this effect, we first sample the vertex degree, and then uniformly randomly sever edges by setting the weights of $N - deg(v)$ edges to $0$. \newline
 
 All, that being said, we now motivate the defintion of an $p$-Erdos-Renyi transition matrix as an implicit $\D$-distribution by the generating algorithm below.
