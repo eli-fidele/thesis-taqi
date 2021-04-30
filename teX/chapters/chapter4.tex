@@ -116,9 +116,9 @@ They are the following:
 %   \item The quaternionic numbers: $$\Hh = \{ \alpha = a + bi + cj + dk \mid a,b,c,d \in \R \}$$
 % \end{enumerate}
 \begin{enumerate}
-  \item The real numbers $\R = \{ x \in \R \}$
-  \item The complex numbers $\C = \{ z = x + yi \mid x,y \in \R \}$
-  \item The quaternionic numbers $\Hh = \{ \alpha = a + bi + cj + dk \mid a,b,c,d \in \R \}$
+  \item The real numbers, $\R$
+  \item The complex numbers, $\C = \{ z = x + yi \mid x,y \in \R \}$
+  \item The quaternionic numbers, $\Hh = \{ \alpha = a + bi + cj + dk \mid a,b,c,d \in \R \}$
 \end{enumerate}
 
 \minititle{Diagonalization \& Conjugation Invariance}
@@ -156,7 +156,7 @@ For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Sympleptic E
 \bigskip
 
 All that being said, we can say that with respect to each matrix group, each $\b$-ensemble matrix has a feature called
-\textbf{conjugation invariance}.
+\textbf{conjugation invariance}. What this entails is that any of the matrices can be characterized by two things: their eigenvalues, and an arbitrary group element (from the respective algebra's matrix group) which determines its basis.
 
 \newpage
 %=========================================================================================
@@ -176,11 +176,11 @@ Alongside these great algebraic properies, the $\b$-ensembles also have a intepr
 This is because as mentioned previously, these ensembles show up frequently in statistical physics.
 So, we will cover one physical model that the $\b$-ensemble represents.
 
-Suppose that $P \sim \H(\beta)$ is an $N \times N$ matrix. Then, the eigenvalues of $P$ have a representation as a model of charged particles.
+Suppose that $P \sim \H(\beta)$ is an $N \times N$ matrix. Then, the eigenvalues of $P$ have a representation as a model of charged point particles.
 
 \minititle{Charged Particle Model}
 
-Suppose $N$ particles are in a line about the origin. Additionally, suppose there is a quadratic potential $V(x) = x^2$.
+Suppose $N$ particles are in a line about the origin. Additionally, suppose there is a quadratic field potential $V(x) = x^2$.
 Then, the eigenvalues of $P$, $\spec(P)$ represents a stochastic system of such particles. As discussed previously in the breakdown of the density function,
 these particles tend to repel each other. Specifically, their repulsion factor is $\beta$ itself! By observing the red term and blue term at extreme values of $\b$,
 we can interpret the physical model as follows:
@@ -188,15 +188,14 @@ we can interpret the physical model as follows:
 
 \blocktitle{Low Replsuion, High Temperature} As $\b \to 0$, the temperature of the system $T \to \infty$.
 At these values, the model starts to behave like an ideal gas.
-Additionally, there is no interaction between the paricles anymore as the power of the blue term implies that the dispersion has no effect anymore. This returns a fully stochastic
-model of particles trying to align themselves. In this model, the potential matters a lot, as it determines the positioning of the particles.
+Additionally, there is no interaction between the paricles anymore as the power of the blue term implies that the dispersion has no effect anymore. This returns a \textbf{fully stochastic} model of particles trying to align themselves along the field potential. In this model, the field potential matters a lot, as it determines the positioning of the particles.
 
 \bigskip
 
 \blocktitle{High Repulsion, Low Temperature} As $\b \to \infty$, the temperature of the system $T \to 0$.
-At these values, the model loses its stochastic properties and becomes deterministic.
+At these values, the model loses its stochastic properties and starts to become \textbf{deterministic}.
 Additionally, there is maximal interaction between the paricles as the power of the blue term starts to become more prominent. This returns a fully deterministic*
-model of particles that align themselves equidistantly. In this model, the potential doesn't matter anymore.
+model of particles that align themselves equidistantly. In this model, the field potential doesn't matter anymore.
 
 \medskip
 
@@ -263,34 +262,33 @@ Because the model involves diving by $\sqrt{2}$, floating point errors and algor
 This is on top of the floating errors from rounding, as discussed in \textbf{Section 2.3}.
 \end{remark}
 
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.3}{../graphics/chap4/4-2_Re_spec}{}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\vspace{-2em}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.3}{../graphics/chap4/4-2_Norm_spec}{}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.3}{../graphics/chap4/4-2_Re_summary}{}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\vspace{-2em}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.3}{../graphics/chap4/4-2_Norm_summary}{}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-
-
-\newpage
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.3}{../graphics/chap4/4-2_SING_Norm_spec}{}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\vspace{-2em}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.3}{../graphics/chap4/4-2_SING_Norm_summary}{}
-%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_Re_spec}{}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \vspace{-2em}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_Norm_spec}{}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_Re_summary}{}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \vspace{-2em}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_Norm_summary}{}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+%
+%
+% \newpage
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_SING_Norm_spec}{}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \vspace{-2em}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+% \plotwrapper{h}{0.3}{../graphics/chap4/4-2_SING_Norm_summary}{}
+% %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 %=========================================================================================
 \newpage
@@ -319,14 +317,12 @@ Consider the following plot of beta-ensemble dispersions.
 
 \minititle{Extending Beta Ensembles}
 
-Below, we extended the simulations beyond the standard values of $\beta = 1,2,4$. We notice a continuing pattern! The densities seem to have less variance as
-beta increases.
+Below, we extend the simulations of Wigner's surmise as discussed in \textbf{Section 3.3} beyond the standard values of $\beta = 1,2,4$ to any $\b \in \N$.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapper{h}{0.6}{../graphics/chap3/3-3_wigner_beta_extended}{Wigner's Surmise for Non-Standard Beta Ensembles}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
+\minititle{Takeaways}
 
-\minititle{Plot Takeaways}
-
-In 1 or 2 paragraphs, describe the most important observations you want your reader to take away from this plot
+As mentioned in \textbf{Section 3.3.2}, we notice that there is a general pattern of decreasing variance, indicating that the pattern is consistent for other values of $\b$! In other words, this seems to provide evidence that as $\b \to \infty$, the variance of the consecutive dispersions shrinks, $\Var(\d(\pit)) \to 0$. Recall from the physical interpretation of the model in \textbf{Section 4.1.3}, we discuss the limiting behaviour of the ensemble as $\beta \to \infty$. Specifically, it was mentioned that as $\beta$ grows, the ensemble represents a deterministic system of particles of low temperature and maximum interaction which tries to align itself equidistantly. This would confirm our prediction, because an equidistant system of particles is precisely a system of point charges where there is no variance in the distance between consecutive particles, or in other words --- where $\Var(\d(\pit)) = 0$!

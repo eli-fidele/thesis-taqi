@@ -56,7 +56,7 @@ The first two columns are the components of the eigenvalue. The third column den
 relative order within the matrix (with respect to the chosen order scheme).
 
 While our definition for spectrum is nice and clean, there are a few caveats that we must take care of.
-First, how are spectra statistics? So we can even call them statistics, so there needs to be some formalization as to why we consider eigenvalues statistics.
+First, how are spectra considered statistics? So we can even call them statistics, so there needs to be some formalization as to justify considering eigenvalues statistics.
 In this dialogue, we will call back on the same sort of formalization dialogue in the Random Matrices section.
 Before beginning, the reader is encouraged to review what a statistic is in \textbf{Appendix A.2.2}.
 
@@ -204,7 +204,7 @@ The singular values of a matrix $P$ are given by the square root of the eigenval
 
 %=========================================================================================
 \newpage
-\subsection{Conditional Order Statistics}
+\subsection{Order Statistics}
 
 %=========================================================================================
 
@@ -224,38 +224,12 @@ Suppose we have seek the largest eigenvalue distribution for a ensemble distribu
 Then, we can set the distribution of the largest eigenvalue for $\D$ by observing the distribution of $\lambda_1$.
 \end{example}
 
-%=========================================================================================
+\minititle{Conditional Statistics}
 
-\newpage
+As such, one framework of studying order statistics will be conditioning on their values. So, we will consider the following summary statistics that use conditional order statistics:
+\blocktitle{Expectation} $\E(\lambda_{i} \mid i)$
 
-So, we will consider the conditional order statistics $\E(\lambda_{i} \mid i)$ and $\Var(\lambda_{i} \mid i)$.
-%=========================================================================================
-\minititle{Norm-Ordered}
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Norm}{Largest eigenvalues distribution}
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Norm_var}{Largest eigenvalues distribution}
-
-\newpage
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Re}{Largest eigenvalues distribution}
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Re_var}{Largest eigenvalues distribution}
-
-%=========================================================================================
-\newpage
-%=========================================================================================
-\minititle{Sign-Ordered}
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Norm}{Largest eigenvalues distribution}
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Norm_var}{Largest eigenvalues distribution}
-
-\newpage
-
-\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Re}{Largest eigenvalues distribution}
-
-%\plotwrapper{h}{0.1}{../graphics/chap2_order/sign_Re_var}{Largest eigenvalues distribution}
+\blocktitle{Variance} $\Var(\lambda_{i} \mid i)$.
 
 %=========================================================================================
 %=========================================================================================
@@ -367,6 +341,42 @@ That is, $P^{\dagger}$ has a spectrum $\sigma({P}) \sim \text{SC}(R = 2\sqrt{N})
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapper{h}{0.6}{../graphics/chap2/2-3-2_semicircle}{Eigenvalues of a Symmetric Matrix displaying the Semicircle Distribution}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\newpage
+\subsection{Spectra}
+%=========================================================================================
+
+In this section, we will be carefully analyzing an ensemble of symmetric matrices to showcase
+the special properties of symmetric and hermitian matrices.
+Namely, we will be considering an ensemble $\Ens \sim \Normal(0,1)^\dagger$ of $15 \times 15$ matrices over $\R$.
+
+%=========================================================================================
+\minititle{Norm-Ordered}
+
+\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Norm}{Largest eigenvalues distribution}
+
+\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Norm_var}{Largest eigenvalues distribution}
+
+\newpage
+
+\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Re}{Largest eigenvalues distribution}
+
+\plotwrapper{h}{0.45}{../graphics/chap2_order/norm_Re_var}{Largest eigenvalues distribution}
+
+%=========================================================================================
+\newpage
+%=========================================================================================
+\minititle{Sign-Ordered}
+
+% \plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Norm}{Largest eigenvalues distribution}
+%
+% \plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Norm_var}{Largest eigenvalues distribution}
+%
+% \newpage
+
+\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Re}{Largest eigenvalues distribution}
+
+\plotwrapper{h}{0.45}{../graphics/chap2_order/sign_Re_var}{Largest eigenvalues distribution}
 
 %=========================================================================================
 %=========================================================================================

@@ -66,7 +66,7 @@ Suppose $P$ is an $N \times N$ random matrix that is explicitly and homogenously
 
 \minititle{Non-Homogenous Explicit $\D$-distributions}
 
-There are a few instances where we encounter the need to only initialize only a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$-distribution.
+There are a few instances where we encounter the need to only initialize a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$-distribution.
 This type of distribution is similar to e.h. $\D$-distributions, but we no longer have the ability to overload random variable notation and indicate that only some entries have such distribution. This would be
 confusing because not every entry has the same distribution anymore. As such, we have to define new notation to do so.
 
@@ -76,7 +76,7 @@ Since its definition is characterized by distributions on the diagonals, we may 
 As such, we will only describe non-homogenous explicit $\D$-distributions as schemes where we assign diagonal bands a specific vector of i.i.d random variables.
 
 \begin{definition}[Diagonal Bands]
-Suppose $P = (p_{ij})$ is an $N \times N$ matrix. Then, $P$ may be partitioned into $2n - 1$ rows called diagonal bands. Each band is denoted $[\rho]$ where $\rho = \{p_{ij} \mid \rho = i - j\}$. We have
+Suppose $P = (p_{ij})$ is an $N \times N$ matrix. Then, $P$ may be partitioned into $2n - 1$ rows called diagonal bands. Each band is denoted $[\rho]_P$ where $[\rho]_P = \{p_{ij} \mid \rho = i - j\}$. We have
 $\rho \in \{ -(N-1), \dots, -1, 0, 1, \dots, N-1 \}$.
 \end{definition}
 
@@ -144,7 +144,7 @@ On the other hand, the diagonal is a vector of $N$ i.i.d $\Normal(0,2)$ variable
 \end{remark}
 
 \begin{warning}[$\b$-Notation]
-Please note that the Hermite $\b$-ensemble matrices are \textbf{not} related to the $\Beta$ distribution. They are completely independent.
+Please note that the Hermite $\b$-ensemble matrices are \textbf{not} related to the $\Beta$ distribution.
 Instead, $\b \in \N$ is a natural number that determines the nature of the matrix ensemble (more later). The $\Beta(a,b)$ distribution is a r.v. distribution that
 takes in two parameters. For this reason, it is possible to have a homogenous explicit distribution $P \sim \Beta(a,b)$, but they do not mean the same thing.
 \end{warning}
@@ -180,7 +180,7 @@ Consider the following generating algorithms below. We first start by generating
 \ALGstochrow
 %AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-As such, we define the implicit $\D$-distribution corrosponding to a transition matrix on a complete graph with randomized weights as $\D = \text{Stochastic}$ as the distribution that
+As such, we define the implicit $\D$-distribution corresponding to a transition matrix on a complete graph with randomized weights as $\D = \text{Stochastic}$ as the distribution that
 is characterized by the generating algorithm below.
 
 %AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -254,7 +254,7 @@ P
 
 \section{The Crew: Ensembles}
 
-With a random matrix well defined, we may now motivate one of the most important ideas - the random matrix ensemble.
+With a random matrix well-defined, we may now motivate one of the most important ideas - the random matrix ensemble.
 Simply put, a random matrix ensemble is essentially a collection of various matrices distributed the same way.
 One common theme in this thesis is that we will find that on their own, random matrices provide little information. However, when we consider them at the ensemble level, we start to obtain more fruitful results.
 Without further ado, we define the random matrix ensemble.
@@ -267,13 +267,13 @@ $$ \Ens = \bigcup_{i = 1}^K P_i \where P_i \sim \mathcal{D} \and P_i \in \F^{N \
 \medskip
  So, for example, we could compute a simple ensemble of matrices as follows.
 \begin{code}[Standard Normal Hermitian Ensemble]
-Let $\mathcal{D} = \Normal(0,1)^{\dagger}$. We can generate $\Ens \sim \D$ over $\Cc$, an ensemble of $4 \times 4$ complex Hermitian standard normal matrices of size 10 as such:
+Let $\mathcal{D} = \Normal(0,1)^{\dagger}$. We can generate $\Ens \sim \D$ over $\Cc$, an ensemble of $3 \times 3$ complex Hermitian standard normal matrices of size 10 as such:
 \end{code}
 
 \begin{lstlisting}[language=R]
 library(RMAT)
 # By default, mean = 0 and sd = 1.
-ensemble <- RME_norm(N = 4, cplx = TRUE, herm = TRUE, size = 10)
+ensemble <- RME_norm(N = 3, cplx = TRUE, herm = TRUE, size = 10)
 # Outputs the following
 ensemble
 ...

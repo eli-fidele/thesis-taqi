@@ -80,16 +80,13 @@ For the $\beta$-ensemble matrices, we simply use the algorithm provided in Dimit
 % In the case of implicitly distributed matrices, we have various types of stochastic matrices.
 
 %******************************************************
-\blocktitle{Stochastic Matrices}
-%******************************************************
-
-For stochastic matrices, we require slightly more setup. First, we setup the row functions to sample probability vectors:
-\trimm
+\blocktitle{Stochastic Matrices} For stochastic matrices, we require slightly more setup. First, we setup the row functions to sample probability vectors:
+\trim
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \trimm
-For random introduced sparsity, we define the following row function.
+For randomly introduced sparsity, we define the following row function.
 \trim
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row_zeros}
@@ -102,9 +99,8 @@ Once this is done, we can use this function iteratively. With some magic, we can
 \trimm
 %******************************************************
 \newpage
-\blocktitle{Erdos-Renyi Stochastic Matrices}
-%******************************************************
-For the Erdos-Renyi walks, we do something similar by defining a parameterized row function.
+\blocktitle{Erdos-Renyi Stochastic Matrices} For the Erdos-Renyi walks, we do something similar by defining a parameterized row function.
+\trim
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 \codechunk{h}{0.9}{appendix/code_chunks/M/MI-stoch_row_erdos}
 %CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC

@@ -1,0 +1,71 @@
+---
+title: "ch2-order"
+author: "Taqi"
+date: "4/29/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+source("../R/header.R")
+library(future)
+library(wesanderson)
+.src(1)
+```
+
+```{r}
+wes_pal <- wes_palette("Zissou1", 100, type = "continuous")
+# Note: Add this feature to spectrum.scatterplot()!
+# Creates a matrix title given the dimension and classification of the matrix (ex. 20x20 Unif(0,1))
+.make_matrix_title <- function(N, class){
+  #dim_str <- paste(N,"X",N, sep = " ")
+  dim_str <- paste(N,"x",N, sep = "")
+  title_str <- paste(dim_str, class, sep = " ")
+  return(title_str)
+}
+# Create a shorter alias of this function
+makeTitle <- .make_matrix_title 
+```
+
+```{r}
+source("orderPlots.R")
+```
+
+```{r}
+# Set parameters
+N <- 15
+size <- 2000
+# Generate beta ensembles
+beta2 <- RME_beta(N = N, beta = 2, size = size)
+beta4 <- RME_beta(N = N, beta = 4, size = size)
+```
+
+```{r}
+# Generate their sign-ordered spectra
+if(F){
+  beta2_sign <- beta2 %>% spectrum_par(norm_order = FALSE)
+  beta4_sign <- beta4 %>% spectrum_par(norm_order = FALSE)
+  # Save the spectra
+  write.csv(beta2_sign, "data/beta2-sign.csv", row.names = F) 
+  write.csv(beta2_sign, "data/beta4-sign.csv", row.names = F) 
+} else{
+  beta2_sign <- read_csv("data/beta2-sign.csv")
+  beta4_sign <- read_csv("data/beta4-sign.csv")
+}
+# Generate their norm-ordered spectra
+if(F){
+  beta2_norm <- beta2 %>% spectrum_par(norm_order = TRUE)
+  beta4_norm <- beta4 %>% spectrum_par(norm_order = TRUE)
+  # Save the spectra
+  write.csv(beta2_norm, "data/beta2-norm.csv", row.names = F) 
+  write.csv(beta2_norm, "data/beta4-norm.csv", row.names = F) 
+} else{
+  beta2_norm <- read_csv("data/beta2-norm.csv")
+  beta4_norm <- read_csv("data/beta4-norm.csv")
+}
+```
+
+```{r}
+
+```
+

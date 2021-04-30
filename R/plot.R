@@ -288,14 +288,30 @@ order.density <- function(spectrum, component){
     theme(legend.position = "bottom")
 }
 order.summary <- function(spectrum, component){
-  spectrum %>%
+  # Get summary statistics
+  summarized <- spectrum %>%
     group_by(Order) %>%
     summarize(
       Mean_Re = mean(Re), Mean_Im = mean(Im), Mean_Norm = mean(Norm),
-      Variance_Re = var(Re), Variance_Im = var(Im), Variance_Norm = var(Norm)) %>%
+      Variance_Re = var(Re), Variance_Im = var(Im), Variance_Norm = var(Norm))
+  # Set plot parameters
+  fill_grid <- "azure2" #"#BFD5E3"
+  color_grid <- "grey70" #"#6D9EC1"
+  linetype_grid <- "solid" #"solid"
+  color_line <- "grey95" #"white"
+  # Return the plot
+  summarized %>%
     ggplot(mapping = aes(y = {{ component }}, x = Order, color = Order)) +
     geom_point() +
     geom_line() +
-    scale_color_viridis_c() +
-    theme(legend.position = "bottom")
+    #scale_color_distiller(palette = "Spectral") +
+    scale_color_gradientn(colours=rainbow(15)) +
+    theme(legend.position = "right",
+    panel.background = element_rect(fill = fill_grid, colour = color_grid,
+                                    size = 2, linetype = linetype_grid),
+    panel.grid.major = element_line(size = 0.5, linetype = linetype_grid,
+                                    colour = color_line),
+    panel.grid.minor = element_line(size = 0.25, linetype = linetype_grid,
+                                    colour = color_line))
+    
 }

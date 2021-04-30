@@ -440,11 +440,11 @@ Notice that this means every equivalence class has a different size.
 
 \newpage
 
-With this partition in mind, we can consider various statistics conditioning on the value of $r$.
+\blocktitle{Usage} With this diagonal band partition in mind, we can consider various statistics conditioning on the value of $r$.
 Conditioning on $r$ will be especially useful in the cases where we are considering matrices like the Hermite-$\beta$ matrices;
-the eigenvalues of those matrices tend to $\textit{repel}$, so to speak, and we can observe these patterns using $r$. \newline
+we will find that the eigenvalues of those matrices tend to $\textit{repel}$, so to speak, and we can observe those patterns using $r$. \newline
 
-\noindent Consider the following example.
+\noindent Consider the following example utilizing and identifying ranking differences.
 
 \begin{example}[Ranking Differences for a $4 \times 4$ Matrix]
 Suppose $P$ is a $4 \times 4$ random matrix. Then, if we take the spectral pairs with respect to the lower pairs $\spair(P \mid \Pi_<)$ and partition it by $\rankdiff$,
@@ -456,11 +456,20 @@ we get the following classes:
 \end{enumerate}
 \end{example}
 
-\minititle{Dispersion: Matrix Plot}
+\newpage
+
+\minititle{Example: Dispersion Matrix}
+
+As to showcase this dispersion technology, consider the following example, where we analyze the dispersion for the ensemble $\Ens \sim \H(\b = 4)$.
+Specifically, we are considering $\disp_{abs}(\Ens \mid \Pi_<)$.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 \plotwrapperNC{h}{0.6}{../graphics/chap3/3-2_pairtable}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\minititle{Takeaways}
+
+As we can see, the diagonal bands have uniform values.
 
 % %=========================================================================================
 % \newpage
@@ -500,7 +509,7 @@ an observation of the Wigner dispersion for symmetric matrices.
 
 \begin{definition}[Wigner Dispersion]
 Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
-Then, the Wigner dispersion denoted $\disp_{Wigner}(P)$ is given by the set of normalized conseuctive eigenvalues of $P$. That is,
+Then, the Wigner dispersion denoted $\disp_{W}(P)$ is given by the set of normalized conseuctive eigenvalues of $P$. That is,
 $$ \disp_{W}(P) = \left\{ \frac{\d_n(\pi)}{\meanspacing} \mid \pi \in \spair(P \mid \Pi_C) \right\} $$
 \end{definition}
 
@@ -514,44 +523,70 @@ did so for the spectrum and dispersion of an ensemble. That being said, consider
 \subsection{Symmetric Normal Matrices}
 
 We simulate the Wigner dispersion distribution (Wigner's surmise) for several $\Ens \sim \Normal(0, \sigma^2)^\dagger$ matrices over $\R$.
+Specifically, we are varying the variance of our sampling distribution $\sigma^2$ and taking several values $\sigma \in  [1, 50]$.
 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.6}{../graphics/chap3/3-3_wigner_norm}{Wigner's Surmise for Symmetric Normal Matrices}
+\plotwrapperNC{h}{0.6}{../graphics/chap3/3-3_wigner_norm}%{Wigner's Surmise for Symmetric Normal Matrices}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-\minititle{Plot Takeaways}
+\minititle{Takeaways}
 
-It seems as though the distribution is independent of the variance of the distribution. So, how do we really vary the wigner dispersion distribution?
-The answer is $\b$-ensembles.
+As we can see, it seems as though the distribution is independent of the variance of the distribution.
+This means that the variance of our entries have \textbf{no bearing} on the mean dispersion of consecutive eigenvalues, which is initially surprising!
+So, if two ensembles $\Ens \sim \Normal(0,1)^\dagger$ and $\Ens \sim \Normal(0,2500)^\dagger$ behave the same way, how can we vary the distribution of Wigner dispersions?
+The answer is $\b$-ensembles. \newline
+
+It turns out that the class of $\Normal(\mu,\sigma^2)$ matrices for any value of $\mu$ or $\sigma$ are represented by the $\b$-ensemble for $\b = 1$;
+in other words, they have the same eigenvalue distribution.
+Curiously enough, if we sampled the same matrices (Hermitian Normal) over $\C$, we would have found an analogous result, where all the Hermitian Normal
+matrices are represnted by the $\b$-ensemble with $\b = 2$! This will be discussed more in depth in \textbf{Chapter 4}.
 
 %=========================================================================================
 \newpage
 \subsection{Beta Ensembles}
 %=========================================================================================
 
-The analytical results for the Hermite $\beta$-ensembles for $\beta = 1, 2, 4$, denoted by $w_\beta$, are stated below.
-These are the asymptotic densities for the normalized spacings between consecutive eigenvalues for each of the matrices for $\b = 1,2,4$.
+As we just mention, it turns out that Symmetric Normal matrices and Hermitian Normal matrices have an analogous representation as $\b$-ensembles for $\b = 1$ and $\b = 2$ respectively. Although this will be discussed later, it is helpful to know that there are three ``standard'' $\b$-ensembles with special properties. We have already talked about two of them. The last special $\b$-ensemble is that corrosponding to $\b = 4$.
+
+That being said, there are analytical results for the Wigner dispersion distributions for the Hermite $\beta$-ensembles for $\beta = 1, 2, 4$.
+We will denote the density of each ensemble by $w_\beta$. These are the asymptotic densities for the normalized spacings between consecutive eigenvalues for each of the matrices for $\b = 1,2,4$. (Ref) Additionally, a simulation plot for each $\b$-ensembles is shown below.
 
 \begin{align*}
   w_1(s) &= \frac{\pi}{2} \exp(-\frac{\pi}{4}s^2) \\
   w_2(s) &= \frac{32}{\pi^2} s^2 \exp(-\frac{4}{\pi}s^2) \\
-  w_4(s) &= \frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2) \\
+  w_4(s) &= \frac{2^{18}}{3^{6}\pi^3} s^4 \exp(-\frac{64}{9\pi}s^2)
 \end{align*}
 
-Additionally, their simulated densities are given in the plot below.
-
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-\plotwrapper{h}{0.6}{../graphics/chap3/3-3_wigner_beta}{Wigner's Surmise for standard Beta Ensembles}
+\trim
+\plotwrapperNC{h}{0.6}{../graphics/chap3/3-3_wigner_beta}%{Wigner's Surmise for standard Beta Ensembles}
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-\minititle{Plot Takeaways}
+\newpage
 
-Moments, variance, mean
+\minititle{Takeaways}
+
+As we can see, given just our three values of $\b$, there are some patterns to consider.
+The first thing that jumps out is that the variance of the dispersion distribution seems to decrease as $\b$ increases.
+This will be justified in \textbf{Chapter 4} in additional to being generalized for $\b \in \N$. In fact, this observation
+regarding the variance seems to go hand in hand with the analytical results for the asymptotic densities.
+Observe that the formulas for the asymptotic densities contain first, second, and fourth degree terms of the normalized spacing.
+As such, this has an impact on the moments of the p.d.f. and may explain why the variance seems to decrease.
+
+\bigskip
+\bigskip
+
+ \minititle{Checkpoint}
+
+All things considered, we are now ready to switch topics and start to focus solely on the $\b$-ensembles in the next chapter.
+At this point, the reader has accquired a vast toolkit and considerable knowledge to study Random Matrix Theory in more depth.
+However, we have only scratched the surface, and you are encouraged to keep learning! As such, we will sample the $\b$-ensembles, which we are already familiar with,
+to serve as our ``case study'' in this thesis.
 
 %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %=========================================================================================%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \newpage
-% \section{Checkpoint}
+%  \newpage
+%  \section{Checkpoint}
 %
 % Here's what we've done so far.
 %
