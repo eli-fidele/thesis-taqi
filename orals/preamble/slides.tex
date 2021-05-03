@@ -1,0 +1,21 @@
+
+%========================
+%     SLIDE SECTIONS
+%========================
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+%=====================
+%     SLIDE TITLES
+%=====================
+\newcommand{\deftitle}[1]{\textbf{Definition:}$\;$#1}
+\newcommand{\thmtitle}[1]{\textbf{Theorem:}$\;$#1}
+\newcommand{\remtitle}[1]{\textbf{Remark:}$\;$#1}

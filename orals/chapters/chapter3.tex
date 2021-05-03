@@ -1,0 +1,185 @@
+
+%*****************************************************************************************
+%   Chapter 3
+%*****************************************************************************************
+
+%=========================================================================================
+%   Dispersions
+%=========================================================================================
+\section{Dispersions}
+%=========================================================================================
+\begin{frame} \frametitle{Dispersion Metric}
+
+\begin{alertblock}{\deftitle{Dispersion Metric}}
+A dispersion metric $\delta: \Cc \times \Cc \to \R^+$ is defined as a function from the space of pairs of complex numbers to the positive reals.
+In simple terms, it is a way of measuring ``space'' between two complex numbers - our eigenvalues.
+\end{alertblock}
+
+\end{frame}
+
+%=========================================================================================
+\begin{frame} \frametitle{Pairing Scheme}
+
+\begin{alertblock}{\deftitle{Pairing Scheme}}
+Suppose $P$ is any $N \times N$ matrix and $\spair(P)$ are its spectral pairs. Then, a pairing scheme is a subset of indices $\Pi = \{(\alpha,\beta) \mid \alpha, \beta \in \N_N\}$ such that taking the spectral pairs of $P$ returns
+a specified subset of its eigenvalue pairs. It is denoted $\spair(P \mid \Pi) = \{(\lambda_{\alpha},\lambda_{\beta}) \mid ({\alpha},{\beta}) \in \Pi\}$.
+\end{alertblock}
+
+\end{frame}
+%=========================================================================================
+\begin{frame} \frametitle{Selected Pairing Schema}
+
+
+\begin{enumerate}
+  \item Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum.
+    $$\spair(P \mid \Pi_C) = \{\pit_{j} = (\lambda_{j + 1},\lambda_j)\}_{j = 1}^{N-1}$$
+  \item The unique pair combinations schema are two complementary pair schema. By specifying $\textbf{either}$ $i > j$ or $i < j$,
+  \begin{enumerate}
+    \item Let $\Pi_>$ be the lower-pair combinations of ordered eigenvalues.
+      This will be the preferred unique pair combination scheme used in lieu of the argument orders because our dispersion metrics expect the eigenvalue with the lower rank first and the higher rank second.
+    $$\spair(P \mid \Pi_>) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
+    \item For completeness, we will also define the upper-pair scheme. $\Pi_<$ is the set of upper-pair unique combinations of ordered eigenvalues.
+      However, it wont be used because we want dispersions to be positive-definite.
+    $$\spair(P \mid \Pi_<) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
+    \end{enumerate}
+\end{enumerate}
+
+\end{frame}
+%=========================================================================================
+
+\begin{frame} \frametitle{Dispersions}
+
+\begin{alertblock}{\deftitle{Dispersion}}
+Suppose $P$ is an $N \times N$ matrix, and $\spair(P)$ are its spectral pairs.
+The dispersion of $P$ with respect to the pairing scheme $\Pi$ and dispersion metric $\delta_M$ is denoted by $\disp_M(P \mid \Pi)$ and it is given by the following:
+$$\disp_M(P \mid \Pi) = \{\d_M(\piij) \mid \piij \in \spair(P \mid \Pi)\}$$
+\end{alertblock}
+
+\end{frame}
+%=========================================================================================
+
+\begin{frame} \frametitle{Dispersions}
+
+\begin{alertblock}{\deftitle{Ensemble Dispersion}}
+If we have an ensemble $\Ens$, then we can naturally extend the definition of $\Delta_M(\Ens \mid \Pi)$.
+To take the dispersion of an ensemble, simply take the union of the dispersions of each of its matrices.
+In other words, if $\Ens = \{P_i \sim \mathcal{D}\}_{i = 1}^K$, then its dispersion is given by:
+$$\Delta_M(\Ens \mid \Pi) = \bigcup_{i=1}^K \Delta_M(P_i \mid \Pi)$$
+\end{alertblock}
+
+\end{frame}
+
+% %=========================================================================================
+% \begin{frame}
+% \frametitle{Empty Slide}
+% \end{frame}
+% %=========================================================================================
+% \begin{frame}
+% \frametitle{Empty Slide}
+% \end{frame}
+% %=========================================================================================
+% \begin{frame}
+% \frametitle{Empty Slide}
+% \end{frame}
+
+
+%=========================================================================================
+%=========================================================================================
+
+
+
+%=========================================================================================
+%   Dispersion Analysis
+%=========================================================================================
+\section{Dispersion Analysis}
+%=========================================================================================
+
+
+%=========================================================================================
+%=========================================================================================
+
+
+
+%=========================================================================================
+%   Wigner's Surmise
+%=========================================================================================
+\section{Wigner's Surmise}
+%=========================================================================================
+
+\begin{frame} \frametitle{Wigner's Surmise}
+
+Wigner's surmise is a result found by Eugene Wigner regarding the limiting distribution of eigenvalue spacings of for symmetric matrices.
+To start talking about this, we must talk about normalized spacings, which are the precise items considered in the distribution.
+Before, we can talk about the normalized spacing, we define the mean spacing.
+
+\begin{alertblock}{\deftitle{Normalized Spacing}}
+Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
+Then, the mean (eigenvalue) spacing, denoted $\langle s \rangle$ is the average distance between two consecutive eigenvalues. That is,
+$$\langle s \rangle = \E[\disp_\d(P \mid \Pi_C)] = \E[\d(\pit_{j})]_{j = 1}^{N - 1}$$
+\end{alertblock}
+
+\end{frame}
+
+%=========================================================================================
+
+\begin{frame} \frametitle{Wigner's Surmise}
+
+\noindent So, with the mean spacing defined, we now define the normalized spacing between a pair of consecutive eigenvalues below.
+
+\begin{alertblock}{\deftitle{Mean Spacing}}
+Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
+Then, the normalized spacing of the $j^{th}$ pair of eigenvalues, denoted $s_j$ is given by the following formula.
+$$s_j = \frac{(\lambda_j - \lambda_{j+1})}{\meanspacing} = \frac{\d(\pit_{j})}{\langle s \rangle}$$
+\end{alertblock}
+
+\end{frame}
+
+%=========================================================================================
+
+\begin{frame} \frametitle{Wigner Dispersion}
+
+Finally, we define the Wigner dispersion, which we may reconstruct using our notation. This way, we can formalize Wigner's Surmise as
+an observation of the Wigner dispersion for symmetric matrices.
+
+\begin{alertblock}{\deftitle{Wigner Dispersion}}
+Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
+Then, the Wigner dispersion denoted $\disp_{W}(P)$ is given by the set of normalized conseuctive eigenvalues of $P$. That is,
+$$ \disp_{W}(P) = \left\{ \frac{\d_n(\pi)}{\meanspacing} \mid \pi \in \spair(P \mid \Pi_C) \right\} $$
+\end{alertblock}
+
+The extension for ensembles is trivial; it inherits the same notation for matrices and the definition is extended similar to how we
+did so for the spectrum and dispersion of an ensemble.
+
+\end{frame}
+
+%=========================================================================================
+
+\begin{frame} \frametitle{Wigner Dispersion: Symmetric Matrices}
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\plotwrapperNC{h}{0.3}{../graphics/chap3/3-3_wigner_norm}%{Wigner's Surmise for Symmetric Normal Matrices}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\end{frame}
+
+%=========================================================================================
+
+\begin{frame} \frametitle{Wigner Dispersion: Symmetric Matrices}
+
+How can we vary the distributions? $\sigma$ has no impact...
+Answer: $\b$-ensembles.
+
+\end{frame}
+
+%=========================================================================================
+
+\begin{frame} \frametitle{Wigner Dispersion: $\b$-ensembles}
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\plotwrapperNC{h}{0.3}{../graphics/chap3/3-3_wigner_beta}%{Wigner's Surmise for Symmetric Normal Matrices}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\end{frame}
+
+%=========================================================================================
+%=========================================================================================

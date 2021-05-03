@@ -391,7 +391,7 @@ Now, consider the norm component of our norm-ordered spectrum of our ensemble $\
 
 Lastly, consider the distribution of the \textbf{eigenvalue norms}. As mentioned previously, the variance seems to increase closer to the boundaries. Since we are now using the norm-ordering scheme, the fact that the distribution is symmetric means we are observing twice as many ``occupants'' in a statistical observation. Imagine this as ``folding the semicircle in half''. This explains why the variance is ``increasing'' more rapidly as our eigenvalues shrink.
 
-That being said, the variance plot shows that the variance of the eigenvalue norms seems to have an interesting, non-linear shape. Namely, we observe a rapidly decreasing variance initally, a levelling off, and then a slight dip to the minimum variance. We could trace this back as an artifact of the c.d.f of the semicircle distribution. Since the p.d.f. is the derivative of the c.d.f., we know that the flattest part of the semicircle occurs closer to the origin. As such, we observe the most ``stability`` there.
+That being said, the variance plot shows that the variance of the eigenvalue norms seems to have an interesting, non-linear shape. Namely, we observe a rapidly decreasing variance initally, a levelling off, and then a slight dip to the minimum variance. We could trace this back as an artifact of the c.d.f of the semicircle distribution. Since the p.d.f. is the derivative of the c.d.f., we know that the flattest part of the semicircle occurs closer to the origin. As such, we observe the most ``stability'' there.
 
 \plotwrapperNC{h}{0.45}{../graphics/chap2_order/norm_Norm}%{Largest eigenvalues distribution}
 \trim
@@ -420,7 +420,7 @@ stochastic matrices.
 The first thing that stands out about the spectrum of the $\Unif(0,1)$ ensemble spectrum is that it very much resembles the spectrum of the stochastic matrix ensemble!
 While surprising at first, it starts to make sense once we consider what the Stochastic $\D$-distribution fundamentally reperesents. Namely, it represents a matrix with normalized, uniformly random weights. The algorithm for generating the Stochastic matrices itself samples from the $\Unif(0,1)$ distribution. Additionally, the general shape of the spectrum of the uniform ensemble is similar to that of the stochastic matrix ensemble. This is in the sense that they both have a two ``islands'' of eigenvalues, one complex disk, and one ``island'' of real eigenvalues. \newline
 
-However, despite these similiarties, there is a notable difference between the two $\D$-distributions. This lies in the distribution of the largest eigenvalues which live in the aforementioned ``real island``. For the uniform ensemble, the largest eigenvalues have \textbf{non-zero variance}, we can see them being scattered around roughly the same place. On the other hand, stochastic matrices have a constant largest eigenvalue of one, meaning the largest eigenvalue has \textbf{zero variance}.
+However, despite these similiarties, there is a notable difference between the two $\D$-distributions. This lies in the distribution of the largest eigenvalues which live in the aforementioned ``real island''. For the uniform ensemble, the largest eigenvalues have \textbf{non-zero variance}, we can see them being scattered around roughly the same place. On the other hand, stochastic matrices have a constant largest eigenvalue of one, meaning the largest eigenvalue has \textbf{zero variance}.
 
 \newpage
 

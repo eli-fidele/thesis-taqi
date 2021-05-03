@@ -3,10 +3,10 @@
 %=========================================================================================
 \documentclass{beamer}
 \input{preamble/preamble.tex} % Input supporting TeX header files
-\usetheme{Szeged}
+\usetheme{Rochester}
 \usecolortheme{beaver}
 %=========================================================================================
-%                                   TITLE PAGE
+%                              TITLE PAGE INFORMATION
 %=========================================================================================
 \title{Spectral Statistics of Random Matrices}
 \author{Ali Taqi}
@@ -17,11 +17,11 @@
 %=========================================================================================
 \begin{document}
 
-\frame{\titlepage}
-
-\begin{frame}
-\frametitle{Sample frame title}
-This is some text in the first frame. This is some text in the first frame. This is some text in the first frame.
-\end{frame}
+\input{chapters/introduction.tex}
+% Slide groups by chapter
+\input{chapters/chapter1.tex}
+\input{chapters/chapter2.tex}
+\input{chapters/chapter3.tex}
+\input{chapters/chapter4.tex}
 
 \end{document}

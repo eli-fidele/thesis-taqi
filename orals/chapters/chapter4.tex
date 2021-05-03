@@ -1,0 +1,45 @@
+
+%*****************************************************************************************
+%   Chapter 4
+%*****************************************************************************************
+
+%=========================================================================================
+%   Beta Ensembles
+%=========================================================================================
+\section{$\b$-ensembles}
+%=========================================================================================
+
+\begin{frame} \frametitle{$\b$-ensembles}
+
+\begin{alertblock}{\deftitle{$\b$-ensembles}}
+A (Hermite) $\beta$-ensemble is an ensemble of random matrices parameterized by $\beta$, which determines the joint eigenvalue p.d.f that characterizes it.
+So, given an observed set of eigenvalues $\L = (\seqo[N]{\lambda})$. Then, the joint p.d.f. of $\L$ is as follows:
+\begin{align*}
+\jepdf = C_\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta e^{-\frac{1}{2} \sum_{i=1}^N \lambda_i^2}
+%f_\beta(\Lambda) = c_\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta \exp({-\frac{1}{2} \sum_{i=1}^N \lambda_i^2})
+\end{align*}
+where the normalization constant $C_\beta$ is given by:
+\begin{align*}
+C_{\beta} = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \frac{\b}{2})}{\Gamma(1 + \frac{\b}{2}j)}
+\end{align*}
+\end{alertblock}
+
+\end{frame}
+
+
+% %=========================================================================================
+% \begin{frame}
+% \frametitle{Empty Slide}
+% \end{frame}
+% %=========================================================================================
+% \begin{frame}
+% \frametitle{Empty Slide}
+% \end{frame}
+% %=========================================================================================
+% \begin{frame}
+% \frametitle{Empty Slide}
+% \end{frame}
+
+
+%=========================================================================================
+%=========================================================================================
