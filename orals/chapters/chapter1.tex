@@ -9,14 +9,18 @@
 \section{$\D$-distributions}
 %=========================================================================================
 \begin{frame}
-\frametitle{$\D$-distribution}
+\frametitle{$\D$-distributions}
 
-  \begin{alertblock}{\deftitle{$\D-distribution$}}
-    Suppose $P$ is a $\D$-distributed random matrix. Then, we notate this $P \sim \D$. In the simplest of terms, $\D$ is essentially the algorithm that generates the entries of $P$.
-    We define two primary methods of distribution: \textbf{explicit} distribution, and \textbf{implicit} distribution.
-    If $\D$ is an explicit distribution, then some or all the entries of $P$ are independent random variables with a given distribution.
-    Otherwise, if $\D$ is implicit, then the matrix has dependent entries imposed by the algorithm that generates it.
-  \end{alertblock}
+To simulate random matrices, we need to initialize their entries. But, how do we sample the random entries?
+
+\begin{enumerate}
+  \item Random Variables: Sample from a probability distribution $(X \sim \D)$
+  \item Random Matrices: Define a new framework containing information about entry distributions: $\D$-distributions
+    \begin{enumerate}
+      \item Explicit distributions: sample (some or all) of the entries as independent random variables
+      \item Implicit distributions: use an algorithm to randomly generate the matrix.
+    \end{enumerate}
+\end{enumerate}
 
 \end{frame}
 %=========================================================================================
@@ -41,7 +45,8 @@
 %=========================================================================================
 \begin{frame} \frametitle{Non-Homogenous Explicit $\D$-distributions}
 
-Now, as opposed to having independent and identically distributed entries for the whole matrix, the random matrix distribution is slightly more complex to define.
+Now, as opposed to having independent and identically distributed entries for the whole matrix, the random matrix distribution may be slightly more complex to define. \newline
+
 Fundamentally, we could characterize any matrix by identifying the distribution of every entry. But, we don't need to do so.
 
 \end{frame}
@@ -65,9 +70,18 @@ Fundamentally, we could characterize any matrix by identifying the distribution 
 
 \end{frame}
 %=========================================================================================
+% \begin{frame} \frametitle{The Hermite $\beta$-Matrix}
+%
+% [Schematic]
+%
+% \end{frame}
+%=========================================================================================
 \begin{frame} \frametitle{Implicit Distributions}
 
-
+\begin{enumerate}
+  \item Stochastic Matrices: we will generate transition matrices representing a walk on a fully connected graph with \textbf{randomized weights}.
+  \item Erdos-Renyi $p$-Matrices: stochastic matrices with randomized weights, but parameterized probability $p$ of observing severed edges (zero weight).
+\end{enumerate}
 
 \end{frame}
 %=========================================================================================

@@ -25,20 +25,55 @@ C_{\beta} = (2\pi)^{-n/2} \prod_{j = 1}^n \frac{\Gamma(1 + \frac{\b}{2})}{\Gamma
 \end{alertblock}
 
 \end{frame}
+% %=========================================================================================
+\begin{frame} \frametitle{$\b$-ensembles: Breaking it Down}
+  \begin{align*}
+  \jepdf = C_\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta e^{-\frac{1}{2} \sum_{i=1}^N \lambda_i^2}
+  %f_\beta(\Lambda) = c_\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta \exp({-\frac{1}{2} \sum_{i=1}^N \lambda_i^2})
+  \end{align*}
+\end{frame}
+% %=========================================================================================
+\begin{frame} \frametitle{$\b$-ensembles: Breaking it Down}
+  Altogether, here is what we can say about the $\beta$-ensemble joint eigenvalue p.d.f just from observing the terms.
+    \begin{enumerate}
+      %\item When $\l_i \in \L$ is large, then $\P(\L)$ is small.
+      %\item When $\d(\l_i, \l_j) \for \l_i,\l_j \in \L$ is small, then $\P(\L)$ is small.
+      \item When $\l_i$ is large, then $\P(\L)$ is small.
+      \item When $\d(\l_i, \l_j)$ is small, then $\P(\L)$ is small.
+    \end{enumerate}
+\end{frame}
+%=========================================================================================
+%=========================================================================================
+\begin{frame} \frametitle{Charged Particle Model}
 
+  Alongside these great algebraic properies, the $\b$-ensembles also have a intepretation as a physical model.
+  This is because as mentioned previously, these ensembles show up frequently in statistical physics.
+  So, we will cover one physical model that the $\b$-ensemble represents.
 
-% %=========================================================================================
-% \begin{frame}
-% \frametitle{Empty Slide}
-% \end{frame}
-% %=========================================================================================
-% \begin{frame}
-% \frametitle{Empty Slide}
-% \end{frame}
-% %=========================================================================================
-% \begin{frame}
-% \frametitle{Empty Slide}
-% \end{frame}
+  Suppose that $P \sim \H(\beta)$ is an $N \times N$ matrix. Then, the eigenvalues of $P$ have a representation as a model of charged point particles.
+
+\end{frame}
+%=========================================================================================
+\begin{frame} \frametitle{Charged Particle Model}
+  \blocktitle{Low Replsuion, High Temperature} As $\b \to 0$, the temperature of the system $T \to \infty$.
+  At these values, the model starts to behave like an ideal gas.
+   This returns a \textbf{fully stochastic} model of particles trying to align themselves along the field potential.
+
+  \blocktitle{High Repulsion, Low Temperature} As $\b \to \infty$, the temperature of the system $T \to 0$.
+  At these values, the model loses its stochastic properties and starts to become \textbf{deterministic}. This returns a fully deterministic*
+  model of particles that align themselves equidistantly.
+
+\end{frame}
+%=========================================================================================
+\begin{frame} \frametitle{Wigner's Surmise}
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+  \plotwrapperNC{h}{0.3}{../graphics/chap3/3-3_wigner_beta_extended}%{Wigner's Surmise for Non-Standard Beta Ensembles}
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\end{frame}
+%=========================================================================================
+\begin{frame} \frametitle{Conclusion}
+  In the end, we simulated and verified some results, found a few interesting patterns and phenomena.
+\end{frame}
 
 
 %=========================================================================================

@@ -8,12 +8,40 @@
 %=========================================================================================
 \section{Dispersions}
 %=========================================================================================
+\begin{frame} \frametitle{Introduction}
+
+We will study the spacings between the eigenvalues. We will denote that as a dispersion of a random matrix (ensemble).
+However, we must formalized what a spacing \textbf{is} and \textbf{which} eigenvalue pairs to consider.
+To do so, we formalize the notions of dispersion metric and pairing schema respectively.
+
+\end{frame}
+%=========================================================================================
+\begin{frame} \frametitle{Eigenvalue Pairs}
+
+\begin{alertblock}{Eigenvalue Pair}
+  Suppose $P$ is a matrix and $\spec(P)$ is its ordered spectrum. Then, an eigenvalue pair with respect to this ordered spectrum is denoted $\piij$.
+  It is defined as the ordered pair $\piij = (\lambda_i, \lambda_j)$.
+\end{alertblock}
+
+\begin{alertblock}{Consecutive Pair}
+  Suppose $P$ is a matrix and $\spec(P)$ is its ordered spectrum. Then, let $\pit_j$ denote a pair of consecutive eigenvalues, the largest of the two being the $j^{th}$ largest eigenvalue.
+  So, $\pit_j = (\lambda_{j-1},\lambda_{j})$.
+\end{alertblock}
+
+\end{frame}
+%=========================================================================================
 \begin{frame} \frametitle{Dispersion Metric}
 
 \begin{alertblock}{\deftitle{Dispersion Metric}}
 A dispersion metric $\delta: \Cc \times \Cc \to \R^+$ is defined as a function from the space of pairs of complex numbers to the positive reals.
 In simple terms, it is a way of measuring ``space'' between two complex numbers - our eigenvalues.
 \end{alertblock}
+
+\end{frame}
+%=========================================================================================
+\begin{frame} \frametitle{Selected Dispersion Metrics}
+
+\dispersiontable
 
 \end{frame}
 
@@ -33,15 +61,9 @@ a specified subset of its eigenvalue pairs. It is denoted $\spair(P \mid \Pi) = 
 \begin{enumerate}
   \item Let $\Pi_C$ be the consecutive pairs of eigenvalues in a spectrum.
     $$\spair(P \mid \Pi_C) = \{\pit_{j} = (\lambda_{j + 1},\lambda_j)\}_{j = 1}^{N-1}$$
-  \item The unique pair combinations schema are two complementary pair schema. By specifying $\textbf{either}$ $i > j$ or $i < j$,
-  \begin{enumerate}
-    \item Let $\Pi_>$ be the lower-pair combinations of ordered eigenvalues.
-      This will be the preferred unique pair combination scheme used in lieu of the argument orders because our dispersion metrics expect the eigenvalue with the lower rank first and the higher rank second.
+  \item Let $\Pi_>$ be the lower-pair combinations of ordered eigenvalues.
+      % This will be the preferred unique pair combination scheme used in lieu of the argument orders because our dispersion metrics expect the eigenvalue with the lower rank first and the higher rank second.
     $$\spair(P \mid \Pi_>) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
-    \item For completeness, we will also define the upper-pair scheme. $\Pi_<$ is the set of upper-pair unique combinations of ordered eigenvalues.
-      However, it wont be used because we want dispersions to be positive-definite.
-    $$\spair(P \mid \Pi_<) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
-    \end{enumerate}
 \end{enumerate}
 
 \end{frame}

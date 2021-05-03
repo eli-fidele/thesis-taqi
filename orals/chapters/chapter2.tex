@@ -94,6 +94,24 @@ Consider the following example:
 \end{frame}
 
 %=========================================================================================
+
+\begin{frame} \frametitle{Order Statistics}
+
+\blocktitle{Expectation} $\E(\lambda_{i} \mid i)$ One useful summary statistic to consider when analyzing a spectrum is the expected norm or value (which we will just call quantity hereinafter) of the eigenvalue at the $i^{th}$ rank.
+
+\medskip
+
+\blocktitle{Variance} $\Var(\lambda_{i} \mid i)$ Similarly, the variance of the eigenvalue quantity at a given order $i$ can tell us a lot about an ensemble.
+
+\end{frame}
+
+%=========================================================================================
+
+
+
+
+
+%=========================================================================================
 %   Symmetric & Hermitian Matrices
 %=========================================================================================
 \section{Symmetric $\&$ Hermitian Matrices}
@@ -138,7 +156,56 @@ $$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
 \end{frame}
 %=========================================================================================
 
+\begin{frame} \frametitle{Wigner's Semicircle Distribution}
 
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+  \plotwrapperNC{h}{0.4}{../graphics/chap2/2-3-2_semicircle}%{Eigenvalues of a Symmetric Matrix displaying the Semicircle Distribution}
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\end{frame}
+%=========================================================================================
+
+\begin{frame} \frametitle{Example: Real Normal Symmetric Matrices}
+
+  In this section, we will be carefully analyzing an ensemble of symmetric matrices to showcase
+  the special properties of symmetric and hermitian matrices.
+  Namely, we will be considering an ensemble $\Ens \sim \Normal(0,1)^\dagger$ of $15 \times 15$ matrices over $\R$.
+
+\end{frame}
+%=========================================================================================
+
+\begin{frame} \frametitle{Example: Real Normal Symmetric Matrices}
+
+  In this section, we will be carefully analyzing an ensemble of symmetric matrices to showcase
+  the special properties of symmetric and hermitian matrices.
+  Namely, we will be considering an ensemble $\Ens \sim \Normal(0,1)^\dagger$ of $15 \times 15$ matrices over $\R$.
+
+\end{frame}
+%=========================================================================================
+
+\begin{frame} \frametitle{Example: Real Normal Symmetric Matrices}
+
+  \plotwrapperNC{h}{0.2}{../graphics/chap2_order/sign_Re}%{Largest eigenvalues distribution}
+  \plotwrapperNC{h}{0.2}{../graphics/chap2_order/sign_Re_var}%{Largest eigenvalues distribution}
+
+\end{frame}
+%=========================================================================================
+
+\begin{frame} \frametitle{Example: Real Normal Symmetric Matrices}
+
+  \plotwrapperNC{h}{0.2}{../graphics/chap2_order/norm_Re}%{Largest eigenvalues distribution}
+  \plotwrapperNC{h}{0.2}{../graphics/chap2_order/norm_Re_var}%{Largest eigenvalues distribution}
+
+\end{frame}
+%=========================================================================================
+
+\begin{frame} \frametitle{Example: Real Normal Symmetric Matrices}
+
+  \plotwrapperNC{h}{0.2}{../graphics/chap2_order/norm_Norm}%{Largest eigenvalues distribution}
+  \plotwrapperNC{h}{0.2}{../graphics/chap2_order/norm_Norm_var}%{Largest eigenvalues distribution}
+
+\end{frame}
+%=========================================================================================
 
 %=========================================================================================
 %=========================================================================================
@@ -153,6 +220,44 @@ $$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
 %=========================================================================================
 \section{A Survey Of Spectra}
 %=========================================================================================
+
+\begin{frame} \frametitle{Uniform Ensemble Spectra}
+
+\plotwrapper{h}{0.075}{../graphics/chap2/2-4_unif01_spec}{Spectrum of a Uniform(0,1) Matrix ensemble}
+
+\end{frame}
+
+%=========================================================================================
+
+\begin{frame} \frametitle{Stochastic Matrix Ensemble Spectra}
+
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+  \plotwrapper{h}{0.1}{../graphics/chap2/2-4_stoch_spec}{Spectrum of a Stochastic Matrix ensemble}
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+  \plotwrapper{h}{0.3}{../graphics/chap2/2-4_symmstoch_spec}{Spectrum of a Symmetric Stochastic Matrix ensemble}
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\end{frame}
+
+%=========================================================================================
+
+\begin{frame} \frametitle{Erdos-Renyi Ensemble Spectra}
+
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+  \plotwrapperNC{h}{0.3}{../graphics/chap2/2-4_erdos_lam2}%{Second Largest Pair of Eigenvalues of an Erdos-p ensemble}
+  %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\end{frame}
+
+%=========================================================================================
+
+
+
+
+
+
 
 
 %=========================================================================================
