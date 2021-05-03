@@ -52,20 +52,80 @@ $$\sigma(\Ens) = \bigcup_{i=1}^K \sigma(P_i)$$
 \section{Spectrum Analysis}
 %=========================================================================================
 
+\begin{frame} \frametitle{Order Statistics}
 
+One method of analyzing the spectrum of a matrix is to consider the framework of using order statistics.
+
+\begin{examples}
+Let's say you roll a die 3 times and obtain 5,6, and 2.
+Then, your order statistics take the form $X_1 = 6$, $X_2 = 5$, and $X_3 = 2$.
+\end{examples}
+
+\end{frame}
 
 %=========================================================================================
+
+\begin{frame} \frametitle{Order Statistics}
+
+That being said, consider the two order schema that we will use.
+
+\begin{enumerate}
+  \item The \textbf{sign}-ordering scheme; works on $\R$. \begin{align*}
+  \sigma_S(P) = \{\lambda_j : \lambda_1 \geq \lambda_2 \geq \dots \geq \lambda_N\}_{j = 1}^N
+  \end{align*}
+  \item  The \textbf{norm}-ordering scheme; works on $\R$ and $\C$. \begin{align*}
+  \sigma_N(P) = \{\lambda_j : |\lambda_1| \geq |\lambda_2| \geq \dots \geq |\lambda_N|\}_{j = 1}^N
+  \end{align*}
+\end{enumerate}
+
+\end{frame}
+
 %=========================================================================================
 
+\begin{frame} \frametitle{Order Statistics}
 
+Consider the following example:
 
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\plotwrapper{h}{0.35}{../graphics/chap2/2-2-1_orderscheme}
+{Spectrum of an Ensemble Using Two Different Ordering Schemes}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
-
+\end{frame}
 
 %=========================================================================================
 %   Symmetric & Hermitian Matrices
 %=========================================================================================
 \section{Symmetric $\&$ Hermitian Matrices}
+%=========================================================================================
+
+\begin{frame} \frametitle{Symmetric $\&$ Hermitian Matrices}
+
+Symmetric $\&$ Hermitian matrices are an important class of matrices in Linear Algebra.
+Suppose we have a matrix $P$.
+
+\begin{enumerate}
+  \item P Symmetric $\iff$ $p_{ij} = p_{ji}$
+  \item P Hermitian $\iff$ $p_{ij} = \bar{p_{ji}}$
+\end{enumerate}
+
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+\plotwrapperNC{h}{0.35}{graphics/symmetric}
+%FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+\end{frame}
+%=========================================================================================
+
+\begin{frame} \frametitle{Symmetric $\&$ Hermitian Matrices}
+
+So, why do we care?
+
+\begin{alertblock}{\textbf{Theorem}}
+Suppose $P$ is Symmetric/Hermitian. Then, $P$ has a set of real eigenvalues. That is,
+$$P \textbf{ Symmetric/Hermitian} \implies \forall \lambda_i \in \sigma(P) \mid \l_i \in \R$$
+\end{alertblock}
+
+\end{frame}
 %=========================================================================================
 
 \begin{frame} \frametitle{Wigner's Semicircle Distribution}
