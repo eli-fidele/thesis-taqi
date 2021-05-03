@@ -1,0 +1,164 @@
+%=================
+%     PACKAGES
+%=================
+\usepackage{graphicx,latexsym}
+\usepackage{amssymb,amsthm,amsmath}
+\usepackage{physics}
+\usepackage{longtable,booktabs,setspace}
+\usepackage[hyphens]{url}
+\usepackage{rotating}
+\usepackage{natbib}
+\usepackage{euscript}
+\usepackage{dsfont} % Boldface 1 for indicator function
+\usepackage{array} % For the analytical eigenvector proof (block matrices)
+% \usepackage{times} % other fonts are available like times, bookman, charter, palatino
+
+% For arrows with text on them
+\usepackage{mathtools}
+
+% For the quote environments!
+\usepackage[utf8]{inputenc}
+\usepackage{epigraph}
+
+% For code snippet environments
+\usepackage{listings}
+\usepackage[svgnames]{xcolor}
+
+%=============================
+%     THEOREM ENVIRONMENTS
+%=============================
+% Theorems
+\newtheorem{theorem}{Theorem}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Defintions
+\newtheorem{definition}{Definition}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Examples
+\newtheorem*{example}{Example}
+%\newtheorem{example}{Example}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Code Examples
+\newtheorem*{code}{Code Example}
+%\newtheorem{code}{Code Example}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Notes
+\newtheorem*{note}{Note}
+%\newtheorem{note}{Note}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Algorithms
+\newtheorem{algorithm}{Algorithm}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Algorithms (unnumbered)
+\newtheorem*{algorithm*}{Algorithm}%[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Remarks
+\newtheorem*{remark}{Remark}
+%\newtheorem{remark}{Remark}[section]
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Formalization
+\newtheorem*{formalization}{Formalization}
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+% Warning
+\newtheorem*{warning}{Warning}
+\setlength{\parskip}{0pt}
+\setlength\parindent{24pt}
+
+%=====================
+%     ENVIRONMENTS
+%=====================
+\usepackage{tcolorbox}
+% Blue box
+\definecolor{bbxcolor}{RGB}{0,60,255}% Rule colour
+\newtcbox{\bbx}{on line,
+  colframe=bbxcolor,colback=bbxcolor!10!white,
+  boxrule=0.5pt,arc=4pt,boxsep=0pt,left=6pt,right=6pt,top=6pt,bottom=6pt}
+%=====================
+% Red box
+\definecolor{rbxcolor}{RGB}{190,30,45}
+\newtcbox{\rbx}{on line,
+  colframe=rbxcolor,colback=rbxcolor!10!white,
+  boxrule=0.5pt,arc=4pt,boxsep=0pt,left=6pt,right=6pt,top=6pt,bottom=6pt}
+%=====================
+% R Code Chunks
+\lstset{language=R,
+    basicstyle=\small\ttfamily,
+    stringstyle=\color{DarkGreen},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+    morekeywords={TRUE,FALSE},
+    deletekeywords={data,frame,length,as,character},
+    keywordstyle=\color{blue},
+    commentstyle=\color{DarkGreen},
+}
+\xdefinecolor{gray}{rgb}{0.4,0.4,0.4}
+\xdefinecolor{blue}{RGB}{58,95,205}% R's royalblue3; #3A5FCD
+%=====================
+%% Single quotation environment for introduction
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+% Quote environment
+\newsavebox\myqbox
+\newenvironment{aquote}[1]
+  {\savebox\myqbox{#1}\begin{quote}}
+  {\signed{\usebox\myqbox}\end{quote}}
+%=====================
+
+
+%==================
+%     FORMAT
+%==================
+% Mini title document environment
+\newcommand{\minititle}[1]{
+  \begin{center}
+    \textbf{#1}
+  \end{center}
+}
+
+\newcommand{\blocktitle}[1]{ \noindent \textbf{#1.}}
+
+\newcommand{\trim}{\vspace{-1em}}
+\newcommand{\trimm}{\vspace{-2em}}
+\newcommand{\trimmm}{\vspace{-3em}}
+%==================
+%     COMMANDS
+%==================
+\input{preamble/commands.tex}
+
+%==================
+%     TABLES
+%==================
+\input{preamble/tables.tex}
+
+%==================
+%     GRAPHICS
+%==================
+\input{preamble/graphics.tex}
+
+%==================
+%     PROOFS
+%==================
+\input{preamble/proofs.tex}
+
+%==================
+%    ALGORITHS
+%==================
+\input{preamble/algorithms.tex}
