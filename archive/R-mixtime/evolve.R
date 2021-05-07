@@ -20,8 +20,9 @@ generate_batch <- function(N, batch_size, lambda = 1, complex = FALSE, stoch = F
 evolve_batch <- function(batch, P, steps){
   # Get number of batch elements
   B <- nrow(batch)
-  # Recursively rowbind the evolved row at powers k = 1,...,steps for all the batch elements
-  evolved_stack <- do.call("rbind",lapply(X = 1:B, FUN = function(i, batch, P, steps){evolve(v = batch[i,], P, steps)}, batch, P, steps))
+  .evolve_element <- function(i, batch, P, steps){ data.frame(evolve(v = batch[i,], P, steps)) }
+  # Iteratively rowbind the evolved row at powers k = 1,...,steps for all the batch elements
+  evolved_stack <- purrr::map_dfr(1:B, .evolve_element, batch, P, steps)
   # Preprocess for return
   evolved_stack <- .add_indices(evolved_stack, steps) # Index the batch elements 
   evolved_stack <- .append_ratios(evolved_stack) # Append ratios
@@ -71,10 +72,14 @@ evolve <- function(v, P, steps){
 }
 
 # Extract the array for a particular element/a range of elements
-by.element <- function(evolved_batch, index){evolved_batch[which(evolved_batch$element_index %in% c(index)),]}
+by.element <- function(array, index){
+  array[which(array$element_index %in% c(index)),]
+}
 
 # Extract the array for a particular time/a range of times
-by.time <- function(evolved_batch, at_time){evolved_batch[which(evolved_batch$time %in% c(at_time)),]}
+by.time <- function(array, at_time){
+  array[which(array$time %in% c(at_time)),]
+}
 
 #=================================================================================#
 #                         NAMING/INDEXING HELPER FUNCTIONS
@@ -99,4 +104,24 @@ by.time <- function(evolved_batch, at_time){evolved_batch[which(evolved_batch$ti
   array # Return array
 }
 
+#=================================================================================#
+#                         STOCHASTIC HELPER FUNCTIONS
+#=================================================================================#
 
+# Generates stochastic rows of length N
+.stoch_row <- function(N){
+  # Sample a vector of probabilities
+  row <- runif(n = N, min = 0, max = 1)
+  # Return the normalized row (sums to one)
+  row / sum(row)
+}
+
+# Check if a matrix is stochastic
+.isStochastic <- function(P){
+  row_is_stoch <- rep(F, nrow(P))
+  for(i in 1:nrow(P)){
+    row_sum <- sum(P[i,])
+    row_is_stoch[i] <- (row_sum == 1)
+  }
+  !(F %in% row_is_stoch)
+}

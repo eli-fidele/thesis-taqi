@@ -1,0 +1,100 @@
+---
+title: "Test"
+author: "Taqi"
+#date: "5/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(RMAT)
+library(purrr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+source("mix.R")
+source("evolve.R")
+source("ratios.R")
+```
+
+```{r}
+P <- RM_stoch(N = 5)
+# Evolve and generate a batch
+batch <- generate_batch(5, batch_size = 10, stoch = TRUE)
+evolved <- evolve_batch(batch, P, steps = 10)
+classified <- .eigen_classify(evolved, P)
+```
+
+```{r}
+# Testing different dataframes
+noelems <- classified %>% select(contains(c("time","index")))
+```
+
+```{r}
+ens <- RME_stoch(N = 20, sparsity = T, size = 10)
+#ens_sim <- ens_mixtime(ens, batch_size = 20, steps = 5)
+```
+
+```{r}
+# ===================================================
+#                       Setup
+# ===================================================
+# Labels a generic array with a value column
+.label_array <- function(array, value, label, size){
+  label_column <- data.frame(x = rep(value, size))
+  colnames(label_column) <- label
+  cbind(array, label_column)
+}
+# Creates a tidy, labelled p-Erdos ensemble spectrum
+erdos_mixtime <- function(p, N, size, batch_size, steps = NA){
+  erdos_ens <- RME_erdos(N = N, p = p, size = size)
+  if(class(steps) == "logical"){ steps <- .p_steps(p) }
+  mixtimes <- ens_mixtime(erdos_ens, batch_size, steps = steps, epsilon = 0.1) 
+  mixtimes %>% .label_array(value = p, label = "p", size = nrow(mixtimes))
+}
+.p_steps <- function(p){
+  a <- 4.5
+  b <- 0.3
+  c <- 0.01
+  steps <- a / (b * sqrt(p - c))
+  round(steps, 0)
+}
+```
+
+```{r}
+ps <- seq(0.3, 1, 0.1)
+```
+
+```{r}
+N <- 7
+size <- 50
+batch_size <- 20
+erdos_mixtimes <- map_dfr(ps, erdos_mixtime, N, size, batch_size)
+```
+
+
+```{r}
+erdos_mixtime(p = 0.4, N = 5, size = 20, batch_size = 20)
+```
+
+```{r}
+
+```
+
+```{r}
+ggplot(erdos_mixtimes) + geom_jitter(aes(x = mixtime, y = p, color = p)) 
+```
+
+
+```{r}
+ggplot(erdos_mixtimes) + geom_smooth(aes(x = mixtime, y = p, fill = p), kernel = "gaussian") + coord_flip()
+```
+
+```{r}
+ggplot(erdos_mixtimes) + 
+  geom_histogram(aes(x = mixtime, group = p, fill = p), bins = 25) +
+  scale_fill_distiller(type = "seq", palette = "Oranges")
+```
+

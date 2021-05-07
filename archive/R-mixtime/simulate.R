@@ -1,83 +1,60 @@
 
 #=================================================================================#
-#                                 SIMULATION CODE
+#                             ENSEMBLE SIMULATION 
 #=================================================================================#
 
-# Simulation for analyzing the steadiness statistics of the consecutive ratio sequence
-sim_steadiness <- function(P, batch_size, steps){
-  init_sim <- sim_initial(P, batch_size, steps) # Initialize the simulation
-  # Extract the arrays
-  batch <- init_sim[[1]]
-  evolved_batch <- init_sim[[2]]
-  # Perform the steadiness analysis
-  evolved_batch <- .append_steadiness(evolved_batch, P)
-  # Return list of arrays
-  list(batch, evolved_batch)
+ens_mixtime <- function(ensemble, batch_size, steps, epsilon = 0.1){
+  # Get a sample matrix
+  P <- ensemble[[1]]
+  # Batch elements may be uniform only if the matrix isn't stochastic
+  initial <- generate_batch(N = ncol(P), batch_size = batch_size, stoch = .isStochastic(P))
+  # Evolve every matrix in the ensemble
+  #do.call("c",lapply(ensemble, get_mixtime, initial, steps, epsilon = 0.1))
+  map_dfr(ensemble, get_mixtime, initial, steps, epsilon = 0.1)
 }
+
+#=================================================================================#
+#                       MIXTIME SIMULATION WRAPPER FUNCTIONS
+#=================================================================================#
+
+get_mixtime <- function(P, initial, steps, epsilon = 0.1, simple = T){
+  # Evolve the batch
+  evolved <- evolve_batch(batch = initial, P, steps)
+  # Add the eigen index to the evolved batch
+  classified <- .eigen_classify(evolved, P, epsilon) # Classify candidate eigenvectors
+  # Using the eigen index, classify the initial elements and get their mixing times 
+  eigen_index <- by.time(classified, at_time = steps)$eigen_index
+  initial <- cbind(initial, eigen_index) 
+  initial <- .eigen_mixtime(classified, initial, complete = FALSE)
+  if(simple) { return(data.frame(mixtime = initial)) }
+  # Return a list of the two arrays
+  list(initial, evolved)
+}
+  
+
+#=================================================================================#
+#                       MIXTIME SIMULATION WRAPPER FUNCTIONS
+#=================================================================================#
 
 # Simulation to determine the eigenvalue mixing time of a random matrix.
 sim_mixtime <- function(P, batch_size, steps, epsilon = 0.1){
   B <- batch_size
   init_sim <- sim_initial(P, B, steps) # Initialize the simulation
   # Extract the arrays
-  batch <- init_sim[[1]]
-  evolved_batch <- init_sim[[2]]
-  # Perform the mixing time analysis
-  evolved_batch <- .eigen_classify(evolved_batch, P, epsilon) # Classify candidate eigenvectors
-  eigen_index <- by.time(evolved_batch, at_time = steps)$eigen_index # Get the array at the final time
-  batch <- cbind(batch, eigen_index) # Add the eigen_index of the batch elements to the array
-  batch <- .eigen_mixtime(evolved_batch, batch) # Add the mixing times to the batch element array
+  initial <- init_sim[[1]]
+  evolved <- init_sim[[2]]
   # Return list of arrays
-  list(batch, evolved_batch)
+  get_mixtime(initial, evolved, steps, epsilon)
 }
 
 # Generate and evolve a batch of points for a given random matrix P. 
 # This function is a basic "initial" simulation. Other simulation functions will utilize this function as a base.
 sim_initial <- function(P, batch_size, steps){
   # Batch elements may be uniform only if the matrix isn't stochastic
-  batch <- generate_batch(N = ncol(P), batch_size = batch_size, stoch = .isStochastic(P))
+  initial <- generate_batch(N = ncol(P), batch_size = batch_size, stoch = .isStochastic(P))
   # Evolve the batch and return it
-  evolved_batch <- evolve_batch(batch, P, steps)
-  list(batch, evolved_batch)
+  evolved <- evolve_batch(initial, P, steps)
+  list(initial, evolved)
 }
 
-#=================================================================================#
-#                             ENSEMBLE ANALYSIS
-#=================================================================================#
 
-# Combines the results of a ensemble simulation into a master array
-sim.glue_arrays <- function(ensemble_sim, array_index = 1){
-  batch <- ensemble_sim[[1]][[array_index]] # Get first result
-  batch_size <- nrow(batch) # Get batch size for reference
-  mat_idx <- data.frame(mat_idx = rep(1, batch_size)) # Create matrix index column
-  batch <- cbind(batch, mat_idx) # Initialize the master batch
-  # Repeat for the rest of the elements
-  for(i in 2:length(ensemble_sim)){
-    curr_batch <- ensemble_sim[[i]][[array_index]] # Get array for matrix i 
-    mat_idx <- data.frame(mat_idx = rep(i, batch_size)) # Index matrix i
-    batch <- rbind(batch, cbind(curr_batch, mat_idx)) # Concatenate arrays
-  }
-  batch
-}
-
-#=================================================================================#
-#                             ENSEMBLE SIMULATION 
-#=================================================================================#
-
-# Simulates the mixtimes for an ensemble of matrices
-mixtime_ensemble <- function(ensemble, batch_size, steps, epsilon = 0.1){
-  # Initialize the stack
-  ensemble_result <- list(sim_by_element(ensemble, batch_size, steps, epsilon, ensemble_index = 1))
-  # Go through rest of ensemble
-  for(i in 2:length(ensemble)){
-    curr_result <- sim_by_element(ensemble, batch_size, steps, epsilon, ensemble_index = i)
-    ensemble_result <- c(ensemble_result, list(curr_result)) # Concatenate results
-  }
-  ensemble_result
-}
-
-sim_by_element <- function(ensemble, batch_size, steps, epsilon, ensemble_index){
-  P <- ensemble[[ensemble_index]] # Extract the matrix
-  sim <- mixtime_sim(P, batch_size, steps, epsilon) # Get the simulation list for one matrix
-  c(sim, list(P))  # Extract the results alongside the matrix
-}

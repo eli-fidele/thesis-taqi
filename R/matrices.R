@@ -203,7 +203,6 @@ RM_erdos <- function(N, p){
 #=================================================================================#
 #                            STOCHASTIC ROW FUNCTIONS
 #=================================================================================#
-
 # Generates stochastic rows of length N
 .stoch_row <- function(N){
   # Sample a vector of probabilities
