@@ -128,7 +128,8 @@ P
 % Suppose $\D$ is a non-homogenous explicit $D$-distribution. Then, for an $N \times N$ matrix, $A_\D = \{a_{ij} = \D_{ij}\}$ is its rule set.
 % \end{definition}
 
-For the distribution using diagonal bands, consider the definiton of the beta matrix below. %refer to the definition of a beta matrix in \textbf{Section 1.2.2}.
+For the distribution using diagonal bands, consider the definiton of the $\b$-matrix below.
+The definition utilitizes a generative algorithm which tells us the distribution on the diagonals of the matrix, shown below.
 
 \ALGbeta
 
@@ -137,14 +138,18 @@ For the distribution using diagonal bands, consider the definiton of the beta ma
 \begin{definition}[Hermite-$\b$ Matrix]
 Suppose $P \sim \H(\b)$ is an $N \times N$ matrix. Then, the main diagonal $[0]_P \sim \Normal(0,2)$.
 Additionally, both the main off-digaonals are equal and they are given by $[1]_{P} = [-1]_{P} = \vec{X} = (X_k)_{k=1}^{N-1}$ where $X_k \sim \chi(\text{df} = \beta k)$.
-As such, we obtain a Hermite-$\b$ distributed matrix. Note that this is a symmetric tridiagonal matrix.
+Lastly, after normalizing by $\frac{1}{\sqrt{2}}$, we obtain a Hermite-$\b$ distributed matrix. Note that this is a symmetric tridiagonal matrix.
 \end{definition}
+
+That being said, one must be careful to not say that the entries are identically distributed, even within the diagonal bands.
 
 \begin{remark}[Off-Diagonal Distributions]
 Note that the off-diagonal distributions are chi variables with varying degrees of freedom; in fact it is an increasing linear sequence that is a multiple of $\b$.
 For this reason, we cannot say that the off-diagonal entries are identically distributed despite them being within the same diagonal band. However, they do remain independent.
 On the other hand, the diagonal is a vector of $N$ i.i.d $\Normal(0,2)$ variables.
 \end{remark}
+
+The Hermite-$\b$ matrix is a matrix model for the $\b$-ensembles. This notation might clash with the random variable distribution called the Beta distribution.
 
 \begin{warning}[$\b$-Notation]
 Please note that the Hermite $\b$-ensemble matrices are \textbf{not} related to the $\Beta$ distribution.
@@ -193,19 +198,21 @@ is characterized by the generating algorithm below.
 \begin{remark}[Dependent Entries]
 A stochastic row is a vector whose entries are all dependent; this is due to the fact that we normalize by the row sum.
 As such, this makes finding the distribution of entries very difficult. Since it is not the perview of this thesis, we won't try to find the exact distribution.
-As such, to avoid the process of finding the distribution of these dependent entries, we will encapsulate the distribution and abstract it away by calling it an implicit distribution!
+If the reader is interested, the related distributions to consider are the Dirichlet distribution and the related Beta distributions.
+That being said, to avoid the process of finding the distribution of these dependent entries, we will encapsulate the distribution and abstract it away by calling it an implicit distribution!
 \end{remark}
 
-Additionally, our distribtions depend on the dimension of the matrix $N$.
+Speaking of dependence, our $\D$-distribtions sometimes depend on the dimension of the matrix $N$.
 
 \begin{remark}[Dependence on $N$]
-Every implicit $\D$-distribution will have some sort of dependence on the dimension of the matrix $N$.
+In our case, every implicit $\D$-distribution will have some sort of dependence on the dimension of the matrix $N$.
+This is due to the fact that stochastic rows are normalized by their row sum, so changing the length of the row will impact the distribution of the entries.
 Non-homogenous explicit distributions may have a dependence, in the case of Hermite-$\beta$ matrices, it happens that they do.
 It is only e.h. $\D$-distributions that never have a dependence on $N$, matrices with such distributions have entries which are i.i.d.
 \end{remark}
 
 %=========================================================================================
-
+\newpage
 \subsection{Random Matrices}
 
 With the various types of $\D$-distributions defined, the definition of a random matrix is quite simple.
@@ -279,7 +286,15 @@ library(RMAT)
 ensemble <- RME_norm(N = 3, cplx = TRUE, herm = TRUE, size = 10)
 # Outputs the following
 ensemble
+
+[[1]]
+                  [,1]              [,2]             [,3]
+[1,]  0.19321+1.57578i -0.43468-0.21829i 0.91327+1.04654i
+[2,] -0.43468+0.21829i  0.99661+0.48155i 1.10749+1.21638i
+[3,]  0.91327-1.04654i  1.10749-1.21638i 0.04544-0.44231i
+
 ...
+
 [[10]]
                   [,1]              [,2]              [,3]
 [1,] -0.59931+1.24286i  1.29457+0.66058i  0.83539-0.16662i
@@ -287,7 +302,9 @@ ensemble
 [3,]  0.83539+0.16662i -1.16592-1.14666i -0.51256+0.17750i
 \end{lstlisting}
 
-With this in mind, we will survey and characterize, and briefly discuss a few special recurring ensembles in this thesis.
+Now, we are ready to survey, characterize, and briefly discuss a few special recurring ensembles in this thesis.
+
+\newpage
 
 %=========================================================================================
 
@@ -342,7 +359,16 @@ library(RMAT)
 ensemble <- RME_erdos(N = 4, p = 0.5, size = 10)
 # Outputs the following
 ensemble
+
+[[1]]
+          [,1]      [,2]      [,3]      [,4]
+[1,] 0.0000000 1.0000000 0.0000000 0.0000000
+[2,] 0.0000000 0.5350731 0.4649269 0.0000000
+[3,] 0.1287541 0.0000000 0.0000000 0.8712459
+[4,] 0.1525212 0.0000000 0.0000000 0.8474788
+
 ...
+
 [[10]]
           [,1]      [,2]      [,3]     [,4]
 [1,] 0.0000000 0.1729581 0.8270419 0.000000
@@ -352,7 +378,7 @@ ensemble
 \end{lstlisting}
 
 %=========================================================================================
-
+\newpage
 \subsection{Hermite $\beta$-Ensembles}
 
 The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in this thesis. The Hermite $\beta$-ensembles are a normal-like class of random matrices.
@@ -362,9 +388,9 @@ As mentioned briefly in \textbf{Section 1.1.1}, the $\b$-ensemble is an ensemble
 care about this type the $\b$-matrix. This is because their original characterization is not in this matrix model with a non-homogenous $\D$-distribution. Rather, it is
 a matrix model that is characterized by its joint density of eigenvalues!
 
-That is, given a parameter $\b \in \N$, the Hermite $\b$-ensemble represents a class of matrices that have an explicit formula for the joint density of eigenvalues which
-ultimately is what characterizes the ensemble. This leads in quite nicely to our discussion of our first spectral statistic: the spectrum of a matrix, which is all concerned
-about the distribution of eigenvalues.
+That is, given a parameter $\b \in \N$, the Hermite $\b$-ensemble represents a class of matrices that have an explicit joint p.d.f of eigenvalues as a function of $\b$.
+This is ultimately is what characterizes the ensemble. Speaking of which, this leads in quite nicely to our discussion of our first spectral statistic: the spectrum of a matrix, which is concerned
+all about the distribution of eigenvalues.
 
 %=========================================================================================
 

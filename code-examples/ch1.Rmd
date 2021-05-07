@@ -38,9 +38,10 @@ P
 
 ```{r}
 set.seed(23)
-ensemble <- RME_norm(N = 3, cplx = TRUE, herm = TRUE, size = 2)
+ensemble <- RME_norm(N = 3, cplx = TRUE, herm = TRUE, size = 10)
 # Outputs the following
-ensemble
+round(ensemble[[1]], 5)
+ensemble[[10]]
 ```
 
 ```{r, eval = F}
@@ -50,6 +51,10 @@ library(RMAT)
 ensemble <- RME_norm(N = 2, cplx = TRUE, herm = TRUE, size = 10)
 # Outputs the following
 ensemble
+                  [,1]              [,2]             [,3]
+[1,]  0.19321+1.57578i -0.43468-0.21829i 0.91327+1.04654i
+[2,] -0.43468+0.21829i  0.99661+0.48155i 1.10749+1.21638i
+[3,]  0.91327-1.04654i  1.10749-1.21638i 0.04544-0.44231i
 ... 
 [[10]]
                   [,1]              [,2]              [,3]
@@ -72,7 +77,16 @@ library(RMAT)
 ensemble <- RME_erdos(N = 4, p = 0.5, size = 10)
 # Outputs the following
 ensemble
+
+[[1]]
+          [,1]      [,2]      [,3]      [,4]
+[1,] 0.0000000 1.0000000 0.0000000 0.0000000
+[2,] 0.0000000 0.5350731 0.4649269 0.0000000
+[3,] 0.1287541 0.0000000 0.0000000 0.8712459
+[4,] 0.1525212 0.0000000 0.0000000 0.8474788
+
 ...
+
 [[10]]
           [,1]      [,2]      [,3]     [,4]
 [1,] 0.0000000 0.1729581 0.8270419 0.000000

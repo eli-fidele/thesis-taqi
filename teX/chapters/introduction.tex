@@ -9,62 +9,93 @@
 	% The three lines above are to make sure that the headers are right, that the intro gets included in the table of contents, and that it doesn't get numbered 1 so that chapter one is 1.
 
 You begin to read the title of this thesis. The words random and matrix are familiar, and odds are you correctly surmise what random matrices are.
-If you cannot wait to know --- they are matrices with entries which are random variables.
+If you cannot wait to know --- they are matrices where some or all of its entries are random variables.
+But, what are \textit{spectral statistics}? Do they have to do with rainbows? Sceptres? Well, no they don’t, but they’re almost as colorful and regal. \\
 
-But, what are \textit{spectral statistics}? Do they have to do with rainbows? Sceptres? Well, no they don’t, but they’re almost as colorful and regal.
-The word ``spectral'' is borrowed from the spectral-like patterns observed in statistical physics --- whether it may be atomic spectra or other quantum mechanical phenomena.
-In that sense, the borrowing is loose and not literal, but still somewhat well-founded.
+% One possible answer is that the word ``spectral'' is borrowed from the spectral-like patterns observed in statistical physics --- whether it may be atomic spectra or other quantum mechanical phenomena.
+% In that sense, the borrowing is loose and not literal, but still somewhat well-founded. The more likely scenario is that the word ``spectral'' is derived from its usage in linear algebra.
+% Namely, the spectral theorem
 
-Our field of study, aptly called Random Matrix Theory, is a field at the intersection of Linear Algebra (matrices) and Probability Theory (random variables).
+At first, one might surmise that the origin of the word has to do with the Spectral theorem commonly taught in a first-year linear algebra or functional analysis course.
+This would be partially correct. For context, the Spectral theorem is concerned with the diagonalization of a matrix, and in turn, its eigenvalues
+and eigenvectors. However, this is not precisely where the term originates.
+The term originally comes from David Hilbert, who coined the term `spectral theory' to describe his original formulation of Hilbert space theory.
+So, the initial Spectral theorem actually was formulated as an infinite-dimensional variant of the theorem on principal axes of an ellipsoid.
+It was thus serendipitous that `spectral' theory could explain features of \textit{atomic spectra} later in quantum mechanics -- this application surprised even Hilbert himself!
+Hilbert himself says, ``I developed my theory of infinitely many variables from purely mathematical interests,
+and even called it `spectral analysis' without any presentiment that it would later find application to the actual spectrum of physics.'' [\cite{steen}] \\
+
+That being said, our field of study, aptly called \textit{random matrix theory}, has surprising connections to the world of statistical physics.
+To put it briefly, we can say that random matrix theory is a field at the intersection of linear algebra (matrices) and probability theory (random variables).
 For a primer or review of these subjects, \textbf{Appendix A} may be a useful resource.
-In any case, the field of Random Matrix Theory was extensively developed in the 1930s by the nuclear physicist Eugene Wigner. In fact, Wigner was interested in finding a model of atoms with heavy nuclei.
-In turn, he found connections between the deterministic properties of atomic nuclei and their random and stochastic behaviors [\cite{wigneratom}].
+In any case, the field of random matrix theory was extensively developed in the early 20th century, and its development can be accredited to two individuals: John Wishart and Eugene Wigner.
+Surprisingly, they did not work together and were not interested in random matrices for the same reason.
+
+Namely, Wishart was interested in applying random matrices in the realm of covariance matrices. Today, both Wishart matrices and the Wishart distribution are named after him.
+Wigner, on the other hand, was interested in finding a model of atoms with heavy nuclei.
+In turn, Wigner found connections between the deterministic properties of atomic nuclei and their random and stochastic behaviors [\cite{wigneratom}].
 The link? Random matrices.
+Named after Wigner, one of the results that we will discuss in \textbf{Section 3.3} is Wigner's Surmise, a result about the eigenvalue spacings of symmetric random matrices.
+All that being said, it was not until another mathematician, Freeman Dyson, came along a few decades later and realized both mathematicians were working on similar problems.
+Named after him is the Dyson index, which is mentioned in \textbf{Section 4.1.2}. \\
 
 So to the answer the question: in the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors.
 Namely, we will consider two spectral statistics of random matrices:
   \begin{enumerate}
     \item Their eigenvalues, which we call their \textbf{spectra}.
-    \item The spacings between those eigenvalues, which we called their \textbf{dispersion}.
+    \item The spacings between those eigenvalues, which we called their \textbf{dispersion}.\\
   \end{enumerate}
 
-With all the technical jargon out of the way, we can state the intention of this paper.
-The intention is that a reader with a decent background in the prerequisites mentioned above can come out this paper with the toolkit necessary to study more advanced results in Random Matrix Theory.
-The field is rich and there are so many connections to other fields. Out of this paper, you will hopefully come out knowing many essential results, theorems, and ideas to build on top of.
-In a way, your journey reading through this is akin to my journey of learning the material. We achieve this by performing simulations and surveying important results in the field. Additionally, we report some
-new findings and provide numerous examples of how random matrices can impact their spectral statistics by their parameterization/distribution.
+With all the technicalities out of the way, we finally state the intention of this paper.
+The intention is that a reader with a decent background in the prerequisites mentioned above can come out with a toolkit to study more advanced results in random matrix theory.
+The field is rich and there are so many connections to other fields.
+Out of this paper, the reader will hopefully come out knowing many essential results, theorems, and ideas to build on top of.
+In a way, reading through this, the reader's journey is akin to mine as I was learning the material.
+We achieve our goals by by performing simulations and surveying important results in the field.
+Additionally, we report some new findings and provide numerous examples of how the parameterization or distribution of random matrices can impact their spectral statistics. \\
 
-On the way to achieve this goal, this thesis sets out to provide a standardized language and notation to talk about several objects in random matrix theory. This will be discussed again soon.
+Since it is necessary to achieve our goal, this thesis sets out to provide a standardized language and notation to formalize several objects in random matrix theory.
+This was done hand-in-hand in developing the $\RMAT$ package, the package written for the simulation component of this thesis.
+In fact, the definitions are very much pragmatically motivated;
+they were written in consideration of the programming maneuvering that took place to simulate the random matrices and their spectral statistics.
+Again, it is paramount to highlight that there is a large simulation component of this thesis. Generally speaking, to be able to study random objects, we need to be able to simulate them first.
+So, for all of our simulations, this thesis will utilize the aforementioned $\textbf{RMAT}$ package.
 
-So before delving into that, it is paramount to highlight that there is a large simulation component of this thesis. To be able to study any random objects, we need to be able to simulate them first.
-To simulate random matrices and explore their spectral statistics, this thesis will utilize the $\textbf{RMAT}$ package.
+\newpage
+%
+% \begin{aquote}{Confucius}
+% Tell me and I forget; teach me and I may remember; involve me and I learn.
+% \end{aquote}
 
-\minititle{The RMAT Package}
+%\minititle{The RMAT Package}
+\vspace*{0.1em}
+%\begin{center}
+{\Large \textbf{The RMAT Package}\par}
+%\end{center}
+%=========================================================================================
+\epigraphSM{Tell me and I forget; teach me and I may remember; involve me and I learn.}{\textit{Confucius}}
+%=========================================================================================
 
-\begin{aquote}{Confucius}
-Tell me and I forget; teach me and I may remember; involve me and I learn.
-\end{aquote}
-
+The \textbf{R}andom \textbf{M}atrix \textbf{A}nalysis \textbf{T}oolkit package was written with two purposes in mind: \textit{interactivity and reproducibility}.
 As the quote above implies, interactivity is a critical part of learning.
-For this reason, all the necessary source code for this thesis will be made available. You are strongly encouraged to try out these simulations yourself!
-There will be instructions below for how to obtain the $\RMAT$ package. The Code Appendix (\textbf{Appendix C}) contains a minimalist version of the code
-needed to start these simulations.
+For this reason, all the necessary source code for this thesis will be made available. You are strongly encouraged to reproduce these simulations yourself!
+There will be instructions below for how to obtain the $\RMAT$ package. The code appendix \textbf{(Appendix C)} contains a minimalist version of the code
+needed to peform these simulations.\\
 
 As mentioned before, this package was developed alongside this thesis in order to facilitate the simulation of these random matrices and spectral statistics.
 To showcase the methodology of the simulations, code snippets will be sprinkled throughout the thesis. All code examples in this thesis are reproducible by setting
-the seed using $set.seed(23)$.
+the seed using \codeword{set.seed(23)}. \\
 
-In any case, with the package explained, the honest truth is that the formalizations and definitions provided in this thesis were written after the code was. The
-definitions and formalizations were thought and developed as a result of the programming maneuvers that were needed to obtain the results we find in this thesis.
-A large and very important part of the thesis is developing intuitive definitions of random matrix objects that are consistent with the way the code $\RMAT$ package is implemented
-(i.e. the thesis in many ways formalizes some of the programming maneuvers used in $\RMAT$).
+In any case, with the package explained, the honest truth is that the formalizations and definitions provided in this thesis were written after the code was.
+As mentioned earlier, a large and very important part of the thesis is developing intuitive definitions of random matrix objects that are consistent with the way the code $\RMAT$ package is implemented.
+In other words, the thesis in many ways formalizes the programming maneuvers used in $\RMAT$ after the fact. \\
 
-\minititle{Installing RMAT}
+\minititle{Package Installation}
 
 There are three ways to get the RMAT package. In order of convenience:
 
 \begin{enumerate}
-  \item CRAN: simply run $install.packages(``RMAT'')$ in $R$.
-  \item Github: either run devtools::install\_github(repo = ``ataqi23/RMAT'') or clone the repository found here \footnote{github.com/ataqi23/RMAT}
-  \item Source code: reproduce the code available in \textbf{Appendix C}
+  \item CRAN: simply run \codeword{install.packages("RMAT")} in R.
+  \item Github: either run \codeword{devtools::install_github(repo = "ataqi23/RMAT")} or clone the repository found here\footnote{https://www.github.com/ataqi23/RMAT}.
+  \item Source code: reproduce the code available in \textbf{Appendix C}.
 \end{enumerate}
