@@ -1,0 +1,126 @@
+\chapter{Mixing Time Simulations}
+\section{Introduction}
+In this chapter, we'll talk about mixing time simulations.
+While they are not spectral statistics, these simulations cover the neighbouring domain of numerically estimating eigenvectors.
+Essentially, these mixing time simulations are a general class of simulations involving estimating the ratios of the entries of a
+random point iterated by large powers of the matrix. This technique is called power iteration, and is actually a part of many algorithms that numerically estimate eigenvalues.
+For stochastic matrices, these simulations are a method of generating the distribution of a random transition matrix's mixing time.
+While ``mixing'' is not formally defined for non-stochastic matrices, it turns out there is an elegant extension of the definition for those matrices.
+We will therefore generalize mixing to mean "enter the eigenspace of the largest eigenvalue". In the case of stochastic matrices,
+this is the eigenspace of eigenvalue one; or in other words, the space of stationary distirbutions.
+
+%There will be a fun exploration of the Erdos-Renyi matrix ensembles and we will computationally show that the parameterized ensemble has a mixing time inversely proportional to graph sparsity.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Setup}
+%With the Erdos-Renyi graph defined, we may now motivate the simulation of random walks on them. First, however, we need to generate their corrosponding transition matrices. An algorithm for this is outlined below.
+
+%Suppose we have simulated a transition matrix for an Erdos-Renyi graph called $Q$.
+%Now, fixing some initial probability distribution $\vec{x} \in \R^M$, we may consider the evolution sequence of a random walk on this Erdos-Renyi graph by taking its evolution sequence $\mathcal{S}(Q, x)$.
+
+The basis of these mixing time simulations is using Monte Carlo techniques to estimate the average mixing time for a random point. As such, we must setup a batch of random points to begin.
+
+\begin{definition}[Random Batches]
+Let $\F$ be a field, and fix some $M \in \N$. Let $\B_\lambda \subset \F^M$ be a uniformly random batch of points in the $M$-hypercube of length $\lambda$. That is,
+$$\B_\lambda = \{\vec{x} \mid x_i \sim \text{Unif}(-\lambda, \lambda) \text{ for } i = \oneto[M]\}$$
+\end{definition}
+
+For stochastic matrices, we usually opt to take random batches where the points are stochastic rows.
+Additionally, if If $\F = \mathbb{C}$, then take $\vec{x} \in \B_\lambda$ to mean $\vec{x} = a + bi \text{ where } a,b \sim \Unif(-\lambda,\lambda)$.
+
+\newpage
+
+Once we have a random batch of points, we are ready to observe their evolution under power iteration.
+
+\begin{definition}[Evolution Sequence]
+An evolution sequence of a vector $\vec{\pi}$ and a (transition) matrix $Q$ is defined as the following sequence:
+$$\mathcal{S}(Q,\pi) = ( \pi'_n )_{n=1}^N \where  \pi'_n  = \pi Q^n$$
+\end{definition}
+
+However, in practice, we set a cap on $N$ since we are only interested in the limiting behavior of the sequences.
+
+\begin{definition}[Finite Evolution Sequences]
+Suppose we sample a random point from $\B_\lambda$, emulating a random point $\vec{v} \in \F^M$.
+Additionally, let $Q \in \F^{M \times M}$ be a transition matrix over $\F$.
+Fixing a maximum power ('time') $T \in \N$, define the $T$-evolution sequence of $\vec{v}$ as follows:
+$$\Seq_Q(v) = (\alpha_n)_{n=1}^T \text{ where } \alpha_k = {v}Q^k$$
+%If we do not impose a finiteness constraint on the sequence, we consider powers for $n \in \N$ or $t = \infty$
+\end{definition}
+
+Finally, by taking the entries of two terms in the finite evolution sequences, we obtain the consecutive ratio sequences.
+
+\begin{definition}[Consecutive Ratio Sequences]
+
+Accordingly, define the consecutive ratio sequence (CST) of $\vec{v}$ as follows:
+
+$$\Rseq_Q(v) = (r_n)_{n=2}^T \text{ where } (r_n)_j = \frac{(\alpha_n)_j}{(\alpha_{n-1})_j} \text{ for } j = \oneto[M]$$
+
+In other words, the consecutive ratio sequence of $v$ can be obtained by performing $\textbf{component-wise division}$ on consecutive elements of the evolution sequence of $v$.
+\end{definition}
+
+\section{Convergence}
+
+Finally, because these sequences may never truly converge to the eigenvectors of the matrix, we formalize a notion of ``near convergence''.
+As a prelimenary, we first must define $\varepsilon$-equivalence, where we consider two vectors to be equivalent when they are close enough to each other.
+
+\begin{definition}[$\epsilon$-Equivalence]
+Let $\F$ be a field, and fix $\varepsilon \in \R^+$. Suppose we have vectors $v, v' \in \F^M$.
+Then, $v \sim_\epsilon v'$ if $||v - v'|| < \epsilon$ where $|| \cdot ||$ is the norm on $\F$.
+\end{definition}
+
+This makes defining ``near convergence'' quite simple.
+
+\begin{definition}[$\epsilon$-Convergence]
+Let $\varepsilon \in \R^+$, and suppose we have an evolution sequence $(a[\vec{v}])_n$. Then, $a_n$ $\varepsilon$-converges at $N \in \N$ if:
+$$\forall n \geq N \mid  a_N \sim_\epsilon a_n$$
+\end{definition}
+
+\newpage
+
+\section{Mixing Time Distributions}
+
+As such, we are now ready to obtain mixing time distributions. To do so, we simply observe the distribution of the mixing times.
+
+\begin{definition}[Mixing Time]
+Suppose $Q$ is a matrix and $v$ is a vector. Then, $v$ is mixed by $Q$ at time $T$ if the CRS $\Rseq(v \mid \Seq_Q)$ $\epsilon$-converges at time $T$.
+\end{definition}
+
+\section{Erdos-Renyi Mixing Times}
+
+A fun result to investigate we can now empirically demonstrate using matrix ensembles is the empirical effect the sparsity of a graph has on its mixing time.
+We will find that the sparsity parameter $p$ is inversely related to the mixing time of the $p$-Erdos matrix.
+
+\section{Generalizations}
+
+The mixing time can be generalized as the time at which a point enters the matrix's eigenspace of the largest eigenvalue -- i.e., becomes an eigenvector of the largest eigenvalue.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \section{Erdos-Renyi Ensemble Simulations}
+%
+% \begin{definition}[Erdos-Renyi Graph]
+% An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \oneto[M]$ and edges $E = \mathds{1}_{i,j \in V} \sim \Bern(p_{ij})$. It is homogenous if $p_{ij} = p$ is fixed for all $i, j$.
+% \end{definition}
+%
+% Essentially, an Erdos-Renyi graph is a graph whose 'connectedness' is parameterized by a probability $p$ (assuming it's homogenous, which this document will unless otherwise noted). As $p \to 0$, we say that graph becomes more sparse; analogously, as $p \to 1$ the graph becomes more connected.\newline
+% \indent Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable. As such, we may alternatively say that the degree of each vertex $v$ is distributed as $deg(v) \sim Bin(M,p)$. This is helpful to know because the process of simulating graphs becomes much simpler.
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\minititle{Open Questions}
+
+\begin{enumerate}
+  \item How are the entries of the CRS distributed? Are they normal, and if so, what is its mean?
+  \item Are the entries of the CRS i.i.d as $t \to \infty$?
+  \item For an Erdos-Renyi matrix, is the mixing time $t$ dependent on the parameter $p$?
+  \item What impact does the running time parameter $T$ have on $\sigma$ (the variance of the distribution of the CRS entries)?
+\end{enumerate}
+
+\minititle{Cauchy Distributed Ratios}
+
+It seems to be the case that the $\textbf{log-transformed}$ entries of the CRS are Cauchy distributed about $\log{\lambda_1}$ where $\lambda_1 = \max(\sigma(Q))$, the largest eigenvalue of $Q$. That is,
+
+$$r_i \sim \text{Cauchy}(\ln\lambda_1) \text{ for } i = \oneto[M]$$
