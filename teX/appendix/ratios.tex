@@ -5,12 +5,14 @@ This section goes hand-in-hand with \textbf{Appendix A.3} on Markov Chains, so p
 In this supplementary chapter, we will be overviewing the topic of simulating mixing time distributions for Markov chains.
 While this topic is not directly related to spectral statistics,
 mixing time simulations involve numerically approximating how many powers of a stochastic matrix are needed to obtain a stationary distribution.
+As such, we are simulating the time it takes to approach an eigenvector of the transition matrix.
 % Stationary distributions are eigenvectors with eigenvalue one, which we found to be the spectral radius of any transition matrix.
 % By randomizing the weights of the graphs these stochastic matrices, we return to the world of using matrix ensembles to describe overall behavior.
 % In this case, we will cover mixing time simulations for $\D = Stochastic$ and $\D = \text{ER}(p)$ matrix ensembles.
 % Specifically, we will talk about the applications of these simulations for $p$-Erdos ensembles and demonstrate that mixing time is positively related to sparsity.
 %
-Now, we will start to define the mixing time of a Markov chain by using the framework of transition matrices.
+
+That being said, we will start to define the mixing time of a Markov chain by using the framework of transition matrices.
 However, before we do so, we must formalize probability vectors, which are the vectors with which we will iterate our transition matrices.
 
 % For a fixed point, The mixing time of a Markov chain is defined as how long a given Markov chain takes to reach a stationary distribution.
@@ -66,7 +68,7 @@ To notate a sequence that goes from $n = 0, \dots, \maxtime$, we denote this $\S
 % $$ \rvecn{n} = (\l, \l, \dots, \l)$$
 
 
-\newpage
+%\newpage
 
 Now, what we are interested in is observing when a point becomes a stationary distribution, or in other words, an eigenvector where $\lambda = 1$.
 In other words, we seek to find the power $\tau$ where $\pivecn{\tau}$ satisfies:
@@ -157,7 +159,7 @@ $$\tau = \min\left\{ N \in \N \mid \forall n \geq N : \pivecn{n} \sim_{\ep} \piv
 
 % Without further ado, we are finally able to define the mixing time of a Markov chain for a fixed point (i.p.d).
 
-\newpage
+%\newpage
 
 \section{Simulation}
 
@@ -198,7 +200,7 @@ $$\vvecn{n} \text{\; is an eigenvector of \;} Q \iff \rvecn{n} = (\l_1, \l_1, \d
 
 \textbf{So, we find extensive computational evidence that for any matrix P and vector v, iterating P and multiplying it by v will eventually return an eigenvector of the largest eigenvalue.}
 
-\newpage
+% \newpage
 
 \minititle{Open Questions}
 
