@@ -8,7 +8,7 @@
 	\begin{enumerate}
 		\item To sample a row $r$ of size $N$, fix $N \in \N$.
 		\item Sample a vector $\vec{X}$ with $N$ i.i.d entries between $[0,1]$. So, sample $\vec{X} \sim \Unif(0,1)$.
-		\item Assign $r \la \vec{X}$, and then normalize the row by diving each entry by the row sum; so assign $r \la r \cdot \frac{1}{\sum_{j = 1}^N{r_j}}$
+		\item Assign $r \la \vec{X}$, and then normalize the row by dividing each entry by the row sum; so assign $(r) \la (r) / {\sum_{j = 1}^N{r_j}}$.
 		\item Return the stochastic row $r$.
 	\end{enumerate}
 	\end{algorithm}
@@ -41,8 +41,8 @@
 	\begin{enumerate}
 		\item{Fix $N \in \N$ and $p \in [0,1]$}.
 		\item{Generate a matrix $Q \sim \Unif(0,1)$, i.e. with randomly uniform entries on [0,1].}
-		\item{For each row $r$ in $\{1,\dots,N\}$, generate $deg(r) \sim \Bin(N,p)$.}
-		\item{Randomly chose $N-deg(r)$ vertices, set the entries $r_{j}$ in the $j$ columns to 0 to sever them.}
+		\item{For each row $r$ in $\{1,\dots,N\}$, generate $deg(r) \sim \Bin(N-1,p)$.}
+		\item{Randomly chose $N-deg(r)$ vertices, then set the entries $r_{j}$ in the $j$ columns to 0 to sever them.}
 		\item{Renormalize the matrix by dividing each row by its sum; let $(r) \leftarrow (r)/\sum_{j=1}^N(r_j)$}.
 	\end{enumerate}
 	\end{algorithm}

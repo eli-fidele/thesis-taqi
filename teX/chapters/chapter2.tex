@@ -105,7 +105,7 @@ Whether the eigenvalues are computed by solving for roots or by the QR algorithm
 %=========================================================================================
 \newpage
 \subsection{Interlude: Ensembles}
-While the spectrum of a matrix provides a good summary of the matrix, a matrix is only considered a single point/observation in random matrix theory.
+While the spectrum of a matrix provides a good summary of the matrix in and of itself, a matrix is only considered a single point/observation in random matrix theory.
 Additionally, simulating large matrices and computing their eigenvalues becomes harder and more computationally expensive as $N \to \infty$.
 As such, to obtain more eigenvalue statistics efficiently, another dimension is introduced by motiving the \textit{spectrum of a random matrix ensemble}.
 If we have an ensemble $\Ens$, then we can naturally extend the definition of $\sigma(\Ens)$.
@@ -219,7 +219,7 @@ That being said, consider the following plots, showing the difference in using t
 Our last ordering scheme is moreso a different method of defining the spectrum of a matrix than one of sorting the eigenvalues.
 However, for simplicity, we will call it an ordering scheme.
 Suppose $P$ is a random matrix.
-Then, we can take it singular values as such.
+Then, we can take its singular values as such.
 \begin{definition}[Singular Values]
 The singular values of a matrix $P$ are given by the square root of the eigenvalues of the corresponding product of that matrix and its transpose.
 That is, $$\sigma_+(P) = \sqrt{\sigma(P \cdot P^T)}$$
@@ -342,7 +342,7 @@ From the simulations, we find that there is overwhelming evidence that most matr
 The ``almost all'' part here is an artifact of random matrices, since it is unlikely they will have duplicate eigenvalues, or eigenvalues corresponding to pure rotations (with no scaling).
 These are the types of eigenvalues that lead to the second statement not holding. \newline
 
-\blocktitle{Conclusions} So, to conclude, we can say that the computational evidence for these two facts support and provide an alternative method of empirically demonstrating that the Perron-Frobenius theorem is true.
+\blocktitle{Conclusions} So, to conclude, we can say that the computational evidence for these two facts supports and provides an alternative method of empirically demonstrating that the Perron-Frobenius theorem is true.
 
 %=========================================================================================
 %=========================================================================================

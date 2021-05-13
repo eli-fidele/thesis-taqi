@@ -25,7 +25,7 @@ To begin, we will write down the joint eigenvalue probability density function o
 
 \begin{definition}[$\beta$-ensemble]
 A (Hermite) $\beta$-ensemble is an ensemble of random matrices parameterized by $\beta$, which determines the joint eigenvalue p.d.f that characterizes it.
-So, given an observed set of eigenvalues $\L = (\seqo[N]{\lambda})$. Then, the joint p.d.f. of $\L$ is as follows:
+So, given an observed set of eigenvalues $\L = (\seqo[N]{\lambda})$, the joint p.d.f. of $\L$ is as follows:
 \begin{align*}
 \jepdf = C_\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta e^{-\frac{1}{2} \sum_{i=1}^N \lambda_i^2}
 %f_\beta(\Lambda) = c_\beta \prod_{i < j} |\lambda_i - \lambda_j|^\beta \exp({-\frac{1}{2} \sum_{i=1}^N \lambda_i^2})
@@ -51,7 +51,7 @@ $\jepdf = \betaconst \; $\bbx{$\blueterm$} \; \rbx{$\redterm$}
 \blocktitle{Normalization Constant} First things first, let us consider the normalization constant $\betaconst$.
 This constant is simply a constant needed by $f_\b$ to normalize the p.d.f such that it sums to $1$.
 The term is expressed as a product of gamma terms involving $\beta$. Additionally, this term is related to an integral called the \textit{Selberg integral}. (Ref)
-While the constant is interesting in terms of its relationship with that integral, it is not under our perview. So, the important takeaway is that it just normalizes our p.d.f,
+While the constant is interesting in terms of its relationship with that integral, it is not under our purview. So, the important takeaway is that it just normalizes our p.d.f,
 because every p.d.f needs to sum to $1$ in the end of the day.
 
 \bigskip
@@ -68,7 +68,7 @@ because every p.d.f needs to sum to $1$ in the end of the day.
       So, we can rewrite $\d_\b(\piij) = |\l_j - \l_i|^\b$.
     \item The indices $\{i < j \mid i,j \in \N_N\}$ may look familiar. This is the lower pairing scheme!
   \end{enumerate}
-  As such, when we consider two facts, the interpretation hopefully becomes a little simpler. We can say that the blue term is a product of the dispersion of all eigenvalue pairs in the lower pairing scheme w.r.t the $\b$-norm dispersion metric.
+  As such, when we consider these two facts, the interpretation hopefully becomes a little simpler. We can say that the blue term is a product of the dispersion of all eigenvalue pairs in the lower pairing scheme w.r.t the $\b$-norm dispersion metric.
 Now, we know that for all $\b \in \N$ that the $\b$-norm is a positive definite metric. As such, this means that the term $\d_\b(\pi)$ is a positive term that grows when the dispersion between the eigenvalues in the pair $\pi$ grow larger.
 So, the important takeaway here is that the blue term tells us that the eigenvalues in the $\b$-ensemble tend to ``repel'' each other.
 The farther all the eigenvalues in $\L$ are from each other, the more likely we are to observe such $\L$.
@@ -129,7 +129,7 @@ and their normal matrix counterparts over the three associative algebras. Withou
 \medskip
 
 \blocktitle{Real} Suppose $M \sim \Normal(\mu,\sigma^2)^\dagger$ over $\R$ is a real symmetric matrix.
-Then, its eigenvalues have a joint p.d.f. of $f_{\b = 1}(\L)$, meaning it repersents the $\beta = 1$ ensemble.
+Then, its eigenvalues have a joint p.d.f. of $f_{\b = 1}(\L)$, meaning it represents the $\beta = 1$ ensemble.
 
 Additionally, we know that symmetric matrices are diagonalizable under conjugation with a orthogonal matrix.
 In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in O(n)$ is an orthogonal matrix.
@@ -138,7 +138,7 @@ For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Orthogonal E
 \bigskip
 
 \blocktitle{Complex} Suppose $M \sim \Normal(\mu,\sigma^2)^\dagger$ over $\C$ is a complex hermitian matrix.
-Then, its eigenvalues have a joint p.d.f. of $f_{\b = 2}(\L)$, meaning it repersents the $\beta = 2$ ensemble.
+Then, its eigenvalues have a joint p.d.f. of $f_{\b = 2}(\L)$, meaning it represents the $\beta = 2$ ensemble.
 
 Additionally, we know that hermitian matrices are diagonalizable under conjugation with a unitary matrix.
 In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in U(n)$ is an unitary matrix.
@@ -147,7 +147,7 @@ For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Unitary Ense
 \bigskip
 
 \blocktitle{Quaternionic} Suppose $M \sim \Normal(\mu,\sigma^2)^*$ over $\Hh$ is a quaternionic self-dual matrix.
-Then, its eigenvalues have a joint p.d.f. of $f_{\b = 4}(\L)$, meaning it repersents the $\beta = 4$ ensemble.
+Then, its eigenvalues have a joint p.d.f. of $f_{\b = 4}(\L)$, meaning it represents the $\beta = 4$ ensemble.
 
 Additionally, we know that self-dual quaternionic matrices are diagonalizable under conjugation with a sympleptic matrix.
 In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in Sp(n)$ is a sympleptic matrix.
@@ -211,7 +211,7 @@ While the second model is effectively deterministic, there does remain the rando
 
 Now, we have throughly charecterized, interpreted, and explained the $\b$-ensemble.
 How do we simulate such an ensemble given that we only know the joint p.d.f. of the eigenvalues?
-Luckily, we do not need to dwelve deep into this. To simulate matrices from the $\beta$-ensemble, we will be using the result published in ``Matrix Models for Beta Ensembles'' by Dr. Ioana Dumitriu [\cite{dumitriu}].
+Luckily, we do not need to delve deep into this. To simulate matrices from the $\beta$-ensemble, we will be using the result published in ``Matrix Models for Beta Ensembles'' by Dr. Ioana Dumitriu [\cite{dumitriu}].
 This gives us a matrix model that generates a matrix that would be observed in a $\beta$-ensemble given any $\beta \in \N$.
 
 \minititle{Dumitriu's Matrix Model of $\b$-Ensembles}
@@ -246,11 +246,11 @@ ensemble
 
 In this section, we will continue survey the spectra of $\b$-ensembles. The reason we are continuing is because we have already started this work in \textbf{Section 2.3.3}!
 To remind the reader, in that section, we studied the symmetric normal ensemble over $\R$. As we now know, this means that we have already studied the GOE $(\b = 1)$ ensemble.
-However, before we proceed, here is an important regarding $\textbf{identifiability}$ to take into consideration when simulating these random eigenvalues.
+However, before we proceed, here is an important consideration regarding $\textbf{identifiability}$ to account for when simulating random eigenvalues from the $\b$-ensembles.
 
 \begin{remark}[Implicit Distribution]
 Note that the  $\b$-ensemble is an ensemble characterized by its joint eigenvalue p.d.f.
-As such, there are some subtle but important consideration to take into account regarding identifiability.
+As such, there are some subtle but important considerations to take into account regarding identifiability.
 Recall that we formalized the spectrum of a matrix as a function which takes in as an input a vector of random variables.
 So, while Dumitriu's model provides an explicit formula for the matrix entries, for the eigenvalues, there is the issue of identifiability.
 That is, given some eigenvalues, there is no injective function to the characteristic polynomial that produced it.
@@ -263,7 +263,7 @@ Without further ado, we will now take a look at the properties of the spectra of
 
 \subsection{Standard Ensembles}
 
-As mentioned previously, we have already analyzed the $\b = 1$. As it turns out, all three ensembles share the properties listed in \textbf{Section 2.3.3}. Namely, we find that all three ensembles have a semicircle distribution (with potentially differing radii). Additionally, we also observe that the variance is higher towards the edges where the larger eigenvalues are. That being said, consider the spectra of the $\b = 2$ and $\b = 4$ ensembles.
+As mentioned previously, we have already analyzed the case of $\b = 1$. As it turns out, all three ensembles share the properties listed in \textbf{Section 2.3.3}. Namely, we find that all three ensembles have a semicircle distribution (with potentially differing radii). Additionally, we also observe that the variance is higher towards the edges where the larger eigenvalues are. That being said, consider the spectra of the $\b = 2$ and $\b = 4$ ensembles.
 \trim
 \plotwrapperNC{h}{0.525}{../graphics/chap4/beta24_spec}
 

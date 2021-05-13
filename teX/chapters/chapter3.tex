@@ -104,7 +104,7 @@ In simple terms, pairing schema are templates (for some $N \in \N$) for which ei
 There are many subtle reasons why this is important, which will be covered in detail later.
 Without further ado, we motivate the pairing schema.
 
-Before we may begin talking about pairing scheme, we define an auxilliary object, the spectral pairs of a matrix, which we denote $\spair$.
+Before we may begin talking about pairing schema we define an auxilliary object, the spectral pairs of a matrix, which we denote $\spair$.
 Since we are now talking about eigenvalue pairs, it is helpful to define this object before proceeding.
 
 \begin{definition}[Spectral Pairs]
@@ -348,9 +348,9 @@ Now, in the future sections, we will utilize our toolkit to analyze and study di
 However, before we may proceed, this section will be a primer prior to starting analyzing dispersions.
 Specifically, this section will discuss various subtle caveats and general considerations to take into account before proceeding.
 Essentially, we will be justifying the truck-load of definitions that were provided by showing why it is useful to have short-hand for them and use them concisely.
-Without further ado, here are some considerations that should be taken into account when studying a dispersions. \newline
+Without further ado, here are some considerations that should be taken into account when studying dispersions. \newline
 
-Generally speaking, when we consider from a dispersion set, what we care to obtain from it are insights and patterns in the eigenvalue spacings.
+Generally speaking, when we consider a dispersion set, what we care to obtain from it are insights and patterns in the eigenvalue spacings.
 The dispersion of a matrix $P$, $\Delta_M(P)$ could tell us quite a few things.
 One thing it could tell us is the distribution of the dispersion of eigenvalues given that we uniformly and randomly select a pair of eigenvalues;
 this works when $\d$ is a symmetric function. However, if we are considered about spacings, then we must taking into consideration a few facts.
@@ -377,8 +377,8 @@ They are given by a simple application of the reverse triangle inequality. Namel
 ||y| - |x|| \leq |y - x|
 \end{align*}
 %If we let $\d_{abs}$ be the difference of absolutes metric and $\d_{n}$ be the standard norm, then we could rephrase this as saying
-Realize, two eigenvalues are just a pair of complex numbers, so we may rephrase that inequality as saying $|\d_{abs}(\pi_{ij})| \leq \d_{n}(\pi_{ij})$.
-However, if choose the appopriate pairing scheme, we can remove the absolute value to obtain a more meaningful upper bound. \newline
+Realize that two eigenvalues are just a pair of complex numbers, so we may rephrase that inequality as saying $|\d_{abs}(\pi_{ij})| \leq \d_{n}(\pi_{ij})$.
+However, if we choose the appopriate pairing scheme, we can remove the absolute value to obtain a more meaningful upper bound. \newline
 
 Consider the following. The value of $\d_{abs}(\pi_{ij})$ can be interpreted as the difference between the sizes of $\lambda_j$ and $\lambda_i$.
 However, if we use the \textbf{lower} pair combinations $\Pi_<$, then we know that $i > j$, making the value $|\lambda_j|$ always greater than $|\lambda_i|$ by construction.
@@ -516,7 +516,7 @@ an observation of the Wigner dispersion for symmetric matrices.
 
 \begin{definition}[Wigner Dispersion]
 Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
-Then, the Wigner dispersion denoted $\disp_{W}(P)$ is given by the set of normalized conseuctive eigenvalues of $P$. That is,
+Then, the Wigner dispersion denoted $\disp_{W}(P)$ is given by the set of normalized conseuctive eigenvalue spacings of $P$. That is,
 $$ \disp_{W}(P) = \left\{ \frac{\d_n(\pi)}{\meanspacing} \mid \pi \in \spair(P \mid \Pi_C) \right\} $$
 \end{definition}
 
@@ -553,7 +553,7 @@ matrices are represnted by the $\b$-ensemble with $\b = 2$! This will be discuss
 \subsection{$\b$-Ensembles}
 %=========================================================================================
 
-As we just mention, it turns out that Symmetric Normal matrices and Hermitian Normal matrices have an analogous representation as $\b$-ensembles for $\b = 1$ and $\b = 2$ respectively. Although this will be discussed later, it is helpful to know that there are three ``standard'' $\b$-ensembles with special properties. We have already talked about two of them. The last special $\b$-ensemble is that corresponding to $\b = 4$.
+As we just mentioned, it turns out that Symmetric Normal matrices and Hermitian Normal matrices have an analogous representation as $\b$-ensembles for $\b = 1$ and $\b = 2$ respectively. Although this will be discussed later, it is helpful to know that there are three ``standard'' $\b$-ensembles with special properties. We have already talked about two of them. The last special $\b$-ensemble is that corresponding to $\b = 4$.
 
 That being said, there are analytical results for the Wigner dispersion distributions for the Hermite $\beta$-ensembles for $\beta = 1, 2, 4$.
 We will denote the density of each ensemble by $w_\beta$. These are the asymptotic densities for the normalized spacings between consecutive eigenvalues for each of the matrices for $\b = 1,2,4$. (Ref) Additionally, a simulation plot for each $\b$-ensembles is shown below.

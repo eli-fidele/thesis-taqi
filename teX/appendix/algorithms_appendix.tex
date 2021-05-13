@@ -11,11 +11,15 @@ In this appendix, we will enumerate the various algorithms used in this thesis f
 
 \ALGstoch
 
-\ALGstochsymm
+% \ALGstochsymm
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Note that for Erdos-Renyi transition matrices, we cannot set the degree of the vertex to be $0$.
+Otherwise, the matrix cannot be stochastic. As such, we sever $N - 1$ vertices \textbf{at most}.
+This means that these matrices do not formally represent walks on Erdos-Renyi graphs, but rather an extremely close approximation of them.
 
 \ALGerdos
 
