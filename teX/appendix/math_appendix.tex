@@ -226,6 +226,7 @@ $$ \Prb(X_{n+1} = j \mid X_n = i) = \Prb(X_{n+1} = j \mid X_n = i, X_{n-1} = i',
 \end{itemize}
 
 %=========================================================================================
+\newpage
 \minititle{Transition Matrices}
 
 \begin{definition}[Transition Matrix]
@@ -253,6 +254,7 @@ $$q_{ij}^{(n)} \text{ is the } (i,j) \text{ entry of } Q^n$$
 \end{definition}
 
 %=========================================================================================
+\newpage
 \minititle{Classification of states}
 
 \begin{itemize}
@@ -283,26 +285,31 @@ Formally, the period of state $i$, denoted $\phi_i$ is defined as follows:
 $$\phi(i) = \{\gcd{n} \mid P^n(i,i) > 0\}$$
 \end{definition}
 
-That being said, if every state of the chain
+That being said, if every state of the chain has a period of $1$, then we call it \textbf{aperiodic}.
+Having defined irreducibility and aperiodicity, we are finally able to define our primary objects of interest: ergodic Markov chains.
 
 %=========================================================================================
+\newpage
 \minititle{Ergodicity}
 
 Lastly, we come to our discussion of ergodicity. Ergodicity is a term used in statistical physics to describe stochastic systems which are thoroughly ``mixed''.
 In an ergodic system, every state is expected to be visited uniformly and randomly. Roughly speaking, we could also say ergodicity is akin to a state of equilibrium.
 In fact, the origin of the word comes from ``ergodic theory'' developed by Boltzmann, who was interested in statistical mechanics.
+That being said, we define an ergodic Markov chain as follows.
 
-\begin{definition}[Ergodicity]
+\begin{definition}[Ergodic Markov Chain]
+A ergodic Markov chain is a Markov chain whose states are irreducible and aperiodic.
+Ergodic Markov chains gurantee the existence of a unique steady-state vector $\vec{\pi}$ called the stationary distribution, which represent a left eigenvector of the corresponding transition matrix.
+Additionally, if we denote $\pi_i$ as the steady-state probability of state $i$ and $\eta(i,t)$ as the number of visits to state $i$ in the time $t$, then:
+$$\lim_{t \to \infty} \frac{\eta(i,t)}{t} = \pi(i)$$
+In other words, $\pi(i)$ represents the average time the Markov chain spends at state $i$ in the long term, which converges as a result of erodicity or ``thorough mixing''.
+
 \end{definition}
 
-Consider the mixing time simulation chapter in \textbf{Appendix D}, we discuss this in more depth.
+Informally, the first ensures that there is a sequence of transitions of non-zero probability from any state to any other,
+while the latter ensures that the states are not partitioned into sets such that all state transitions occur cyclically from one set to another.
+Consider the mixing time simulation chapter in \textbf{Appendix D}, we discuss the time it takes a matrix to send an arbitrary probability vector to the stationary distribution.
 
-That being said, Markov chains can be said to be ergodic if they are irreducible and aperiodic.
-
-If a Markov chain is ergodic, then a unique stationary distribution exists.
-
-If a Markov chain is recurrent and aperiodic, then a stationary distribution exists.
-Adding the condition of irreducibility implies a unique one.
 
 %=========================================================================================
 %=========================================================================================

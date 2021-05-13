@@ -21,7 +21,7 @@
 \begin{definition}[Probability Vector]
 An $N$-dimensional probability vector, denoted $\pivec \in [0,1]^N$ is a vector of probabilities such that the entries of $\pivec$ sum to one. That is,
 $$\pivec = (\pi_j)_{j = 1}^N \where \sum_{j = 1}^N \pi_j = 1$$
-In other words, a probability vector is a stochastic row, so we use the same algorithm to randomly generate one as documented in \textbf{Appendix B}.
+In other words, a probability vector is a stochastic row, so we use the same algorithm to randomly generate one as documented in \textbf{Algorithm B.1.1}.
 To notate a randomly sampled probability vector of size $N$, write $\pivec \sim \Phi(N)$.
 
 \end{definition}
@@ -77,7 +77,7 @@ $$ \pivec'Q = \l \pivec' $$
 
 \minititle{Power Sequence and Ratio Approximations}
 
-Consider the following. Suppose we are generally trying to solve the eigenvector equation:
+\noindent Suppose we are generally trying to solve the eigenvector equation:
 $$\pivec Q = \l \pivec$$
 If we multiply both sides by $Q^{n-1}$, we get the equation:
 $$\pivec Q^n = \l \pivec Q^{n - 1}$$
@@ -106,6 +106,10 @@ In other words, the consecutive ratio sequence of $v$ can be obtained by perform
 
 Finally, we can formalize the notion of numerically obtaining eigenvectors using the power and consecutive ratio sequences by the following fact:
 $$ \pivecn{n} \; \text{is an eigenvector} \iff \rvecn{n} = \lambdasvec$$
+
+As such, stationary distributions are reached when we obtain an eigenvector of eigenvalue one. That is,
+$$ \pivecn{n} \; \text{is a stationary distribution} \iff \rvecn{n} = (1,1,\dots,1)$$
+We can interpret this as saying that for a vector to be a stationary distribution, multiplying it by the transition matrix should not alter any of the entries.
 
 \section{Convergence}
 
@@ -197,6 +201,12 @@ $$\vvecn{n} \text{\; is an eigenvector of \;} Q \iff \rvecn{n} = (\l_1, \l_1, \d
 
 \newpage
 
-\section{Open Questions}
+\minititle{Open Questions}
 
-Generally speaking, the ratio sequence has a distribution of terms that is Cauchy like. We get extreme values because we are trying to obtain the orthoganlization to a given entry.
+Generally speaking, the ratio sequence has a distribution of terms that is Cauchy-like (a ratio distribution).
+We get extreme values because we are trying to obtain the orthoganlization to a given entry. So, here are some open questions:
+
+\begin{enumerate}
+  \item How are the entries of the consecutive ratio sequence distributed?
+  \item Are there any cases when the power sequences do not converge to an eigenvector of $\l_1$?
+\end{enumerate}
