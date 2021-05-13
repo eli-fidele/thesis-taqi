@@ -273,9 +273,17 @@ $$\forall i,j \in S_M: \exists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
 $$\exists i,j \in S_M: \nexists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
 \end{itemize}
 
+Another state feature that is important to our discussion is periodicity.
+In simple words, the period of a state is defined as an upper bound on the time needed to return to a state.
+First, we define the period of a given state.
 
-\begin{definition}[Periodicity]
+\begin{definition}[Period]
+A state $i$ has period $k$ if any return to state $i$ must occur in $k$ steps.
+Formally, the period of state $i$, denoted $\phi_i$ is defined as follows:
+$$\phi(i) = \{\gcd{n} \mid P^n(i,i) > 0\}$$
 \end{definition}
+
+That being said, if every state of the chain
 
 %=========================================================================================
 \minititle{Ergodicity}
