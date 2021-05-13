@@ -1,18 +1,17 @@
 \chapter{Mixing Time Simulations}
 \section{Introduction}
 
-% This section goes hand-in-hand with \textbf{Appendix A.3} on Markov Chains, so please read that section first.
-
-% In this supplementary chapter, we will be overviewing the topic of simulating mixing time distributions for Markov chains.
-% While this topic is not directly related to spectral statistics,
-% mixing time simulations involve numerically approximating how many powers of a stochastic matrix are needed to obtain a stationary distribution.
+This section goes hand-in-hand with \textbf{Appendix A.3} on Markov Chains, so please read that section first.
+In this supplementary chapter, we will be overviewing the topic of simulating mixing time distributions for Markov chains.
+While this topic is not directly related to spectral statistics,
+mixing time simulations involve numerically approximating how many powers of a stochastic matrix are needed to obtain a stationary distribution.
 % Stationary distributions are eigenvectors with eigenvalue one, which we found to be the spectral radius of any transition matrix.
 % By randomizing the weights of the graphs these stochastic matrices, we return to the world of using matrix ensembles to describe overall behavior.
 % In this case, we will cover mixing time simulations for $\D = Stochastic$ and $\D = \text{ER}(p)$ matrix ensembles.
 % Specifically, we will talk about the applications of these simulations for $p$-Erdos ensembles and demonstrate that mixing time is positively related to sparsity.
 %
-% Now, we will start to define the mixing time of a Markov chain by using the framework of transition matrices.
-% However, before we do so, we must define probability vectors, which are the vectors with which we will iterate our transition matrices.
+Now, we will start to define the mixing time of a Markov chain by using the framework of transition matrices.
+However, before we do so, we must formalize probability vectors, which are the vectors with which we will iterate our transition matrices.
 
 % For a fixed point, The mixing time of a Markov chain is defined as how long a given Markov chain takes to reach a stationary distribution.
 % This is captured by the minimum power needed such that the fixed point multiplied by the transition matrix to that power becomes an eigenvector.
