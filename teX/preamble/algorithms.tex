@@ -17,7 +17,7 @@
 \newcommand{\ALGstoch}{
 	\begin{algorithm}[Stochastic Matrix] \hfill
 	\begin{enumerate}
-		\item To generate a stochastic square matix $P$ of size $N \times N$, fix $N \in \N$.
+		\item To generate a stochastic square matrix $P$ of size $N \times N$, fix $N \in \N$.
 		\item Then, for every row of $P$, randomly sample a stochastic row of size $N$ and assign it.
 		\item Return the stochastic matrix $P$.
 	\end{enumerate}
@@ -42,7 +42,7 @@
 		\item{Fix $N \in \N$ and $p \in [0,1]$}.
 		\item{Generate a matrix $Q \sim \Unif(0,1)$, i.e. with randomly uniform entries on [0,1].}
 		\item{For each row $r$ in $\{1,\dots,N\}$, generate $deg(r) \sim \Bin(N-1,p)$.}
-		\item{Randomly chose $N-deg(r)$ vertices, then set the entries $r_{j}$ in the $j$ columns to 0 to sever them.}
+		\item{Randomly choose $N-deg(r)$ vertices, then set the entries $r_{j}$ in the $j$ columns to 0 to sever them.}
 		\item{Renormalize the matrix by dividing each row by its sum; let $(r) \leftarrow (r)/\sum_{j=1}^N(r_j)$}.
 	\end{enumerate}
 	\end{algorithm}
@@ -53,7 +53,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\ALGexplicit}{
-	\begin{algorithm}[Homogenous Explicit $\D$-Matrix] \hfill
+	\begin{algorithm}[Homogeneous Explicit $\D$-Matrix] \hfill
 	\begin{enumerate}
 		\item To simulate a $\D$-distributed square matrix $P$ of size $N$, fix $N \in \N$.
 		\item Sample a vector $\vec{X}$ with $N$ i.i.d entries from $\D$. %So, generate $\vec{X} = X_1,\dots,X_N \where X_i \text{is i.i.d } \D$.

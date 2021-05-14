@@ -8,7 +8,7 @@
 \section{Introduction}
 
 In the context of this thesis, \textit{spectral statistics} will be an umbrella term for random matrix statistics that somehow involve that matrix's eigenvalues and eigenvectors.
-That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundemental numbers that tell us a lot about the matrix.
+That being said, if we fix a \textit{random matrix}, we can study its features by studying its eigenvalues - fundamental numbers that tell us a lot about the matrix.
 They are quite important for many reasons.
 For instance in statistical physics, many processes are represented by operators or matrices, and as such, their behaviours could be partially determined by the eigenvalues of their corresponding matrices.
 The study of eigenvalues and eigenvectors primarily falls in the scope of linear algebra, but their utility is far-reaching. So, what are \textit{eigenvalues} exactly?
@@ -19,7 +19,7 @@ The study of eigenvalues and eigenvectors primarily falls in the scope of linear
 Given any standard square matrix $N \times N$ matrix $P$ over some field $\F$,
 its \textit{eigenvalues} are simply the roots of the characteristic polynomial, $\text{char}_P{(\lambda)}$ = $\det(P - \lambda I)$.
 The characteristic polynomial is just like any other polynomial. What is important to know is that $\text{char}_P$ will have a degree of $N$ (i.e. equal to the dimension of the matrix).
-By the Fundamental Theorem of Algebra, this implies that there is always as many complex eigenvalues $\lambda \in \Cc$ as the dimension of the matrix.
+By the Fundamental Theorem of Algebra, this implies that there are always as many complex eigenvalues $\lambda \in \Cc$ as the dimension of the matrix.
 
 That being said, when our random matrix has a specified distribution (say, standard normal), we can see patterns in the eigenvalue distributions.
 So, an eigenvalue is a \textbf{spectral statistic} of a random matrix! To talk about a matrix's eigenvalues in a more formal and concise manner, we motivate what is the \text{eigenvalue spectrum}.
@@ -56,7 +56,7 @@ spectrum_P
 \end{lstlisting}
 
 Notice, in the table above, we obtain the spectrum of the matrix $P$ as returned by the spectrum wrapper function in $\RMAT$.
-In this tidy\footnote{In reference to the tidyverse principles of tidy data frames.} table, each row represents one eigenvalue and the output is comprised of four columns.
+In this tidy\footnote{In reference to the tidyverse principles of tidy data frames.} table, each row represents one eigenvalue and the output is composed of four columns.
 The first two columns represent the real and imaginary components of the eigenvalue, respectively. The third column denotes its norm. Lastly, the fourth column denotes the eigenvalue's
 relative order within the matrix's spectrum; the order is with respect to the default order scheme the function chooses, which is by norm. Order schemes will be discussed in more depth in \textbf{Section 2.2.1}.
 
@@ -67,7 +67,7 @@ relative order within the matrix's spectrum; the order is with respect to the de
 While our definition for spectrum is nice and clean, there are a few caveats that we must take care of.
 First, how are spectra considered statistics? Simply put, we know that a statistic is some function of random data.
 However, before we can even call them so, there needs to be some formalization as to justify considering eigenvalues statistics.
-In the upcoming dialogue, we will reminicse on the corresponding formalization dialogue in \textbf{Section 1.1.3} when we formalized random matrices.
+In the upcoming dialogue, we will reminisce on the corresponding formalization dialogue in \textbf{Section 1.1.3} when we formalized random matrices.
 Before beginning, the reader is encouraged to review what a statistic is in \textbf{Appendix A.2.2}.
 
 Without further ado, recall that when we defined and motivated the $\D$-distribution framework of simulating random matrices, there was always one common factor - a representation using vectors of random variables.
@@ -75,12 +75,12 @@ Using this framework, the formalization of eigenvalue spectra as statistics is n
 
 \begin{formalization}
 Suppose $P \sim \D$ is an $N \times N$ random matrix.
-Then, $P$ has a representation as a sequence of $K$ random variables (for some $K \in \N$).
+Then, $P$ has a representation as a sequence of $K$ random variables (for some $K \leq N^2$).
 Denote it as the vector $\vec{X} = \seqo[K]{X}$.
 Then, the spectrum of the matrix $P$ is simply a function of the vector $\vec{X}$.
 We can denote this $\sigma(\vec{X})$, where the operator $\sigma$ is overloaded to mean the spectrum of a matrix $\textbf{with respect to the vector representation}$.
 %The actual process for $\sigma$ is not necessary to explicitly write out, since characterizing it will be sufficient for now.
-In that case, $\sigma$ is a function that would parse the random variables into the appopriate matrix form by index hacking.
+In that case, $\sigma$ is a function that would parse the random variables into the appropriate matrix form by index hacking.
 Then, using the matrix, the eigenvalues are computed by finding the roots of the characteristic polynomial (or some other algorithm).
 Sparing the details, this characterization of $\sigma$ is sufficient to show that the eigenvalues are in one way or another a function of random variables -- or in other words, a statistic.
 To summarize this, consider the flow chart below.
@@ -253,7 +253,7 @@ In short, given a random sample of fixed size, order statistics are random varia
 In general, order statistics are quite useful and tell us a lot about how the eigenvalues distribute given a distribution.
 They tell us how the eigenvalues space themselves and give us useful upper and lower bounds.
 For example, the maximum of a sample is an order statistic concerned with the highest ranked element.
-In our case, this could correspond the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined.
+In our case, this could correspond to the largest eigenvalue of a spectrum. After all, a spectrum is a random sample of fixed size, so this statistic is well-defined.
 
 \begin{remark}[Indices]
 It is a common convention when notating ordering statistics to say that $X_i > X_j$ when $i > j$. However, in this thesis, we will oppose this convention.
@@ -265,7 +265,7 @@ That being said, then we can notate the value $\l_1$ the largest eigenvalue in t
 Given an $N \times N$ matrix $P$, the eigenvalue $\l_N$ represents the smallest eigenvalue.
 
 \begin{warning}[Order Schema \& Indices]
-Notice how when we are discuss summary statistics below, we make sure to say value or size (and generalize by saying quantity) because the $i^{th}$ rank has a different intrepretation under different order schema.
+Notice how when we are discussing summary statistics below, we make sure to say value or size (and generalize by saying quantity) because the $i^{th}$ rank has a different interpretation under different order schema.
 In the norm-ordered scheme, $\l_1$ means the largest eigenvalue whereas in the sign-ordered scheme, $\l_1$ means the ``most positive'' eigenvalue.
 \end{warning}
 
@@ -287,7 +287,7 @@ For instance, given the norm-ordered scheme the expected extreme values (assumin
 
 \medskip
 
-\blocktitle{Variance} $\Var(\lambda_{i})$ Similarly, the variance of the eigenvalue quantity at a given order $i$ can tell us a lot about an ensemble. For example, we may observe that variances are heteroskedastic (not equal in every level) across all the levels $i$. This insight can tell us how a $\D$-distribution disperses it eigenvalues or perhaps how the eigenvalues ``repel'' each other.
+\blocktitle{Variance} $\Var(\lambda_{i})$ Similarly, the variance of the eigenvalue quantity at a given order $i$ can tell us a lot about an ensemble. For example, we may observe that variances are heteroskedastic (not equal in every level) across all the levels $i$. This insight can tell us how a $\D$-distribution disperses its eigenvalues or perhaps how the eigenvalues ``repel'' each other.
 
 \medskip
 
@@ -298,12 +298,12 @@ For instance, given the norm-ordered scheme the expected extreme values (assumin
 \subsection{Case Study: Perron-Frobenius Theorem}
 
 \begin{definition}[Spectral Radius]
-  Let be $P$ be any matrix and $\spec(P)$ be its ordered spectrum. Then, the spectral radius of $P$ is defined as $\rho(P) = ||\sup \spec(P)||$ is the norm of its largest eigenvalue.
+  Let $P$ be any matrix and $\spec(P)$ be its ordered spectrum. Then, the spectral radius of $P$ is defined as $\rho(P) = ||\sup \spec(P)||$ is the norm of its largest eigenvalue.
 \end{definition}
 
 \minititle{Detour: The Perron-Frobenius Theorem}
 
-Using the toolkit we have now accquired, we can now discuss an elegant, visual representation of the Perron-Frobenius theorem (see \textbf{Section A.1.2}).
+Using the toolkit we have now acquired, we can now discuss an elegant, visual representation of the Perron-Frobenius theorem (see \textbf{Section A.1.2}).
 To put it shortly, the Perron-Frobenius theorem, applied to stochastic matrices is a result that guarantees the existence of a stationary distribution to an ergodic Markov Chain (see \textbf{Section A.3}).
 That being said, the following facts give us a heuristic demonstration of the Perron-Frobenius theorem.
 
@@ -312,7 +312,7 @@ That being said, the following facts give us a heuristic demonstration of the Pe
   \\ \\ Consider the two following facts:
   \begin{enumerate}
     \item The largest eigenvalue of stochastic matrices is 1.
-    \item When multiplied by $P^K$, any point $v$ asymptotically enters the eigenspace of the matrix's largest eigenvalue as $K \to \infty$. That is, as $K$ grows, $v P^K$ approaches eigenvector of $P$ of $\lambda_1$.
+    \item When multiplied by $P^K$, any point $v$ asymptotically enters the eigenspace of the matrix's largest eigenvalue as $K \to \infty$. That is, as $K$ grows, $v P^K$ approaches an eigenvector of $P$ of $\lambda_1$.
   \end{enumerate}
 So, there is an eigenvector of the largest eigenvalue -- for an irreducible Markov Chain, this is a stationary distribution.
 \end{theorem}
@@ -335,7 +335,7 @@ Notice how the largest eigenvalue is 1, living far from the island of \textbf{co
 
 This shows that the spectral radius of stochastic matrices is $1$! What is left is the other fact.
 For the second statement, again, there is plenty of computational evidence to back this up.
-The reader may refer to \textbf{Appendix D} for an empirical demonstation of fact 2.
+The reader may refer to \textbf{Appendix D} for an empirical demonstration of fact 2.
 Because the discussion of eigenvectors is too far afield from the current topic, so we will not include it in the current section.
 
 From the simulations, we find that there is overwhelming evidence that most matrices, if not all, satisfy the second statement.
@@ -386,7 +386,7 @@ The eigenvalues of hermitian matrices obey Wigner's Semicircle distribution.
 Since hermitian matrices have real eigenvalues, then we can be more precise and generally say that the real component of the eigenvalues follow the semicircle distribution.
 The distribution is named after physicist Eugene Wigner.
 
-\begin{definition}[Semicircle Distribtion]
+\begin{definition}[Semicircle Distribution]
 If a random variable $X$ is semicircle distributed with radius $R \in \R^+$, then we say $X \sim \text{SC}(R)$. $X$ has the following probability density function:
 $$\Prb(X = x) = \frac{2}{\pi R^2} \sqrt{R^2 - x^2} \for x \in [-R, R]$$
 \end{definition}
@@ -440,7 +440,7 @@ Now, consider the norm component of our norm-ordered spectrum of our ensemble $\
 
 Lastly, consider the distribution of the \textbf{eigenvalue norms}. As mentioned previously, the variance seems to increase closer to the boundaries. Since we are now using the norm-ordering scheme, the fact that the distribution is symmetric means we are observing twice as many ``occupants'' in a statistical observation. Imagine this as ``folding the semicircle in half''. This explains why the variance is ``increasing'' more rapidly as our eigenvalues shrink.
 
-That being said, the variance plot shows that the variance of the eigenvalue norms seems to have an interesting, non-linear shape. Namely, we observe a rapidly decreasing variance initally, a levelling off, and then a slight dip to the minimum variance. We could trace this back as an artifact of the c.d.f of the semicircle distribution. Since the p.d.f. is the derivative of the c.d.f., we know that the flattest part of the semicircle occurs closer to the origin. As such, we observe the most ``stability'' there.
+That being said, the variance plot shows that the variance of the eigenvalue norms seems to have an interesting, non-linear shape. Namely, we observe a rapidly decreasing variance initially, a levelling off, and then a slight dip to the minimum variance. We could trace this back as an artifact of the c.d.f of the semicircle distribution. Since the p.d.f. is the derivative of the c.d.f., we know that the flattest part of the semicircle occurs closer to the origin. As such, we observe the most ``stability'' there.
 
 \plotwrapperNC{h}{0.45}{../graphics/chap2_order/norm_Norm}%{Largest eigenvalues distribution}
 \trim
@@ -467,9 +467,9 @@ stochastic matrices.
 
 %\minititle{Plot takeaways}
 The first thing that stands out about the spectrum of the $\Unif(0,1)$ ensemble spectrum is that it very much resembles the spectrum of the stochastic matrix ensemble!
-While surprising at first, it starts to make sense once we consider what the Stochastic $\D$-distribution fundamentally reperesents. Namely, it represents a matrix with normalized, uniformly random weights. The algorithm for generating the Stochastic matrices itself samples from the $\Unif(0,1)$ distribution. Additionally, the general shape of the spectrum of the uniform ensemble is similar to that of the stochastic matrix ensemble. This is in the sense that they both have a two ``islands'' of eigenvalues, one complex disk, and one ``island'' of real eigenvalues. \newline
+While surprising at first, it starts to make sense once we consider what the Stochastic $\D$-distribution fundamentally represents. Namely, it represents a matrix with normalized, uniformly random weights. The algorithm for generating the Stochastic matrices itself samples from the $\Unif(0,1)$ distribution. Additionally, the general shape of the spectrum of the uniform ensemble is similar to that of the stochastic matrix ensemble. This is in the sense that they both have two ``islands'' of eigenvalues, one complex disk, and one ``island'' of real eigenvalues. \newline
 
-However, despite these similiarties, there is a notable difference between the two $\D$-distributions. This lies in the distribution of the largest eigenvalues which live in the aforementioned ``real island''. For the uniform ensemble, the largest eigenvalues have \textbf{non-zero variance}, we can see them being scattered around roughly the same place. On the other hand, stochastic matrices have a constant largest eigenvalue of one, meaning the largest eigenvalue has \textbf{zero variance}.
+However, despite these similarities, there is a notable difference between the two $\D$-distributions. This lies in the distribution of the largest eigenvalues which live in the aforementioned ``real island''. For the uniform ensemble, the largest eigenvalues have \textbf{non-zero variance}, we can see them being scattered around roughly the same place. On the other hand, stochastic matrices have a constant largest eigenvalue of one, meaning the largest eigenvalue has \textbf{zero variance}.
 
 \newpage
 
@@ -509,9 +509,9 @@ We have observed in Figure 2.1 in \textbf{Section 2.1.2} that a standard normal 
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 As we can see, despite having purely complex entries, this ensemble of Hermitian standard normal matrices over $\C$ has a spectrum of real eigenvalues!
-However, we do observee a slight imaginary component.
+However, we do observe a slight imaginary component.
 
 \begin{remark}[Floating Point Errors]
 The \codeword{eigen()} function used to complete eigenvalues in $\RMAT$ uses a numerical algorithm as opposed to solving for the roots of the characteristic polynomial.
-For this reason, floating point errors and algorithmic systemic error will yield small, but negligible imaginary components.
+For this reason, floating point errors and algorithmic systematic error will yield small, but negligible imaginary components.
 \end{remark}

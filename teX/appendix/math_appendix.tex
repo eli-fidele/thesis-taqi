@@ -65,7 +65,7 @@ The set of {\em all} unitary matrices in $\C^{n\times n}$ is a matrix group. It 
 
 As mentioned in \textbf{Section 2.3}, here is the statement of the Perron-Frobenius Theorem.
 Specifically, we consider only the application to ergodic Markov Chains by means of limiting scope to stochastic/transition matrices.
-For a reference, see [\cite{stone}].
+For a reference, see [\cite{levin}].
 
 \begin{theorem}[Perron-Frobenius Theorem]
 The Perron–Frobenius theorem asserts that a real square matrix with positive entries has a unique largest real eigenvalue and that the corresponding eigenvector can be chosen to have strictly positive components.
@@ -87,16 +87,16 @@ Eigenvectors have a wide range of applications in various fields. As such, a res
 
 \minititle{The Proof}
 
-In this section, we will prove that for any $M \times M$ real symmetric matrix, $S_M \in \R^{M \times M}$, there exists for some eigenvalue $\lambda$, a corrosponding \textbf{real} eigenvector $\vec{v} \in \R^M$. Prior to starting the main proof, we begin by proving a auxilliary lemma. \newline
+In this section, we will prove that for any $M \times M$ real symmetric matrix, $S_M \in \R^{M \times M}$, there exists for some eigenvalue $\lambda$, a corresponding \textbf{real} eigenvector $\vec{v} \in \R^M$. Prior to starting the main proof, we begin by proving a auxiliary lemma. \newline
 
-\blocktitle{Lemma} Suppose we have a $M \times M$ real symmetric matrix with a some eigenvalue $\lambda$. If there we have a corrosponding eigenvector $v \in \Cc^M$, then every entry of $v$, say $v_i$ is equal to a \textbf{real} linear combination of the other entries $v_j \mid j \neq i$. So, we will show that:
+\blocktitle{Lemma} Suppose we have a $M \times M$ real symmetric matrix with some eigenvalue $\lambda$. If there we have a corresponding eigenvector $v \in \Cc^M$, then every entry of $v$, say $v_i$ is equal to a \textbf{real} linear combination of the other entries $v_j \mid j \neq i$. So, we will show that:
 $$\forall i \in \N_{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (c_j \in \R)$$
 
 \lemmaproof \newline
 
 \noindent Now, leveraging the result of this lemma, we will prove the main theorem.
 
-\begin{theorem}[Taqi] Suppose we have a $M \times M$ real symmetric matrix, $S_M$. Then, we will show that there exists for some eigenvalue $\lambda$, a corrosponding \textbf{real} eigenvector $\vec{v} \in \R^M$.
+\begin{theorem}[Taqi] Suppose we have a $M \times M$ real symmetric matrix, $S_M$. Then, we will show that there exists for some eigenvalue $\lambda$, a corresponding \textbf{real} eigenvector $\vec{v} \in \R^M$.
 \end{theorem}
 
 \taqiproof
@@ -111,7 +111,7 @@ Please refer to [\cite{blitz}] as a resource; the definitions were sourced from 
 \subsection{Random Variables}
 
 \begin{definition}[Random Variable]
-A random variable $X: \Omega \to \R$ is a function from some sample space $\Omega = \{s_i\}_{i=1}^n$ to the real numbers $\R$. The sample space is taken to be any set of events such that the probability function corrosponding to the random variable, $p_X$ exhausts over all the events in $\Omega$. In other words, we expect $\int_\Omega p_X(s) = 1$.
+A random variable $X: \Omega \to \R$ is a function from some sample space $\Omega = \{s_i\}_{i=1}^n$ to the real numbers $\R$. The sample space is taken to be any set of events such that the probability function corresponding to the random variable, $p_X$ exhausts over all the events in $\Omega$. In other words, we expect $\int_\Omega p_X(s) = 1$.
 \end{definition}
 
 %=========================================================================================
@@ -160,13 +160,13 @@ A cumulative distribution function is characterized by a few properties that are
 
 \begin{definition}[Independence]
 Random variables X and Y are said to be independent if $\forall x,y \in \R$:
-$$ \P(X \leq x, Y \leq y) = \P(X \leq x) \P(Y \leq y)$$
+$$ \P(X \leq x, Y \leq y) = \P(X \leq x) \cdot \P(Y \leq y)$$
 If the variables are discrete, then this is equivalent to the condition:
-$$ \P(X = x, Y = y) = \P(X = x) \P(Y = y) $$
+$$ \P(X = x, Y = y) = \P(X = x) \cdot \P(Y = y) $$
 \end{definition}
 
 \begin{definition}[i.i.d]
-A vector of random variables $\vec{X} = (X_i)_{i = 1}^N$ is said to be i.i.d (independent and identially distributed) is each of its entries $X_i$ are exactly so.
+A vector of random variables $\vec{X} = (X_i)_{i = 1}^N$ is said to be i.i.d (independent and identically distributed) is each of its entries $X_i$ are exactly so.
 \end{definition}
 
 %=========================================================================================
@@ -203,11 +203,11 @@ Let $\seq[n]{U}$ be i.i.d. $\Unif(0, 1)$. Then, the $j^{th}$ order statistic $U_
 %\minititle{How does this relate to the rest of the thesis?}
 
 In this section, we will define and discuss Markov chains, which are a very useful construct with countless applications.
-In short, a A Markov chain is a stochastic model that describes a sequence of possible events in which the probability of each event is independent of every other state \textbf{except} the state directly preceeding it.
+In short, a A Markov chain is a stochastic model that describes a sequence of possible events in which the probability of each event is independent of every other state \textbf{except} the state directly preceding it.
 Markov chains are embedded in this thesis through our study of stochastic/transition matrices. Additionally, they also show up in \textbf{Appendix D} when we talk about the mixing time of Markov chains.
 There are many types of Markov chains, but we will stick to a version that is ubiquitous and canonical.
 
-So within the scope of this thesis, we only care about discrete, time-homogenous Markov chains.
+So within the scope of this thesis, we only care about discrete, time-homogeneous Markov chains.
 Specifically, we will be considering Markov chains that represent a random walk on a fixed graph.
 This is a simple Markov chain with two characterizing sets of parameters: the number of vertices, and the weights between each vertex.
 In this representation, each vertex represents a state and each edge represents a transition probability.
@@ -216,7 +216,7 @@ This will be formalized further, but the idea is that each random stochastic mat
 
 Please refer to [\cite{blitz}], Chapter 11, for more information on Markov chains.
 
-\begin{definition}[Markov Chain] Say a set of random variables $X_i$ each take a value in a set, called the state space, $S_M = \{1,2,\dots,M\}$. Then, a sequence of such random variables $X_0,X_1,\dots,X_n$ is called a Markov Chain if the following conditions are satisifed:
+\begin{definition}[Markov Chain] Say a set of random variables $X_i$ each take a value in a set, called the state space, $S_M = \{1,2,\dots,M\}$. Then, a sequence of such random variables $X_0,X_1,\dots,X_n$ is called a Markov Chain if the following conditions are satisfied:
 \end{definition}
 
 \begin{itemize}
@@ -230,15 +230,20 @@ $$ \Prb(X_{n+1} = j \mid X_n = i) = \Prb(X_{n+1} = j \mid X_n = i, X_{n-1} = i',
 \minititle{Transition Matrices}
 
 \begin{definition}[Transition Matrix]
-Take a Markov Chain with states $\{\oneto[M]\}$. Letting $q_{ij} = \P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain.
+Take a Markov Chain with states $\{\oneto[M]\}$.
+Letting $q_{ij} = \P(X_{n+1} = j \mid X_n = i)$ be the transition probability from $i \to j$, then the matrix $Q=(q_{ij})$ is the $\textit{transition matrix}$ of the chain.
+That being said, transition matrices must satisfy a few conditions such as those mentioned below.
 \end{definition}
 
-\begin{itemize}
-\item $Q$ is a non-negative matrix. So every entry $q_{ij} \in \R^+$ is non-negative. This follows because probabilities are necessarily non-negative values.
-\item For this transition matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1. This may be understood as applying the law of total probability to the event of transitioning from any given state $i \in S_M$. In other words, the chain has to go somewhere with probability 1.
+
+
+\fancyblocktitle{Nonnegativity} $Q$ is a non-negative matrix. So every entry $q_{ij} \in \R^+$ is non-negative.
+This follows because probabilities are necessarily non-negative values. \\
+
+\fancyblocktitle{Stochasticity} For this transition matrix to be valid, its rows have to be stochastic, meaning their entries sum to 1. This may be understood as applying the law of total probability to the event of transitioning from any given state $i \in S_M$. In other words, the chain has to go somewhere with probability 1.
 $$\forall i \in \N_M: \sum_{j \in \N_M} q_{ij} = 1$$
-\item Note, it is \textbf{not} necessary that the converse holds. The columns of our transition matrix need not sum to 1 for it to be a valid transition matrix.
-\end{itemize}
+Note, it is \textbf{not} necessary that the converse holds. The columns of our transition matrix need not sum to 1 for it to be a valid transition matrix.
+
 
 \begin{definition}[$n$-step Transition Probability] The $n$-step transition probability of $i \to j$ is the probability of being at $j$ exactly $n$ steps after being at $i$. We denote this value $q_{ij}^{(n)}:$
 \end{definition}
@@ -250,39 +255,44 @@ Because by definition, a Markov Chain is closed under a support/range of $S_M$ s
 
 $$q_{ij}^{(n)} \text{ is the } (i,j) \text{ entry of } Q^n$$
 
-\begin{definition}[Marginal Distribution of $X_n$] Let $\textbf{t} = (t_1,t_2,\dots,t_M)$ such that $\forall i \in S_M : t_i = \Prb(X_0 = i)$. So, $\textbf{t} \in \R^{1 \times M}$. Then, the marginal distribution of $X_n$ is given by the product of the vector $\textbf{t} Q^n \in \R^{1 \times M}$. That is, the $j^{th}$ component of that vector is $\P(X_n = j)$ for any $j \in S_M$. We may call $\textbf{t}$ an initial state distribution.
+\begin{definition}[Marginal Distribution of $X_n$]
+Let $\vec{\pi} = (\pi_1,\pi_2,\dots,\pi_M)$ represent a vector of probabilities such that for every state $i$, $\pi_i = \Prb(X_0 = i)$ represents the initial probability of being at state $i$.
+Then, the marginal distribution of $X_n$ (the distribution of the chain at time $n$) is a vector where the $j^{th}$ component is $\P(X_n = j)$ for $j \in S_M$.
+The marginal distribution of $X_n$ is precisely given the vector $\vec{\pi} Q^n \in [0,1]^{M}$.
+So, we call $\vec{\pi}$ an initial state distribution, and $\vec{\pi} Q^n$ the state of the distribution at time $n$.
 \end{definition}
 
 %=========================================================================================
 \newpage
 \minititle{Classification of states}
 
-\begin{itemize}
-\item A state $i \in S_M$ is said to be $\textbf{recurrent}$ if starting from $i$, the probability is 1 that the chain will $\textit{eventually}$ return to $i$. If the chain is not recurrent, it is $\textbf{transient}$, meaning that if it starts at $i$, there is a non-zero probability that it never returns to $i$.
+Having defined Markov chains and their relationship to transition matrices, we now discuss a few important properties of Markov chains through the process of classifying the behavior of some of its states. \\
 
-\item Caveat: As we let $n \to \infty$, our Markov chain will gurantee that all transient states will be left forever, no matter how small the probability is. This can be proven by letting the probability be some $\epsilon$, then realizing that by the support of $\text{Geom}(\epsilon)$ is always some finite value, then the equivalence between the Markov property and independent Geometric trials gurantees the existence of some finite value such that there is a success of never returning to $i$.
-\end{itemize}
+\fancyblocktitle{Recurrent State} A state $i \in S_M$ is said to be $\textbf{recurrent}$ if starting from $i$, the probability is 1 that the chain will $\textit{eventually}$ return to $i$. If the chain is not recurrent, it is $\textbf{transient}$, meaning that if it starts at $i$, there is a non-zero probability that it never returns to $i$.
 
-\begin{definition}[Reducibility] A Markov chain is said to be $\textbf{irreducible}$ if for any $i,j \in S_M$, it is possible to go from $i \to j$ in a finite number of steps with positive probability. In other words:
+That being said, here is a caveat to take into consideration. As we let $n \to \infty$, our Markov chain will guarantee that all transient states will be left forever, no matter how small the probability is.
+This can be proven by letting the probability be some $\epsilon$, then realizing that by the support of $\text{Geom}(\epsilon)$ is always some finite value.
+Then, by the equivalence between the \textit{Markov property} and independent Geometric trials, we are guaranteed the existence of some finite value such that there is a success of never returning to $i$.
+
+\begin{definition}[Reducibility] A Markov chain is said to be $\textbf{irreducible}$ if for any $i,j \in S_M$, it is possible to go from $i \to j$ in a finite number of steps with positive probability.
+In other words:
+$$\forall i,j \in S_M: \exists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
 \end{definition}
 
-$$\forall i,j \in S_M: \exists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
-\begin{itemize}
-\item From our quantifier formulation of irreducible Markov chains, note that we can equivalently say that a chain is irreducible if there is integer $n \in \mathbb{N}$ such that the $(i,j)$ entry of $Q^n$ is positive for any $i,j$.
-
-\item A Markov chain is $\textbf{reducible}$ if it is not $\textbf{irreducible}$. Using our quantifier formulation, it means that it suffices to find transient states so that:
-
+From our quantifier formulation of \textit{irreducible} Markov chains,
+we can equivalently say that a chain is  \textit{irreducible} if there is an integer $n \in \mathbb{N}$ such that the $(i,j)$ entry of $Q^n$ is positive for any $i,j$.
+That being said, we define a Markov chain to be $\textbf{reducible}$ if it is not $\textbf{irreducible}$.
+Using our quantifier formulation, it means that it suffices to find \textit{transient} states so that:
 $$\exists i,j \in S_M: \nexists n \in \mathbb{N} : q_{ij}^{(n)} > 0$$
-\end{itemize}
 
-Another state feature that is important to our discussion is periodicity.
+Lastly, another state feature that is important to our discussion is periodicity.
 In simple words, the period of a state is defined as an upper bound on the time needed to return to a state.
 First, we define the period of a given state.
 
 \begin{definition}[Period]
 A state $i$ has period $k$ if any return to state $i$ must occur in $k$ steps.
 Formally, the period of state $i$, denoted $\phi_i$ is defined as follows:
-$$\phi(i) = \{\gcd{n} \mid P^n(i,i) > 0\}$$
+$$\phi(i) = \{\gcd{n} \mid p_{ii}^n > 0\}$$
 \end{definition}
 
 That being said, if every state of the chain has a period of $1$, then we call it \textbf{aperiodic}.
@@ -298,17 +308,18 @@ In fact, the origin of the word comes from ``ergodic theory'' developed by Boltz
 That being said, we define an ergodic Markov chain as follows.
 
 \begin{definition}[Ergodic Markov Chain]
-A ergodic Markov chain is a Markov chain whose states are irreducible and aperiodic.
-Ergodic Markov chains gurantee the existence of a unique steady-state vector $\vec{\pi}$ called the stationary distribution, which represent a left eigenvector of the corresponding transition matrix.
+An ergodic Markov chain is a Markov chain whose states are irreducible and aperiodic.
+Ergodic Markov chains guarantee the existence of a unique steady-state vector $\vec{\pi}$ called the stationary distribution, which represent a left eigenvector of the corresponding transition matrix.
 Additionally, if we denote $\pi_i$ as the steady-state probability of state $i$ and $\eta(i,t)$ as the number of visits to state $i$ in the time $t$, then:
 $$\lim_{t \to \infty} \frac{\eta(i,t)}{t} = \pi(i)$$
 In other words, $\pi(i)$ represents the average time the Markov chain spends at state $i$ in the long term, which converges as a result of erodicity or ``thorough mixing''.
 
 \end{definition}
 
-Informally, the first ensures that there is a sequence of transitions of non-zero probability from any state to any other,
-while the latter ensures that the states are not partitioned into sets such that all state transitions occur cyclically from one set to another.
-Consider the mixing time simulation chapter in \textbf{Appendix D}, we discuss the time it takes a matrix to send an arbitrary probability vector to the stationary distribution.
+Informally, irreducibility ensures that there is a sequence of transitions of non-zero probability from any state to any other.
+Aperiodicity, on the other hand, ensures that the states are not partitioned into sets such that all state transitions occur cyclically from one set to another.
+That being said, this wraps up our discussion of Markov chains for this section.
+This subject is revisited in the mixing time simulation chapter in \textbf{Appendix D}, where we discuss the time it takes a matrix to send an arbitrary probability vector to the stationary distribution.
 
 
 %=========================================================================================

@@ -9,12 +9,12 @@ and with statistical mechanics, one can calculate almost nothing exactly.}{\text
 \section{Introduction}
 
 In this chapter, we will talk about the Hermite $\beta$-ensembles, also commonly known as the \textit{Gaussian ensembles}, more in depth.
-The $\b$-ensembles have wide applications in statistical physics, eningeering, and many other places.
+The $\b$-ensembles have wide applications in statistical physics, engineering, and many other places.
 Canonically, there are three ``standard'' $\b$-ensembles, corresponding to the values of $\b = 1, 2, \and 4$.
 It was briefly mentioned in a previous section, but what makes these ensembles special is how they are characterized.
 Fundamentally, the ensembles are defined by the joint density of their eigenvalues, dependent on the parameter $\beta$ of course.
 While $\b$-ensemble model parameter $\b$ has a support of $\N$, the three standard values give us very special properties that we discuss in this chapter.
-Extending the model beyond those standard values (which we do using the $\b$-matrix model) as we do in the previous sections in turn mean that the following special characterizations
+Extending the model beyond those standard values (which we do using the $\b$-matrix model) as we do in the previous sections in turn means that the following special characterizations
 that will be discussed do not apply anymore.
 
 %=========================================================================================
@@ -52,7 +52,7 @@ $\jepdf = \betaconst \; $\bbx{$\blueterm$} \; \rbx{$\redterm$}
 This constant is simply a constant needed by $f_\b$ to normalize the p.d.f such that it sums to $1$.
 The term is expressed as a product of gamma terms involving $\beta$. Additionally, this term is related to an integral called the \textit{Selberg integral}. %(Ref)
 While the constant is interesting in terms of its relationship with that integral, it is not under our purview. So, the important takeaway is that it just normalizes our p.d.f,
-because every p.d.f needs to sum to $1$ in the end of the day.
+because every p.d.f needs to sum to $1$ at the end of the day.
 
 \bigskip
 %\newpage
@@ -62,20 +62,20 @@ because every p.d.f needs to sum to $1$ in the end of the day.
     \item The first thing to note is that this term is a product of terms in the form $|\l_j - \l_i|^\b$.
     \item Secondly, note that this product term runs over the indices $1 \leq i < j \leq n$.
   \end{enumerate}
-    Here's the great part: the reader has already seen and is already accquianted with those two items! Realize,
+    Here's the great part: the reader has already seen and is already acquianted with those two items! Realize,
   \begin{enumerate}
     \item The term $|\l_j - \l_i|^\b$ is simply the dispersion of $\piij$ with respect to the $\b$-norm dispersion metric $\d_\b$.
       So, we can rewrite $\d_\b(\piij) = |\l_j - \l_i|^\b$.
     \item The indices $\{i < j \mid i,j \in \N_N\}$ may look familiar. This is the lower pairing scheme!
   \end{enumerate}
   As such, when we consider these two facts, the interpretation hopefully becomes a little simpler. We can say that the blue term is a product of the dispersion of all eigenvalue pairs in the lower pairing scheme w.r.t the $\b$-norm dispersion metric.
-Now, we know that for all $\b \in \N$ that the $\b$-norm is a positive definite metric. As such, this means that the term $\d_\b(\pi)$ is a positive term that grows when the dispersion between the eigenvalues in the pair $\pi$ grow larger.
+Now, we know that for all $\b \in \N$ that the $\b$-norm is a positive definite metric. As such, this means that the term $\d_\b(\pi)$ is a positive term that grows when the dispersion between the eigenvalues in the pair $\pi$ grows larger.
 So, the important takeaway here is that the blue term tells us that the eigenvalues in the $\b$-ensemble tend to ``repel'' each other.
 The farther all the eigenvalues in $\L$ are from each other, the more likely we are to observe such $\L$.
 
 Additionally, this also means there is \textbf{zero probability} of observing any pair of identical eigenvalues.
 This is because $\d_\b(z,z') = 0$ if $z = z'$, meaning that if we observed two identical eigenvalues, then the probability density would be zero.
-This effectively places a bound on the how close our eigenvalues can be to each other.
+This effectively places a bound on how close our eigenvalues can be to each other.
 
 \bigskip
 
@@ -84,7 +84,7 @@ Fundamentally, this term is simply an exponential term with an input that is a \
 
 To see this, first label the term $S = \sum_{i = 1}^N \l_i^2$. This simplifies the red term to become $\exp(-\frac{1}{2} S)$.
 We know the term $S$ to be positive since the eigenvalues are \textbf{real} and that the sum of squares of several real values is strictly positive.
-As such, the term, multiplied by a negative number ($-\frac{1}{2}$) is guranteed to be negative. So, to summarize, we know that $-\frac{1}{2} S$ is a negative value.
+As such, the term, multiplied by a negative number ($-\frac{1}{2}$) is guaranteed to be negative. So, to summarize, we know that $-\frac{1}{2} S$ is a negative value.
 Then, from what we know about the exponential function, we know that:
 $$\lim_{x \to -\infty} \exp(x) = 0$$
 So, this means that as $S \to \infty$, $\exp(-\frac{1}{2}S) \to 0$. Since $S$ is simply the sum of magnitudes of the eigenvalues, this implies that the larger our eigenvalues
@@ -124,14 +124,14 @@ They are the following:
 \minititle{Diagonalization \& Conjugation Invariance}
 
 One of the most elegant results in random matrix theory is the equivalence between the $\b$-ensembles
-and their normal matrix counterparts over the three associative algebras. Without futher ado, consider the following.
+and their normal matrix counterparts over the three associative algebras. Without further ado, consider the following.
 
 \medskip
 
 \blocktitle{Real} Suppose $M \sim \Normal(\mu,\sigma^2)^\dagger$ over $\R$ is a real symmetric matrix.
 Then, its eigenvalues have a joint p.d.f. of $f_{\b = 1}(\L)$, meaning it represents the $\beta = 1$ ensemble.
 
-Additionally, we know that symmetric matrices are diagonalizable under conjugation with a orthogonal matrix.
+Additionally, we know that symmetric matrices are diagonalizable under conjugation with an orthogonal matrix.
 In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in O(n)$ is an orthogonal matrix.
 For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Orthogonal Ensemble}, abbreviated as GOE.
 
@@ -149,9 +149,9 @@ For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Unitary Ense
 \blocktitle{Quaternionic} Suppose $M \sim \Normal(\mu,\sigma^2)^*$ over $\Hh$ is a quaternionic self-dual matrix.
 Then, its eigenvalues have a joint p.d.f. of $f_{\b = 4}(\L)$, meaning it represents the $\beta = 4$ ensemble.
 
-Additionally, we know that self-dual quaternionic matrices are diagonalizable under conjugation with a sympleptic matrix.
-In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in Sp(n)$ is a sympleptic matrix.
-For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Sympleptic Ensemble}, abbreviated as GSE.
+Additionally, we know that self-dual quaternionic matrices are diagonalizable under conjugation with a symplectic matrix.
+In other words, we could express $M$ as $P^{-1} D P$ where $D$ is a diagonal matrix and $P \in Sp(n)$ is a symplectic matrix.
+For this reason, we call the $\b = 1$ ensemble the \textit{Gaussian Symplectic Ensemble}, abbreviated as GSE.
 
 \bigskip
 
@@ -172,7 +172,7 @@ of the associative algebras above, and you will find that for $\b = 1,2,4$, you 
 \newpage
 \subsection{A Physical Interpretation}
 
-Alongside these great algebraic properies, the $\b$-ensembles also have a intepretation as a physical model.
+Alongside these great algebraic properties, the $\b$-ensembles also have a interpretation as a physical model.
 This is because as mentioned previously, these ensembles show up frequently in statistical physics.
 So, we will cover one physical model that the $\b$-ensemble represents.
 
@@ -186,15 +186,15 @@ these particles tend to repel each other. Specifically, their repulsion factor i
 we can interpret the physical model as follows:
 \medskip
 
-\blocktitle{Low Replsuion, High Temperature} As $\b \to 0$, the temperature of the system $T \to \infty$.
+\blocktitle{Low Repulsion, High Temperature} As $\b \to 0$, the temperature of the system $T \to \infty$.
 At these values, the model starts to behave like an ideal gas.
-Additionally, there is no interaction between the paricles anymore as the power of the blue term implies that the dispersion has no effect anymore. This returns a \textbf{fully stochastic} model of particles trying to align themselves along the field potential. In this model, the field potential matters a lot, as it determines the positioning of the particles.
+Additionally, there is no interaction between the particles anymore as the power of the blue term implies that the dispersion has no effect anymore. This returns a \textbf{fully stochastic} model of particles trying to align themselves along the field potential. In this model, the field potential matters a lot, as it determines the positioning of the particles.
 
 \bigskip
 
 \blocktitle{High Repulsion, Low Temperature} As $\b \to \infty$, the temperature of the system $T \to 0$.
 At these values, the model loses its stochastic properties and starts to become \textbf{deterministic}.
-Additionally, there is maximal interaction between the paricles as the power of the blue term starts to become more prominent. This returns a fully deterministic*
+Additionally, there is maximal interaction between the particles as the power of the blue term starts to become more prominent. This returns a fully deterministic*
 model of particles that align themselves equidistantly. In this model, the field potential doesn't matter anymore.
 
 \medskip
@@ -209,7 +209,7 @@ While the second model is effectively deterministic, there does remain the rando
 %=========================================================================================
 \subsection{The Matrix Model}
 
-Now, we have throughly charecterized, interpreted, and explained the $\b$-ensemble.
+Now, we have thoroughly characterized, interpreted, and explained the $\b$-ensemble.
 How do we simulate such an ensemble given that we only know the joint p.d.f. of the eigenvalues?
 Luckily, we do not need to delve deep into this. To simulate matrices from the $\beta$-ensemble, we will be using the result published in ``Matrix Models for Beta Ensembles'' by Dr. Ioana Dumitriu [\cite{dumitriu}].
 This gives us a matrix model that generates a matrix that would be observed in a $\beta$-ensemble given any $\beta \in \N$.
@@ -244,7 +244,7 @@ ensemble
 \newpage
 \section{Spectra}
 
-In this section, we will continue survey the spectra of $\b$-ensembles. The reason we are continuing is because we have already started this work in \textbf{Section 2.3.3}!
+In this section, we will continue to survey the spectra of $\b$-ensembles. The reason we are continuing is because we have already started this work in \textbf{Section 2.3.3}!
 To remind the reader, in that section, we studied the symmetric normal ensemble over $\R$. As we now know, this means that we have already studied the GOE $(\b = 1)$ ensemble.
 However, before we proceed, here is an important consideration regarding $\textbf{identifiability}$ to account for when simulating random eigenvalues from the $\b$-ensembles.
 
@@ -254,7 +254,7 @@ As such, there are some subtle but important considerations to take into account
 Recall that we formalized the spectrum of a matrix as a function which takes in as an input a vector of random variables.
 So, while Dumitriu's model provides an explicit formula for the matrix entries, for the eigenvalues, there is the issue of identifiability.
 That is, given some eigenvalues, there is no injective function to the characteristic polynomial that produced it.
-Rather, there are infinitly many equivalence classes of characteristic polynomials (and such, random matrices) that surjectively produce a given multiset of eigenvalues.
+Rather, there are infinitely many equivalence classes of characteristic polynomials (and such, random matrices) that surjectively produce a given multiset of eigenvalues.
 \end{remark}
 
 Without further ado, we will now take a look at the properties of the spectra of $\b$-ensembles.
@@ -306,7 +306,7 @@ Firstly, we will consider the dispersion $\disp_{\text{abs}}(\Ens \mid \Pi_<)$ w
 %FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 
-In the plot above, we are considering the absolute differences dispersion metric $\d = \d_{\text{abs}}$. Additionally, we are using the lower pairing scheme $\Pi_C$ so we can interpet these pairs as the pairs we would obtain from randomly picking two distinct eigenvalues.
+In the plot above, we are considering the absolute differences dispersion metric $\d = \d_{\text{abs}}$. Additionally, we are using the lower pairing scheme $\Pi_C$ so we can interpret these pairs as the pairs we would obtain from randomly picking two distinct eigenvalues.
 Additionally, since we are using the norm-ordering scheme, this means that the ranking difference tells us the difference of sizes of two eigenvalues that are ranked a certain distance $\rho$ apart.
 
 As such, this explains why the bulk about $\rho = 50$ is the widest. This is because it represents the dispersion between pairs of eigenvalues in the origin and those near the boundary. Analogously, this explains why both $\rho = 0$ and $\rho = 100$ exhibit the narrowest dispersions. This is because they are comparing the largest eigenvalues with themselves (since the Semicircle distribution is symmetric). Lastly, note that this graph is symmetric about the identity line.

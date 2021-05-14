@@ -4,7 +4,7 @@
 \newcommand{\lemmaproof}{
 \blocktitle{Proof of Lemma} Begin by taking a real symmetric matrix $S_M$ for some $M \in \N$. Suppose we have an eigenvalue $\lambda$. Then, if we have some eigenvector $v$, we know that:
 $$(1): \forall i \in \N_{M} : a_1v_1 + \dots + d_iv_i + \dots + a_{m-1}v_m = \lambda v_i \quad ( a_j \in \R)$$
-We obtain $(1)$ by expanding the equality $A\vec{v} = \lambda \vec{v}$ and noticing that every row of $Av$ is expressible as the sum of the non-diagonal entries multiplied by $v_j \mid j \neq i$ plus $d_i v_i$.  % Note that since our matrix is symmetric, for some rows, some of the constants $a_j$ are not distinct but this should not raise any issues. 
+We obtain $(1)$ by expanding the equality $A\vec{v} = \lambda \vec{v}$ and noticing that every row of $Av$ is expressible as the sum of the non-diagonal entries multiplied by $v_j \mid j \neq i$ plus $d_i v_i$.  % Note that since our matrix is symmetric, for some rows, some of the constants $a_j$ are not distinct but this should not raise any issues.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Next, we collect the terms to solve for $v_i$:
 $$\forall i \in \N_{M} : a_1v_1 + \dots + a_{m-1}v_m =  v_i(\lambda - d_i)$$
@@ -12,24 +12,24 @@ $$\forall i \in \N_{M} : a_1v_1 + \dots + a_{m-1}v_m =  v_i(\lambda - d_i)$$
 Since $S_M$ is a real symmetric matrix, the $a_j$ terms are real so we can say:
 $$\forall i \in \N_{M} :  v_i(\lambda - d_i) = \sum_{j \neq i} a_jv_j \quad (a_j \in \R)$$
 Finally, divide both sides by $(\lambda - d_i)$. On the right hand side, the coefficients of $v_j$ become $\frac{a_j}{(\lambda - d_i)}$. Denote this coefficient ${a}'_j = \frac{a_j}{(\lambda - d_i)}$. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Since $S_M$ is a real symmetric matrix, we know its eigenvalues are real so $\lambda \in \R$ and that its entries are real so $a_i, d_i \in \R$. 
+Since $S_M$ is a real symmetric matrix, we know its eigenvalues are real so $\lambda \in \R$ and that its entries are real so $a_i, d_i \in \R$.
 \noindent Since ${a}'_j$ is an arithmetic expression involving real numbers, then it follows that for every $j$, ${a}'_j \in \R$. As such, we can rewrite $v_j$ as the following sum.
 $$\forall i \in \N_{M}: v_i =  {\sum_{j \neq i} c_j v_j} \quad (\forall j: {a}'_j \in \R)$$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Thus, for any $M \in \N$, a real symmetric matrix $S_M \in \R^{M \times M}$ with eigenvalue $\lambda$ must have a corrosponding eigenvector $v$ such that each of its entries is expressible as a real linear combination of the other entries. So, the proof is complete. $\square$
+Thus, for any $M \in \N$, a real symmetric matrix $S_M \in \R^{M \times M}$ with eigenvalue $\lambda$ must have a corresponding eigenvector $v$ such that each of its entries is expressible as a real linear combination of the other entries. So, the proof is complete. $\square$
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                 THEOREM PROOF
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\taqiproof}{
 \blocktitle{Proof} For this proof we will induct on the dimension of the matrix, $M$. So, let the inductive statement be:
-$$f(M) : S_M\text{ has a real eigenvector } v \text{ corrosponding to an eigenvalue } \lambda$$
+$$f(M) : S_M\text{ has a real eigenvector } v \text{ corresponding to an eigenvalue } \lambda$$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\blocktitle{Base Case} Take the base case $M = 2$. This proof is left to the reader as an exercise. Begin by taking a $2 \times 2$ symmetric matrix, and show that there exist real coefficients for the eigenvector corrosponding to $\lambda$ by using Gaussian Elimination. \newline
+\blocktitle{Base Case} Take the base case $M = 2$. This proof is left to the reader as an exercise. Begin by taking a $2 \times 2$ symmetric matrix, and show that there exist real coefficients for the eigenvector corresponding to $\lambda$ by using Gaussian Elimination. \newline
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\blocktitle{Inductive Step} For our inductive step, we need to show that $f(M) \Rightarrow f(M+1)$. So, let us assume $f(M)$. This means that we can assume any real symmetric matrix $S_M$ has a real eigenvector $v \in \R^M$ corrosponding to $\lambda$. \newline
+\blocktitle{Inductive Step} For our inductive step, we need to show that $f(M) \Rightarrow f(M+1)$. So, let us assume $f(M)$. This means that we can assume any real symmetric matrix $S_M$ has a real eigenvector $v \in \R^M$ corresponding to $\lambda$. \newline
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \noindent Next, we will write $S_{M+1}$ as the matrix $S_M$ augmented by some $u \in \R^M$ as follows:

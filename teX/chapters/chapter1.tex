@@ -1,4 +1,4 @@
-
+homogeneous
 \chapter{Random Matrices}
 
 %=========================================================================================
@@ -7,10 +7,10 @@
 
 As discussed in the introduction, this thesis will be an exploration of spectral statistics of random matrices. This means that we must first be able to understand what random matrices are.
 At a fundamental level, random matrices are simply matrices which have \textit{some or all} entries as random variables that are distributed in accordance to either some explicit distribution or algorithm.
-So, to define a random matrix, our approach will be to do so by formalizing and defining what it mean for one to be $\D$-distributed.
+So, to define a random matrix, our approach will be to do so by formalizing and defining what it means for one to be $\D$-distributed.
 This way, the notation encapsulates and completely characterizes the random matrix.
 
-Prior to beginning the discussion on $\D$-distributions, the reader should be familiar or at least accquainted with the notion of random variables and what they are.
+Prior to beginning the discussion on $\D$-distributions, the reader should be familiar or at least acquainted with the notion of random variables and what they are.
 For a review, see \textbf{Appendix A.2.1}.
 
 %=========================================================================================
@@ -34,17 +34,17 @@ Otherwise, if $\D$ is implicit, then the matrix has dependent entries imposed by
 
 \subsection{Explicit Distributions}
 
-\minititle{Homogenous Explicit $\D$-distributions}
+\minititle{Homogeneous Explicit $\D$-distributions}
 
-The simplest type of $\D$-distribution is one that is explicitly and homogenously distributed. From thereonafter, this will be shortened as e.h.d.
+The simplest type of $\D$-distribution is one that is explicitly and homogeneously distributed. From thereon after, this will be shortened as e.h.d.
 Suppose $\D$ is a probability distribution for random variables in the classical sense. The simplest way to think of e.h.d distributions is to use the concept of notational overload.
 For example, it is unambiguous to say that an r.v. $X \sim \Normal(0,1)$. However, the same cannot be said if we said a matrix $P \sim \Normal(0,1)$.
 
 That being said, we can define e.h $\D$-distributions as an notational extension that means \textbf{every} entry of the matrix is an i.i.d random variable with that same distribution!
-In otherwords, we simply perform entry-wise sampling from the corresponding r.v. distribution. Note that this means by construction, $\D$ can only be e.h.d. if it has a corresponding probability distribution for random variables.
+In other words, we simply perform entry-wise sampling from the corresponding r.v. distribution. Note that this means by construction, $\D$ can only be e.h.d. if it has a corresponding probability distribution for random variables.
 
-\begin{definition}[Homogenous Explicit $\D$-distribution]
-Suppose $P \sim \D$ where $\D$ is a homogenous and explicit distribution. Additionally, let $\D^*$ denote the corresponding random variable analogue of $\D$.
+\begin{definition}[Homogeneous Explicit $\D$-distribution]
+Suppose $P \sim \D$ where $\D$ is a homogeneous and explicit distribution. Additionally, let $\D^*$ denote the corresponding random variable analogue of $\D$.
 Then, every single entry of $P$ is an i.i.d random variable with the corresponding distribution. That is,
 $$ P \sim \D \iff \forall i,j \mid p_{ij} \sim \D^* $$
 \end{definition}
@@ -57,33 +57,33 @@ Then, $p_{11}, p_{12}, p_{21}, p_{22}$ are independent, identically distributed 
 \ALGexplicit
 
 \begin{formalization}
-Explicit homogenous distributions can be formalized as overloading the standard notation of random variable distribution as seen in probability theory.
+Explicit homogeneous distributions can be formalized as overloading the standard notation of random variable distribution as seen in probability theory.
 This way, our random matrix has a representation as a random vector, which we commonly encounter in probability theory as a (i.i.d) sequence of random variables!
-Suppose $P$ is an $N \times N$ random matrix that is explicitly and homogenously $\D$-distributed. Then, this would mean that $P$ is an array of $N^2$ i.i.d random variables sampled from $\D$.
+Suppose $P$ is an $N \times N$ random matrix that is explicitly and homogeneously $\D$-distributed. Then, this would mean that $P$ is an array of $N^2$ i.i.d random variables sampled from $\D$.
 \end{formalization}
 
-\minititle{Non-Homogenous Explicit $\D$-distributions}
+\minititle{Non-Homogeneous Explicit $\D$-distributions}
 
-There are a few instances where we encounter the need to only initialize a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogenous explicit $\D$-distribution.
+There are a few instances where we encounter the need to only initialize a subset of a matrix's entries as random variables. In this case, we say that a matrix has a non-homogeneous explicit $\D$-distribution.
 This type of distribution is similar to e.h. $\D$-distributions, but we no longer have the ability to overload random variable notation and indicate that only some entries have such distribution. This would be
 confusing because not every entry has the same distribution anymore. As such, we have to define new notation to do so.
 
-Simply put, a non-homogenous explicit $\D$-distribution can be completely characterized by listing the distributions of every entry.
-In this thesis, there is only one application of this type of $\D$-distribution; however, it describes the entry disributions by its diagonals --- this is the Hermite $\b$-ensemble matrix.
+Simply put, a non-homogeneous explicit $\D$-distribution can be completely characterized by listing the distributions of every entry.
+In this thesis, there is only one application of this type of $\D$-distribution; however, it describes the entry distributions by its diagonals --- this is the Hermite $\b$-ensemble matrix.
 Since its definition is characterized by distributions on the diagonals, we may avoid full entry-wise generality for the purpose of being succinct.
-As such, we will only describe non-homogenous explicit $\D$-distributions as schemes where we assign diagonal bands a specific vector of i.i.d random variables.
+As such, we will only describe non-homogeneous explicit $\D$-distributions as schemes where we assign diagonal bands a specific vector of i.i.d random variables.
 
 \begin{definition}[Diagonal Bands]
 Suppose $P = (p_{ij})$ is an $N \times N$ matrix. Then, $P$ may be partitioned into $2n - 1$ rows called diagonal bands. Each band is denoted $[\rho]_P$ where $[\rho]_P = \{p_{ij} \mid \rho = i - j\}$. We have
 $\rho \in \{ -(N-1), \dots, -1, 0, 1, \dots, N-1 \}$.
 \end{definition}
 
-Heres an example of using the diagonal bands constructor notation.
+Here's an example of using the diagonal bands constructor notation.
 
 \begin{example}
 Suppose $P$ is an $N \times N$ matrix. Then, $[0]_P$ is the main diagonal of $P$ since $p_{ii} \Ra i = j \Ra i - j = 0 \Ra p_{ii} \in [0]_P$.
 Similarly, the main off-diagonal in the upper triangle is $[-1]_P$ since $p_{12} \in [-1]_P$.
-Likewise, the main off-digonal in the lower triangle is $[1]_P$. The entry in the top-right corner of the matrix, $p_{1N}$ solely comprises $[1 - N]_P$.
+Likewise, the main off-diagonal in the lower triangle is $[1]_P$. The entry in the top-right corner of the matrix, $p_{1N}$ solely comprises $[1 - N]_P$.
 \end{example}
 
 \begin{code}
@@ -117,17 +117,17 @@ P
 %The general defintion is below.
 
 % \begin{definition}[Distribution Rule Set]
-% Suppose $\D$ is a non-homogenous explicit $D$-distribution. Then, for an $N \times N$ matrix, $A_\D = \{a_{ij} = \D_{ij}\}$ is its rule set.
+% Suppose $\D$ is a non-homogeneous explicit $D$-distribution. Then, for an $N \times N$ matrix, $A_\D = \{a_{ij} = \D_{ij}\}$ is its rule set.
 % \end{definition}
 %
 % The general defintion using purely diagonal bands is below.
 %
 % \begin{definition}[Diagonal Rule Set]
-% Suppose $\D$ is a non-homogenous explicit $D$-distribution. Then, for an $N \times N$ matrix, $A_\D = \{a_{ij} = \D_{ij}\}$ is its rule set.
+% Suppose $\D$ is a non-homogeneous explicit $D$-distribution. Then, for an $N \times N$ matrix, $A_\D = \{a_{ij} = \D_{ij}\}$ is its rule set.
 % \end{definition}
 
-For the distribution using diagonal bands, consider the definiton of the $\b$-matrix below.
-The definition utilitizes a generative algorithm which tells us the distribution on the diagonals of the matrix, shown below.
+For the distribution using diagonal bands, consider the definition of the $\b$-matrix below.
+The definition utilizes a generative algorithm which tells us the distribution on the diagonals of the matrix, shown below.
 
 \ALGbeta
 
@@ -135,7 +135,7 @@ The definition utilitizes a generative algorithm which tells us the distribution
 
 \begin{definition}[Hermite-$\b$ Matrix]
 Suppose $P \sim \H(\b)$ is an $N \times N$ matrix. Then, the main diagonal $[0]_P \sim \Normal(0,2)$.
-Additionally, both the main off-digaonals are equal and they are given by $[1]_{P} = [-1]_{P} = \vec{X} = (X_k)_{k=1}^{N-1}$ where $X_k \sim \chi(\text{df} = \beta k)$.
+Additionally, both the main off-diagonals are equal and they are given by $[1]_{P} = [-1]_{P} = \vec{X} = (X_k)_{k=1}^{N-1}$ where $X_k \sim \chi(\text{df} = \beta k)$.
 Lastly, after normalizing by $\frac{1}{\sqrt{2}}$, we obtain a Hermite-$\b$ distributed matrix. Note that this is a symmetric tridiagonal matrix.
 \end{definition}
 
@@ -152,7 +152,7 @@ The Hermite-$\b$ matrix is a matrix model for the $\b$-ensembles. This notation 
 \begin{warning}[$\b$-Notation]
 Please note that the Hermite $\b$-ensemble matrices are \textbf{not} related to the $\Beta$ distribution.
 Instead, $\b \in \N$ is a natural number that determines the nature of the matrix ensemble (more later). The $\Beta(a,b)$ distribution is a r.v. distribution that
-takes in two parameters. For this reason, it is possible to have a homogenous explicit distribution $P \sim \Beta(a,b)$, but they do not mean the same thing.
+takes in two parameters. For this reason, it is possible to have a homogeneous explicit distribution $P \sim \Beta(a,b)$, but they do not mean the same thing.
 \end{warning}
 
 
@@ -160,15 +160,15 @@ takes in two parameters. For this reason, it is possible to have a homogenous ex
 \newpage
 \subsection{Implicit Distributions}
 
-Now, we are done with defining the explicit $\D$-distribtions. The other type of $\D$-distribution is the implicit $\D$-distribution.
-As a general rule, when it comes to implicit $\D$-distributions, we are concerned less about the distribution of the actual matrix entries and moreso about its holisitic properties.
+Now, we are done with defining the explicit $\D$-distributions. The other type of $\D$-distribution is the implicit $\D$-distribution.
+As a general rule, when it comes to implicit $\D$-distributions, we are concerned less about the distribution of the actual matrix entries and more so about its holistic properties.
 
 In this thesis, we will cover one type of implicit $\D$-distributed matrix: the stochastic matrix. One might ask, what are stochastic matrices?
 Stochastic matrices, in short, are matrices that represent random walks on Markov Chains (see \textbf{Appendix A.3}). So, for a fixed graph, there exists a matrix that represents a random walk on that graph.
 We call that either the stochastic matrix or transition matrix of the graph.
 
 We will consider two variations of stochastic matrices: fully connected stochastic matrices and sparse stochastic matrices.
-The sparse stochastic matrices will be refered as Erdos-Renyi matrices, they are essentially the same as stochastic matrices, except they have a parameter $p$ that
+The sparse stochastic matrices will be referred as Erdos-Renyi matrices, they are essentially the same as stochastic matrices, except they have a parameter $p$ that
 determines how connected the graph it represents is. They will be discussed in more detail in \textbf{Section 1.2.1}.
 
 \minititle{Stochastic Matrices}
@@ -218,12 +218,12 @@ So, the relevant distribution to consider is the Dirichlet distribution, whose s
 % That being said, to avoid the process of finding the distribution of these dependent entries, we will encapsulate the distribution and abstract it away by calling it an implicit distribution!
 % \end{remark}
 %
-% Speaking of dependence, our $\D$-distribtions sometimes depend on the dimension of the matrix $N$.
+% Speaking of dependence, our $\D$-distributions sometimes depend on the dimension of the matrix $N$.
 %
 % \begin{remark}[Dependence on $N$]
 % In our case, every implicit $\D$-distribution will have some sort of dependence on the dimension of the matrix $N$.
 % This is due to the fact that stochastic rows are normalized by their row sum, so changing the length of the row will impact the distribution of the entries.
-% Non-homogenous explicit distributions may have a dependence, in the case of Hermite-$\beta$ matrices, it happens that they do.
+% Non-homogeneous explicit distributions may have a dependence, in the case of Hermite-$\beta$ matrices, it happens that they do.
 % It is only e.h. $\D$-distributions that never have a dependence on $N$, matrices with such distributions have entries which are i.i.d.
 % \end{remark}
 
@@ -234,7 +234,9 @@ So, the relevant distribution to consider is the Dirichlet distribution, whose s
 With the various types of $\D$-distributions defined, the definition of a random matrix is quite simple.
 
 \begin{definition}[Random Matrix]
-Let $P \sim \D$ be an $N \times N$ matrix over $\F$. Then, $P$ is represented as a vector of $K$ random variables $\vec{X} = (\seqo[K]{X})$ for $K \leq N^2$ over $\F$. In other words, some or all the entries of $P$ are random variables, and their distributions are precisely determined by the $\D$-distribution.
+Let $P \sim \D$ be an $N \times N$ matrix over $\F$.
+Then, $P$ is represented as a vector of $K$ random variables over $\F$, which we denote $\vec{X} = (\seqo[K]{X})$ for some $K \leq N^2$.
+In other words, some or all the entries of $P$ are random variables, and their distributions are precisely determined by the $\D$-distribution.
 Additionally, if $\D$ is an explicit distribution, $\D^\dagger$ represents the symmetric/hermitian version of $\D$.
 \end{definition}
 
@@ -286,7 +288,7 @@ One common theme in this thesis is that we will find that on their own, random m
 Without further ado, we define the random matrix ensemble.
 
 \begin{definition}[Random Matrix Ensemble]
-A $\D$-distributed ensemble $\Ens$ of $N \times N$ random matrices over $\F$ of size $K$ is defined as a set of $K$ iterations of that class of random matrix, and it is denoted:
+A $\D$-distributed ensemble $\Ens$ of $N \times N$ random matrices over $\F$ of size $K$ is defined as a set of $K$ $\D$-distributed random matrices, and it is denoted:
 $$ \Ens = \bigcup_{i = 1}^K P_i \where P_i \sim \mathcal{D} \and P_i \in \F^{N \times N} $$
 \end{definition}
 
@@ -335,7 +337,7 @@ This way, we add more variation since the connectivity of a graph is one feature
 Without further ado, we motivate the Erdos-Renyi graph:
 
 \begin{definition}[Erdos-Renyi Graph]
-An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \{\oneto[N]\}$ and edges $E = \mathds{1}_{i,j \in V} \sim \Bern(p_{ij})$. It is homogenous if $p_{ij} = p$ is fixed for all $i, j$.
+An Erdos-Renyi graph is a graph $G = (V,E)$ with a set of vertices $V = \{\oneto[N]\}$ and edges $E = \mathds{1}_{i,j \in V} \sim \Bern(p_{ij})$. It is homogeneous if $p_{ij} = p$ is fixed for all $i, j$.
 \end{definition}
 
 Essentially, an Erdos-Renyi graph is a graph whose ``connectedness'' is parameterized by a probability $p$.
@@ -345,7 +347,7 @@ As $p \to 0$, we say that graph becomes more \textit{sparse}; analogously, as $p
 \begin{remark}[Homogeneity]
 In this thesis, we will assume that every edge has a uniform probability $p$ of being connected.
 That is, we will assume $p_{ij}$ is non-zero with probability $p$ for all $i,j$.
-We say that the edge probabilities are homogenous - akin to our description of homogenous $\D$-distributions.
+We say that the edge probabilities are homogeneous - akin to our description of homogeneous $\D$-distributions.
 \end{remark}
 
 Recall from probability theory that a sum of i.i.d Bernoulli random variables is a Binomial variable.
@@ -363,7 +365,7 @@ Note that we are not considering the adjacency matrix of an Erdos-Renyi graph. A
 However, we are simulating a transition matrix, which \textbf{represents a random walk on one}.
 \end{warning}
 
-Consider the code example below, where generate an Erdos-Renyi ensemble of matrices.
+Consider the code example below, where we generate an Erdos-Renyi ensemble of matrices.
 
 \begin{code}[Erdos-Renyi p = 0.5 Ensemble]
 Let $\mathcal{D} = \text{ER}(p = 0.5)$. We can generate $\Ens \sim \D$, an ensemble of $4 \times 4$ Erdos-Renyi matrices ($p = 0.5$) of size 10 as such below.
@@ -401,11 +403,11 @@ The Hermite $\beta$-Ensembles will be one of the primary ensembles discussed in 
 This ensemble will be characterized, motivated, and defined more thoroughly in $\textbf{Chapter 4}$. However, we will give a brief introduction to the ensemble.
 
 As mentioned briefly in \textbf{Section 1.1.1}, the $\b$-ensemble is an ensemble whose matrix model has a special unique generative algorithm. There is a reason we
-care about the $\b$-matrices. This is because their original characterization is not in this matrix model with a non-homogenous $\D$-distribution. Rather, it is
+care about the $\b$-matrices. This is because their original characterization is not in this matrix model with a non-homogeneous $\D$-distribution. Rather, it is
 a matrix model that is characterized by its joint density of eigenvalues!
 
 That is, given a parameter $\b \in \N$, the Hermite $\b$-ensemble represents a class of matrices that have an explicit joint p.d.f of eigenvalues as a function of $\b$.
-This is ultimately is what characterizes the ensemble. Speaking of which, this leads in quite nicely to our discussion of our first spectral statistic: the spectrum of a matrix, which is concerned all about the distribution of eigenvalues.
+This is ultimately what characterizes the ensemble. Speaking of which, this leads in quite nicely to our discussion of our first spectral statistic: the spectrum of a matrix, which is concerned all about the distribution of eigenvalues.
 
 %=========================================================================================
 

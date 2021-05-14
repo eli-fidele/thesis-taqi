@@ -5,7 +5,7 @@ This section goes hand-in-hand with \textbf{Appendix A.3} on Markov Chains, so p
 In this supplementary chapter, we will be overviewing the topic of simulating mixing time distributions for Markov chains.
 While this topic is not directly related to spectral statistics,
 mixing time simulations involve numerically approximating how many powers of a stochastic matrix are needed to obtain a stationary distribution.
-As such, we are simulating the time it takes to approach an eigenvector of the transition matrix.
+As such, we are simulating the time it takes an arbitrary initial probability distribution to ``mix'' or approach an eigenvector of the transition matrix.
 % Stationary distributions are eigenvectors with eigenvalue one, which we found to be the spectral radius of any transition matrix.
 % By randomizing the weights of the graphs these stochastic matrices, we return to the world of using matrix ensembles to describe overall behavior.
 % In this case, we will cover mixing time simulations for $\D = Stochastic$ and $\D = \text{ER}(p)$ matrix ensembles.
@@ -82,7 +82,7 @@ $$ \pivec'Q = \l \pivec' $$
 $$\pivec Q = \l \pivec$$
 If we multiply both sides by $Q^{n-1}$, we get the equation:
 $$\pivec Q^n = \l \pivec Q^{n - 1}$$
-Notice, we could use our power sequence to simplify this and get:
+Notice, we could use our power sequence notation to simplify this and get:
 $$\pivecn{n} = \l \pivecn{n-1}$$
 If we represent lambda as a vector of constants by saying $\vec{\l} = (\l, \l, \dots, \l)$, we get:
 $$\pivecn{n} = \lambdasvec \pivecn{n - 1}$$
@@ -98,7 +98,7 @@ It is a vector of ratios, and for this reason, we will call the following the co
 Now, suppose we have a probability vector $\pivec$ and its corresponding (finite) power sequence $\Seq^{(\maxtime)}(\pivec \mid Q)$ w.r.t. some transition matrix $Q$.
 Accordingly, define the consecutive ratio sequence (CRS) of $\pivec$ as follows:
 $$\Rseq(\pivec \mid Q) = \langle \rvecn{n} \rangle_{n=2}^\maxtime \text{ where } \rvecn{n}_j = \frac{\pin{n}_j}{\pin{n-1}_j} \text{ for } j = \oneto[N]$$
-In other words, the consecutive ratio sequence of $v$ can be obtained by performing $\textbf{component-wise division}$ on two consecutive elements of the power sequence of $\pivec$.
+In other words, the consecutive ratio sequence of $\pivec$ can be obtained by performing $\textbf{component-wise division}$ on two consecutive elements of the power sequence of $\pivec$.
 \end{definition}
 
 
@@ -116,7 +116,7 @@ We can interpret this as saying that for a vector to be a stationary distributio
 
 %Finally, because these sequences may never truly converge to the eigenvectors of the matrix, we formalize a notion of ``near convergence''.
 Because these ratios never actually converge to the eigenvectors for a finite power $n \in \N$, we must define a notion of ``near convergence''.
-So as a prelimenary, we first must define $\varepsilon$-equivalence, where we consider two vectors to be equivalent when they are close enough to each other.
+So as a preliminary, we first must define $\varepsilon$-equivalence, where we consider two vectors to be equivalent when they are close enough to each other.
 
 \begin{definition}[$\epsilon$-Equivalence]
 Let $\F$ be a field, and fix $\varepsilon \in \R^+$. Suppose we have vectors $v, v' \in \F^N$.
@@ -145,7 +145,7 @@ $$ \exists \tau \in \N \mid \tau \leq T \text{\; such that \;} \forall k \geq \t
 
 Finally, we are able to define mixing time.
 This definition is inspired in part by Mark Levin's book ``Markov Chains and Mixing Times''.
-Please see \cite{levin} as a resource.
+Please see [\cite{levin}] as a resource.
 
 \begin{definition}[Mixing Time]
 Suppose we have a Markov chain represented by the transition matrix $Q$, and suppose that $\pivec$ is an probability vector.
@@ -164,13 +164,14 @@ $$\tau = \min\left\{ N \in \N \mid \forall n \geq N : \pivecn{n} \sim_{\ep} \piv
 \section{Simulation}
 
 Finally, we are ready to simulate the mixing time distribution of a random matrix or random matrix ensemble.
+We begin by defining a random batch of points.
 
 \begin{definition}[Monte-Carlo Stochastic Batch]
 A Monte-Carlo stochastic batch of dimension $N$ and size $K$ is a set of $K$ random probability vectors of size $B$. That is,
 $$\B = \{\pivec_i \sim \Phi(N) \}_{i = 1}^{B}$$
 \end{definition}
 
-
+After which, we define the mixing time distribution to be the set of their mixing times for each matrix or matrices.
 
 \begin{definition}[Mixing Time Distribution]
 Suppose we have an ensemble of stochastic matrices $\Ens$ and that we have a batch of probability vectors $\B$.
@@ -182,22 +183,29 @@ $$\{\tau(P, \pivec) \mid P \in \Ens, \pivec \in \B \}$$
 
 \section{Generalizations}
 
-Generally, we could do this for any matrix, not just stochastic matrices! We have a notion of mixing even for non-stochastic matrices.
+Generally, we could do this for any matrix, not just stochastic matrices!
+This means that we have a notion of mixing even for non-stochastic matrices.
 
-\begin{definition}[Random Batches]
+\begin{definition}[Random Batch]
 Let $\F$ be a field, and fix some $M \in \N$. Let $\B_\lambda \subset \F^M$ be a uniformly random batch of points in the $M$-hypercube of length $\lambda$. That is,
 $$\B_\lambda = \{\vec{x} \mid x_i \sim \text{Unif}(-\lambda, \lambda) \text{ for } i = \oneto[M]\}$$
 \end{definition}
 
-For stochastic matrices, we usually opt to take random batches where the points are stochastic rows.
-Additionally, if If $\F = \mathbb{C}$, then take $\vec{x} \in \B_\lambda$ to mean $\vec{x} = a + bi \text{ where } a,b \sim \Unif(-\lambda,\lambda)$.
+The only difference between these batches and the previous ones is that for stochastic matrices, our points had to be probability vectors.
+Here, we are free to choose any random point over $\F^N$.
+That being said, note that if $\F = \mathbb{C}$, then take $\vec{x} \in \B_\lambda$ to mean $\vec{x} = a + bi \text{ where } a,b \sim \Unif(-\lambda,\lambda)$.
 
+\newpage
 \minititle{A Generalization of Mixing}
 
 We could generalize the notion of mixing to any vector $\vvec$ and any matrix $M$.
 To do so, we rewrite the approximate eigenvector statement as follows:
 $$\vvecn{n} \text{\; is an eigenvector of \;} Q \iff \rvecn{n} = (\l_1, \l_1, \dots, \l_1)$$
 
+Note that above, we specify that $\l = \l_1$.
+One fact that we omitted but implied was that we were using the largest eigenvalue of our stochastic matrices, $\l_1 = 1$.
+Indeed, from computation evidence, we find from the consecutive ratio sequence that regardless of the initial vector,
+the power sequence always tends towards an eigenvector of $\l_1$.
 \textbf{So, we find extensive computational evidence that for any matrix P and vector v, iterating P and multiplying it by v will eventually return an eigenvector of the largest eigenvalue.}
 
 % \newpage
@@ -205,9 +213,10 @@ $$\vvecn{n} \text{\; is an eigenvector of \;} Q \iff \rvecn{n} = (\l_1, \l_1, \d
 \minititle{Open Questions}
 
 Generally speaking, the ratio sequence has a distribution of terms that is Cauchy-like (a ratio distribution).
-We get extreme values because we are trying to obtain the orthoganlization to a given entry. So, here are some open questions:
+We occasionally get extreme values due to the instability of ratio distributions. That being said, here are some open questions:
 
 \begin{enumerate}
   \item How are the entries of the consecutive ratio sequence distributed?
   \item Are there any cases when the power sequences do not converge to an eigenvector of $\l_1$?
+  \item How do we obtain a full eigenvector basis using these techniques?
 \end{enumerate}

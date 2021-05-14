@@ -8,7 +8,7 @@
 \section{Introduction}
 
 In this section, we define the final spectral statistic studied in this chapter: eigenvalue dispersions.
-As the name suggests, these statistics are concerned with the distirbution of the spacings between the eigenvalues.
+As the name suggests, these statistics are concerned with the distribution of the spacings between the eigenvalues.
 Interestingly, this is almost as literal as it gets when we use the word ``spectral''.
 In physics and chemistry, atomic spectra are essentially differences between energy levels or quanta, so the translation is close.
 
@@ -27,9 +27,9 @@ So, to begin, we first formally define an eigenvalue pair.
 \minititle{Consecutive Pairs}
 %****************************************************************************************%
 
-In the future section where we define pairing schemes, we will introduce new notation of eigenvalue pair with one index is introduced when defining the consecutive pairing scheme $\Pi_C$, and it takes the form $\pit_j$.
+In the future section where we define pairing schemes, we will introduce a new notation of eigenvalue pairs with one index when defining the consecutive pairing sch $\Pi_C$, and it takes the form $\pit_j$.
 This notation is used to denote the consecutive eigenvalue pair for a given matrix.
-The consecutive eigenvalue pairs are so special that we denote them with a unique notation for convenience. It also makes the discussion regarding order statistics more intrinisic.
+The consecutive eigenvalue pairs are so special that we denote them with a unique notation for convenience. It also makes the discussion regarding order statistics more intrinsic.
 
 \begin{definition}[Consecutive Pairs]
 Suppose $P$ is a matrix and $\spec(P)$ is its ordered spectrum. Then, let $\pit_j$ denote a pair of consecutive eigenvalues, the largest of the two being the $j^{th}$ largest eigenvalue.
@@ -37,7 +37,7 @@ So, $\pit_j = (\lambda_{j-1},\lambda_{j})$.
 \end{definition}
 
 Since the consecutive pair scheme can be sufficiently indexed by one index ($j$), we will use the convention of omitting the index of the smaller eigenvalue to be more concise and idiomatic.
-So, whenever one sees the notation $\pit_j$, think the $j^{th}$ largest eigenvalue and its smaller neighbour.
+So, whenever one sees the notation $\pit_j$, one should think of the $j^{th}$ largest eigenvalue and its smaller neighbour.
 
 \begin{example}[The Largest Eigenvalues]
 With this notation at hand, we say that $\pit_1$ represents the pair of the two largest eigenvalues in an ordered spectrum.
@@ -77,12 +77,12 @@ So, a metric $\d^*$ is symmetric if it satisfies:
 $$\d^*(\piij) = \d^*(\pi_{ji})$$
 \end{remark}
 
-While we have defined disperison metrics to be functions from $\Cc^2$, there is one special case where we can make an exception so that the domain of $\delta$ is not $\R^+$.
+While we have defined dispersion metrics to be functions from $\Cc^2$, there is one special case where we can make an exception so that the domain of $\delta$ is not $\R^+$.
 
 \begin{remark}[Identity Difference Heuristic]
 Suppose we take the arithmetic difference of two complex numbers. Then, the range of $\delta$ is $\Cc$.
-For this reason, we won't consider the arithmetic difference a formal dispersion metric, but we will honor it as a dispersion huerestic.
-As such, we will denote this as the ``identity difference'' huerestic and call it $\delta_{\text{id}}$. So, we define $\delta_{\text{id}}: (z, z') \mapsto z' - z$
+For this reason, we won't consider the arithmetic difference a formal dispersion metric, but we will honor it as a dispersion heuristic.
+As such, we will denote this as the ``identity difference'' heuristic and call it $\delta_{\text{id}}$. So, we define $\delta_{\text{id}}: (z, z') \mapsto z' - z$
 \end{remark}
 
 \minititle{Summary Table of Dispersion Metrics}
@@ -93,7 +93,7 @@ For every dispersion metric, assume the functions' order of arguments is $\d(z, 
 \end{center}
 \vspace{1em}
 
-\noindent *Note that the identity difference is a heurestic, and not a formal metric.
+\noindent *Note that the identity difference is a heuristic, and not a formal metric.
 
 %=========================================================================================
 %\newpage
@@ -104,7 +104,7 @@ In simple terms, pairing schema are templates (for some $N \in \N$) for which ei
 There are many subtle reasons why this is important, which will be covered in detail later.
 Without further ado, we motivate the pairing schema.
 
-Before we may begin talking about pairing schema we define an auxilliary object, the spectral pairs of a matrix, which we denote $\spair$.
+Before we may begin talking about pairing schema we define an auxiliary object, the spectral pairs of a matrix, which we denote $\spair$.
 Since we are now talking about eigenvalue pairs, it is helpful to define this object before proceeding.
 
 \begin{definition}[Spectral Pairs]
@@ -152,7 +152,7 @@ By definition, taking a spectral pair with respect to some pairing scheme constr
       This will be the preferred unique pair combination scheme used in lieu of the argument orders because our dispersion metrics expect the eigenvalue with the lower rank first and the higher rank second.
     $$\spair(P \mid \Pi_>) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i > j\}_{i = 1}^{N-1}$$
     \item For completeness, we will also define the upper-pair scheme. $\Pi_<$ is the set of upper-pair unique combinations of ordered eigenvalues.
-      However, it wont be used because we want dispersions to be positive-definite.
+      However, it won't be used because we want dispersions to be positive-definite.
     $$\spair(P \mid \Pi_<) = \{\pi_{ij} = (\lambda_i,\lambda_j) \mid i < j\}_{i = 1}^{N-1}$$
     \end{enumerate}
     \textbf{Benefits:} Solves the issue of repeated pairs for symmetric dispersion metrics. Also, represents the set of pairs obtained from randomly sampling two distinct eigenvalues.
@@ -206,7 +206,7 @@ Think of the pairing schemes as a conditional argument when considering dispersi
 There will be a discussion in \textbf{Section 3.2} about why we have to formalize the notions of dispersion metrics and pairing schemes when we eventually talk about dispersions.
 
 Additionally, making the pairing schemes independent from the matrices (taking only their dimension, $N \in \N$) was a difficult decision.
-It may cloud understanding initally but the payoff comes if you consider the implementation of the functions in \RMAT.
+It may cloud understanding initially but the payoff comes if you consider the implementation of the functions in \RMAT.
 As a whole, you should not be bothered by the details of formalizing the pairing schemes but you should definitely understand what they do.
 In fact, it's totally fair that you do. The \RMAT \; implementation abstracts this all away in the dispersion function.
 The user would input a string denoting which pairing scheme and the function would handle it.
@@ -226,11 +226,11 @@ Suppose $P$ is an $N \times N$ matrix. Then, its spectral pairs $\spair(P)$ may 
 \end{center}
 \vspace{1em}
 
-\noindent Another way we can define the pairing scheme is defining an auxilliary object: the eigenvalue (pair) matrix.
+\noindent Another way we can define the pairing scheme is defining an auxiliary object: the eigenvalue (pair) matrix.
 
 %****************************************************************************************%
 \medskip
-\minititle{An Alternative Represetation: Eigenvalue Matrix}
+\minititle{An Alternative Representation: Eigenvalue Matrix}
 %****************************************************************************************%
 \begin{definition}[Eigenvalue Matrix]
 Suppose $P$ is an $N \times N$ square matrix and $\spair(P)$ are its spectral pairs.
@@ -259,7 +259,7 @@ $$
 
 \begin{remark}[Main Diagonal]
 Note that in the matrix example above, we omit the entries in the main diagonal. We do so because those pairs given by $\{\pi_{ii} \mid i \in \N_N\}$
-are redundant to include. We are only interested comparing eigenvalues with other eigenvalues. This is because every the dispersion of eigenvalue with itself is zero,
+are redundant to include. We are only interested in comparing eigenvalues with other eigenvalues. This is because every the dispersion of eigenvalue with itself is zero,
 meaning $\forall \d : \d(\pi_{ii}) = 0$. So, as a convention, we omit these pairs.
 \end{remark}
 
@@ -281,7 +281,7 @@ $$\disp_M(P \mid \Pi) = \{\d_M(\piij) \mid \piij \in \spair(P \mid \Pi)\}$$
 Consider the following code example, generating the dispersion of standard normal $5 \times 5$ matrix with respect to the consecutive pairing scheme.
 
 \begin{code}[Consecutive Pair Dispersion of a Standard Normal Matrix]
-In our notation, we are simulating the disperison of $P \sim \Normal(0,1) \where P \in \R^{5 \times 5}$.
+In our notation, we are simulating the dispersion of $P \sim \Normal(0,1) \where P \in \R^{5 \times 5}$.
 Specifically, we are simulating $\disp(P \mid \Pi_C)$. In the code implementation, we obtain an array for every dispersion metric $\d$.
 \end{code}
 \begin{lstlisting}[language=R]
@@ -310,7 +310,7 @@ $$\Delta_M(\Ens \mid \Pi) = \bigcup_{i=1}^K \Delta_M(P_i \mid \Pi)$$
 Consider the following code example, generating the dispersion of a beta ensemble with respect to the consecutive pairing scheme.
 
 \begin{code}[Consecutive Pair Dispersions of a Beta Ensemble]
-In our notation, we are simulating the disperison of $\Ens \sim \H(\b = 4) \where P \in \R^{5 \times 5}$.
+In our notation, we are simulating the dispersion of $\Ens \sim \H(\b = 4) \where P \in \R^{5 \times 5}$.
 Specifically, we are simulating $\disp(P \mid \Pi_C)$. In the code implementation, we obtain an array for every dispersion metric $\delta$.
 \end{code}
 \begin{lstlisting}[language=R]
@@ -353,7 +353,7 @@ Without further ado, here are some considerations that should be taken into acco
 Generally speaking, when we consider a dispersion set, what we care to obtain from it are insights and patterns in the eigenvalue spacings.
 The dispersion of a matrix $P$, $\Delta_M(P)$ could tell us quite a few things.
 One thing it could tell us is the distribution of the dispersion of eigenvalues given that we uniformly and randomly select a pair of eigenvalues;
-this works when $\d$ is a symmetric function. However, if we are considered about spacings, then we must taking into consideration a few facts.
+this works when $\d$ is a symmetric function. However, if we are concerned about spacings, then we must take into consideration a few facts.
 \newline
 \medskip
 
@@ -378,7 +378,7 @@ They are given by a simple application of the reverse triangle inequality. Namel
 \end{align*}
 %If we let $\d_{abs}$ be the difference of absolutes metric and $\d_{n}$ be the standard norm, then we could rephrase this as saying
 Realize that two eigenvalues are just a pair of complex numbers, so we may rephrase that inequality as saying $|\d_{abs}(\pi_{ij})| \leq \d_{n}(\pi_{ij})$.
-However, if we choose the appopriate pairing scheme, we can remove the absolute value to obtain a more meaningful upper bound. \newline
+However, if we choose the appropriate pairing scheme, we can remove the absolute value to obtain a more meaningful upper bound. \newline
 
 Consider the following. The value of $\d_{abs}(\pi_{ij})$ can be interpreted as the difference between the sizes of $\lambda_j$ and $\lambda_i$.
 However, if we use the \textbf{lower} pair combinations $\Pi_<$, then we know that $i > j$, making the value $|\lambda_j|$ always greater than $|\lambda_i|$ by construction.
@@ -389,7 +389,7 @@ As such, the left-hand value would always be positive, allowing us to drop the a
 \medskip
 
 \blocktitle{Sufficiency of Consecutive Pairs} Recall from previously that with respect to the identity difference, some elements of the dispersion $\Delta_{id}(P)$
-can be expressed as a linear combination of other elements. To avoid this issue of linear combinations, we simply take the dispersion with respect to the consective pairing scheme. In other words,
+can be expressed as a linear combination of other elements. To avoid this issue of linear combinations, we simply take the dispersion with respect to the consecutive pairing scheme. In other words,
 we consider only consecutive eigenvalues.
 By imposing this condition, we get that none of the values are a linear combination of the other in $\disp_{id}(P \mid \Pi_C)$. So, we can say that the consecutive pairs are sufficient in the sense that
 they give us almost all the information we need.
@@ -423,7 +423,7 @@ With the ranking difference, we may now take the spectral pairs of some random m
 and partition the eigenvalues into distinct equivalence classes.
 
 \begin{remark}[Equivalence Relation]
-Formally speaking, we may define $\sim_\rankdiff$ as an equivalence relation. It satsifies all three properties of reflexivity, symmetry, and transitivity.
+Formally speaking, we may define $\sim_\rankdiff$ as an equivalence relation. It satisfies all three properties of reflexivity, symmetry, and transitivity.
 More precisely, it is an equivalence class which partitions $\N_N \times \N_N$ into $N - 1$ equivalence classes given by $[r]_\rankdiff$ for $r \in \N_{N-1}$.
 We would define the equivalence relation $\sim_\rankdiff$ as follows:
 $$(\lambda_a,\lambda_b) \sim_\rankdiff (\lambda_c,\lambda_d) \iff (a -b) = (c-d)$$
@@ -470,7 +470,7 @@ Specifically, we are considering $\disp_{\text{abs}}(\Ens \mid \Pi_<)$.
 
 In the plot above, we are considering the absolute differences dispersion metric $\d = \d_{\text{abs}}$.
 That being considered, we can use the ranking difference construction provided earlier to parse this graph.
-Recall that the ranking difference partitions the eigenvalue pair into seperate classes based on how many ``ranks'' apart two eigenvalues are.
+Recall that the ranking difference partitions the eigenvalue pair into separate classes based on how many ``ranks'' apart two eigenvalues are.
 With this interpretation, this tells us that roughly speaking, each diagonal band $[\rho]$ has a uniform difference of absolutes given by the color streak
 that diagonal occupies.
 
@@ -516,11 +516,11 @@ an observation of the Wigner dispersion for symmetric matrices.
 
 \begin{definition}[Wigner Dispersion]
 Suppose $P$ is an $N \times N$ symmetric matrix, and $\sigma(P)$ are its real, sign-ordered eigenvalues.
-Then, the Wigner dispersion denoted $\disp_{W}(P)$ is given by the set of normalized conseuctive eigenvalue spacings of $P$. That is,
+Then, the Wigner dispersion denoted $\disp_{W}(P)$ is given by the set of normalized consecutive eigenvalue spacings of $P$. That is,
 $$ \disp_{W}(P) = \left\{ \frac{\d_n(\pi)}{\meanspacing} \mid \pi \in \spair(P \mid \Pi_C) \right\} $$
 \end{definition}
 
-The extension for ensembles is trivial; it inherits the same notation for matrices and the definition is extended similar to how we
+The extension for ensembles is trivial; it inherits the same notation for matrices and the definition is extended similarly to how we
 did so for the spectrum and dispersion of an ensemble. That being said, consider the following simulation of Wigner's surmise.
 
 \newpage
@@ -546,7 +546,7 @@ The answer is $\b$-ensembles. \newline
 It turns out that the class of $\Normal(\mu,\sigma^2)$ matrices for any value of $\mu$ or $\sigma$ are represented by the $\b$-ensemble for $\b = 1$;
 in other words, they have the same eigenvalue distribution.
 Curiously enough, if we sampled the same matrices (Hermitian Normal) over $\C$, we would have found an analogous result, where all the Hermitian Normal
-matrices are represnted by the $\b$-ensemble with $\b = 2$! This will be discussed more in depth in \textbf{Chapter 4}.
+matrices are represented by the $\b$-ensemble with $\b = 2$! This will be discussed more in depth in \textbf{Chapter 4}.
 
 %=========================================================================================
 \newpage
@@ -556,7 +556,7 @@ matrices are represnted by the $\b$-ensemble with $\b = 2$! This will be discuss
 As we just mentioned, it turns out that Symmetric Normal matrices and Hermitian Normal matrices have an analogous representation as $\b$-ensembles for $\b = 1$ and $\b = 2$ respectively. Although this will be discussed later, it is helpful to know that there are three ``standard'' $\b$-ensembles with special properties. We have already talked about two of them. The last special $\b$-ensemble is that corresponding to $\b = 4$.
 
 That being said, there are analytical results for the Wigner dispersion distributions for the Hermite $\beta$-ensembles for $\beta = 1, 2, 4$.
-We will denote the density of each ensemble by $w_\beta$. These are the asymptotic densities for the normalized spacings between consecutive eigenvalues for each of the matrices for $\b = 1,2,4$. %(Ref) 
+We will denote the density of each ensemble by $w_\beta$. These are the asymptotic densities for the normalized spacings between consecutive eigenvalues for each of the matrices for $\b = 1,2,4$. %(Ref)
 Additionally, a simulation plot for each $\b$-ensembles is shown below.
 
 \begin{align*}
@@ -576,7 +576,7 @@ Additionally, a simulation plot for each $\b$-ensembles is shown below.
 
 As we can see, given just our three values of $\b$, there are some patterns to consider.
 The first thing that jumps out is that the variance of the dispersion distribution seems to decrease as $\b$ increases.
-This will be justified in \textbf{Chapter 4} in additional to being generalized for $\b \in \N$. In fact, this observation
+This will be justified in \textbf{Chapter 4} in addition to being generalized for $\b \in \N$. In fact, this observation
 regarding the variance seems to go hand in hand with the analytical results for the asymptotic densities.
 Observe that the formulas for the asymptotic densities contain first, second, and fourth degree terms of the normalized spacing.
 As such, this has an impact on the moments of the p.d.f. and may explain why the variance seems to decrease.
@@ -587,7 +587,7 @@ As such, this has an impact on the moments of the p.d.f. and may explain why the
  \minititle{Checkpoint}
 
 All things considered, we are now ready to switch topics and start to focus solely on the $\b$-ensembles in the next chapter.
-At this point, the reader has accquired a vast toolkit and considerable knowledge to study random matrix theory in more depth.
+At this point, the reader has acquired a vast toolkit and considerable knowledge to study random matrix theory in more depth.
 However, we have only scratched the surface, and you are encouraged to keep learning! As such, we will sample the $\b$-ensembles, which we are already familiar with,
 to serve as our ``case study'' in this thesis.
 
