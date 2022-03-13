@@ -1,0 +1,13 @@
+Package: mixtime
+Type: Package
+Title: Mixing Time Statistics
+Version: 0.1.0
+Author: Ali Taqi
+Maintainer: Ali Taqi <alif.taqi00@gmail.com>
+Description: Simulate stochastic matrices and analyze mixing time statistics.
+    The package allows the user to either simulate stochastic matrices or provide one. Given a matrix
+    the user can generate a large batch of initial probability distributions and analyzing the mixing time
+    statistics.
+License: Common license
+Encoding: UTF-8
+LazyData: true
